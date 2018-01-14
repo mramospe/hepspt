@@ -6,6 +6,9 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
+__all__ = ['is_power_2', 'next_power_2']
+
+
 def is_power_2( n ):
     '''
     :param n: input number.

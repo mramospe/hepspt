@@ -10,6 +10,8 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 import numpy as np
 import bisect, itertools
 
+__all__ = ['AdBin', 'adbin_hist1d', 'adbin_hist1d_edges', 'adbin_hist2d', 'adbin_histnd', 'proc_range']
+
 
 class AdBin:
     '''

@@ -7,13 +7,17 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Custom
-import adbin
+import hepspt
 
 # Python
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def main():
+    '''
+    Main function called when executing this module as a script.
+    '''
     size = 1000
     bins = 20
     rg   = (-10, 10)
@@ -30,7 +34,7 @@ def main():
     for s, w, a, t in ((sample, None, al, 'adaptive binned'),
                        (sample, weights, ar, 'weighted adaptive binned')):
 
-        values, edges = adbin.adbin_hist1d(s, wgts = w, nbins = bins, rg = rg)
+        values, edges = hepspt.adbin_hist1d(s, wgts = w, nbins = bins, rg = rg)
 
         centers = (edges[1:] + edges[:-1])/2.
 

@@ -6,14 +6,18 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
+# Custom
+import hepspt
+
+
 def test_power_2():
     '''
     Test the functions related wih evaluating and creating powers of 2.
     '''
     n = 15
 
-    assert math_aux.is_power_2(n) == False
+    assert hepspt.is_power_2(n) == False
 
-    nt = math_aux.next_power_2(n)
+    nt = hepspt.next_power_2(n)
 
-    assert math_aux.is_power_2(nt) == True
+    assert hepspt.is_power_2(nt) == True

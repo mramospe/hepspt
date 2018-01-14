@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Custom
-import adbin, math_aux
+import hepspt
 
 # Set the random seed for reproducibility
 np.random.seed(8563)
@@ -30,10 +30,10 @@ def test_adbin_hist1d():
     weights = np.random.uniform(0, 1, size)
 
     # Case without weights
-    v, ev = adbin.adbin_hist1d(sample, bins, rg)
+    v, ev = hepspt.adbin_hist1d(sample, bins, rg)
 
     # Case with weights
-    v_w, ev_w = adbin.adbin_hist1d(sample, bins, rg, weights = weights)
+    v_w, ev_w = hepspt.adbin_hist1d(sample, bins, rg, wgts = weights)
 
 
 def test_adbin_hist2d():
@@ -49,7 +49,7 @@ def test_adbin_hist2d():
     # Number of bins is a power of "ndiv". The requested and actual
     # number of bins are identical.
     nbins = 16
-    bins  = adbin.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 2)
+    bins  = hepspt.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 2)
     assert nbins == len(bins)
 
     exp = size/nbins
@@ -59,7 +59,7 @@ def test_adbin_hist2d():
     # Number of bins is not a power of "ndiv". Requested and actual
     # number of bins are different.
     nbins = 11
-    bins  = adbin.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 3)
+    bins  = hepspt.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 3)
     assert nbins != len(bins)
 
     exp = size/27
@@ -68,7 +68,7 @@ def test_adbin_hist2d():
 
     # Weighted case
     nbins = 8
-    bins  = adbin.adbin_hist2d(smp_x, smp_y, nbins, wgts = weights)
+    bins  = hepspt.adbin_hist2d(smp_x, smp_y, nbins, wgts = weights)
 
     exp = weights.sum()/nbins
 
@@ -82,6 +82,3 @@ def _within_expectations( bins, vmin, vmax ):
     arr = np.array([b.sw(b.arr, b.wgts) for b in bins])
 
     return np.logical_and(np.all(arr > vmin), np.all(arr < vmax))
-
-
-test_adbin_hist2d()
