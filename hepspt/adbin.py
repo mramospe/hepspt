@@ -9,8 +9,13 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Python
 import numpy as np
 import bisect, itertools
+from matplotlib.patches import Rectangle
 
-__all__ = ['AdBin', 'adbin_hist1d', 'adbin_hist1d_edges', 'adbin_hist2d', 'adbin_histnd', 'proc_range']
+
+__all__ = ['AdBin', 'adbin_as_rectangle',
+           'adbin_hist1d', 'adbin_hist1d_edges',
+           'adbin_hist2d', 'adbin_histnd',
+           'proc_range']
 
 
 class AdBin:
@@ -46,32 +51,6 @@ class AdBin:
         '''
         return self.sw(arr, wgts)/float(self.size())
 
-    def size( self ):
-        '''
-        :returns: size of this bin calculated as the product of \
-        the individual sizes in each dimension.
-        :rtype: float
-        '''
-        return float(np.prod(self.vmax - self.vmin))
-
-    def sw( self, arr, wgts = None ):
-        '''
-        :param arr: array of data to process.
-        :type arr: numpy.ndarray
-        :param wgts: possible weights.
-        :type wgts: numpy.ndarray or None
-        :returns: sum of weights for this bin.
-        :rtype: float
-        '''
-        true = np.logical_and(arr >= self.vmin, arr < self.vmax).all(axis = 1)
-
-        if wgts is not None:
-            sw = wgts[true].sum()
-        else:
-            sw = np.count_nonzero(true)
-
-        return float(sw)
-
     def divide( self, ndiv = 2 ):
         '''
         Divide this bin in two, using the median in each dimension. The
@@ -103,12 +82,29 @@ class AdBin:
         mask_left  = (self.arr < bounds)
         mask_right = (self.arr >= bounds)
 
-        frags = np.array([min(self.arr[mask_left[:,i]].min(),
-                              self.arr[mask_right[:,i]].min())
-                          for i in xrange(self.arr.shape[1])])
+        # These functions calculate the sizes of the bins generated
+        # with each cut.
+        size = lambda arr: arr.max() - arr.min()
+
+        def _msz( arr, i ):
+            '''
+            Calculate the minimum size of the input array, for the
+            given index and considering the two global masks
+            "mask_left" and "mask_right".
+            '''
+            sarr = arr[:,i]
+            sz   = size(sarr)
+
+            sl = size(sarr[mask_left[:,i]])/sz
+            sr = size(sarr[mask_right[:,i]])/sz
+
+            return min(sl, sr)
+
+        frags = np.array([_msz(self.arr, i) for i in xrange(self.arr.shape[1])])
 
         # The sample is cut following the criteria that leads to the
         # smallest bin possible.
+
         min_dim = frags.argmin()
 
         il = mask_left[:,min_dim]
@@ -136,6 +132,53 @@ class AdBin:
             all_bins.append(br)
 
         return all_bins
+
+    def size( self ):
+        '''
+        :returns: size of this bin calculated as the product of \
+        the individual sizes in each dimension.
+        :rtype: float
+        '''
+        return float(np.prod(self.vmax - self.vmin))
+
+    def sw( self, arr, wgts = None ):
+        '''
+        :param arr: array of data to process.
+        :type arr: numpy.ndarray
+        :param wgts: possible weights.
+        :type wgts: numpy.ndarray or None
+        :returns: sum of weights for this bin.
+        :rtype: float
+        '''
+        true = np.logical_and(arr >= self.vmin, arr < self.vmax).all(axis = 1)
+
+        if wgts is not None:
+            sw = wgts[true].sum()
+        else:
+            sw = np.count_nonzero(true)
+
+        return float(sw)
+
+
+def adbin_as_rectangle( adb, **kwargs ):
+    '''
+    Extract the bounds so it can be processed by a matplotlib.patches.Rectangle
+    object and properly fill the area inside it.
+
+    :param adb: input adaptive bin.
+    :type adb: AdBin
+    :param kwargs: extra arguments to matplotlib.patches.Rectangle.
+    :type kwargs: dict
+    :returns: rectangle to be drawn with matplotlib.
+    :rtype: matplotlib.patches.Rectangle
+    '''
+    xmin, ymin = adb.vmin
+    xmax, ymax = adb.vmax
+
+    width  = xmax - xmin
+    height = ymax - ymin
+
+    return Rectangle((xmin, ymin), width, height, **kwargs)
 
 
 def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None ):
@@ -338,8 +381,10 @@ def proc_range( arr, rg = None ):
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param rg: range of the histogram.
-    :type rg: tuple(float, float) or None
+    :param rg: range of the histogram. It must contain tuple(min, max), \
+    where "min" and "max" can be either floats (1D case) or collections \
+    (ND case).
+    :type rg: tuple or None
     :returns: minimum and maximum values.
     :rtype: float, float
     '''
