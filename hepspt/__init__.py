@@ -12,7 +12,10 @@ __email__   = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
-import importlib, inspect, pkgutil
+import importlib, inspect, os, pkgutil
+
+
+__project_path__ = os.path.dirname(os.path.abspath(__file__))
 
 
 __all__ = []

@@ -6,9 +6,34 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
-__all__ = ['is_power_2', 'next_power_2']
+# Python
+import numpy as np
 
 
+__all__ = ['gcd', 'is_power_2', 'lcm', 'next_power_2']
+
+
+@np.vectorize
+def gcd( a, b, *args ):
+    '''
+    :param a: first number.
+    :type a: int
+    :param b: second number.
+    :type b: int
+    :param args: any other numbers.
+    :type args: collection(int)
+    :returns: greatest common divisor of "a" and "b".
+    :rtype: int
+    '''
+    if len(args) == 0:
+        while b:
+            a, b = b, a % b
+        return a
+    else:
+        return reduce(gcd, args + (a, b))
+
+
+@np.vectorize
 def is_power_2( n ):
     '''
     :param n: input number.
@@ -19,6 +44,25 @@ def is_power_2( n ):
     return n > 0 and ((n & (n - 1)) == 0)
 
 
+@np.vectorize
+def lcm( a, b, *args ):
+    '''
+    :param a: first number.
+    :type a: int
+    :param b: second number.
+    :type b: int
+    :param args: any other numbers.
+    :type args: collection(int)
+    :returns: least common multiple of "a" and "b".
+    :rtype: int
+    '''
+    if len(args) == 0:
+        return a*b//gcd(a, b)
+    else:
+        return reduce(lcm, args + (a, b))
+
+
+@np.vectorize
 def next_power_2( n ):
     '''
     :param n: input number.

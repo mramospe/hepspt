@@ -37,6 +37,9 @@ setup(
     # Find all the packages in this directory
     packages = find_packages(),
 
+    # Data files
+    package_data = {'hepspt': ['data/*', 'mpl/*']},
+
     # Requisites
     install_requires = ['matplotlib', 'numpy', 'pytest'],
 

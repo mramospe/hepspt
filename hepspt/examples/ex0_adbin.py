@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+__all__ = ['main']
+
+
 def main():
     '''
     Main function called when executing this module as a script.
