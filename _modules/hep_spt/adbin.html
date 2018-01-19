@@ -1,0 +1,503 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>hep_spt.adbin &#8212; hep_spt 0.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hep_spt.adbin</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module to manage special histograms, like adaptive binned 1D and 2D histograms.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Miguel Ramos Pernas&#39;</span><span class="p">]</span>
+<span class="n">__email__</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;miguel.ramos.pernas@cern.ch&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># Python</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">bisect</span><span class="o">,</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Rectangle</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AdBin&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_as_rectangle&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;adbin_hist1d&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_hist1d_edges&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;adbin_hist2d&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_histnd&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;proc_range&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="AdBin"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.AdBin">[docs]</a><span class="k">class</span> <span class="nc">AdBin</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Represent a n-dimensional adaptive bin. This class is meant so serve</span>
+<span class="sd">    as interface between the user and matplotlib to plot adaptive</span>
+<span class="sd">    binned histograms.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AdBin.__init__"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.AdBin.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :param arr: array of data.</span>
+<span class="sd">        :type arr: numpy.ndarray</span>
+<span class="sd">        :param rg: range of the histogram (same length as &quot;arr&quot;).</span>
+<span class="sd">        :type rg: numpy.ndarray(float, float) or None.</span>
+<span class="sd">        :param wgts: possible weights.</span>
+<span class="sd">        :type wgts: numpy.ndarray or None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">arr</span><span class="p">,</span> <span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">),</span> <span class="n">wgts</span> <span class="o">=</span> <span class="n">_proc_hist_input</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">arr</span>  <span class="o">=</span> <span class="n">arr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmin</span> <span class="o">=</span> <span class="n">vmin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="n">vmax</span></div>
+
+<div class="viewcode-block" id="AdBin.dens"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.AdBin.dens">[docs]</a>    <span class="k">def</span> <span class="nf">dens</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :param arr: array of data to process.</span>
+<span class="sd">        :type arr: numpy.ndarray</span>
+<span class="sd">        :param wgts: possible weights.</span>
+<span class="sd">        :type wgts: numpy.ndarray or None</span>
+<span class="sd">        :returns: density of this bin.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sw</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AdBin.divide"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.AdBin.divide">[docs]</a>    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ndiv</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Divide this bin in two, using the median in each dimension. The</span>
+<span class="sd">        dimension used to make the division is taken as that which generates</span>
+<span class="sd">        the smallest bin.</span>
+
+<span class="sd">        :param ndiv: number of divisions to create. For large values, this \</span>
+<span class="sd">        algorithm will ask for having a low sum of weights for the first \</span>
+<span class="sd">        bin, which will translate in having a long thin bin.</span>
+<span class="sd">        :type ndiv: int</span>
+<span class="sd">        :returns: two new bins, supposed to contain half the sum of weights of \</span>
+<span class="sd">        the parent.</span>
+<span class="sd">        :rtype: AdBin, AdBin</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="n">ndiv</span> <span class="o">&gt;</span> <span class="mi">1</span>
+
+        <span class="n">srt</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">srt</span><span class="o">.</span><span class="n">T</span><span class="p">)])</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">swgts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wgts</span><span class="p">[</span><span class="n">srt</span><span class="p">]</span>
+        <span class="n">csw</span>   <span class="o">=</span> <span class="n">swgts</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">co</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">csw</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">ndiv</span><span class="p">)</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">bisect</span><span class="o">.</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">co</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">csw</span><span class="o">.</span><span class="n">T</span><span class="p">])</span>
+
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="n">sarr</span><span class="p">[</span><span class="n">p</span><span class="p">,</span><span class="n">i</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p</span><span class="p">)])</span>
+
+        <span class="n">mask_left</span>  <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span> <span class="o">&lt;</span> <span class="n">bounds</span><span class="p">)</span>
+        <span class="n">mask_right</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">)</span>
+
+        <span class="c1"># These functions calculate the sizes of the bins generated</span>
+        <span class="c1"># with each cut.</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">arr</span><span class="p">:</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_msz</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">i</span> <span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Calculate the minimum size of the input array, for the</span>
+<span class="sd">            given index and considering the two global masks</span>
+<span class="sd">            &quot;mask_left&quot; and &quot;mask_right&quot;.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">sarr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">sz</span>   <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">sarr</span><span class="p">)</span>
+
+            <span class="n">sl</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">sarr</span><span class="p">[</span><span class="n">mask_left</span><span class="p">[:,</span><span class="n">i</span><span class="p">]])</span><span class="o">/</span><span class="n">sz</span>
+            <span class="n">sr</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">sarr</span><span class="p">[</span><span class="n">mask_right</span><span class="p">[:,</span><span class="n">i</span><span class="p">]])</span><span class="o">/</span><span class="n">sz</span>
+
+            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">sr</span><span class="p">)</span>
+
+        <span class="n">frags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_msz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+
+        <span class="c1"># The sample is cut following the criteria that leads to the</span>
+        <span class="c1"># smallest bin possible.</span>
+
+        <span class="n">min_dim</span> <span class="o">=</span> <span class="n">frags</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+
+        <span class="n">il</span> <span class="o">=</span> <span class="n">mask_left</span><span class="p">[:,</span><span class="n">min_dim</span><span class="p">]</span>
+        <span class="n">ir</span> <span class="o">=</span> <span class="n">mask_right</span><span class="p">[:,</span><span class="n">min_dim</span><span class="p">]</span>
+
+        <span class="n">left</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">il</span><span class="p">]</span>
+        <span class="n">right</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">ir</span><span class="p">]</span>
+        <span class="n">wleft</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wgts</span><span class="p">[</span><span class="n">il</span><span class="p">]</span>
+        <span class="n">wright</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wgts</span><span class="p">[</span><span class="n">ir</span><span class="p">]</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="n">min_dim</span><span class="p">]</span>
+
+        <span class="n">lbd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">lbd</span><span class="p">[</span><span class="n">min_dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="n">bl</span> <span class="o">=</span> <span class="n">AdBin</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">,</span> <span class="n">lbd</span><span class="p">),</span> <span class="n">wleft</span><span class="p">)</span>
+
+        <span class="n">rbd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">)</span>
+        <span class="n">rbd</span><span class="p">[</span><span class="n">min_dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="n">br</span> <span class="o">=</span> <span class="n">AdBin</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="p">(</span><span class="n">rbd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">),</span> <span class="n">wright</span><span class="p">)</span>
+
+        <span class="c1"># If the number of divisions is greater than 2, perform again the same</span>
+        <span class="c1"># operation in the bin on the right</span>
+        <span class="n">all_bins</span> <span class="o">=</span> <span class="p">[</span><span class="n">bl</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ndiv</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">all_bins</span> <span class="o">+=</span> <span class="n">br</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">ndiv</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">all_bins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">br</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_bins</span></div>
+
+<div class="viewcode-block" id="AdBin.size"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.AdBin.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :returns: size of this bin calculated as the product of \</span>
+<span class="sd">        the individual sizes in each dimension.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="AdBin.sw"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.AdBin.sw">[docs]</a>    <span class="k">def</span> <span class="nf">sw</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :param arr: array of data to process.</span>
+<span class="sd">        :type arr: numpy.ndarray</span>
+<span class="sd">        :param wgts: possible weights.</span>
+<span class="sd">        :type wgts: numpy.ndarray or None</span>
+<span class="sd">        :returns: sum of weights for this bin.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">arr</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">,</span> <span class="n">arr</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">wgts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sw</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">[</span><span class="n">true</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="adbin_as_rectangle"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.adbin_as_rectangle">[docs]</a><span class="k">def</span> <span class="nf">adbin_as_rectangle</span><span class="p">(</span> <span class="n">adb</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Extract the bounds so it can be processed by a matplotlib.patches.Rectangle</span>
+<span class="sd">    object and properly fill the area inside it.</span>
+
+<span class="sd">    :param adb: input adaptive bin.</span>
+<span class="sd">    :type adb: AdBin</span>
+<span class="sd">    :param kwargs: extra arguments to matplotlib.patches.Rectangle.</span>
+<span class="sd">    :type kwargs: dict</span>
+<span class="sd">    :returns: rectangle to be drawn with matplotlib.</span>
+<span class="sd">    :rtype: matplotlib.patches.Rectangle</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">adb</span><span class="o">.</span><span class="n">vmin</span>
+    <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">adb</span><span class="o">.</span><span class="n">vmax</span>
+
+    <span class="n">width</span>  <span class="o">=</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+
+    <span class="k">return</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="adbin_hist1d"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.adbin_hist1d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create an adaptive binned histogram.</span>
+
+<span class="sd">    :param arr: array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param nbins: number of bins.</span>
+<span class="sd">    :type nbins: int</span>
+<span class="sd">    :param rg: range of the histogram.</span>
+<span class="sd">    :type rg: tuple(float, float) or None</span>
+<span class="sd">    :param wgts: optional array of weights.</span>
+<span class="sd">    :type wgts: numpy.ndarray or None</span>
+<span class="sd">    :returns: values of the histogram and edges.</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="n">_proc_hist_input_1d</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span>
+
+    <span class="c1"># Sort the data</span>
+    <span class="n">srt</span>  <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+    <span class="n">arr</span>  <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">srt</span><span class="p">]</span>
+    <span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">[</span><span class="n">srt</span><span class="p">]</span>
+
+    <span class="c1"># Solving the problem from the left and from the right reduces</span>
+    <span class="c1"># the bias in the last edges</span>
+    <span class="n">le</span> <span class="o">=</span> <span class="n">adbin_hist1d_edges</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span>
+    <span class="n">re</span> <span class="o">=</span> <span class="n">adbin_hist1d_edges</span><span class="p">(</span><span class="n">arr</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">nbins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">(</span><span class="n">re</span> <span class="o">+</span> <span class="n">le</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
+
+    <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">rg</span>
+    <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   <span class="o">=</span> <span class="n">vmin</span>
+    <span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">vmax</span>
+
+    <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">edges</span></div>
+
+
+<div class="viewcode-block" id="adbin_hist1d_edges"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.adbin_hist1d_edges">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d_edges</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create adaptive binned edges from the given array.</span>
+
+<span class="sd">    :param arr: array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param nbins: number of bins.</span>
+<span class="sd">    :type nbins: int</span>
+<span class="sd">    :param rg: range of the histogram.</span>
+<span class="sd">    :type rg: tuple(float, float) or None</span>
+<span class="sd">    :param wgts: optional array of weights.</span>
+<span class="sd">    :type wgts: numpy.ndarray or None</span>
+<span class="sd">    :returns: edges of the histogram, with size (nbins + 1).</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">arr</span><span class="p">,</span> <span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">),</span> <span class="n">wgts</span> <span class="o">=</span> <span class="n">_proc_hist_input_1d</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">nbins</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+        <span class="n">csum</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+        <span class="n">reqs</span> <span class="o">=</span> <span class="n">csum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nbins</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">csum</span><span class="p">,</span> <span class="n">reqs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">csum</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">csum</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="n">reqs</span><span class="p">:</span>
+            <span class="c1"># If the sum differs, then decide whether to use the</span>
+            <span class="c1"># current index based on the relative difference.</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">()</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">reqs</span><span class="p">)</span><span class="o">/</span><span class="n">reqs</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="n">edges</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+
+        <span class="n">arr</span>  <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">[</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+
+    <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="o">=</span> <span class="n">vmin</span>
+    <span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmax</span>
+
+    <span class="k">return</span> <span class="n">edges</span></div>
+
+
+<div class="viewcode-block" id="adbin_hist2d"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.adbin_hist2d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create a 2D adaptive binned histogram. This function calls</span>
+<span class="sd">    the adbin_histnd function.</span>
+
+<span class="sd">    :param arr: array of data with the variables as columns.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param nbins: number of bins.</span>
+<span class="sd">    :type nbins: int</span>
+<span class="sd">    :param wgts: optional array of weights.</span>
+<span class="sd">    :type wgts: numpy.ndarray</span>
+<span class="sd">    :returns: adaptive bins of the histogram, with size (nbins + 1).</span>
+<span class="sd">    :rtype: list(AdBin)</span>
+
+<span class="sd">    .. seealso: :func:`adbin_hist2d`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">adbin_histnd</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="adbin_histnd"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.adbin_histnd">[docs]</a><span class="k">def</span> <span class="nf">adbin_histnd</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ndiv</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create a ND adaptive binned histogram.</span>
+
+<span class="sd">    :param arr: array of data with the variables as columns.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param rg: range of the histogram (same length as &quot;arr&quot;).</span>
+<span class="sd">    :type rg: numpy.ndarray(float, float) or None.</span>
+<span class="sd">    :param nbins: number of bins. In this algorithm, divisions will be made \</span>
+<span class="sd">    till the real number of bins is equal or greater than &quot;nbins&quot;. If this \</span>
+<span class="sd">    number is a power of &quot;ndiv&quot;, then the real number of bins will match \</span>
+<span class="sd">    &quot;nbins&quot;.</span>
+<span class="sd">    :type nbins: int</span>
+<span class="sd">    :param wgts: optional array of weights.</span>
+<span class="sd">    :type wgts: numpy.ndarray or None</span>
+<span class="sd">    :param ndiv: see :meth:`AdBin.divide`.</span>
+<span class="sd">    :type ndiv: int</span>
+<span class="sd">    :returns: adaptive bins of the histogram, with size (nbins + 1).</span>
+<span class="sd">    :rtype: list(AdBin)</span>
+
+<span class="sd">    .. seealso: :meth:`AdBin.divide`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">/</span> <span class="n">nbins</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="n">AdBin</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nbins</span><span class="p">:</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">ndiv</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">bins</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">bins</span></div>
+
+
+<span class="k">def</span> <span class="nf">_proc_hist_input_1d</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Process some of the input arguments of the functions to</span>
+<span class="sd">    manage 1D histograms.</span>
+
+<span class="sd">    :param arr: array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param rg: range of the histogram.</span>
+<span class="sd">    :type rg: tuple(float, float) or None</span>
+<span class="sd">    :param wgts: optional array of weights.</span>
+<span class="sd">    :type wgts: numpy.ndarray or None</span>
+<span class="sd">    :returns: processed array of data, weights, and the minimum \</span>
+<span class="sd">    and maximum values.</span>
+<span class="sd">    :rtype: numpy.ndarray, tuple(float, float), numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">proc_range</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">)</span>
+
+    <span class="n">cond</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">arr</span> <span class="o">&gt;=</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">arr</span> <span class="o">&lt;</span> <span class="n">vmax</span><span class="p">)</span>
+
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">wgts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wgts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">),</span> <span class="n">wgts</span>
+
+
+<span class="k">def</span> <span class="nf">_proc_hist_input</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Process some of the input arguments of the functions to</span>
+<span class="sd">    manage ND histograms.</span>
+
+<span class="sd">    :param arr: array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param rg: range of the histogram in each dimension.</span>
+<span class="sd">    :type rg: tuple(np.ndarray, np.ndarray) or None</span>
+<span class="sd">    :param wgts: optional array of weights.</span>
+<span class="sd">    :type wgts: numpy.ndarray or None</span>
+<span class="sd">    :returns: processed array of data, weights, and the minimum \</span>
+<span class="sd">    and maximum values for each dimension.</span>
+<span class="sd">    :rtype: numpy.ndarray, tuple(np.ndarray, np.ndarray), numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">proc_range</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">)</span>
+
+    <span class="n">cond</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">arr</span> <span class="o">&gt;=</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">arr</span> <span class="o">&lt;</span> <span class="n">vmax</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">wgts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wgts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">),</span> <span class="n">wgts</span>
+
+
+<div class="viewcode-block" id="proc_range"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.proc_range">[docs]</a><span class="k">def</span> <span class="nf">proc_range</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Process the given range, determining the minimum and maximum</span>
+<span class="sd">    values for a 1D histogram.</span>
+
+<span class="sd">    :param arr: array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param rg: range of the histogram. It must contain tuple(min, max), \</span>
+<span class="sd">    where &quot;min&quot; and &quot;max&quot; can be either floats (1D case) or collections \</span>
+<span class="sd">    (ND case).</span>
+<span class="sd">    :type rg: tuple or None</span>
+<span class="sd">    :returns: minimum and maximum values.</span>
+<span class="sd">    :rtype: float, float</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">rg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">rg</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">amax</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="n">amax</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">amax</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../adbin.html">adbin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../math_aux.html">math_aux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stats.html">stats</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

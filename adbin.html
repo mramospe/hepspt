@@ -1,0 +1,378 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>adbin &#8212; hep_spt 0.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="math_aux" href="math_aux.html" />
+    <link rel="prev" title="Introduction" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hep_spt.adbin">
+<span id="adbin"></span><h1>adbin<a class="headerlink" href="#module-hep_spt.adbin" title="Permalink to this headline">¶</a></h1>
+<p>Module to manage special histograms, like adaptive binned 1D and 2D histograms.</p>
+<dl class="class">
+<dt id="hep_spt.adbin.AdBin">
+<em class="property">class </em><code class="descclassname">hep_spt.adbin.</code><code class="descname">AdBin</code><span class="sig-paren">(</span><em>arr</em>, <em>rg=None</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represent a n-dimensional adaptive bin. This class is meant so serve
+as interface between the user and matplotlib to plot adaptive
+binned histograms.</p>
+<dl class="method">
+<dt id="hep_spt.adbin.AdBin.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>arr</em>, <em>rg=None</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data.</li>
+<li><strong>rg</strong> (<em>numpy.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>) or </em><em>None.</em>) – range of the histogram (same length as “arr”).</li>
+<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – possible weights.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hep_spt.adbin.AdBin.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hep_spt.adbin'</em><a class="headerlink" href="#hep_spt.adbin.AdBin.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hep_spt.adbin.AdBin.dens">
+<code class="descname">dens</code><span class="sig-paren">(</span><em>arr</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin.dens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin.dens" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data to process.</li>
+<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – possible weights.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">density of this bin.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_spt.adbin.AdBin.divide">
+<code class="descname">divide</code><span class="sig-paren">(</span><em>ndiv=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin.divide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin.divide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide this bin in two, using the median in each dimension. The
+dimension used to make the division is taken as that which generates
+the smallest bin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ndiv</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of divisions to create. For large values, this         algorithm will ask for having a low sum of weights for the first         bin, which will translate in having a long thin bin.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">two new bins, supposed to contain half the sum of weights of         the parent.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hep_spt.adbin.AdBin" title="hep_spt.adbin.AdBin">AdBin</a>, <a class="reference internal" href="#hep_spt.adbin.AdBin" title="hep_spt.adbin.AdBin">AdBin</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_spt.adbin.AdBin.size">
+<code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin.size" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">size of this bin calculated as the product of         the individual sizes in each dimension.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_spt.adbin.AdBin.sw">
+<code class="descname">sw</code><span class="sig-paren">(</span><em>arr</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin.sw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin.sw" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data to process.</li>
+<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – possible weights.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sum of weights for this bin.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.adbin.adbin_as_rectangle">
+<code class="descclassname">hep_spt.adbin.</code><code class="descname">adbin_as_rectangle</code><span class="sig-paren">(</span><em>adb</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#adbin_as_rectangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.adbin_as_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the bounds so it can be processed by a matplotlib.patches.Rectangle
+object and properly fill the area inside it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>adb</strong> (<a class="reference internal" href="#hep_spt.adbin.AdBin" title="hep_spt.adbin.AdBin"><em>AdBin</em></a>) – input adaptive bin.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – extra arguments to matplotlib.patches.Rectangle.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">rectangle to be drawn with matplotlib.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.patches.Rectangle</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.adbin.adbin_hist1d">
+<code class="descclassname">hep_spt.adbin.</code><code class="descname">adbin_hist1d</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>rg=None</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#adbin_hist1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.adbin_hist1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an adaptive binned histogram.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data.</li>
+<li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of bins.</li>
+<li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>) or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – range of the histogram.</li>
+<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – optional array of weights.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">values of the histogram and edges.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.adbin.adbin_hist1d_edges">
+<code class="descclassname">hep_spt.adbin.</code><code class="descname">adbin_hist1d_edges</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>rg=None</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#adbin_hist1d_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.adbin_hist1d_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create adaptive binned edges from the given array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data.</li>
+<li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of bins.</li>
+<li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>) or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – range of the histogram.</li>
+<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – optional array of weights.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">edges of the histogram, with size (nbins + 1).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.adbin.adbin_hist2d">
+<code class="descclassname">hep_spt.adbin.</code><code class="descname">adbin_hist2d</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#adbin_hist2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.adbin_hist2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a 2D adaptive binned histogram. This function calls
+the adbin_histnd function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data with the variables as columns.</li>
+<li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of bins.</li>
+<li><strong>wgts</strong> (<em>numpy.ndarray</em>) – optional array of weights.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">adaptive bins of the histogram, with size (nbins + 1).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list(<a class="reference internal" href="#hep_spt.adbin.AdBin" title="hep_spt.adbin.AdBin">AdBin</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.adbin.adbin_histnd">
+<code class="descclassname">hep_spt.adbin.</code><code class="descname">adbin_histnd</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>ndiv=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#adbin_histnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.adbin_histnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a ND adaptive binned histogram.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data with the variables as columns.</li>
+<li><strong>rg</strong> (<em>numpy.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>) or </em><em>None.</em>) – range of the histogram (same length as “arr”).</li>
+<li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of bins. In this algorithm, divisions will be made     till the real number of bins is equal or greater than “nbins”. If this     number is a power of “ndiv”, then the real number of bins will match     “nbins”.</li>
+<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – optional array of weights.</li>
+<li><strong>ndiv</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – see <a class="reference internal" href="#hep_spt.adbin.AdBin.divide" title="hep_spt.adbin.AdBin.divide"><code class="xref py py-meth docutils literal"><span class="pre">AdBin.divide()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">adaptive bins of the histogram, with size (nbins + 1).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list(<a class="reference internal" href="#hep_spt.adbin.AdBin" title="hep_spt.adbin.AdBin">AdBin</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.adbin.proc_range">
+<code class="descclassname">hep_spt.adbin.</code><code class="descname">proc_range</code><span class="sig-paren">(</span><em>arr</em>, <em>rg=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#proc_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.proc_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the given range, determining the minimum and maximum
+values for a 1D histogram.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data.</li>
+<li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – range of the histogram. It must contain tuple(min, max),     where “min” and “max” can be either floats (1D case) or collections     (ND case).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">minimum and maximum values.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">adbin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math_aux.html">math_aux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stats.html">stats</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="math_aux.html" title="next chapter">math_aux</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/adbin.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,314 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>hep_spt.stats &#8212; hep_spt 0.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hep_spt.stats</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Function and classes representing statistical tools.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Miguel Ramos Pernas&#39;</span><span class="p">]</span>
+<span class="n">__email__</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;miguel.ramos.pernas@cern.ch&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># Python</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">fsolve</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">gamma</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">chi2</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># Local</span>
+<span class="kn">from</span> <span class="nn">hep_spt</span> <span class="k">import</span> <span class="n">__project_path__</span>
+
+<span class="c1"># Define confidence intervals.</span>
+<span class="n">__chi2_one_dof__</span> <span class="o">=</span> <span class="n">chi2</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">__one_sigma__</span>    <span class="o">=</span> <span class="n">__chi2_one_dof__</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">__two_sigma__</span>    <span class="o">=</span> <span class="n">__chi2_one_dof__</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">__three_sigma__</span>  <span class="o">=</span> <span class="n">__chi2_one_dof__</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">__five_sigma__</span>   <span class="o">=</span> <span class="n">__chi2_one_dof__</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+
+<span class="c1"># Define Poisson tolerance. If this number is 100, we can</span>
+<span class="c1"># use Stirling&#39;s approximation of log(k!) with a relative</span>
+<span class="c1"># error of 0.001.</span>
+<span class="n">__poisson_from_stirling__</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Number after which the poisson uncertainty is considered to</span>
+<span class="c1"># be the same as that of a gaussian with &quot;std = sqrt(lambda)&quot;.</span>
+<span class="c1"># This number has been chosen so the difference of the</span>
+<span class="c1"># relative uncertainty is ~0.5%.</span>
+<span class="n">__poisson_to_gauss__</span> <span class="o">=</span> <span class="mi">200</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;jac_poisson_float_l&#39;</span><span class="p">,</span> <span class="s1">&#39;poisson_float&#39;</span><span class="p">,</span> <span class="s1">&#39;calc_poisson_freq_uncert&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;poisson_freq_uncert_one_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;process_uncert&#39;</span><span class="p">]</span>
+
+
+<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<span class="k">def</span> <span class="nf">calc_poisson_freq_uncert</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the lower and upper bayesian uncertainties for</span>
+<span class="sd">    a poisson distribution with mean &quot;k&quot; given the chi-square.</span>
+
+<span class="sd">    :param m: mean of the Poisson distribution.</span>
+<span class="sd">    :type m: float</span>
+<span class="sd">    :param cl: confidence level (between 0 and 1).</span>
+<span class="sd">    :type cl: float</span>
+<span class="sd">    :returns: lower and upper uncertainties.</span>
+<span class="sd">    :rtype: float, float</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">sm</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">m</span> <span class="o">&gt;</span> <span class="n">__poisson_to_gauss__</span><span class="p">:</span>
+        <span class="c1"># Use the gaussian approximation of the uncertainty</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">s</span>
+
+    <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">cl</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
+
+    <span class="k">if</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># In this case there is only an upper uncertainty, so</span>
+        <span class="c1"># the coverage is reset so it covers the whole &quot;cl&quot;</span>
+        <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">alpha</span> <span class="o">*=</span> <span class="mf">2.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ileft</span> <span class="o">=</span> <span class="n">m</span> <span class="o">-</span> <span class="n">sm</span>
+        <span class="k">if</span> <span class="n">ileft</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ileft</span> <span class="o">=</span> <span class="mf">0.</span>
+
+        <span class="n">rleft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">50</span><span class="o">*</span><span class="n">sm</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">fleft</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="n">poisson_float</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">rleft</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">alpha</span>
+        <span class="n">jleft</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="p">[</span><span class="n">jac_poisson_float_l</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">rleft</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()]</span>
+
+        <span class="n">lw</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">fleft</span><span class="p">,</span> <span class="n">ileft</span><span class="p">,</span> <span class="n">fprime</span> <span class="o">=</span> <span class="n">jleft</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">iright</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">sm</span>
+    <span class="n">rright</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">fright</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="n">poisson_float</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">rright</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">alpha</span>
+    <span class="n">jright</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="p">[</span><span class="n">jac_poisson_float_l</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">rright</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()]</span>
+
+    <span class="n">up</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">fright</span><span class="p">,</span> <span class="n">iright</span><span class="p">,</span> <span class="n">fprime</span> <span class="o">=</span> <span class="n">jright</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">process_uncert</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span>
+
+
+<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<span class="k">def</span> <span class="nf">jac_poisson_float_l</span><span class="p">(</span> <span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="n">__poisson_from_stirling__</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the value of Jacobian of the poisson_float</span>
+<span class="sd">    function considering that it depends exclusively on &quot;l&quot;.</span>
+
+<span class="sd">    :param l: mean(s) of the Poisson.</span>
+<span class="sd">    :type l: numpy.ndarray</span>
+<span class="sd">    :param k: position(s) to evaluate.</span>
+<span class="sd">    :type k: numpy.ndarray</span>
+<span class="sd">    :param tol: tolerance(s) from which the Stirling&#39;s approximation \</span>
+<span class="sd">    will be used.</span>
+<span class="sd">    :type tol: numpy.ndarray</span>
+<span class="sd">    :returns: value(s) of the poisson jacobian.</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">l</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="n">poisson_float</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+
+
+<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<span class="k">def</span> <span class="nf">poisson_float</span><span class="p">(</span> <span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="n">__poisson_from_stirling__</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the Poisson distribution value for floating</span>
+<span class="sd">    numbers. The next term to the usual Stirling&#39;s</span>
+<span class="sd">    approximation must be used to treat the cases where l ~ k.</span>
+
+<span class="sd">    :param l: mean(s) of the Poisson distribution.</span>
+<span class="sd">    :type l: numpy.ndarray</span>
+<span class="sd">    :param k: position(s) to evaluate.</span>
+<span class="sd">    :type k: numpy.ndarray</span>
+<span class="sd">    :param tol: tolerance(s) from which the Stirling&#39;s approximation \</span>
+<span class="sd">    will be used.</span>
+<span class="sd">    :returns: value(s) of the Poisson distribution.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.</span>
+
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">exp</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">l</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span> <span class="n">l</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">k</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.</span><span class="o">/</span><span class="n">gamma</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="n">l</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="poisson_freq_uncert_one_sigma"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.poisson_freq_uncert_one_sigma">[docs]</a><span class="k">def</span> <span class="nf">poisson_freq_uncert_one_sigma</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the poisson frequentist uncertainty at one standard</span>
+<span class="sd">    deviation of confidence level. The input array recasted</span>
+<span class="sd">    to int before doing the operation.</span>
+
+<span class="sd">    :param m: measured value(s).</span>
+<span class="sd">    :type m: array-like</span>
+<span class="sd">    :returns: lower and upper frequentist uncertainties.</span>
+<span class="sd">    :rtype: array-like(float, float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">ifile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__project_path__</span><span class="p">,</span> <span class="s1">&#39;data/poisson_freq_uncert_one_sigma.dat&#39;</span><span class="p">)</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">ifile</span><span class="p">)</span>
+
+    <span class="n">no_app</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">))</span>
+    <span class="n">mk_app</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">no_app</span><span class="p">)</span>
+
+    <span class="c1"># Non-approximated uncertainties</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">no_app</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="n">no_app</span><span class="p">]]</span>
+
+    <span class="c1"># Approximated uncertainties. This is not time-consuming. We</span>
+    <span class="c1"># are just returning the square root of the input number.</span>
+    <span class="k">if</span> <span class="n">mk_app</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">mk_app</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">calc_poisson_freq_uncert</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">mk_app</span><span class="p">]))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="process_uncert"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.process_uncert">[docs]</a><span class="k">def</span> <span class="nf">process_uncert</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the uncertainties and display an error if they</span>
+<span class="sd">    have been incorrectly calculated.</span>
+
+<span class="sd">    :param m: mean value.</span>
+<span class="sd">    :type m: float</span>
+<span class="sd">    :param lw: lower bound.</span>
+<span class="sd">    :type lw: float</span>
+<span class="sd">    :param up: upper bound.</span>
+<span class="sd">    :type up: float</span>
+<span class="sd">    :returns: lower and upper uncertainties.</span>
+<span class="sd">    :type: array-like(float, float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">s_lw</span> <span class="o">=</span> <span class="n">m</span> <span class="o">-</span> <span class="n">lw</span>
+    <span class="n">s_up</span> <span class="o">=</span> <span class="n">up</span> <span class="o">-</span> <span class="n">m</span>
+
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="n">s_lw</span><span class="p">,</span> <span class="n">s_up</span><span class="p">)):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Poisson uncertainties have been &#39;</span>\
+                      <span class="s1">&#39;incorrectly calculated&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">s_lw</span><span class="p">,</span> <span class="n">s_up</span></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generate the tables to store the pre-calculated values of</span>
+<span class="sd">    some uncertainties.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">conds</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;cl&#39;</span> <span class="p">:</span> <span class="n">__one_sigma__</span><span class="p">,</span>
+
+        <span class="s1">&#39;__poisson_from_stirling__&#39;</span> <span class="p">:</span> <span class="n">__poisson_from_stirling__</span><span class="p">,</span>
+        <span class="s1">&#39;__poisson_to_gauss__&#39;</span>      <span class="p">:</span> <span class="n">__poisson_to_gauss__</span>
+        <span class="p">}</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">__poisson_to_gauss__</span><span class="p">)</span>
+    <span class="n">ucts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">calc_poisson_freq_uncert</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">__one_sigma__</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data/poisson_freq_uncert_one_sigma.dat&#39;</span><span class="p">,</span> <span class="n">ucts</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../adbin.html">adbin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../math_aux.html">math_aux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stats.html">stats</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
