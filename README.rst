@@ -3,7 +3,7 @@ Introduction
 
 The High Energy Physics Statistics and Plotting Tools package provides tools to work in High Energy Physics using general python packages.
 
-This package is meant to be used together with:
+To work with this package, please consider that:
 
   * Samples are preferred as structured numpy.ndarray or pandas.DataFrame objects.
   * Plotting functions and classes are designed to work with matplotlib.
