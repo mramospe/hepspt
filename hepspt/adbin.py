@@ -115,12 +115,14 @@ class AdBin:
         wleft  = self.wgts[il]
         wright = self.wgts[ir]
 
+        d = bounds[min_dim]
+
         lbd = np.array(self.vmax)
-        lbd[min_dim] = bounds[min_dim]
+        lbd[min_dim] = d
         bl = AdBin(left, (self.vmin, lbd), wleft)
 
         rbd = np.array(self.vmin)
-        rbd[min_dim] = bounds[min_dim]
+        rbd[min_dim] = d
         br = AdBin(right, (rbd, self.vmax), wright)
 
         # If the number of divisions is greater than 2, perform again the same
