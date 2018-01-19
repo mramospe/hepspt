@@ -1,6 +1,6 @@
 '''
-hepspt
-======
+hep_spt
+=======
 
 Add extra functionality to the scikit-learn package,
 allowing to keep track of the configurations used
@@ -25,7 +25,7 @@ for loader, module_name, ispkg in pkgutil.walk_packages(__path__):
 
     if not ispkg:
         # Import all classes and functions
-        mod = importlib.import_module('hepspt.' + module_name)
+        mod = importlib.import_module('hep_spt.' + module_name)
 
         __all__ += mod.__all__
 

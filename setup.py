@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Setup script for the hepspt package
+Setup script for the hep_spt package
 '''
 
 __author__ = 'Miguel Ramos Pernas'
@@ -21,7 +21,7 @@ version = '.'.join(map(str, version_info))
 # Setup function
 setup(
 
-    name = 'hepspt',
+    name = 'hep_spt',
 
     version = version,
 
@@ -38,7 +38,7 @@ setup(
     packages = find_packages(),
 
     # Data files
-    package_data = {'hepspt': ['data/*', 'mpl/*']},
+    package_data = {'hep_spt': ['data/*', 'mpl/*']},
 
     # Requisites
     install_requires = ['matplotlib', 'numpy', 'pytest'],
@@ -51,10 +51,10 @@ setup(
 
 
 # Create a module with the versions
-version_file = open('hepspt/version.py', 'wt')
+version_file = open('hep_spt/version.py', 'wt')
 version_file.write("""\
 '''
-Auto-generated module holding the version of the hepspt package
+Auto-generated module holding the version of the hep_spt package
 '''
 
 __version__ = "{}"

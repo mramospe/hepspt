@@ -7,7 +7,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Custom
-import hepspt
+import hep_spt
 
 # Python
 import matplotlib.pyplot as plt
@@ -37,7 +37,7 @@ def main():
     for s, w, a, t in ((sample, None, al, 'adaptive binned'),
                        (sample, weights, ar, 'weighted adaptive binned')):
 
-        values, edges = hepspt.adbin_hist1d(s, wgts = w, nbins = bins, rg = rg)
+        values, edges = hep_spt.adbin_hist1d(s, wgts = w, nbins = bins, rg = rg)
 
         centers = (edges[1:] + edges[:-1])/2.
 

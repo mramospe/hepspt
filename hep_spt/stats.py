@@ -16,7 +16,7 @@ from scipy.stats import chi2
 import warnings
 
 # Local
-from hepspt import __project_path__
+from hep_spt import __project_path__
 
 # Define confidence intervals.
 __chi2_one_dof__ = chi2(1)

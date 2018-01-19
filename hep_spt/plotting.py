@@ -7,7 +7,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Local
-from hepspt import __project_path__, math_aux
+from hep_spt import __project_path__, math_aux
 
 # Python
 import matplotlib.pyplot as plt

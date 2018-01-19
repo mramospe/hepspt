@@ -7,7 +7,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Custom
-import hepspt
+import hep_spt
 
 # Python
 import numpy as np
@@ -18,9 +18,9 @@ def test_gcd():
     Test the function to calculate the greatest common divisor of a set
     of numbers.
     '''
-    assert hepspt.gcd(4, 6) == 2
-    assert hepspt.gcd(4, 6, 8) == 2
-    assert np.all(hepspt.gcd([4, 3], [6, 9]) == [2, 3])
+    assert hep_spt.gcd(4, 6) == 2
+    assert hep_spt.gcd(4, 6, 8) == 2
+    assert np.all(hep_spt.gcd([4, 3], [6, 9]) == [2, 3])
 
 
 def test_lcm():
@@ -28,9 +28,9 @@ def test_lcm():
     Test the function to calculate the least common multiple of a set
     of numbers.
     '''
-    assert hepspt.lcm(11, 4) == 44
-    assert hepspt.lcm(8, 4, 2) == 8
-    assert np.all(hepspt.lcm([10, 121], [100, 242]) == [100, 242])
+    assert hep_spt.lcm(11, 4) == 44
+    assert hep_spt.lcm(8, 4, 2) == 8
+    assert np.all(hep_spt.lcm([10, 121], [100, 242]) == [100, 242])
 
 
 def test_power_2():
@@ -39,8 +39,8 @@ def test_power_2():
     '''
     n = 15
 
-    assert hepspt.is_power_2(n) == False
+    assert hep_spt.is_power_2(n) == False
 
-    nt = hepspt.next_power_2(n)
+    nt = hep_spt.next_power_2(n)
 
-    assert hepspt.is_power_2(nt) == True
+    assert hep_spt.is_power_2(nt) == True

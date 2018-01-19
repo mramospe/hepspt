@@ -1,7 +1,7 @@
 '''
 To run an example type
 
->>> from hepspt import examples as ex
+>>> from hep_spt import examples as ex
 >>> ex.<example-name>.main()
 
 All the examples have a function called "main" which \
@@ -13,7 +13,7 @@ simply access
 what will of course return the modules that will be \
 imported when calling
 
->>> from hepspt.examples import *
+>>> from hep_spt.examples import *
 
 in this case, all the available examples. The examples \
 can be executed as a script too.
