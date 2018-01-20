@@ -7,7 +7,9 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Local
-from hep_spt import __project_path__, math_aux
+from hep_spt import __project_path__
+from hep_spt.math_aux import lcm
+from hep_spt.stats import poisson_freq_uncert_one_sigma
 
 # Python
 import matplotlib.pyplot as plt
@@ -54,7 +56,7 @@ class PlotVar:
         :returns: values and edges of the histogram.
         :rtype: numpy.ndarray, numpy.ndarray
         '''
-        values, edges = np.histogram(arr, self.bins, rg, weights = wgts)
+        values, edges = np.histogram(arr, self.bins, self.rg, weights = wgts)
 
         if norm:
             s = values.sum()
@@ -77,7 +79,7 @@ class PlotVar:
         between bins in X.
         :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, float
         '''
-        return errorbar_hist(arr, self.bins, rg, wgts, norm)
+        return errorbar_hist(arr, self.bins, self.rg, wgts, norm)
 
 
 def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
@@ -91,12 +93,14 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     :type rg: tuple(float, float)
     :param wgts: possible weights for the histogram.
     :type wgts: collection(value-type)
-    :returns: centers, values, the Y errors and the spacing between bins in X.
+    :returns: centers, values, the Y errors and the spacing between bins in X. \
+    In the non-weighted case, errors in Y are returned as two arrays, with the \
+    lower and upper uncertainties.
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, float
     '''
-    if wgts:
+    if wgts is not None:
         # Use sum of the square of weights to calculate the error
-        sw2, edges = np.histogram(arr, bins, rg, wgts)
+        sw2, edges = np.histogram(arr, bins, rg, weights = wgts)
 
         values, _ = np.histogram(arr, edges, weights = wgts)
 
@@ -106,7 +110,8 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
         # Use the poissonian errors
         values, edges = np.histogram(arr, bins, rg, weights = wgts)
 
-        ey = poisson_freq_uncert_one_sigma(values)
+        # For compatibility with matplotlib.pyplot.errorbar
+        ey = poisson_freq_uncert_one_sigma(values).T
 
     centers = (edges[1:] + edges[:-1])/2.
 
