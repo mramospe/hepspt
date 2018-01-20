@@ -19,7 +19,7 @@ from matplotlib.patches import Rectangle
 __all__ = ['AdBin', 'adbin_as_rectangle',
            'adbin_hist1d', 'adbin_hist1d_edges',
            'adbin_hist2d', 'adbin_histnd',
-           'proc_range']
+           'process_range']
 
 
 class AdBin:
@@ -371,7 +371,7 @@ def _proc_hist_input_1d( arr, rg = None, wgts = None ):
     and maximum values.
     :rtype: numpy.ndarray, tuple(float, float), numpy.ndarray
     '''
-    vmin, vmax = proc_range(arr, rg)
+    vmin, vmax = process_range(arr, rg)
 
     cond = np.logical_and(arr >= vmin, arr < vmax)
 
@@ -400,7 +400,7 @@ def _proc_hist_input( arr, rg = None, wgts = None ):
     and maximum values for each dimension.
     :rtype: numpy.ndarray, tuple(np.ndarray, np.ndarray), numpy.ndarray
     '''
-    vmin, vmax = proc_range(arr, rg)
+    vmin, vmax = process_range(arr, rg)
 
     cond = np.logical_and(arr >= vmin, arr < vmax).all(axis = 1)
 
@@ -414,7 +414,7 @@ def _proc_hist_input( arr, rg = None, wgts = None ):
     return arr, (vmin, vmax), wgts
 
 
-def proc_range( arr, rg = None ):
+def process_range( arr, rg = None ):
     '''
     Process the given range, determining the minimum and maximum
     values for a 1D histogram.
