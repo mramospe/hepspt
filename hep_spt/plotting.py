@@ -42,45 +42,6 @@ class PlotVar:
         self.bins  = bins
         self.rg    = rg
 
-    def hist( self, arr, wgts = None, norm = False ):
-        '''
-        Call to :func:`numpy.histogram` to obtain the values and edges
-        for a given set of data and weights.
-
-        :param arr: array of data.
-        :type arr: collection(value-type)
-        :param wgts: array of weights.
-        :type wgts: collection(value-type)
-        :param norm: whether to normalize the output values or not.
-        :type norm: bool
-        :returns: values and edges of the histogram.
-        :rtype: numpy.ndarray, numpy.ndarray
-        '''
-        values, edges = np.histogram(arr, self.bins, self.rg, weights = wgts)
-
-        if norm:
-            s = values.sum()
-            if s > 0:
-                values /= s
-
-        return values, edges
-
-    def errorbar( self, arr, wgts = None, norm = False ):
-        '''
-        Calculate the values to create an errorbar plot.
-
-        :param arr: array of data.
-        :type arr: collection(value-type)
-        :param wgts: array of weights.
-        :type wgts: collection(value-type)
-        :param norm: whether to normalize the output values or not.
-        :type norm: bool
-        :returns: centers, values, the Y errors and the spacing \
-        between bins in X.
-        :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, float
-        '''
-        return errorbar_hist(arr, self.bins, self.rg, wgts, norm)
-
 
 def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     '''
@@ -93,10 +54,10 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     :type rg: tuple(float, float)
     :param wgts: possible weights for the histogram.
     :type wgts: collection(value-type)
-    :returns: centers, values, the Y errors and the spacing between bins in X. \
+    :returns: values, edges, the spacing between bins in X the Y errors. \
     In the non-weighted case, errors in Y are returned as two arrays, with the \
     lower and upper uncertainties.
-    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, float
+    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
     '''
     if wgts is not None:
         # Use sum of the square of weights to calculate the error
@@ -113,9 +74,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
         # For compatibility with matplotlib.pyplot.errorbar
         ey = poisson_freq_uncert_one_sigma(values).T
 
-    centers = (edges[1:] + edges[:-1])/2.
-
-    ex = (edges[1] - edges[0])/2.
+    ex = (edges[1:] - edges[:-1])/2.
 
     if norm:
 
@@ -127,7 +86,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
         else:
             ey *= np.finfo(ey.dtype).max
 
-    return centers, values, ey, ex
+    return values, edges, ex, ey
 
 
 def samples_cycler( smps, *args, **kwargs ):

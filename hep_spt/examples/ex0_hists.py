@@ -28,13 +28,15 @@ def main():
     fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(10, 5))
 
     # Make a histogram with poissonian errors
-    centers, values, ey, ex = hep_spt.errorbar_hist(smp, rg=(-7, 7))
+    values, edges, ex, ey = hep_spt.errorbar_hist(smp, rg=(-7, 7))
+    centers = (edges[1:] + edges[:-1])/2.
 
     ax0.errorbar(centers, values, ey, ex, ls = 'none')
     ax0.set_title('Non-weighted sample')
 
     # Make a weighted histogram (with square of sum of weights errors)
-    centers, values, ey, ex = hep_spt.errorbar_hist(smp, rg=(-7, 7), wgts=wgts)
+    values, edges, ex, ey = hep_spt.errorbar_hist(smp, rg=(-7, 7), wgts=wgts)
+    centers = (edges[1:] + edges[:-1])/2.
 
     ax1.errorbar(centers, values, ey, ex, ls = 'none')
     ax1.set_title('Weighted sample')

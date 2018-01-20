@@ -6,6 +6,9 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
+# Custom
+from hep_spt.plotting import errorbar_hist
+
 # Python
 import numpy as np
 import bisect, itertools
@@ -183,7 +186,7 @@ def adbin_as_rectangle( adb, **kwargs ):
     return Rectangle((xmin, ymin), width, height, **kwargs)
 
 
-def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None ):
+def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None, **kwargs ):
     '''
     Create an adaptive binned histogram.
 
@@ -195,20 +198,24 @@ def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None ):
     :type rg: tuple(float, float) or None
     :param wgts: optional array of weights.
     :type wgts: numpy.ndarray or None
-    :returns: values of the histogram and edges.
-    :rtype: numpy.ndarray, numpy.ndarray
+    :param kwargs: any other argument to :func:`plotting.errorbar_hist`.
+    :type kwargs: dict
+    :returns: values, edges, the spacing between bins in X the Y errors. \
+    In the non-weighted case, errors in Y are returned as two arrays, with the \
+    lower and upper uncertainties.
+    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
     '''
-    arr, rg, wgts = _proc_hist_input_1d(arr, rg, wgts)
+    arr, rg, pws = _proc_hist_input_1d(arr, rg, wgts)
 
     # Sort the data
-    srt  = arr.argsort()
-    arr  = arr[srt]
-    wgts = wgts[srt]
+    srt = arr.argsort()
+    arr = arr[srt]
+    pws = pws[srt]
 
     # Solving the problem from the left and from the right reduces
     # the bias in the last edges
-    le = adbin_hist1d_edges(arr, nbins, rg, wgts)
-    re = adbin_hist1d_edges(arr[::-1], nbins, rg, wgts[::-1])[::-1]
+    le = adbin_hist1d_edges(arr, nbins, rg, pws)
+    re = adbin_hist1d_edges(arr[::-1], nbins, rg, pws[::-1])[::-1]
 
     edges = (re + le)/2.
 
@@ -216,9 +223,7 @@ def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None ):
     edges[0]   = vmin
     edges[-1]  = vmax
 
-    values, edges = np.histogram(arr, edges, weights = wgts)
-
-    return values, edges
+    return errorbar_hist(arr, edges, rg, wgts, **kwargs)
 
 
 def adbin_hist1d_edges( arr, nbins = 100, rg = None, wgts = None ):
