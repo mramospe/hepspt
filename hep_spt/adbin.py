@@ -18,8 +18,8 @@ from matplotlib.patches import Rectangle
 
 __all__ = ['AdBin', 'adbin_as_rectangle',
            'adbin_hist1d', 'adbin_hist1d_edges',
-           'adbin_hist2d', 'adbin_histnd',
-           'process_range']
+           'adbin_hist2d', 'adbin_histnd'
+           ]
 
 
 class AdBin:
@@ -41,8 +41,8 @@ class AdBin:
 
         self.arr  = arr
         self.wgts = wgts
-        self.vmin = vmin
-        self.vmax = vmax
+        self.vmin = np.array(vmin, dtype = float)
+        self.vmax = np.array(vmax, dtype = float)
 
     def contains( self, arr ):
         '''
@@ -107,7 +107,7 @@ class AdBin:
             "mask_left" and "mask_right".
             '''
             sarr = arr[:,i]
-            sz   = size(sarr)
+            sz   = float(size(sarr))
 
             sl = size(sarr[mask_left[:,i]])/sz
             sr = size(sarr[mask_right[:,i]])/sz
