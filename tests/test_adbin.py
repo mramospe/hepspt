@@ -30,10 +30,10 @@ def test_adbin_hist1d():
     weights = np.random.uniform(0, 1, size)
 
     # Case without weights
-    v, ev = hep_spt.adbin_hist1d(sample, bins, rg)
+    v, ev, ex, ey = hep_spt.adbin_hist1d(sample, bins, rg)
 
     # Case with weights
-    v_w, ev_w = hep_spt.adbin_hist1d(sample, bins, rg, wgts = weights)
+    v_w, ev_w, ex_w, ey_w = hep_spt.adbin_hist1d(sample, bins, rg, wgts = weights)
 
 
 def test_adbin_hist2d():

@@ -8,6 +8,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Custom
 from hep_spt.plotting import errorbar_hist
+from hep_spt.stats import poisson_freq_uncert_one_sigma
 
 # Python
 import numpy as np
@@ -42,6 +43,16 @@ class AdBin:
         self.wgts = wgts
         self.vmin = vmin
         self.vmax = vmax
+
+    def contains( self, arr ):
+        '''
+        :param arr: input data.
+        :type arr: numpy.ndarray
+        :returns: whether the values in the input array are inside this bin or \
+        not.
+        :rtype: bool or numpy.ndarray(bool)
+        '''
+        return np.logical_and(arr >= self.vmin, arr < self.vmax).all(axis = 1)
 
     def dens( self, arr, wgts = None ):
         '''
@@ -155,7 +166,7 @@ class AdBin:
         :returns: sum of weights for this bin.
         :rtype: float
         '''
-        true = np.logical_and(arr >= self.vmin, arr < self.vmax).all(axis = 1)
+        true = self.contains(arr)
 
         if wgts is not None:
             sw = wgts[true].sum()
@@ -163,6 +174,28 @@ class AdBin:
             sw = np.count_nonzero(true)
 
         return float(sw)
+
+    def sw_uncert( self, arr, wgts = None ):
+        '''
+        :param arr: array of data to process.
+        :type arr: numpy.ndarray
+        :param wgts: possible weights.
+        :type wgts: numpy.ndarray or None
+        :returns: uncertainty of the sum of weights in the bin. If "wgts" is \
+        provided, this magnitude is equal to the square root of the sum of \
+        weights in the bin. Otherwise poissonian errors are considered.
+        :rtype: float
+        '''
+        true = self.contains(arr)
+
+        if wgts is not None:
+            uncert = np.sqrt((wgts*wgts)[true].sum())
+        else:
+            sw = np.count_nonzero(true)
+
+            uncert = poisson_freq_uncert_one_sigma(sw)
+
+        return float(uncert)
 
 
 def adbin_as_rectangle( adb, **kwargs ):
