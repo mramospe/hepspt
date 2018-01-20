@@ -18,7 +18,7 @@ import os
 from cycler import cycler
 
 
-__all__ = ['PlotVar', 'errorbar_hist', 'samples_cycler', 'set_style']
+__all__ = ['PlotVar', 'errorbar_hist', 'process_range', 'samples_cycler', 'set_style']
 
 
 class PlotVar:
@@ -87,6 +87,30 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
             ey *= np.finfo(ey.dtype).max
 
     return values, edges, ex, ey
+
+
+def process_range( arr, rg = None ):
+    '''
+    Process the given range, determining the minimum and maximum
+    values for a 1D histogram.
+
+    :param arr: array of data.
+    :type arr: numpy.ndarray
+    :param rg: range of the histogram. It must contain tuple(min, max), \
+    where "min" and "max" can be either floats (1D case) or collections \
+    (ND case).
+    :type rg: tuple or None
+    :returns: minimum and maximum values.
+    :rtype: float, float
+    '''
+    if rg is not None:
+        vmin, vmax = rg
+    else:
+        amax = arr.max(axis = 0)
+        vmin = arr.min(axis = 0)
+        vmax = np.nextafter(amax, 2*amax)
+
+    return vmin, vmax
 
 
 def samples_cycler( smps, *args, **kwargs ):

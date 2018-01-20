@@ -7,7 +7,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Custom
-from hep_spt.plotting import errorbar_hist
+from hep_spt.plotting import errorbar_hist, process_range
 from hep_spt.stats import poisson_freq_uncert_one_sigma
 
 # Python
@@ -412,27 +412,3 @@ def _proc_hist_input( arr, rg = None, wgts = None ):
         wgts = np.ones(len(arr))
 
     return arr, (vmin, vmax), wgts
-
-
-def process_range( arr, rg = None ):
-    '''
-    Process the given range, determining the minimum and maximum
-    values for a 1D histogram.
-
-    :param arr: array of data.
-    :type arr: numpy.ndarray
-    :param rg: range of the histogram. It must contain tuple(min, max), \
-    where "min" and "max" can be either floats (1D case) or collections \
-    (ND case).
-    :type rg: tuple or None
-    :returns: minimum and maximum values.
-    :rtype: float, float
-    '''
-    if rg is not None:
-        vmin, vmax = rg
-    else:
-        amax = arr.max(axis = 0)
-        vmin = arr.min(axis = 0)
-        vmax = np.nextafter(amax, 2*amax)
-
-    return vmin, vmax
