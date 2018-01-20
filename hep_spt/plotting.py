@@ -108,7 +108,7 @@ def process_range( arr, rg = None ):
     else:
         amax = arr.max(axis = 0)
         vmin = arr.min(axis = 0)
-        vmax = np.nextafter(amax, 2*amax)
+        vmax = np.nextafter(amax, np.infty)
 
     return vmin, vmax
 
