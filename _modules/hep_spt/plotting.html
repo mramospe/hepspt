@@ -49,7 +49,9 @@
 
 
 <span class="c1"># Local</span>
-<span class="kn">from</span> <span class="nn">hep_spt</span> <span class="k">import</span> <span class="n">__project_path__</span><span class="p">,</span> <span class="n">math_aux</span>
+<span class="kn">from</span> <span class="nn">hep_spt</span> <span class="k">import</span> <span class="n">__project_path__</span>
+<span class="kn">from</span> <span class="nn">hep_spt.math_aux</span> <span class="k">import</span> <span class="n">lcm</span>
+<span class="kn">from</span> <span class="nn">hep_spt.stats</span> <span class="k">import</span> <span class="n">poisson_freq_uncert_one_sigma</span>
 
 <span class="c1"># Python</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -58,7 +60,7 @@
 <span class="kn">from</span> <span class="nn">cycler</span> <span class="k">import</span> <span class="n">cycler</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PlotVar&#39;</span><span class="p">,</span> <span class="s1">&#39;errorbar_hist&#39;</span><span class="p">,</span> <span class="s1">&#39;samples_cycler&#39;</span><span class="p">,</span> <span class="s1">&#39;set_style&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PlotVar&#39;</span><span class="p">,</span> <span class="s1">&#39;errorbar_hist&#39;</span><span class="p">,</span> <span class="s1">&#39;process_range&#39;</span><span class="p">,</span> <span class="s1">&#39;samples_cycler&#39;</span><span class="p">,</span> <span class="s1">&#39;set_style&#39;</span><span class="p">,</span> <span class="s1">&#39;text_in_rectangles&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="PlotVar"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar">[docs]</a><span class="k">class</span> <span class="nc">PlotVar</span><span class="p">:</span>
@@ -80,46 +82,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span>  <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="ow">or</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span>  <span class="o">=</span> <span class="n">bins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rg</span>    <span class="o">=</span> <span class="n">rg</span></div>
-
-<div class="viewcode-block" id="PlotVar.hist"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar.hist">[docs]</a>    <span class="k">def</span> <span class="nf">hist</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Call to :func:`numpy.histogram` to obtain the values and edges</span>
-<span class="sd">        for a given set of data and weights.</span>
-
-<span class="sd">        :param arr: array of data.</span>
-<span class="sd">        :type arr: collection(value-type)</span>
-<span class="sd">        :param wgts: array of weights.</span>
-<span class="sd">        :type wgts: collection(value-type)</span>
-<span class="sd">        :param norm: whether to normalize the output values or not.</span>
-<span class="sd">        :type norm: bool</span>
-<span class="sd">        :returns: values and edges of the histogram.</span>
-<span class="sd">        :rtype: numpy.ndarray, numpy.ndarray</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">values</span> <span class="o">/=</span> <span class="n">s</span>
-
-        <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">edges</span></div>
-
-<div class="viewcode-block" id="PlotVar.errorbar"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar.errorbar">[docs]</a>    <span class="k">def</span> <span class="nf">errorbar</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate the values to create an errorbar plot.</span>
-
-<span class="sd">        :param arr: array of data.</span>
-<span class="sd">        :type arr: collection(value-type)</span>
-<span class="sd">        :param wgts: array of weights.</span>
-<span class="sd">        :type wgts: collection(value-type)</span>
-<span class="sd">        :param norm: whether to normalize the output values or not.</span>
-<span class="sd">        :type norm: bool</span>
-<span class="sd">        :returns: centers, values, the Y errors and the spacing \</span>
-<span class="sd">        between bins in X.</span>
-<span class="sd">        :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, float</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">errorbar_hist</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">,</span> <span class="n">norm</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rg</span>    <span class="o">=</span> <span class="n">rg</span></div></div>
 
 
 <div class="viewcode-block" id="errorbar_hist"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.errorbar_hist">[docs]</a><span class="k">def</span> <span class="nf">errorbar_hist</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
@@ -133,12 +96,14 @@
 <span class="sd">    :type rg: tuple(float, float)</span>
 <span class="sd">    :param wgts: possible weights for the histogram.</span>
 <span class="sd">    :type wgts: collection(value-type)</span>
-<span class="sd">    :returns: centers, values, the Y errors and the spacing between bins in X.</span>
-<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, float</span>
+<span class="sd">    :returns: values, edges, the spacing between bins in X the Y errors. \</span>
+<span class="sd">    In the non-weighted case, errors in Y are returned as two arrays, with the \</span>
+<span class="sd">    lower and upper uncertainties.</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">wgts</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">wgts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Use sum of the square of weights to calculate the error</span>
-        <span class="n">sw2</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span>
+        <span class="n">sw2</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
 
         <span class="n">values</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
 
@@ -148,11 +113,10 @@
         <span class="c1"># Use the poissonian errors</span>
         <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
 
-        <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_freq_uncert_one_sigma</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="c1"># For compatibility with matplotlib.pyplot.errorbar</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_freq_uncert_one_sigma</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
-    <span class="n">centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
-
-    <span class="n">ex</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+    <span class="n">ex</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
 
     <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
 
@@ -164,7 +128,31 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ey</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">ey</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
 
-    <span class="k">return</span> <span class="n">centers</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">ey</span><span class="p">,</span> <span class="n">ex</span></div>
+    <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span></div>
+
+
+<div class="viewcode-block" id="process_range"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.process_range">[docs]</a><span class="k">def</span> <span class="nf">process_range</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Process the given range, determining the minimum and maximum</span>
+<span class="sd">    values for a 1D histogram.</span>
+
+<span class="sd">    :param arr: array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param rg: range of the histogram. It must contain tuple(min, max), \</span>
+<span class="sd">    where &quot;min&quot; and &quot;max&quot; can be either floats (1D case) or collections \</span>
+<span class="sd">    (ND case).</span>
+<span class="sd">    :type rg: tuple or None</span>
+<span class="sd">    :returns: minimum and maximum values.</span>
+<span class="sd">    :rtype: float, float</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">rg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">rg</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">amax</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="n">amax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span></div>
 
 
 <div class="viewcode-block" id="samples_cycler"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.samples_cycler">[docs]</a><span class="k">def</span> <span class="nf">samples_cycler</span><span class="p">(</span> <span class="n">smps</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
@@ -207,6 +195,28 @@
 <span class="sd">    Set the default style for matplotlib to that from this project.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__project_path__</span><span class="p">,</span> <span class="s1">&#39;mpl/hep_spt.mplstyle&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="text_in_rectangles"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.text_in_rectangles">[docs]</a><span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">ax</span><span class="p">,</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Write text inside matplotlib.patches.Rectangle instances.</span>
+
+<span class="sd">    :param ax: axes where the rectangles are being drawn.</span>
+<span class="sd">    :type ax: matplotlib.axes.Axes</span>
+<span class="sd">    :param recs: set of rectangles to work with.</span>
+<span class="sd">    :type recs: collection(matplotlib.patches.Rectangle)</span>
+<span class="sd">    :param txt: text to fill with in each rectangle.</span>
+<span class="sd">    :type txt: collection(str)</span>
+<span class="sd">    :param kwargs: any other argument to matplotlib.axes.Axes.annotate.</span>
+<span class="sd">    :type kwargs: dict</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get_xy</span><span class="p">()</span>
+
+        <span class="n">cx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mf">2.</span>
+        <span class="n">cy</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mf">2.</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

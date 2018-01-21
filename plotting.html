@@ -73,57 +73,6 @@ a binning scheme and a range.</p>
 <code class="descname">__module__</code><em class="property"> = 'hep_spt.plotting'</em><a class="headerlink" href="#hep_spt.plotting.PlotVar.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="hep_spt.plotting.PlotVar.errorbar">
-<code class="descname">errorbar</code><span class="sig-paren">(</span><em>arr</em>, <em>wgts=None</em>, <em>norm=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#PlotVar.errorbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.PlotVar.errorbar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the values to create an errorbar plot.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arr</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – array of data.</li>
-<li><strong>wgts</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – array of weights.</li>
-<li><strong>norm</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether to normalize the output values or not.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">centers, values, the Y errors and the spacing         between bins in X.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray, numpy.ndarray, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="hep_spt.plotting.PlotVar.hist">
-<code class="descname">hist</code><span class="sig-paren">(</span><em>arr</em>, <em>wgts=None</em>, <em>norm=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#PlotVar.hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.PlotVar.hist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Call to <code class="xref py py-func docutils literal"><span class="pre">numpy.histogram()</span></code> to obtain the values and edges
-for a given set of data and weights.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arr</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – array of data.</li>
-<li><strong>wgts</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – array of weights.</li>
-<li><strong>norm</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether to normalize the output values or not.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">values and edges of the histogram.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="function">
@@ -142,10 +91,35 @@ for a given set of data and weights.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">centers, values, the Y errors and the spacing between bins in X.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">values, edges, the spacing between bins in X the Y errors.     In the non-weighted case, errors in Y are returned as two arrays, with the     lower and upper uncertainties.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray, numpy.ndarray, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.plotting.process_range">
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">process_range</code><span class="sig-paren">(</span><em>arr</em>, <em>rg=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#process_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.process_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the given range, determining the minimum and maximum
+values for a 1D histogram.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data.</li>
+<li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – range of the histogram. It must contain tuple(min, max),     where “min” and “max” can be either floats (1D case) or collections     (ND case).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">minimum and maximum values.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
 </td>
 </tr>
 </tbody>
@@ -184,6 +158,26 @@ with the values from “smps”.</p>
 <dt id="hep_spt.plotting.set_style">
 <code class="descclassname">hep_spt.plotting.</code><code class="descname">set_style</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#set_style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.set_style" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the default style for matplotlib to that from this project.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.plotting.text_in_rectangles">
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">text_in_rectangles</code><span class="sig-paren">(</span><em>ax</em>, <em>recs</em>, <em>txt</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#text_in_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.text_in_rectangles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write text inside matplotlib.patches.Rectangle instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – axes where the rectangles are being drawn.</li>
+<li><strong>recs</strong> (<em>collection</em><em>(</em><em>matplotlib.patches.Rectangle</em><em>)</em>) – set of rectangles to work with.</li>
+<li><strong>txt</strong> (<em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>)</em>) – text to fill with in each rectangle.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – any other argument to matplotlib.axes.Axes.annotate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
