@@ -18,7 +18,7 @@ import os
 from cycler import cycler
 
 
-__all__ = ['PlotVar', 'errorbar_hist', 'process_range', 'samples_cycler', 'set_style']
+__all__ = ['PlotVar', 'errorbar_hist', 'process_range', 'samples_cycler', 'set_style', 'text_in_rectangles']
 
 
 class PlotVar:
@@ -153,3 +153,25 @@ def set_style():
     Set the default style for matplotlib to that from this project.
     '''
     plt.style.use(os.path.join(__project_path__, 'mpl/hep_spt.mplstyle'))
+
+
+def text_in_rectangles( ax, recs, txt, **kwargs ):
+    '''
+    Write text inside matplotlib.patches.Rectangle instances.
+
+    :param ax: axes where the rectangles are being drawn.
+    :type ax: matplotlib.axes.Axes
+    :param recs: set of rectangles to work with.
+    :type recs: collection(matplotlib.patches.Rectangle)
+    :param txt: text to fill with in each rectangle.
+    :type txt: collection(str)
+    :param kwargs: any other argument to matplotlib.axes.Axes.annotate.
+    :type kwargs: dict
+    '''
+    for r, t in zip(recs, txt):
+        x, y = r.get_xy()
+
+        cx = x + r.get_width()/2.
+        cy = y + r.get_height()/2.
+
+        ax.annotate(t, (cx, cy), **kwargs)

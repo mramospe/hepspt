@@ -13,10 +13,11 @@ from hep_spt.stats import poisson_freq_uncert_one_sigma
 # Python
 import numpy as np
 import bisect, itertools
+import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
 
-__all__ = ['AdBin', 'adbin_as_rectangle',
+__all__ = ['AdBin', 'adbin_as_rectangle', 'adbin_hist2d_rectangles',
            'adbin_hist1d', 'adbin_hist1d_edges',
            'adbin_hist2d', 'adbin_histnd'
            ]
@@ -32,7 +33,8 @@ class AdBin:
         '''
         :param arr: array of data.
         :type arr: numpy.ndarray
-        :param rg: range of the histogram (same length as "arr").
+        :param rg: range of the histogram in each dimension. As \
+        [(xmin, ymin), (xmax, ymax)].
         :type rg: numpy.ndarray(float, float) or None.
         :param wgts: possible weights.
         :type wgts: numpy.ndarray or None
@@ -325,13 +327,78 @@ def adbin_hist2d( x, y, *args, **kwargs ):
     return adbin_histnd(np.array([x, y]).T, *args, **kwargs)
 
 
+def adbin_hist2d_rectangles( bins, arr,
+                             rg = None, wgts = None,
+                             cmap = None, fill = 'sw',
+                             color = True,
+                             **kwargs ):
+    '''
+    Create a collection of rectangles from a collection of bins, using
+    the input data to calculate the associated quantity (specified in "fill").
+
+    :param bins: input bins.
+    :type bins: collection(AdBin)
+    :param arr: input data.
+    :type arr: collection(value-type)
+    :param rg: range of the histogram in each dimension. As \
+    [(xmin, ymin), (xmax, ymax)].
+    :type rg: tuple(np.ndarray, np.ndarray) or None
+    :param wgts: input weights.
+    :type wgts: collection(value-type)
+    :param cmap: optional color map. If "None", the default from \
+    matplotlib.pyplot is used.
+    :type cmap: matplotlib.colors.Colormap or None
+    :param fill: method to use for filling ('sw' or 'dens').
+    :type fill: str
+    :param color: whether the output rectangles are filled with a color or not.
+    :type color: bool
+    :param kwargs: any other argument to :func:`adbin_as_rectangle`.
+    :type kwargs: dict
+    :returns: rectangles and contents.
+    :rtype: numpy.ndarray, numpy.ndarray
+    '''
+    assert fill in ('sw', 'dens')
+
+    recs = [adbin_as_rectangle(b, **kwargs) for b in bins]
+
+    arr, rg, wgts = _proc_hist_input(arr, rg, wgts)
+
+    # Get the contents associated to each bin
+    func = getattr(AdBin, fill)
+    contents = np.array(map(lambda b: func(b, arr, wgts), bins))
+
+    if color:
+
+        cmap = cmap or plt.get_cmap()
+
+        vmin = contents.min()
+        vmax = contents.max()
+
+        sz = float(vmax - vmin)
+
+        # We need to normalize the color map. The normalization
+        # depends if the input number is an integer (0, length of
+        # the color map) or a float (0., 1.).
+        for r, c in zip(recs, contents):
+            if sz != 0:
+                r.set_facecolor(cmap((c - vmin)/sz))
+            else:
+                r.set_facecolor('none')
+    else:
+        for r in recs:
+            r.set_facecolor((1, 1, 1))
+
+    return recs, contents
+
+
 def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2 ):
     '''
     Create a ND adaptive binned histogram.
 
     :param arr: array of data with the variables as columns.
     :type arr: numpy.ndarray
-    :param rg: range of the histogram (same length as "arr").
+    :param rg: range of the histogram in each dimension. As \
+    [(xmin, ymin), (xmax, ymax)].
     :type rg: numpy.ndarray(float, float) or None.
     :param nbins: number of bins. In this algorithm, divisions will be made \
     till the real number of bins is equal or greater than "nbins". If this \
@@ -392,7 +459,8 @@ def _proc_hist_input( arr, rg = None, wgts = None ):
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param rg: range of the histogram in each dimension.
+    :param rg: range of the histogram in each dimension. As \
+    [(xmin, ymin), (xmax, ymax)].
     :type rg: tuple(np.ndarray, np.ndarray) or None
     :param wgts: optional array of weights.
     :type wgts: numpy.ndarray or None
