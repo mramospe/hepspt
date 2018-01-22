@@ -59,6 +59,7 @@
 
 <span class="c1"># Local</span>
 <span class="kn">from</span> <span class="nn">hep_spt</span> <span class="k">import</span> <span class="n">__project_path__</span>
+<span class="kn">from</span> <span class="nn">hep_spt.core</span> <span class="k">import</span> <span class="n">decorate</span>
 
 <span class="c1"># Define confidence intervals.</span>
 <span class="n">__chi2_one_dof__</span> <span class="o">=</span> <span class="n">chi2</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -83,7 +84,7 @@
            <span class="s1">&#39;poisson_freq_uncert_one_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;process_uncert&#39;</span><span class="p">]</span>
 
 
-<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<div class="viewcode-block" id="calc_poisson_freq_uncert"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.calc_poisson_freq_uncert">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">calc_poisson_freq_uncert</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the lower and upper bayesian uncertainties for</span>
@@ -128,10 +129,10 @@
 
     <span class="n">up</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">fright</span><span class="p">,</span> <span class="n">iright</span><span class="p">,</span> <span class="n">fprime</span> <span class="o">=</span> <span class="n">jright</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">process_uncert</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">process_uncert</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
 
 
-<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<div class="viewcode-block" id="jac_poisson_float_l"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.jac_poisson_float_l">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">jac_poisson_float_l</span><span class="p">(</span> <span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="n">__poisson_from_stirling__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the value of Jacobian of the poisson_float</span>
@@ -150,10 +151,10 @@
     <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="mf">0.</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">l</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="n">poisson_float</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">l</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="n">poisson_float</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span></div>
 
 
-<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<div class="viewcode-block" id="poisson_float"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.poisson_float">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">poisson_float</span><span class="p">(</span> <span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="n">__poisson_from_stirling__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the Poisson distribution value for floating</span>
@@ -175,7 +176,7 @@
     <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">exp</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">l</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span> <span class="n">l</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">k</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mf">1.</span><span class="o">/</span><span class="n">gamma</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="n">l</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mf">1.</span><span class="o">/</span><span class="n">gamma</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="n">l</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="poisson_freq_uncert_one_sigma"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.poisson_freq_uncert_one_sigma">[docs]</a><span class="k">def</span> <span class="nf">poisson_freq_uncert_one_sigma</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>

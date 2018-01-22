@@ -45,6 +45,84 @@
 <span id="stats"></span><h1>stats<a class="headerlink" href="#module-hep_spt.stats" title="Permalink to this headline">¶</a></h1>
 <p>Function and classes representing statistical tools.</p>
 <dl class="function">
+<dt id="hep_spt.stats.jac_poisson_float_l">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">jac_poisson_float_l</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#jac_poisson_float_l"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.jac_poisson_float_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of Jacobian of the poisson_float
+function considering that it depends exclusively on “l”.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>l</strong> (<em>numpy.ndarray</em>) – mean(s) of the Poisson.</li>
+<li><strong>k</strong> (<em>numpy.ndarray</em>) – position(s) to evaluate.</li>
+<li><strong>tol</strong> (<em>numpy.ndarray</em>) – tolerance(s) from which the Stirling’s approximation     will be used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value(s) of the poisson jacobian.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.stats.poisson_float">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">poisson_float</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#poisson_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.poisson_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Poisson distribution value for floating
+numbers. The next term to the usual Stirling’s
+approximation must be used to treat the cases where l ~ k.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>l</strong> (<em>numpy.ndarray</em>) – mean(s) of the Poisson distribution.</li>
+<li><strong>k</strong> (<em>numpy.ndarray</em>) – position(s) to evaluate.</li>
+<li><strong>tol</strong> – tolerance(s) from which the Stirling’s approximation     will be used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value(s) of the Poisson distribution.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.stats.calc_poisson_freq_uncert">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">calc_poisson_freq_uncert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#calc_poisson_freq_uncert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.calc_poisson_freq_uncert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the lower and upper bayesian uncertainties for
+a poisson distribution with mean “k” given the chi-square.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – mean of the Poisson distribution.</li>
+<li><strong>cl</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – confidence level (between 0 and 1).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">lower and upper uncertainties.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="hep_spt.stats.poisson_freq_uncert_one_sigma">
 <code class="descclassname">hep_spt.stats.</code><code class="descname">poisson_freq_uncert_one_sigma</code><span class="sig-paren">(</span><em>m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#poisson_freq_uncert_one_sigma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.poisson_freq_uncert_one_sigma" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the poisson frequentist uncertainty at one standard
