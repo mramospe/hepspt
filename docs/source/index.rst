@@ -19,7 +19,17 @@ modules of the hep_spt package.
    plotting
    stats
 
-   examples
+Examples
+========
+
+To see some examples go to any of the following Jupyter notebooks:
+
+.. toctree::
+   :maxdepth: 2
+
+   notebooks/plotting
+   notebooks/adbin
+
 
 Indices and tables
 ==================
