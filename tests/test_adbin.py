@@ -2,7 +2,6 @@
 Test functions for the "adbin" module.
 '''
 
-
 __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 

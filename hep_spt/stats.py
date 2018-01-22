@@ -7,13 +7,13 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
-import os
+import os, warnings
 import numpy as np
 from math import exp, log, sqrt
 from scipy.optimize import fsolve
 from scipy.special import gamma
-from scipy.stats import chi2
-import warnings
+from scipy.stats import chi2, kstwobign
+from scipy.stats import ks_2samp as scipy_ks_2samp
 
 # Local
 from hep_spt import __project_path__
@@ -39,7 +39,7 @@ __poisson_to_gauss__ = 200
 
 
 __all__ = ['jac_poisson_float_l', 'poisson_float', 'calc_poisson_freq_uncert',
-           'poisson_freq_uncert_one_sigma', 'process_uncert']
+           'ks_2samp', 'poisson_freq_uncert_one_sigma', 'process_uncert']
 
 
 @decorate(np.vectorize)
@@ -110,6 +110,74 @@ def jac_poisson_float_l( l, k, tol = __poisson_from_stirling__ ):
         return 0.
 
     return (k*1./l - 1.)*poisson_float(l, k, tol)
+
+
+def _ks_2samp_values( arr, wgts = None ):
+    '''
+    Calculate the values needed to perform the Kolmogorov-Smirnov test.
+
+    :param arr: input sample.
+    :type arr: array-like
+    :param wgts: possible weights.
+    :type wgts: array-like
+    :returns: sorted sample, stack with the cumulative distribution and
+    sum of weights.
+    :rtype: array-like, array-like, float
+    '''
+    wgts = wgts if wgts is not None else np.ones(len(arr), dtype=float)
+
+    ix   = np.argsort(arr)
+    arr  = arr[ix]
+    wgts = wgts[ix]
+
+    cs = np.cumsum(wgts)
+
+    sw = cs[-1]
+
+    hs = np.hstack((0, cs/sw))
+
+    return arr, hs, sw
+
+
+def ks_2samp( a, b, wa = None, wb = None ):
+    '''
+    Compute the Kolmogorov-Smirnov statistic on 2 samples. This is a two-sided
+    test for the null hypothesis that 2 independent samples are drawn from the
+    same continuous distribution. Weights for each sample are accepted. If no
+    weights are provided, then the function scipy.stats.ks_2samp is called
+    instead.
+
+    :param a: first sample.
+    :type a: array-like
+    :param b: second sample.
+    :type b: array-like
+    :param wa: set of weights for "a". Same length as "a".
+    :type wa: array-like or None.
+    :param wb: set of weights for "b". Same length as "b".
+    :type wb: array-like or None.
+    :returns: test statistic and two-tailed p-value.
+    :rtype: float, float
+    '''
+    if wa is None and wb is None:
+        return scipy_ks_2samp(a, b)
+
+    a, cwa, na = _ks_2samp_values(a, wa)
+    b, cwb, nb = _ks_2samp_values(b, wb)
+
+    m = np.concatenate([a, b])
+
+    cdfa = cwa[np.searchsorted(a, m, side='right')]
+    cdfb = cwb[np.searchsorted(b, m, side='right')]
+
+    d = np.max(np.abs(cdfa - cdfb))
+
+    en = np.sqrt(na*nb/float(na + nb))
+    try:
+        prob = kstwobign.sf((en + 0.12 + 0.11/en)*d)
+    except:
+        prob = 1.
+
+    return d, prob
 
 
 @decorate(np.vectorize)
