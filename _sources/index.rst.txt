@@ -22,7 +22,13 @@ modules of the hep_spt package.
 Examples
 ========
 
-.. automodule:: hep_spt.examples
+To see some examples go to any of the following Jupyter notebooks:
+
+.. toctree::
+   :maxdepth: 2
+
+   notebooks/plotting
+   notebooks/adbin
 
 
 Indices and tables
