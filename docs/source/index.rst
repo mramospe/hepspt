@@ -5,30 +5,15 @@
 
 .. include:: ../../README.rst
 
-Modules
-=======
-
-Here you can find the documentation on the interal
-modules of the hep_spt package.
+If you are looking for more specific information, then jump to any of the
+following sections:
 
 .. toctree::
    :maxdepth: 2
 
-   adbin
-   math_aux
-   plotting
-   stats
+   modules
+   examples
 
-Examples
-========
-
-To see some examples go to any of the following Jupyter notebooks:
-
-.. toctree::
-   :maxdepth: 2
-
-   notebooks/plotting
-   notebooks/adbin
 
 
 Indices and tables
