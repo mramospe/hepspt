@@ -49,13 +49,13 @@
 
 
 <span class="c1"># Python</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">fsolve</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">gamma</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">chi2</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">chi2</span><span class="p">,</span> <span class="n">kstwobign</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">ks_2samp</span> <span class="k">as</span> <span class="n">scipy_ks_2samp</span>
 
 <span class="c1"># Local</span>
 <span class="kn">from</span> <span class="nn">hep_spt</span> <span class="k">import</span> <span class="n">__project_path__</span>
@@ -81,7 +81,7 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;jac_poisson_float_l&#39;</span><span class="p">,</span> <span class="s1">&#39;poisson_float&#39;</span><span class="p">,</span> <span class="s1">&#39;calc_poisson_freq_uncert&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;poisson_freq_uncert_one_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;process_uncert&#39;</span><span class="p">]</span>
+           <span class="s1">&#39;ks_2samp&#39;</span><span class="p">,</span> <span class="s1">&#39;poisson_freq_uncert_one_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;process_uncert&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="calc_poisson_freq_uncert"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.calc_poisson_freq_uncert">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
@@ -152,6 +152,74 @@
         <span class="k">return</span> <span class="mf">0.</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">l</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="n">poisson_float</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_ks_2samp_values</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the values needed to perform the Kolmogorov-Smirnov test.</span>
+
+<span class="sd">    :param arr: input sample.</span>
+<span class="sd">    :type arr: array-like</span>
+<span class="sd">    :param wgts: possible weights.</span>
+<span class="sd">    :type wgts: array-like</span>
+<span class="sd">    :returns: sorted sample, stack with the cumulative distribution and</span>
+<span class="sd">    sum of weights.</span>
+<span class="sd">    :rtype: array-like, array-like, float</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span> <span class="k">if</span> <span class="n">wgts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">ix</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="n">arr</span>  <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+    <span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">wgts</span><span class="p">)</span>
+
+    <span class="n">sw</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">hs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">cs</span><span class="o">/</span><span class="n">sw</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">hs</span><span class="p">,</span> <span class="n">sw</span>
+
+
+<div class="viewcode-block" id="ks_2samp"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.ks_2samp">[docs]</a><span class="k">def</span> <span class="nf">ks_2samp</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">wa</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wb</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Compute the Kolmogorov-Smirnov statistic on 2 samples. This is a two-sided</span>
+<span class="sd">    test for the null hypothesis that 2 independent samples are drawn from the</span>
+<span class="sd">    same continuous distribution. Weights for each sample are accepted. If no</span>
+<span class="sd">    weights are provided, then the function scipy.stats.ks_2samp is called</span>
+<span class="sd">    instead.</span>
+
+<span class="sd">    :param a: first sample.</span>
+<span class="sd">    :type a: array-like</span>
+<span class="sd">    :param b: second sample.</span>
+<span class="sd">    :type b: array-like</span>
+<span class="sd">    :param wa: set of weights for &quot;a&quot;. Same length as &quot;a&quot;.</span>
+<span class="sd">    :type wa: array-like or None.</span>
+<span class="sd">    :param wb: set of weights for &quot;b&quot;. Same length as &quot;b&quot;.</span>
+<span class="sd">    :type wb: array-like or None.</span>
+<span class="sd">    :returns: test statistic and two-tailed p-value.</span>
+<span class="sd">    :rtype: float, float</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">wa</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">wb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">scipy_ks_2samp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="n">a</span><span class="p">,</span> <span class="n">cwa</span><span class="p">,</span> <span class="n">na</span> <span class="o">=</span> <span class="n">_ks_2samp_values</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">wa</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">cwb</span><span class="p">,</span> <span class="n">nb</span> <span class="o">=</span> <span class="n">_ks_2samp_values</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">wb</span><span class="p">)</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+
+    <span class="n">cdfa</span> <span class="o">=</span> <span class="n">cwa</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)]</span>
+    <span class="n">cdfb</span> <span class="o">=</span> <span class="n">cwb</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)]</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cdfa</span> <span class="o">-</span> <span class="n">cdfb</span><span class="p">))</span>
+
+    <span class="n">en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">na</span> <span class="o">+</span> <span class="n">nb</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">kstwobign</span><span class="o">.</span><span class="n">sf</span><span class="p">((</span><span class="n">en</span> <span class="o">+</span> <span class="mf">0.12</span> <span class="o">+</span> <span class="mf">0.11</span><span class="o">/</span><span class="n">en</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="mf">1.</span>
+
+    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">prob</span></div>
 
 
 <div class="viewcode-block" id="poisson_float"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.poisson_float">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
