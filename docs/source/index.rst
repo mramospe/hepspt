@@ -19,11 +19,7 @@ modules of the hep_spt package.
    plotting
    stats
 
-Examples
-========
-
-.. automodule:: hep_spt.examples
-
+   examples
 
 Indices and tables
 ==================
