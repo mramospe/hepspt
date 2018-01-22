@@ -6,6 +6,9 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
+# Custom
+from hep_spt.core import decorate
+
 # Python
 import numpy as np
 
@@ -13,7 +16,7 @@ import numpy as np
 __all__ = ['gcd', 'is_power_2', 'lcm', 'next_power_2']
 
 
-@np.vectorize
+@decorate(np.vectorize)
 def gcd( a, b, *args ):
     '''
     :param a: first number.
@@ -33,7 +36,7 @@ def gcd( a, b, *args ):
         return reduce(gcd, args + (a, b))
 
 
-@np.vectorize
+@decorate(np.vectorize)
 def is_power_2( n ):
     '''
     :param n: input number.
@@ -44,7 +47,7 @@ def is_power_2( n ):
     return n > 0 and ((n & (n - 1)) == 0)
 
 
-@np.vectorize
+@decorate(np.vectorize)
 def lcm( a, b, *args ):
     '''
     :param a: first number.
@@ -62,7 +65,7 @@ def lcm( a, b, *args ):
         return reduce(lcm, args + (a, b))
 
 
-@np.vectorize
+@decorate(np.vectorize)
 def next_power_2( n ):
     '''
     :param n: input number.
@@ -70,7 +73,7 @@ def next_power_2( n ):
     :returns: next power of 2 to the given number.
     :rtype: int
 
-    .. note: If the input number is a power of two, it will return
-    the same number.
+    .. note: If the input number is a power of two, it will return the \
+    same number.
     '''
     return 1 << (n - 1).bit_length()

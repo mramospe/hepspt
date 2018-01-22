@@ -17,6 +17,7 @@ import warnings
 
 # Local
 from hep_spt import __project_path__
+from hep_spt.core import decorate
 
 # Define confidence intervals.
 __chi2_one_dof__ = chi2(1)
@@ -41,7 +42,7 @@ __all__ = ['jac_poisson_float_l', 'poisson_float', 'calc_poisson_freq_uncert',
            'poisson_freq_uncert_one_sigma', 'process_uncert']
 
 
-@np.vectorize
+@decorate(np.vectorize)
 def calc_poisson_freq_uncert( m, cl = __one_sigma__ ):
     '''
     Return the lower and upper bayesian uncertainties for
@@ -89,7 +90,7 @@ def calc_poisson_freq_uncert( m, cl = __one_sigma__ ):
     return process_uncert(m, lw, up)
 
 
-@np.vectorize
+@decorate(np.vectorize)
 def jac_poisson_float_l( l, k, tol = __poisson_from_stirling__ ):
     '''
     Return the value of Jacobian of the poisson_float
@@ -111,7 +112,7 @@ def jac_poisson_float_l( l, k, tol = __poisson_from_stirling__ ):
     return (k*1./l - 1.)*poisson_float(l, k, tol)
 
 
-@np.vectorize
+@decorate(np.vectorize)
 def poisson_float( l, k, tol = __poisson_from_stirling__ ):
     '''
     Calculate the Poisson distribution value for floating
