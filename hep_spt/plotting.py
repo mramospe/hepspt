@@ -14,11 +14,19 @@ from hep_spt.stats import poisson_freq_uncert_one_sigma
 # Python
 import matplotlib.pyplot as plt
 import numpy as np
-import os
+import math, os
 from cycler import cycler
 
 
-__all__ = ['PlotVar', 'errorbar_hist', 'process_range', 'samples_cycler', 'set_style', 'text_in_rectangles']
+__all__ = [
+    'PlotVar',
+    'errorbar_hist',
+    'opt_fig_div',
+    'process_range',
+    'samples_cycler',
+    'set_style',
+    'text_in_rectangles'
+    ]
 
 
 class PlotVar:
@@ -81,12 +89,36 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
         s = float(values.sum())
 
         if s != 0:
-            values /= s
-            ey /= s
+            values = values/s
+            ey = ey/s
         else:
             ey *= np.finfo(ey.dtype).max
 
     return values, edges, ex, ey
+
+
+def opt_fig_div( naxes ):
+    '''
+    Get the optimal figure division for a given number of axes, where
+    all the axes have the same dimensions.
+
+    :param naxes: number of axes to plot in the figure.
+    :type naxes: int
+    :returns: number of rows and columns of axes to draw.
+    :rtype: int, int
+    '''
+    nstsq = int(round(math.sqrt(naxes)))
+
+    if nstsq**2 > naxes:
+        nx = nstsq
+        ny = nstsq
+    else:
+        nx = nstsq
+        ny = nstsq
+        while nx*ny < naxes:
+            ny += 1
+
+    return nx, ny
 
 
 def process_range( arr, rg = None ):
