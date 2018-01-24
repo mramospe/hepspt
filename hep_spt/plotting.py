@@ -65,7 +65,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     :type rg: tuple(float, float)
     :param wgts: possible weights for the histogram.
     :type wgts: collection(value-type)
-    :param norm: if True, normalize the histogram. If it is set to a number,
+    :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
     :returns: values, edges, the spacing between bins in X the Y errors. \
