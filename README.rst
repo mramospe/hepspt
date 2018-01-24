@@ -2,6 +2,10 @@
 hep_spt
 =======
 
+[![Documentation](https://img.shields.io/badge/documentation-link-blue.svg)](https://mramospe.github.io/hep_spt/)
+
+.. inclusion-marker-do-not-remove
+
 The High Energy Physics Statistics and Plotting Tools package provides tools to work in High Energy Physics using general python packages.
 
 Main points
@@ -21,7 +25,7 @@ Considerations:
 Installation:
 =============
 
-To use the **latest development version**, clone and install with `pip`:
+To use the **latest development version**, clone the repository and install with `pip`:
 
 .. code-block:: bash
 
