@@ -34,7 +34,7 @@ class PlotVar:
     Define an object to store plotting information, like a name, a title,
     a binning scheme and a range.
     '''
-    def __init__( self, name, title = None, bins = 20, rg = None ):
+    def __init__( self, name, title = None, bins = 20, rg = None, logscale = False ):
         '''
         :param name: name of the variable.
         :type name: str
@@ -44,11 +44,14 @@ class PlotVar:
         :type bins: int or sequence of scalars or str
         :param rg: range of this variable (min, max).
         :type rg: tuple(float, float)
+        :param logscale: store whether to use logscale in the plots.
+        :type logscale: bool
         '''
-        self.name  = name
-        self.title = title or name
-        self.bins  = bins
-        self.rg    = rg
+        self.name     = name
+        self.title    = title or name
+        self.bins     = bins
+        self.rg       = rg
+        self.logscale = logscale
 
 
 def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
@@ -62,6 +65,9 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     :type rg: tuple(float, float)
     :param wgts: possible weights for the histogram.
     :type wgts: collection(value-type)
+    :param norm: if True, normalize the histogram. If it is set to a number,
+    the histogram is normalized and multiplied by that number.
+    :type norm: bool, int or float
     :returns: values, edges, the spacing between bins in X the Y errors. \
     In the non-weighted case, errors in Y are returned as two arrays, with the \
     lower and upper uncertainties.
@@ -69,7 +75,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     '''
     if wgts is not None:
         # Use sum of the square of weights to calculate the error
-        sw2, edges = np.histogram(arr, bins, rg, weights = wgts)
+        sw2, edges = np.histogram(arr, bins, rg, weights = wgts*wgts)
 
         values, _ = np.histogram(arr, edges, weights = wgts)
 
@@ -86,7 +92,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
 
     if norm:
 
-        s = float(values.sum())
+        s = float(values.sum())/norm
 
         if s != 0:
             values = values/s
