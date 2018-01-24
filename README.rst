@@ -2,7 +2,8 @@
 hep_spt
 =======
 
-[![Documentation](https://img.shields.io/badge/documentation-link-blue.svg)](https://mramospe.github.io/hep_spt/)
+.. image:: https://img.shields.io/badge/documentation-link-blue.svg
+   :target: https://mramospe.github.io/hep_spt/
 
 .. inclusion-marker-do-not-remove
 
