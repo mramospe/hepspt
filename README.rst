@@ -7,21 +7,22 @@ hep_spt
 
 .. inclusion-marker-do-not-remove
 
-The High Energy Physics Statistics and Plotting Tools package provides tools to work in High Energy Physics using general python packages.
+The **High Energy Physics Statistics and Plotting Tools** package provides tools to work in **High Energy Physics** using general python packages.
 
 Main points
 ===========
 
-  * Statistical functions to work Bayesian/Frequentist approaches.
+  * Statistical functions to work with Bayesian/Frequentist approaches.
   * Utilities to handle poissonian/weighted histograms.
-  * Tools to handle figures with `matplotlib <https://matplotlib.org/>`_.
+  * Tools to handle `matplotlib <https://matplotlib.org/>`_ figures.
 
 Considerations:
 ===============
 
-  * Samples are preferred as structured numpy.ndarray or pandas.DataFrame objects.
-  * Plotting functions and classes are designed to work with matplotlib.
-  * Statistical tools are built on top of the standard scipy package.
+  * This package makes use of `numpy <http://www.numpy.org/>`_ and `pandas <https://pandas.pydata.org/>`_.
+  * Samples are usually preferred as structured `numpy.ndarray <https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ndarray.html>`_ or `pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html>`_ objects.
+  * Plotting functions and classes are designed to work with `matplotlib <https://matplotlib.org/>`_.
+  * Statistical tools are built on top of the standard `scipy <https://www.scipy.org/>`_ package.
 
 Installation:
 =============
