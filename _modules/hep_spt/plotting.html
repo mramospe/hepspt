@@ -56,11 +56,19 @@
 <span class="c1"># Python</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">cycler</span> <span class="k">import</span> <span class="n">cycler</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PlotVar&#39;</span><span class="p">,</span> <span class="s1">&#39;errorbar_hist&#39;</span><span class="p">,</span> <span class="s1">&#39;process_range&#39;</span><span class="p">,</span> <span class="s1">&#39;samples_cycler&#39;</span><span class="p">,</span> <span class="s1">&#39;set_style&#39;</span><span class="p">,</span> <span class="s1">&#39;text_in_rectangles&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;PlotVar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;errorbar_hist&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;opt_fig_div&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;process_range&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;samples_cycler&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_style&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;text_in_rectangles&#39;</span>
+    <span class="p">]</span>
 
 
 <div class="viewcode-block" id="PlotVar"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar">[docs]</a><span class="k">class</span> <span class="nc">PlotVar</span><span class="p">:</span>
@@ -68,7 +76,7 @@
 <span class="sd">    Define an object to store plotting information, like a name, a title,</span>
 <span class="sd">    a binning scheme and a range.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-<div class="viewcode-block" id="PlotVar.__init__"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="PlotVar.__init__"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">logscale</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :param name: name of the variable.</span>
 <span class="sd">        :type name: str</span>
@@ -78,11 +86,14 @@
 <span class="sd">        :type bins: int or sequence of scalars or str</span>
 <span class="sd">        :param rg: range of this variable (min, max).</span>
 <span class="sd">        :type rg: tuple(float, float)</span>
+<span class="sd">        :param logscale: store whether to use logscale in the plots.</span>
+<span class="sd">        :type logscale: bool</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span>  <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="ow">or</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span>  <span class="o">=</span> <span class="n">bins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rg</span>    <span class="o">=</span> <span class="n">rg</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span>     <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span>    <span class="o">=</span> <span class="n">title</span> <span class="ow">or</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span>     <span class="o">=</span> <span class="n">bins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rg</span>       <span class="o">=</span> <span class="n">rg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logscale</span> <span class="o">=</span> <span class="n">logscale</span></div></div>
 
 
 <div class="viewcode-block" id="errorbar_hist"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.errorbar_hist">[docs]</a><span class="k">def</span> <span class="nf">errorbar_hist</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
@@ -96,6 +107,9 @@
 <span class="sd">    :type rg: tuple(float, float)</span>
 <span class="sd">    :param wgts: possible weights for the histogram.</span>
 <span class="sd">    :type wgts: collection(value-type)</span>
+<span class="sd">    :param norm: if True, normalize the histogram. If it is set to a number,</span>
+<span class="sd">    the histogram is normalized and multiplied by that number.</span>
+<span class="sd">    :type norm: bool, int or float</span>
 <span class="sd">    :returns: values, edges, the spacing between bins in X the Y errors. \</span>
 <span class="sd">    In the non-weighted case, errors in Y are returned as two arrays, with the \</span>
 <span class="sd">    lower and upper uncertainties.</span>
@@ -103,7 +117,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">wgts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Use sum of the square of weights to calculate the error</span>
-        <span class="n">sw2</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
+        <span class="n">sw2</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">*</span><span class="n">wgts</span><span class="p">)</span>
 
         <span class="n">values</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
 
@@ -120,15 +134,39 @@
 
     <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
 
-        <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">/</span><span class="n">norm</span>
 
         <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">values</span> <span class="o">/=</span> <span class="n">s</span>
-            <span class="n">ey</span> <span class="o">/=</span> <span class="n">s</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">/</span><span class="n">s</span>
+            <span class="n">ey</span> <span class="o">=</span> <span class="n">ey</span><span class="o">/</span><span class="n">s</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ey</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">ey</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
 
     <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span></div>
+
+
+<div class="viewcode-block" id="opt_fig_div"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.opt_fig_div">[docs]</a><span class="k">def</span> <span class="nf">opt_fig_div</span><span class="p">(</span> <span class="n">naxes</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the optimal figure division for a given number of axes, where</span>
+<span class="sd">    all the axes have the same dimensions.</span>
+
+<span class="sd">    :param naxes: number of axes to plot in the figure.</span>
+<span class="sd">    :type naxes: int</span>
+<span class="sd">    :returns: number of rows and columns of axes to draw.</span>
+<span class="sd">    :rtype: int, int</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">nstsq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">naxes</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">nstsq</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">naxes</span><span class="p">:</span>
+        <span class="n">nx</span> <span class="o">=</span> <span class="n">nstsq</span>
+        <span class="n">ny</span> <span class="o">=</span> <span class="n">nstsq</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nx</span> <span class="o">=</span> <span class="n">nstsq</span>
+        <span class="n">ny</span> <span class="o">=</span> <span class="n">nstsq</span>
+        <span class="k">while</span> <span class="n">nx</span><span class="o">*</span><span class="n">ny</span> <span class="o">&lt;</span> <span class="n">naxes</span><span class="p">:</span>
+            <span class="n">ny</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span></div>
 
 
 <div class="viewcode-block" id="process_range"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.process_range">[docs]</a><span class="k">def</span> <span class="nf">process_range</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>

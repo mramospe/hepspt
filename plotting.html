@@ -46,12 +46,12 @@
 <p>Provide some useful functions to plot with matplotlib.</p>
 <dl class="class">
 <dt id="hep_spt.plotting.PlotVar">
-<em class="property">class </em><code class="descclassname">hep_spt.plotting.</code><code class="descname">PlotVar</code><span class="sig-paren">(</span><em>name</em>, <em>title=None</em>, <em>bins=20</em>, <em>rg=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#PlotVar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.PlotVar" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hep_spt.plotting.</code><code class="descname">PlotVar</code><span class="sig-paren">(</span><em>name</em>, <em>title=None</em>, <em>bins=20</em>, <em>rg=None</em>, <em>logscale=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#PlotVar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.PlotVar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define an object to store plotting information, like a name, a title,
 a binning scheme and a range.</p>
 <dl class="method">
 <dt id="hep_spt.plotting.PlotVar.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>title=None</em>, <em>bins=20</em>, <em>rg=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#PlotVar.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.PlotVar.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>title=None</em>, <em>bins=20</em>, <em>rg=None</em>, <em>logscale=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#PlotVar.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.PlotVar.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -61,6 +61,7 @@ a binning scheme and a range.</p>
 <li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – title of the variable.</li>
 <li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em> or </em><em>sequence of scalars</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – see the argument “bins” in <code class="xref py py-func docutils literal"><span class="pre">numpy.histogram()</span></code>.</li>
 <li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>)</em>) – range of this variable (min, max).</li>
+<li><strong>logscale</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – store whether to use logscale in the plots.</li>
 </ul>
 </td>
 </tr>
@@ -83,19 +84,37 @@ a binning scheme and a range.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>arr</strong> – input array of data to process.</li>
 <li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em> or </em><em>sequence of scalars</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – see <code class="xref py py-func docutils literal"><span class="pre">numpy.histogram()</span></code>.</li>
 <li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>)</em>) – range to process in the input array.</li>
 <li><strong>wgts</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – possible weights for the histogram.</li>
+<li><strong>norm</strong> – if True, normalize the histogram. If it is set to a number,</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">values, edges, the spacing between bins in X the Y errors.     In the non-weighted case, errors in Y are returned as two arrays, with the     lower and upper uncertainties.</p>
-</td>
+</tbody>
+</table>
+<p>the histogram is normalized and multiplied by that number.
+:type norm: bool, int or float
+:returns: values, edges, the spacing between bins in X the Y errors.     In the non-weighted case, errors in Y are returned as two arrays, with the     lower and upper uncertainties.
+:rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.plotting.opt_fig_div">
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">opt_fig_div</code><span class="sig-paren">(</span><em>naxes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#opt_fig_div"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.opt_fig_div" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the optimal figure division for a given number of axes, where
+all the axes have the same dimensions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>naxes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of axes to plot in the figure.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">number of rows and columns of axes to draw.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a></td>
 </tr>
 </tbody>
 </table>
@@ -199,22 +218,24 @@ with the values from “smps”.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="adbin.html">adbin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="math_aux.html">math_aux</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">plotting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stats.html">stats</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="adbin.html">adbin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math_aux.html">math_aux</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stats.html">stats</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/plotting.html">Plotting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/adbin.html">Adaptive binning</a></li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">Modules</a><ul>
       <li>Previous: <a href="math_aux.html" title="previous chapter">math_aux</a></li>
       <li>Next: <a href="stats.html" title="next chapter">stats</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
