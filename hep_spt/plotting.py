@@ -20,13 +20,18 @@ from cycler import cycler
 
 __all__ = [
     'PlotVar',
+    'available_styles',
     'errorbar_hist',
     'opt_fig_div',
+    'path_to_styles',
     'process_range',
     'samples_cycler',
     'set_style',
     'text_in_rectangles'
     ]
+
+# Path to the directory containing the styles
+__path_to_styles__ = os.path.join(__project_path__, 'mpl')
 
 
 class PlotVar:
@@ -52,6 +57,16 @@ class PlotVar:
         self.bins     = bins
         self.rg       = rg
         self.logscale = logscale
+
+
+def available_styles():
+    '''
+    :returns: list with the names of the available styles within this package.
+    :rtype: list(str)
+    '''
+    available_styles = list(map(lambda s: s[:s.find('.mplstyle')],
+                                os.listdir(__path_to_styles__)))
+    return available_styles
 
 
 def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
@@ -127,6 +142,14 @@ def opt_fig_div( naxes ):
     return nx, ny
 
 
+def path_to_styles():
+    '''
+    :returns: path to the directory containing the styles.
+    :rtype: str
+    '''
+    return __path_to_styles__
+
+
 def process_range( arr, rg = None ):
     '''
     Process the given range, determining the minimum and maximum
@@ -186,11 +209,37 @@ def samples_cycler( smps, *args, **kwargs ):
     return re_cyc + cycler(label = smps)
 
 
-def set_style():
+def set_style( *args ):
     '''
-    Set the default style for matplotlib to that from this project.
+    Set the style for matplotlib to one within this project. Available styles
+    are:
+
+    * singleplot: designed to create a single figure.
+    * multiplot: to make subplots. Labels and titles are smaller than in \
+    "singleplot", although lines and markers maintain their sizes.
+
+    By default the "singleplot" style is set.
+
+    :param args: styles to load.
+    :type args: tuple
     '''
-    plt.style.use(os.path.join(__project_path__, 'mpl/hep_spt.mplstyle'))
+    args = list(args)
+    if len(args) == 0:
+        # The default style is always set
+        args = ['default', 'singleplot']
+    elif 'default' not in args:
+        args.insert(0, 'default')
+
+    avsty = available_styles()
+
+    sty_args = []
+    for s in args:
+        if s not in avsty:
+            warnings.warn('Unknown style "{}", will not be loaded'.format(style))
+        else:
+            sty_args.append(os.path.join(__path_to_styles__, '{}.mplstyle'.format(s)))
+
+    plt.style.use(sty_args)
 
 
 def text_in_rectangles( ax, recs, txt, **kwargs ):

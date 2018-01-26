@@ -6,21 +6,15 @@
 
 # Axes
 axes.labelpad     : 10.0
-axes.labelsize    : 20
 axes.linewidth    : 1.5
 axes.spines.right : False
 axes.spines.top   : False
-axes.titlesize    : 24
 
 # Error bar
 errorbar.capsize : 1.5
 
-# Figure
-figure.figsize : 8, 7
-
 # Font
 font.family : serif
-font.size   : 12
 
 # Lines
 lines.linewidth  : 1.5
@@ -32,8 +26,6 @@ text.latex.preamble : \usepackage{amsmath}
 text.usetex         : True
 
 # Ticks
-xtick.labelsize   : 20
-ytick.labelsize   : 20
 xtick.major.width : 1.5
 ytick.major.width : 1.5
 xtick.minor.width : 1.0
