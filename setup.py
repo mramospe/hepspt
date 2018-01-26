@@ -13,10 +13,29 @@ from setuptools import setup, find_packages
 
 #
 # Version of the package. Before a new release is made
-# just the "version_info" must be changed.
+# just the "version_info" must be changed. The options
+# for the fourth tag are "dev", "alpha", "beta",
+# "cand", "final" or "post".
 #
-version_info = (0, 0, 0)
-version = '.'.join(map(str, version_info))
+version_info = (0, 0, 0, 'dev', 0)
+
+tag = version_info[3]
+
+if tag != 'final':
+    if tag == 'alpha':
+        frmt = '{}a{}'
+    elif tag == 'beta':
+        frmt = '{}b{}'
+    elif tag == 'cand':
+        frmt = '{}rc{}'
+    elif tag == 'post':
+        frmt = '{}.post{}'
+    elif tag == 'dev':
+        frmt = '{}.dev{}'
+    else:
+        raise ValueError('Unable to parse version information')
+
+version = frmt.format('.'.join(map(str, version_info[:3])), version_info[4])
 
 # Setup function
 setup(
