@@ -51,7 +51,7 @@ def test_adbin_hist2d():
     bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 2)
     assert nbins == len(bins)
 
-    exp = size/nbins
+    exp = float(size)/nbins
 
     assert _within_expectations(bins, exp - 0.5, exp + 0.5)
 
@@ -61,17 +61,17 @@ def test_adbin_hist2d():
     bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 3)
     assert nbins != len(bins)
 
-    exp = size/27
+    exp = float(size)/27
 
-    assert _within_expectations(bins, exp - 2, exp + 2)
+    assert _within_expectations(bins, exp - 2., exp + 2.)
 
     # Weighted case
     nbins = 8
     bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, wgts = weights)
 
-    exp = weights.sum()/nbins
+    exp = float(weights.sum())/nbins
 
-    assert _within_expectations(bins, exp - 2, exp + 2)
+    assert _within_expectations(bins, exp - 2., exp + 2.)
 
 
 def _within_expectations( bins, vmin, vmax ):

@@ -116,7 +116,7 @@ class AdBin:
 
             return min(sl, sr)
 
-        frags = np.array([_msz(self.arr, i) for i in xrange(self.arr.shape[1])])
+        frags = np.array([_msz(self.arr, i) for i in range(self.arr.shape[1])])
 
         # The sample is cut following the criteria that leads to the
         # smallest bin possible.
@@ -280,7 +280,7 @@ def adbin_hist1d_edges( arr, nbins = 100, rg = None, wgts = None ):
 
     edges = np.zeros(nbins + 1)
 
-    for i in xrange(nbins - 1):
+    for i in range(nbins - 1):
 
         csum = wgts.cumsum()
         reqs = csum[-1]/float(nbins - i)
@@ -365,7 +365,7 @@ def adbin_hist2d_rectangles( bins, arr,
 
     # Get the contents associated to each bin
     func = getattr(AdBin, fill)
-    contents = np.array(map(lambda b: func(b, arr, wgts), bins))
+    contents = np.array(list(map(lambda b: func(b, arr, wgts), bins)))
 
     if color:
 
@@ -414,7 +414,7 @@ def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2 ):
 
     .. seealso: :meth:`AdBin.divide`
     '''
-    assert len(arr) / nbins > 0
+    assert len(arr) // nbins > 0
 
     bins = [AdBin(arr, rg, wgts)]
     while len(bins) < nbins:

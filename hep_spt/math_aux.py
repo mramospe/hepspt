@@ -11,6 +11,7 @@ from hep_spt.core import decorate
 
 # Python
 import numpy as np
+from functools import reduce
 
 
 __all__ = ['gcd', 'is_power_2', 'lcm', 'next_power_2']
@@ -76,4 +77,4 @@ def next_power_2( n ):
     .. note: If the input number is a power of two, it will return the \
     same number.
     '''
-    return 1 << (n - 1).bit_length()
+    return 1 << int(n - 1).bit_length()

@@ -25,11 +25,11 @@ setup(
 
     version = version,
 
-    description = 'Package to provide some focused functionality of general '\
-    'python packages to High Energy Physics',
+    description = 'Provides statistical and plotting tools using general '\
+    'python packages, focused to High Energy Physics.',
 
     # Read the long description from the README
-    long_description = open('README.rst').readlines(),
+    long_description = open('README.rst').read(),
 
     # Keywords to search for the package
     keywords = 'physics hep statistics plotting',
@@ -41,7 +41,7 @@ setup(
     package_data = {'hep_spt': ['data/*', 'mpl/*']},
 
     # Requisites
-    install_requires = ['matplotlib', 'numpy', 'pytest'],
+    install_requires = ['matplotlib', 'numpy', 'pytest', 'scipy'],
 
     # Test requirements
     setup_requires = ['pytest-runner'],

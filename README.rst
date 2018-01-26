@@ -1,12 +1,36 @@
-Introduction
-============
+=======
+hep_spt
+=======
 
-The High Energy Physics Statistics and Plotting Tools package provides tools to work in High Energy Physics using general python packages.
+.. image:: https://img.shields.io/badge/documentation-link-blue.svg
+   :target: https://mramospe.github.io/hep_spt/
 
-To work with this package, please consider that:
+.. inclusion-marker-do-not-remove
 
-  * Samples are preferred as structured numpy.ndarray or pandas.DataFrame objects.
-  * Plotting functions and classes are designed to work with matplotlib.
-  * Statistical tools are built on top of the standard scipy package.
+The **High Energy Physics Statistics and Plotting Tools** package provides tools to work in **High Energy Physics** using general python packages.
 
-Find the full documentation for the package in the `GitHub Pages <https://mramospe.github.io/hep_spt/>`_.
+Main points
+===========
+
+  * Statistical functions to work with Bayesian/Frequentist approaches.
+  * Utilities to handle poissonian/weighted histograms.
+  * Tools to handle `matplotlib <https://matplotlib.org/>`_ figures.
+
+Considerations:
+===============
+
+  * This package makes use of `numpy <http://www.numpy.org/>`_ and `pandas <https://pandas.pydata.org/>`_.
+  * Samples are usually preferred as structured `numpy.ndarray <https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ndarray.html>`_ or `pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html>`_ objects.
+  * Plotting functions and classes are designed to work with `matplotlib <https://matplotlib.org/>`_.
+  * Statistical tools are built on top of the standard `scipy <https://www.scipy.org/>`_ package.
+
+Installation:
+=============
+
+To use the **latest development version**, clone the repository and install with `pip`:
+
+.. code-block:: bash
+
+   git clone https://github.com/mramospe/hep_spt.git
+   cd hep_spt
+   sudo pip install .

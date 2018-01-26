@@ -25,6 +25,7 @@ __all__ = [
     'opt_fig_div',
     'path_to_styles',
     'process_range',
+    'pull',
     'samples_cycler',
     'set_style',
     'text_in_rectangles'
@@ -80,7 +81,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     :type rg: tuple(float, float)
     :param wgts: possible weights for the histogram.
     :type wgts: collection(value-type)
-    :param norm: if True, normalize the histogram. If it is set to a number,
+    :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
     :returns: values, edges, the spacing between bins in X the Y errors. \
@@ -172,6 +173,71 @@ def process_range( arr, rg = None ):
         vmax = np.nextafter(amax, np.infty)
 
     return vmin, vmax
+
+
+def pull( vals, err, ref ):
+    '''
+    Get the pull with the associated errors for a given set of values and a
+    reference. Considering, :math:`v` as the experimental value and :math:`r`
+    as the rerference, the definition of this quantity is :math:`(v - r)/\sigma`
+    in case symmetric errors are provided. In the case of asymmetric errors the
+    definition is:
+
+    .. math::
+       \\text{pull}
+       =
+       \Biggl \lbrace
+       {
+       (v - r)/\sigma_{low},\\text{ if } v - r \geq 0
+       \\atop
+       (v - r)/\sigma_{up}\\text{ otherwise }
+       }
+
+    In the latter case, the errors are computed in such a way that the closer to
+    the reference is equal to 1 and the other is scaled accordingly, so if
+    :math:`v - r > 0`, then :math:`\sigma^{pull}_{low} = 1` and
+    :math:`\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}`.
+
+    :param vals: values to compare with.
+    :type vals: array-like
+    :param err: array of errors. Both symmetric and asymmetric errors \
+    can be provided. In the latter case, they must be provided as a \
+    (2, n) array.
+    :type err: array-like
+    :param ref: reference to follow.
+    :type ref: array-like
+    :returns: pull of the values with respect to the reference and \
+    associated errors. In case asymmetric errors have been provided, \
+    the returning array has shape (2, n).
+    :rtype: array-like, array-like
+    '''
+    pull = vals - ref
+
+    perr = np.ones_like(err)
+
+    if len(err.shape) == 1:
+        # Symmetric errors
+        pull /= err
+
+    elif len(err.shape) == 2:
+        # Asymmetric errors
+
+        up = (pull >= 0)
+        lw = (pull < 0)
+
+        el, eu = err
+
+        pull[up] /= el[up]
+        pull[lw] /= eu[lw]
+
+        perr_l, perr_u = perr
+
+        perr_l[lw] = (el[lw]/eu[lw])
+        perr_u[up] = (eu[up]/el[up])
+    else:
+        raise TypeError('The error array must have shape (2, n) or (n,)')
+
+    return pull, perr
 
 
 def samples_cycler( smps, *args, **kwargs ):
