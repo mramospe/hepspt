@@ -13,7 +13,7 @@ Main points
 ===========
 
   * Statistical functions to work with Bayesian/Frequentist approaches.
-  * Utilities to handle poissonian/weighted histograms.
+  * Utilities to handle poissonian and/or weighted histograms.
   * Tools to handle `matplotlib <https://matplotlib.org/>`_ figures.
 
 Considerations:
