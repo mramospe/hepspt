@@ -2,11 +2,11 @@
 hep_spt
 =======
 
-.. image:: https://img.shields.io/badge/documentation-link-blue.svg
-   :target: https://mramospe.github.io/hep_spt/
-
 .. image:: https://img.shields.io/travis/rust-lang/rust.svg
    :target: https://travis-ci.org/mramospe/hep_spt
+
+.. image:: https://img.shields.io/badge/documentation-link-blue.svg
+   :target: https://mramospe.github.io/hep_spt/
 
 .. inclusion-marker-do-not-remove
 
