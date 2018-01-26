@@ -49,5 +49,11 @@
 ehthumbs.db
 Thumbs.db
 
+# PIP installation files #
+##########################
+.eggs/
+hep_spt.egg-info/
+hep_spt/version.py
+
 # Other files #
 *.txt
