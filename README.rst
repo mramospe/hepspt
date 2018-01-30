@@ -2,7 +2,7 @@
 hep_spt
 =======
 
-.. image:: https://img.shields.io/travis/rust-lang/rust.svg
+.. image:: https://img.shields.io/travis/mramospe/hep_spt.svg
    :target: https://travis-ci.org/mramospe/hep_spt
 
 .. image:: https://img.shields.io/badge/documentation-link-blue.svg
