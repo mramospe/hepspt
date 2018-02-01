@@ -28,6 +28,7 @@
 # Temporal files #
 *#
 *~
+*.cache
 
 # Logs and databases #
 ######################
