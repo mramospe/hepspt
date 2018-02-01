@@ -12,7 +12,7 @@ import numpy as np
 from math import exp, log, sqrt
 from scipy.optimize import fsolve
 from scipy.special import gamma
-from scipy.stats import chi2, kstwobign
+from scipy.stats import beta, chi2, kstwobign
 from scipy.stats import ks_2samp as scipy_ks_2samp
 
 # Local
@@ -38,15 +38,16 @@ __poisson_from_stirling__ = 100
 __poisson_to_gauss__ = 200
 
 
-__all__ = ['jac_poisson_float_l', 'poisson_float', 'calc_poisson_freq_uncert',
+__all__ = ['jac_poisson_float_l', 'poisson_float',
+           'calc_cp_freq_uncert', 'calc_poisson_freq_uncert',
            'ks_2samp', 'poisson_freq_uncert_one_sigma', 'process_uncert']
 
 
 @decorate(np.vectorize)
 def calc_poisson_freq_uncert( m, cl = __one_sigma__ ):
     '''
-    Return the lower and upper bayesian uncertainties for
-    a poisson distribution with mean "k" given the chi-square.
+    Return the lower and upper frequentist uncertainties for
+    a poisson distribution with mean "m".
 
     :param m: mean of the Poisson distribution.
     :type m: float
@@ -88,6 +89,40 @@ def calc_poisson_freq_uncert( m, cl = __one_sigma__ ):
     up = fsolve(fright, iright, fprime = jright)[0]
 
     return process_uncert(m, lw, up)
+
+
+@decorate(np.vectorize)
+def calc_cp_freq_uncert( k, N, cl = __one_sigma__ ):
+    '''
+    Return the frequentist Clopper-Pearson uncertainties of having
+    "k" events in "N".
+
+    :param k: passed events.
+    :type k: int
+    :param N: total number of events.
+    :type N: int
+    :param cl: confidence level.
+    :type cl: float
+    :returns: lower and upper uncertainties on the efficiency.
+    :rtype: float
+    '''
+    p = float(k)/N
+
+    pcl = 0.5*(1. - cl)
+
+    # Lower uncertainty
+    if k != 0:
+        lw = beta(k, N - k + 1).ppf(pcl)
+    else:
+        lw = p
+
+    # Upper uncertainty
+    if k != N:
+        up = beta(k + 1, N - k).ppf(1. - pcl)
+    else:
+        up = p
+
+    return p - lw, up - p
 
 
 @decorate(np.vectorize)

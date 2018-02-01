@@ -15,6 +15,30 @@ from scipy.stats import norm
 from scipy.stats import ks_2samp as scipy_ks_2samp
 
 
+def test_poisson_freq_uncert():
+    '''
+    Test the functions to calculate poissonian frequentist
+    uncertainties.
+    '''
+    sl, sr = hep_spt.calc_poisson_freq_uncert(0)
+    assert sl == 0
+
+
+def test_cp_freq_():
+    '''
+    Test the function to calculate frequentist uncertainties on
+    efficiencies.
+    '''
+    sl, sr = hep_spt.calc_cp_freq_uncert(1, 1)
+    assert sr == 0.
+
+    sl, sr = hep_spt.calc_cp_freq_uncert(0, 1)
+    assert sl == 0.
+
+    sl, sr = hep_spt.calc_cp_freq_uncert(1, 2)
+    assert np.isclose(sl, sr)
+
+
 def test_ks():
     '''
     Test the Kolmogorov-Smirnov test function.
