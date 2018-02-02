@@ -63,6 +63,8 @@ def calc_poisson_fu( m, cl = __one_sigma__ ):
     :type cl: float
     :returns: lower and upper uncertainties.
     :rtype: float, float
+
+    .. note:: This function might turn very time consuming. Consider using :func:`poisson_fu` instead.
     '''
     sm = sqrt(m)
 
@@ -98,6 +100,8 @@ def calc_poisson_llu( m, cl = __one_sigma__ ):
     :type cl: float
     :returns: lower and upper uncertainties.
     :rtype: float, float
+
+    .. note:: This function might turn very time consuming. Consider using :func:`poisson_llu` instead.
     '''
     ns = np.sqrt(__chi2_one_dof__.ppf(cl))
 
@@ -290,7 +294,7 @@ def poisson_fu( m ):
     :returns: lower and upper frequentist uncertainties.
     :rtype: array-like(float, float)
 
-    .. note:: The input array is recasted to int before doing the operation.
+    .. note:: The input array is recasted to integer type before doing the operation.
     '''
     return _poisson_u_from_db(m, 'poisson_fu.dat')
 
@@ -303,25 +307,25 @@ def poisson_llu( m ):
     negative logarithm of the likelihood multiplied by two:
 
     .. math::
-       \sigma_\\text{low}
-       =
-       n_\\text{obs} - \lambda_\\text{low}
-       \text{ where }
-       2\Log P(n_\\text{obs}|n_\\text{obs}) - 2\Log P(n_\\text{obs}|\lambda_\\text{low}) = 1
+       \sigma_\\text{low} = n_\\text{obs} - \lambda_\\text{low}
 
     .. math::
-       \sigma_\\text{up}
-       =
-       \lambda_\\text{up} - n_\\text{obs}
-       \text{ where }
-       2\Log P(n_\\text{obs}|n_\\text{obs}) - 2\Log P(n_\\text{obs}|\lambda_\\text{up}) = 1
+       \\alpha - 2\log P(n_\\text{obs}|\lambda_\\text{low}) = 1
+
+    .. math::
+       \sigma_\\text{up} = \lambda_\\text{up} - n_\\text{obs}
+
+    .. math::
+       \\alpha - 2\log P(n_\\text{obs}|\lambda_\\text{up}) = 1
+
+    where :math:`\\alpha = 2\log P(n_\\text{obs}|n_\\text{obs})`.
 
     :param m: measured value(s).
     :type m: array-like
     :returns: lower and upper frequentist uncertainties.
     :rtype: array-like(float, float)
 
-    .. note:: The input array is recasted to int before doing the operation.
+    .. note:: The input array is recasted to integer type before doing the operation.
     '''
     return _poisson_u_from_db(m, 'poisson_llu.dat')
 
