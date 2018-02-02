@@ -22,6 +22,13 @@ help:
 gh-pages: html
 	$(GITCOMMANDS)
 
+# Target to update the notebooks
+notebooks: source/notebooks/*.ipynb
+	jupyter nbconvert --execute --inplace $^
+
+# Necessary so "make" does not try to build the ".ipynb" files (by calling Sphinx)
+%.ipynb:
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
