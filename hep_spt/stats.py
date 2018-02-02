@@ -22,9 +22,6 @@ from hep_spt.core import decorate
 # Define confidence intervals.
 __chi2_one_dof__ = chi2(1)
 __one_sigma__    = __chi2_one_dof__.cdf(1)
-__two_sigma__    = __chi2_one_dof__.cdf(4)
-__three_sigma__  = __chi2_one_dof__.cdf(9)
-__five_sigma__   = __chi2_one_dof__.cdf(25)
 
 # Define Poisson tolerance. If this number is 100, we can
 # use Stirling's approximation of log(k!) with a relative
