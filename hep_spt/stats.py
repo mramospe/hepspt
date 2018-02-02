@@ -33,9 +33,11 @@ __poisson_from_stirling__ = 100
 __poisson_to_gauss__ = 200
 
 
-__all__ = ['calc_poisson_fu', 'cp_fu', 'ks_2samp',
+__all__ = ['calc_poisson_fu',
+           'cp_fu', 'ks_2samp',
+           'gauss_u',
            'poisson_float', 'poisson_fu',
-           'process_uncert']
+           'process_poisson_u']
 
 
 @decorate(np.vectorize)
@@ -67,18 +69,18 @@ def calc_poisson_fu( m, cl = __one_sigma__ ):
 
         rleft = np.arange(m, m + 50*sm, dtype = int)
         fleft = lambda l: poisson_float(l, rleft).sum() - alpha
-        jleft = lambda l: [jac_poisson_float_l(l, rleft).sum()]
+        jleft = lambda l: [_jac_poisson_float_l(l, rleft).sum()]
 
         lw = fsolve(fleft, ileft, fprime = jleft)[0]
 
     iright = m + sm
     rright = np.arange(0, m + 1, dtype = int)
     fright = lambda l: poisson_float(l, rright).sum() - alpha
-    jright = lambda l: [jac_poisson_float_l(l, rright).sum()]
+    jright = lambda l: [_jac_poisson_float_l(l, rright).sum()]
 
     up = fsolve(fright, iright, fprime = jright)[0]
 
-    return process_uncert(m, lw, up)
+    return process_poisson_u(m, lw, up)
 
 
 @decorate(np.vectorize)
@@ -115,8 +117,24 @@ def cp_fu( k, N, cl = __one_sigma__ ):
     return p - lw, up - p
 
 
+def gauss_u( s, cl = __one_sigma__ ):
+    '''
+    Calculate the gaussian uncertainty for a given confidence level.
+
+    :param s: standard deviation of the gaussian.
+    :type s: float
+    :param cl: confidence level.
+    :type cl: float
+    :returns: gaussian uncertainty.
+    :rtype: float
+    '''
+    n = np.sqrt(__chi2_one_dof__.ppf(cl))
+
+    return n*s
+
+
 @decorate(np.vectorize)
-def jac_poisson_float_l( l, k, tol = __poisson_from_stirling__ ):
+def _jac_poisson_float_l( l, k, tol = __poisson_from_stirling__ ):
     '''
     Return the value of Jacobian of the poisson_float
     function considering that it depends exclusively on "l".
@@ -243,6 +261,11 @@ def poisson_fu( m ):
     '''
     m = np.array(m, dtype = np.int32)
 
+    scalar_input = False
+    if m.ndim == 0:
+        m = m[None]
+        scalar_input = True
+
     out = np.zeros((len(m), 2), dtype = np.float64)
 
     ifile = os.path.join(__project_path__, 'data/poisson_fu.dat')
@@ -259,10 +282,12 @@ def poisson_fu( m ):
         # Use the gaussian approximation of the uncertainty
         out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
 
+    if scalar_input:
+        return np.squeeze(out)
     return out
 
 
-def process_uncert( m, lw, up ):
+def process_poisson_u( m, lw, up ):
     '''
     Calculate the uncertainties and display an error if they
     have been incorrectly calculated.
