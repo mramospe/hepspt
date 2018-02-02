@@ -383,7 +383,7 @@ if __name__ == '__main__':
     '''
     m = np.arange(__poisson_to_gauss__)
 
-    print 'Creating databases:'
+    print('Creating databases:')
     for func in (calc_poisson_fu, calc_poisson_llu):
 
         ucts = np.array(func(m, __one_sigma__)).T
@@ -392,6 +392,6 @@ if __name__ == '__main__':
 
         fpath = os.path.join('data', name)
 
-        print '- ' + fpath
+        print('- {}'.format(fpath))
 
         np.savetxt(fpath, ucts)
