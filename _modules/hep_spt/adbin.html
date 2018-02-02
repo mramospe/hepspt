@@ -50,7 +50,7 @@
 
 <span class="c1"># Custom</span>
 <span class="kn">from</span> <span class="nn">hep_spt.plotting</span> <span class="k">import</span> <span class="n">errorbar_hist</span><span class="p">,</span> <span class="n">process_range</span>
-<span class="kn">from</span> <span class="nn">hep_spt.stats</span> <span class="k">import</span> <span class="n">poisson_freq_uncert_one_sigma</span>
+<span class="kn">from</span> <span class="nn">hep_spt.stats</span> <span class="k">import</span> <span class="n">poisson_fu</span>
 
 <span class="c1"># Python</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -237,7 +237,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
 
-            <span class="n">uncert</span> <span class="o">=</span> <span class="n">poisson_freq_uncert_one_sigma</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span>
+            <span class="n">uncert</span> <span class="o">=</span> <span class="n">poisson_fu</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">uncert</span><span class="p">)</span></div></div>
 

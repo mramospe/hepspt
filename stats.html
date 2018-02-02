@@ -45,61 +45,65 @@
 <span id="stats"></span><h1>stats<a class="headerlink" href="#module-hep_spt.stats" title="Permalink to this headline">¶</a></h1>
 <p>Function and classes representing statistical tools.</p>
 <dl class="function">
-<dt id="hep_spt.stats.jac_poisson_float_l">
-<code class="descclassname">hep_spt.stats.</code><code class="descname">jac_poisson_float_l</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#jac_poisson_float_l"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.jac_poisson_float_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value of Jacobian of the poisson_float
-function considering that it depends exclusively on “l”.</p>
+<dt id="hep_spt.stats.calc_poisson_fu">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">calc_poisson_fu</code><span class="sig-paren">(</span><em>m</em>, <em>cl=0.6826894921370859</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#calc_poisson_fu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.calc_poisson_fu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the lower and upper frequentist uncertainties for
+a poisson distribution with mean “m”.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>l</strong> (<em>numpy.ndarray</em>) – mean(s) of the Poisson.</li>
-<li><strong>k</strong> (<em>numpy.ndarray</em>) – position(s) to evaluate.</li>
-<li><strong>tol</strong> (<em>numpy.ndarray</em>) – tolerance(s) from which the Stirling’s approximation     will be used.</li>
+<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – mean of the Poisson distribution.</li>
+<li><strong>cl</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – confidence level (between 0 and 1).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value(s) of the poisson jacobian.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">lower and upper uncertainties.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
 </td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function might turn very time consuming. Consider using <a class="reference internal" href="#hep_spt.stats.poisson_fu" title="hep_spt.stats.poisson_fu"><code class="xref py py-func docutils literal"><span class="pre">poisson_fu()</span></code></a> instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
-<dt id="hep_spt.stats.poisson_float">
-<code class="descclassname">hep_spt.stats.</code><code class="descname">poisson_float</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#poisson_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.poisson_float" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the Poisson distribution value for floating
-numbers. The next term to the usual Stirling’s
-approximation must be used to treat the cases where l ~ k.</p>
+<dt id="hep_spt.stats.calc_poisson_llu">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">calc_poisson_llu</code><span class="sig-paren">(</span><em>m</em>, <em>cl=0.6826894921370859</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#calc_poisson_llu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.calc_poisson_llu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate poisson uncertainties based on the logarithm of likelihood.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>l</strong> (<em>numpy.ndarray</em>) – mean(s) of the Poisson distribution.</li>
-<li><strong>k</strong> (<em>numpy.ndarray</em>) – position(s) to evaluate.</li>
-<li><strong>tol</strong> – tolerance(s) from which the Stirling’s approximation     will be used.</li>
+<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – mean of the Poisson distribution.</li>
+<li><strong>cl</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – confidence level (between 0 and 1).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value(s) of the Poisson distribution.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">lower and upper uncertainties.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
 </td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function might turn very time consuming. Consider using <a class="reference internal" href="#hep_spt.stats.poisson_llu" title="hep_spt.stats.poisson_llu"><code class="xref py py-func docutils literal"><span class="pre">poisson_llu()</span></code></a> instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
-<dt id="hep_spt.stats.calc_cp_freq_uncert">
-<code class="descclassname">hep_spt.stats.</code><code class="descname">calc_cp_freq_uncert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#calc_cp_freq_uncert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.calc_cp_freq_uncert" title="Permalink to this definition">¶</a></dt>
+<dt id="hep_spt.stats.cp_fu">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">cp_fu</code><span class="sig-paren">(</span><em>k</em>, <em>N</em>, <em>cl=0.6826894921370859</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#cp_fu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.cp_fu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the frequentist Clopper-Pearson uncertainties of having
 “k” events in “N”.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -117,31 +121,6 @@ approximation must be used to treat the cases where l ~ k.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="hep_spt.stats.calc_poisson_freq_uncert">
-<code class="descclassname">hep_spt.stats.</code><code class="descname">calc_poisson_freq_uncert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#calc_poisson_freq_uncert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.calc_poisson_freq_uncert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the lower and upper frequentist uncertainties for
-a poisson distribution with mean “m”.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – mean of the Poisson distribution.</li>
-<li><strong>cl</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – confidence level (between 0 and 1).</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">lower and upper uncertainties.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></p>
 </td>
 </tr>
 </tbody>
@@ -179,11 +158,34 @@ instead.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="hep_spt.stats.poisson_freq_uncert_one_sigma">
-<code class="descclassname">hep_spt.stats.</code><code class="descname">poisson_freq_uncert_one_sigma</code><span class="sig-paren">(</span><em>m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#poisson_freq_uncert_one_sigma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.poisson_freq_uncert_one_sigma" title="Permalink to this definition">¶</a></dt>
+<dt id="hep_spt.stats.gauss_u">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">gauss_u</code><span class="sig-paren">(</span><em>s</em>, <em>cl=0.6826894921370859</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#gauss_u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.gauss_u" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the gaussian uncertainty for a given confidence level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>s</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em> or </em><em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>)</em>) – standard deviation of the gaussian.</li>
+<li><strong>cl</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – confidence level.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">gaussian uncertainty.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a> or collection(<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.stats.poisson_fu">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">poisson_fu</code><span class="sig-paren">(</span><em>m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#poisson_fu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.poisson_fu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the poisson frequentist uncertainty at one standard
-deviation of confidence level. The input array recasted
-to int before doing the operation.</p>
+deviation of confidence level.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -196,32 +198,44 @@ to int before doing the operation.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The input array is recasted to integer type before doing the operation.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
-<dt id="hep_spt.stats.process_uncert">
-<code class="descclassname">hep_spt.stats.</code><code class="descname">process_uncert</code><span class="sig-paren">(</span><em>m</em>, <em>lw</em>, <em>up</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#process_uncert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.process_uncert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the uncertainties and display an error if they
-have been incorrectly calculated.</p>
+<dt id="hep_spt.stats.poisson_llu">
+<code class="descclassname">hep_spt.stats.</code><code class="descname">poisson_llu</code><span class="sig-paren">(</span><em>m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/stats.html#poisson_llu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.stats.poisson_llu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the poisson uncertainty at one standard deviation of
+confidence level. The lower and upper uncertainties are defined
+by those two points with a variation of one in the value of the
+negative logarithm of the likelihood multiplied by two:</p>
+<div class="math">
+\[\sigma_\text{low} = n_\text{obs} - \lambda_\text{low}\]</div>
+<div class="math">
+\[\alpha - 2\log P(n_\text{obs}|\lambda_\text{low}) = 1\]</div>
+<div class="math">
+\[\sigma_\text{up} = \lambda_\text{up} - n_\text{obs}\]</div>
+<div class="math">
+\[\alpha - 2\log P(n_\text{obs}|\lambda_\text{up}) = 1\]</div>
+<p>where <span class="math">\(\alpha = 2\log P(n_\text{obs}|n_\text{obs})\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – mean value.</li>
-<li><strong>lw</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – lower bound.</li>
-<li><strong>up</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – upper bound.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>m</strong> (<em>array-like</em>) – measured value(s).</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">lower and upper uncertainties.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">lower and upper frequentist uncertainties.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">array-like(float, float)</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array-like(<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a>)</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The input array is recasted to integer type before doing the operation.</p>
+</div>
 </dd></dl>
 
 </div>
