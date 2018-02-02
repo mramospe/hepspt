@@ -373,7 +373,8 @@ def _process_poisson_u( m, lw, up ):
         warnings.warn('Poisson uncertainties have been '\
                       'incorrectly calculated')
 
-    return s_lw, s_up
+    # numpy.vectorize needs to know the exact type of the output
+    return float(s_lw), float(s_up)
 
 
 if __name__ == '__main__':

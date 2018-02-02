@@ -23,6 +23,11 @@ def test_poisson_fu():
     sl, sr = hep_spt.calc_poisson_fu(0)
     assert sl == 0
 
+    sl, sr = hep_spt.calc_poisson_fu([0, 1])
+    for i, (l, r) in enumerate(zip(sl, sr)):
+        lr, rr = hep_spt.calc_poisson_fu(i)
+        assert np.isclose((l, r), (lr, rr)).all()
+
     sl, sr = hep_spt.poisson_fu(0)
     assert sl == 0
 
@@ -36,6 +41,11 @@ def test_poisson_llu():
     '''
     sl, sr = hep_spt.calc_poisson_llu(0)
     assert sl == 0
+
+    sl, sr = hep_spt.calc_poisson_llu([0, 1])
+    for i, (l, r) in enumerate(zip(sl, sr)):
+        lr, rr = hep_spt.calc_poisson_llu(i)
+        assert np.isclose((l, r), (lr, rr)).all()
 
     sl, sr = hep_spt.poisson_llu(0)
     assert sl == 0
