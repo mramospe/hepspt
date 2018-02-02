@@ -9,7 +9,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Local
 from hep_spt import __project_path__
 from hep_spt.math_aux import lcm
-from hep_spt.stats import poisson_freq_uncert_one_sigma
+from hep_spt.stats import poisson_fu
 
 # Python
 import matplotlib.pyplot as plt
@@ -102,7 +102,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
         values, edges = np.histogram(arr, bins, rg, weights = wgts)
 
         # For compatibility with matplotlib.pyplot.errorbar
-        ey = poisson_freq_uncert_one_sigma(values).T
+        ey = poisson_fu(values).T
 
     ex = (edges[1:] - edges[:-1])/2.
 

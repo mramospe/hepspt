@@ -30,18 +30,16 @@ __poisson_from_stirling__ = 100
 
 # Number after which the poisson uncertainty is considered to
 # be the same as that of a gaussian with "std = sqrt(lambda)".
-# This number has been chosen so the difference of the
-# relative uncertainty is ~0.5%.
 __poisson_to_gauss__ = 200
 
 
-__all__ = ['jac_poisson_float_l', 'poisson_float',
-           'calc_cp_freq_uncert', 'calc_poisson_freq_uncert',
-           'ks_2samp', 'poisson_freq_uncert_one_sigma', 'process_uncert']
+__all__ = ['calc_poisson_fu', 'cp_fu', 'ks_2samp',
+           'poisson_float', 'poisson_fu',
+           'process_uncert']
 
 
 @decorate(np.vectorize)
-def calc_poisson_freq_uncert( m, cl = __one_sigma__ ):
+def calc_poisson_fu( m, cl = __one_sigma__ ):
     '''
     Return the lower and upper frequentist uncertainties for
     a poisson distribution with mean "m".
@@ -54,11 +52,6 @@ def calc_poisson_freq_uncert( m, cl = __one_sigma__ ):
     :rtype: float, float
     '''
     sm = sqrt(m)
-
-    if m > __poisson_to_gauss__:
-        # Use the gaussian approximation of the uncertainty
-        s = sqrt(m)
-        return s, s
 
     alpha = (1. - cl)/2.
 
@@ -89,7 +82,7 @@ def calc_poisson_freq_uncert( m, cl = __one_sigma__ ):
 
 
 @decorate(np.vectorize)
-def calc_cp_freq_uncert( k, N, cl = __one_sigma__ ):
+def cp_fu( k, N, cl = __one_sigma__ ):
     '''
     Return the frequentist Clopper-Pearson uncertainties of having
     "k" events in "N".
@@ -237,10 +230,10 @@ def poisson_float( l, k, tol = __poisson_from_stirling__ ):
         return 1./gamma(k + 1)*exp(k*log(l) - l)
 
 
-def poisson_freq_uncert_one_sigma( m ):
+def poisson_fu( m ):
     '''
     Return the poisson frequentist uncertainty at one standard
-    deviation of confidence level. The input array recasted
+    deviation of confidence level. The input array is recasted
     to int before doing the operation.
 
     :param m: measured value(s).
@@ -252,7 +245,7 @@ def poisson_freq_uncert_one_sigma( m ):
 
     out = np.zeros((len(m), 2), dtype = np.float64)
 
-    ifile = os.path.join(__project_path__, 'data/poisson_freq_uncert_one_sigma.dat')
+    ifile = os.path.join(__project_path__, 'data/poisson_fu.dat')
 
     table = np.loadtxt(ifile)
 
@@ -262,10 +255,9 @@ def poisson_freq_uncert_one_sigma( m ):
     # Non-approximated uncertainties
     out[no_app] = table[m[no_app]]
 
-    # Approximated uncertainties. This is not time-consuming. We
-    # are just returning the square root of the input number.
     if mk_app.any():
-        out[mk_app] = np.array(calc_poisson_freq_uncert(m[mk_app])).T
+        # Use the gaussian approximation of the uncertainty
+        out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
 
     return out
 
@@ -307,6 +299,6 @@ if __name__ == '__main__':
         }
 
     m = np.arange(__poisson_to_gauss__)
-    ucts = np.array(calc_poisson_freq_uncert(m, __one_sigma__)).T
+    ucts = np.array(calc_poisson_fu(m, __one_sigma__)).T
 
-    np.savetxt('data/poisson_freq_uncert_one_sigma.dat', ucts)
+    np.savetxt('data/poisson_fu.dat', ucts)

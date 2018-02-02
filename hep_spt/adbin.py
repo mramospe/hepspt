@@ -8,7 +8,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Custom
 from hep_spt.plotting import errorbar_hist, process_range
-from hep_spt.stats import poisson_freq_uncert_one_sigma
+from hep_spt.stats import poisson_fu
 
 # Python
 import numpy as np
@@ -195,7 +195,7 @@ class AdBin:
         else:
             sw = np.count_nonzero(true)
 
-            uncert = poisson_freq_uncert_one_sigma(sw)
+            uncert = poisson_fu(sw)
 
         return float(uncert)
 
