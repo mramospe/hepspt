@@ -321,23 +321,54 @@ with the original curve. The pull plot is shown below.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/home/slimbook/repos/hep_spt/hep_spt/plotting.py:230: RuntimeWarning: divide by zero encountered in divide
-  pull[up] /= el[up]
-/home/slimbook/repos/hep_spt/hep_spt/plotting.py:236: RuntimeWarning: divide by zero encountered in divide
-  perr_u[up] = (eu[up]/el[up])
-</pre></div></div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_plotting_5_0.png" src="../_images/notebooks_plotting_5_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Plotting-efficiencies">
+<h1>Plotting efficiencies<a class="headerlink" href="#Plotting-efficiencies" title="Permalink to this headline">¶</a></h1>
+<p>Let’s suppose we build two histograms from the same sample, one of them
+after having applied some requirements. The first histogram will follow
+a gaussian distribution with center at 0 and standard deviation equal to
+2, with 1000 entries. The second, with only 100 entries, will have the
+same center but the standard deviation will be 0.5. The efficiency plot
+would be calculated as follows:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># Create a random sample</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">cut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Create the histograms (we do not care about the errors for the moment). Note that the two</span>
+<span class="c1"># histograms have the same number of bins and range.</span>
+<span class="n">h_raw</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">h_cut</span><span class="p">,</span> <span class="n">_</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">cut</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+
+<span class="n">ex</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+
+<span class="c1"># Calculate the efficiency and the errors</span>
+<span class="n">eff</span> <span class="o">=</span> <span class="n">h_cut</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">/</span><span class="n">h_raw</span>
+<span class="n">ey</span>  <span class="o">=</span> <span class="n">hep_spt</span><span class="o">.</span><span class="n">cp_fu</span><span class="p">(</span><span class="n">h_cut</span><span class="p">,</span> <span class="n">h_raw</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">eff</span><span class="p">,</span> <span class="n">ey</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_plotting_5_1.png" src="../_images/notebooks_plotting_5_1.png" />
-</div>
+<img alt="../_images/notebooks_plotting_8_0.png" src="../_images/notebooks_plotting_8_0.png" />
 </div>
 </div>
 </div>
@@ -362,6 +393,7 @@ with the original curve. The pull plot is shown below.</p>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Plotting-efficiencies">Plotting efficiencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="adbin.html">Adaptive binning</a></li>
 </ul>
 </li>
