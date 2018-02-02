@@ -23,6 +23,25 @@ def test_poisson_fu():
     sl, sr = hep_spt.calc_poisson_fu(0)
     assert sl == 0
 
+    sl, sr = hep_spt.poisson_fu(0)
+    assert sl == 0
+
+    sl, sr = hep_spt.poisson_fu(2*hep_spt.stats.__poisson_to_gauss__)
+
+
+def test_poisson_llu():
+    '''
+    Test the functions to calculate poissonian uncertainties based
+    on the logarithm of likelihood.
+    '''
+    sl, sr = hep_spt.calc_poisson_llu(0)
+    assert sl == 0
+
+    sl, sr = hep_spt.poisson_llu(0)
+    assert sl == 0
+
+    sl, sr = hep_spt.poisson_llu(2*hep_spt.stats.__poisson_to_gauss__)
+
 
 def test_cp_freq_():
     '''

@@ -12,7 +12,7 @@ import numpy as np
 from math import exp, log, sqrt
 from scipy.optimize import fsolve
 from scipy.special import gamma
-from scipy.stats import beta, chi2, kstwobign
+from scipy.stats import beta, chi2, kstwobign, poisson
 from scipy.stats import ks_2samp as scipy_ks_2samp
 
 # Local
@@ -23,21 +23,32 @@ from hep_spt.core import decorate
 __chi2_one_dof__ = chi2(1)
 __one_sigma__    = __chi2_one_dof__.cdf(1)
 
-# Define Poisson tolerance. If this number is 100, we can
-# use Stirling's approximation of log(k!) with a relative
-# error of 0.001.
-__poisson_from_stirling__ = 100
-
 # Number after which the poisson uncertainty is considered to
 # be the same as that of a gaussian with "std = sqrt(lambda)".
 __poisson_to_gauss__ = 200
 
 
-__all__ = ['calc_poisson_fu',
+__all__ = ['calc_poisson_fu', 'calc_poisson_llu',
            'cp_fu', 'ks_2samp',
            'gauss_u',
-           'poisson_float', 'poisson_fu',
-           'process_poisson_u']
+           'poisson_fu', 'poisson_llu',
+          ]
+
+
+def _access_db( name ):
+    '''
+    Access a database table under 'data/'.
+
+    :param name: name of the file holding the data.
+    :type name: str
+    :returns: array holding the data.
+    :rtype: numpy.ndarray
+    '''
+    ifile = os.path.join(__project_path__, 'data', name)
+
+    table = np.loadtxt(ifile)
+
+    return table
 
 
 @decorate(np.vectorize)
@@ -57,30 +68,55 @@ def calc_poisson_fu( m, cl = __one_sigma__ ):
 
     alpha = (1. - cl)/2.
 
+    il, ir = _poisson_initials(m)
+
     if m < 1:
         # In this case there is only an upper uncertainty, so
         # the coverage is reset so it covers the whole "cl"
-        lw = 0.
+        lw = m
         alpha *= 2.
     else:
-        ileft = m - sm
-        if ileft < 0:
-            ileft = 0.
+        fleft = lambda l: 1. - (poisson.cdf(m, l) - poisson.pmf(m, l)) - alpha
 
-        rleft = np.arange(m, m + 50*sm, dtype = int)
-        fleft = lambda l: poisson_float(l, rleft).sum() - alpha
-        jleft = lambda l: [_jac_poisson_float_l(l, rleft).sum()]
+        lw = fsolve(fleft, il)[0]
 
-        lw = fsolve(fleft, ileft, fprime = jleft)[0]
+    fright = lambda l: poisson.cdf(m, l) - alpha
 
-    iright = m + sm
-    rright = np.arange(0, m + 1, dtype = int)
-    fright = lambda l: poisson_float(l, rright).sum() - alpha
-    jright = lambda l: [_jac_poisson_float_l(l, rright).sum()]
+    up = fsolve(fright, ir)[0]
 
-    up = fsolve(fright, iright, fprime = jright)[0]
+    return _process_poisson_u(m, lw, up)
 
-    return process_poisson_u(m, lw, up)
+
+@decorate(np.vectorize)
+def calc_poisson_llu( m, cl = __one_sigma__ ):
+    '''
+    Calculate poisson uncertainties based on the logarithm of likelihood.
+
+    :param m: mean of the Poisson distribution.
+    :type m: float
+    :param cl: confidence level (between 0 and 1).
+    :type cl: float
+    :returns: lower and upper uncertainties.
+    :rtype: float, float
+    '''
+    ns = np.sqrt(__chi2_one_dof__.ppf(cl))
+
+    nll = lambda x: -2.*np.log(poisson.pmf(m, x))
+
+    ref = nll(m)
+
+    func = lambda x: nll(x) - ref - ns
+
+    il, ir = _poisson_initials(m)
+
+    if m < 1:
+        lw = m
+    else:
+        lw = fsolve(func, il)[0]
+
+    up = fsolve(func, ir)[0]
+
+    return _process_poisson_u(m, lw, up)
 
 
 @decorate(np.vectorize)
@@ -117,42 +153,63 @@ def cp_fu( k, N, cl = __one_sigma__ ):
     return p - lw, up - p
 
 
+def _poisson_u_from_db( m, database ):
+    '''
+    Decorator for functions to calculate poissonian uncertainties,
+    which are partially stored on databases. If "m" is above the
+    maximum number stored in the database, the gaussian approximation
+    is taken instead.
+
+    :param database: name of the database.
+    :type database: str
+    :returns: lower and upper frequentist uncertainties.
+    :rtype: array-like(float, float)
+    '''
+    m = np.array(m, dtype = np.int32)
+
+    scalar_input = False
+    if m.ndim == 0:
+        m = m[None]
+        scalar_input = True
+
+    no_app = (m < __poisson_to_gauss__)
+
+    if np.count_nonzero(no_app) == 0:
+        # We can use the gaussian approximation in all
+        out = np.array(2*[np.sqrt(m)]).T
+    else:
+        # Non-approximated uncertainties
+        table = _access_db(database)
+
+        out = np.zeros((len(m), 2), dtype = np.float64)
+
+        out[no_app] = table[m[no_app]]
+
+        mk_app = np.logical_not(no_app)
+
+        if mk_app.any():
+            # Use the gaussian approximation for the rest
+            out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
+
+    if scalar_input:
+        return np.squeeze(out)
+    return out
+
+
 def gauss_u( s, cl = __one_sigma__ ):
     '''
     Calculate the gaussian uncertainty for a given confidence level.
 
     :param s: standard deviation of the gaussian.
-    :type s: float
+    :type s: float or collection(float)
     :param cl: confidence level.
     :type cl: float
     :returns: gaussian uncertainty.
-    :rtype: float
+    :rtype: float or collection(float)
     '''
     n = np.sqrt(__chi2_one_dof__.ppf(cl))
 
     return n*s
-
-
-@decorate(np.vectorize)
-def _jac_poisson_float_l( l, k, tol = __poisson_from_stirling__ ):
-    '''
-    Return the value of Jacobian of the poisson_float
-    function considering that it depends exclusively on "l".
-
-    :param l: mean(s) of the Poisson.
-    :type l: numpy.ndarray
-    :param k: position(s) to evaluate.
-    :type k: numpy.ndarray
-    :param tol: tolerance(s) from which the Stirling's approximation \
-    will be used.
-    :type tol: numpy.ndarray
-    :returns: value(s) of the poisson jacobian.
-    :rtype: float
-    '''
-    if l == 0:
-        return 0.
-
-    return (k*1./l - 1.)*poisson_float(l, k, tol)
 
 
 def _ks_2samp_values( arr, wgts = None ):
@@ -223,71 +280,75 @@ def ks_2samp( a, b, wa = None, wb = None ):
     return d, prob
 
 
-@decorate(np.vectorize)
-def poisson_float( l, k, tol = __poisson_from_stirling__ ):
-    '''
-    Calculate the Poisson distribution value for floating
-    numbers. The next term to the usual Stirling's
-    approximation must be used to treat the cases where l ~ k.
-
-    :param l: mean(s) of the Poisson distribution.
-    :type l: numpy.ndarray
-    :param k: position(s) to evaluate.
-    :type k: numpy.ndarray
-    :param tol: tolerance(s) from which the Stirling's approximation \
-    will be used.
-    :returns: value(s) of the Poisson distribution.
-    :rtype: numpy.ndarray
-    '''
-    if l <= 0:
-        return 0.
-
-    if k > tol:
-        return exp(k*log(l*1./k) + k - l - 0.5*log(2*np.pi*k))
-    else:
-        return 1./gamma(k + 1)*exp(k*log(l) - l)
-
-
 def poisson_fu( m ):
     '''
     Return the poisson frequentist uncertainty at one standard
-    deviation of confidence level. The input array is recasted
-    to int before doing the operation.
+    deviation of confidence level.
 
     :param m: measured value(s).
     :type m: array-like
     :returns: lower and upper frequentist uncertainties.
     :rtype: array-like(float, float)
+
+    .. note:: The input array is recasted to int before doing the operation.
     '''
-    m = np.array(m, dtype = np.int32)
-
-    scalar_input = False
-    if m.ndim == 0:
-        m = m[None]
-        scalar_input = True
-
-    out = np.zeros((len(m), 2), dtype = np.float64)
-
-    ifile = os.path.join(__project_path__, 'data/poisson_fu.dat')
-
-    table = np.loadtxt(ifile)
-
-    no_app = (m < len(table))
-    mk_app = np.logical_not(no_app)
-
-    # Non-approximated uncertainties
-    out[no_app] = table[m[no_app]]
-
-    if mk_app.any():
-        # Use the gaussian approximation of the uncertainty
-        out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
-
-    if scalar_input:
-        return np.squeeze(out)
-    return out
+    return _poisson_u_from_db(m, 'poisson_fu.dat')
 
 
-def process_poisson_u( m, lw, up ):
+def poisson_llu( m ):
+    '''
+    Return the poisson uncertainty at one standard deviation of
+    confidence level. The lower and upper uncertainties are defined
+    by those two points with a variation of one in the value of the
+    negative logarithm of the likelihood multiplied by two:
+
+    .. math::
+       \sigma_\\text{low}
+       =
+       n_\\text{obs} - \lambda_\\text{low}
+       \text{ where }
+       2\Log P(n_\\text{obs}|n_\\text{obs}) - 2\Log P(n_\\text{obs}|\lambda_\\text{low}) = 1
+
+    .. math::
+       \sigma_\\text{up}
+       =
+       \lambda_\\text{up} - n_\\text{obs}
+       \text{ where }
+       2\Log P(n_\\text{obs}|n_\\text{obs}) - 2\Log P(n_\\text{obs}|\lambda_\\text{up}) = 1
+
+    :param m: measured value(s).
+    :type m: array-like
+    :returns: lower and upper frequentist uncertainties.
+    :rtype: array-like(float, float)
+
+    .. note:: The input array is recasted to int before doing the operation.
+    '''
+    return _poisson_u_from_db(m, 'poisson_llu.dat')
+
+
+def _poisson_initials( m ):
+    '''
+    Return the boundaries to use as initial values in
+    scipy.optimize.fsolve when calculating poissonian
+    uncertainties.
+
+    :param m: mean of the Poisson distribution.
+    :type m: float
+    :returns: upper and lower boundaries.
+    :rtype: float, float
+    '''
+    sm = np.sqrt(m)
+
+    il = m - sm
+    if il <= 0:
+        # Needed by "calc_poisson_llu"
+        il = 0.1
+    ir = m + sm
+
+    return il, ir
+
+
+def _process_poisson_u( m, lw, up ):
     '''
     Calculate the uncertainties and display an error if they
     have been incorrectly calculated.
@@ -316,14 +377,17 @@ if __name__ == '__main__':
     Generate the tables to store the pre-calculated values of
     some uncertainties.
     '''
-    conds = {
-        'cl' : __one_sigma__,
-
-        '__poisson_from_stirling__' : __poisson_from_stirling__,
-        '__poisson_to_gauss__'      : __poisson_to_gauss__
-        }
-
     m = np.arange(__poisson_to_gauss__)
-    ucts = np.array(calc_poisson_fu(m, __one_sigma__)).T
 
-    np.savetxt('data/poisson_fu.dat', ucts)
+    print 'Creating databases:'
+    for func in (calc_poisson_fu, calc_poisson_llu):
+
+        ucts = np.array(func(m, __one_sigma__)).T
+
+        name = func.__name__.replace('calc_', '') + '.dat'
+
+        fpath = os.path.join('data', name)
+
+        print '- ' + fpath
+
+        np.savetxt(fpath, ucts)
