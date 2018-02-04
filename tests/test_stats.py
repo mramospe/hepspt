@@ -20,18 +20,17 @@ def test_poisson_fu():
     Test the functions to calculate poissonian frequentist
     uncertainties.
     '''
+    # Test single value behaviour
     sl, sr = hep_spt.calc_poisson_fu(0)
     assert sl == 0
 
+    sl, sr = hep_spt.poisson_fu(2*hep_spt.stats.__poisson_to_gauss__)
+
+    # Test numpy.vectorize behaviour
     sl, sr = hep_spt.calc_poisson_fu([0, 1])
     for i, (l, r) in enumerate(zip(sl, sr)):
         lr, rr = hep_spt.calc_poisson_fu(i)
         assert np.isclose((l, r), (lr, rr)).all()
-
-    sl, sr = hep_spt.poisson_fu(0)
-    assert sl == 0
-
-    sl, sr = hep_spt.poisson_fu(2*hep_spt.stats.__poisson_to_gauss__)
 
 
 def test_poisson_llu():
@@ -39,33 +38,37 @@ def test_poisson_llu():
     Test the functions to calculate poissonian uncertainties based
     on the logarithm of likelihood.
     '''
+    # Test single value behaviour
     sl, sr = hep_spt.calc_poisson_llu(0)
     assert sl == 0
 
+    sl, sr = hep_spt.poisson_llu(2*hep_spt.stats.__poisson_to_gauss__)
+
+    # Test numpy.vectorize behaviour
     sl, sr = hep_spt.calc_poisson_llu([0, 1])
     for i, (l, r) in enumerate(zip(sl, sr)):
         lr, rr = hep_spt.calc_poisson_llu(i)
         assert np.isclose((l, r), (lr, rr)).all()
 
-    sl, sr = hep_spt.poisson_llu(0)
-    assert sl == 0
 
-    sl, sr = hep_spt.poisson_llu(2*hep_spt.stats.__poisson_to_gauss__)
-
-
-def test_cp_freq_():
+def test_cp_fu():
     '''
     Test the function to calculate frequentist uncertainties on
     efficiencies.
     '''
-    sl, sr = hep_spt.cp_fu(1, 1)
-    assert sr == 0.
-
+    # Test single value behaviour
     sl, sr = hep_spt.cp_fu(0, 1)
     assert sl == 0.
 
+    sl, sr = hep_spt.cp_fu(1, 1)
+    assert sr == 0.
+
     sl, sr = hep_spt.cp_fu(1, 2)
     assert np.isclose(sl, sr)
+
+    # Test numpy.vectorize behaviour
+    sl, sr = hep_spt.cp_fu([0, 1, 1], [1, 1, 2])
+    assert sl[0] == 0. and sr[1] == 0. and np.isclose(sl[2], sr[2])
 
 
 def test_ks():
