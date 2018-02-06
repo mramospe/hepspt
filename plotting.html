@@ -93,7 +93,7 @@ a binning scheme and a range.</p>
 
 <dl class="function">
 <dt id="hep_spt.plotting.errorbar_hist">
-<code class="descclassname">hep_spt.plotting.</code><code class="descname">errorbar_hist</code><span class="sig-paren">(</span><em>arr</em>, <em>bins=20</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>norm=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#errorbar_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.errorbar_hist" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">errorbar_hist</code><span class="sig-paren">(</span><em>arr</em>, <em>bins=20</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>norm=False</em>, <em>uncert=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#errorbar_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.errorbar_hist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the values needed to create an error bar histogram.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -105,6 +105,7 @@ a binning scheme and a range.</p>
 <li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>)</em>) – range to process in the input array.</li>
 <li><strong>wgts</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – possible weights for the histogram.</li>
 <li><strong>norm</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – if True, normalize the histogram. If it is set to a number,     the histogram is normalized and multiplied by that number.</li>
+<li><strong>uncert</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – type of uncertainties to consider. If None, frequentist     poissonian uncertainties will be considered for non-weighted data, while     the sum of squares of weights is used for weighted data. The possibilities     are:     - “freq”: frequentist uncertainties.     - “dll”: uncertainty based on the difference on the logarithm of     likelihood.     - “sw2”: sum of square of weights. In case of non-weighted data, the     uncertainties will be equal to the square root of the entries in the bin.     A warning is raised if one tries to use “freq” or “dll” on weighted data.</li>
 </ul>
 </td>
 </tr>
@@ -116,6 +117,10 @@ a binning scheme and a range.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="stats.html#hep_spt.stats.poisson_fu" title="hep_spt.stats.poisson_fu"><code class="xref py py-func docutils literal"><span class="pre">hep_spt.stats.poisson_fu()</span></code></a>, <a class="reference internal" href="stats.html#hep_spt.stats.poisson_llu" title="hep_spt.stats.poisson_llu"><code class="xref py py-func docutils literal"><span class="pre">hep_spt.stats.poisson_llu()</span></code></a></p>
+</div>
 </dd></dl>
 
 <dl class="function">
