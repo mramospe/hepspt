@@ -9,7 +9,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Local
 from hep_spt import __project_path__
 from hep_spt.math_aux import lcm
-from hep_spt.stats import poisson_fu
+from hep_spt.stats import poisson_fu, poisson_llu, sw2_u
 
 # Python
 import matplotlib.pyplot as plt
@@ -70,7 +70,7 @@ def available_styles():
     return available_styles
 
 
-def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
+def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert = None ):
     '''
     Calculate the values needed to create an error bar histogram.
 
@@ -84,25 +84,54 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False ):
     :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
+    :param uncert: type of uncertainties to consider. If None, frequentist \
+    poissonian uncertainties will be considered for non-weighted data, while \
+    the sum of squares of weights is used for weighted data. The possibilities \
+    are: \
+    - "freq": frequentist uncertainties. \
+    - "dll": uncertainty based on the difference on the logarithm of \
+    likelihood. \
+    - "sw2": sum of square of weights. In case of non-weighted data, the \
+    uncertainties will be equal to the square root of the entries in the bin. \
+    A warning is raised if one tries to use "freq" or "dll" on weighted data.
+    :type uncert: str or None
     :returns: values, edges, the spacing between bins in X the Y errors. \
     In the non-weighted case, errors in Y are returned as two arrays, with the \
     lower and upper uncertainties.
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
+
+    .. seealso:: :func:`hep_spt.stats.poisson_fu`, :func:`hep_spt.stats.poisson_llu`
     '''
+    if uncert not in (None, 'freq', 'dll', 'sw2'):
+        raise ValueError('Unknown uncertainty type "{}"'.format(uncert))
+
     if wgts is not None:
+
+        if uncert in ('freq', 'dll'):
+            warnings.warn('Uncertainties of type "{}" can not be used on '\
+                          'weighted data'.format(uncert))
+
+        values, edges = np.histogram(arr, bins, weights = wgts)
+
         # Use sum of the square of weights to calculate the error
-        sw2, edges = np.histogram(arr, bins, rg, weights = wgts*wgts)
-
-        values, _ = np.histogram(arr, edges, weights = wgts)
-
-        ey = np.sqrt(sw2)
+        ey = sw2_u(arr, bins, rg, wgts)
 
     else:
+        # By default use frequentist poissonian errors
+        uncert = uncert or 'freq'
+
         # Use the poissonian errors
         values, edges = np.histogram(arr, bins, rg, weights = wgts)
 
+        if uncert == 'freq':
+            ey = poisson_fu(values)
+        elif uncert == 'dll':
+            ey = poisson_llu(values)
+        else:
+            ey = sw2_u(arr, bins, rg, wgts)
+
         # For compatibility with matplotlib.pyplot.errorbar
-        ey = poisson_fu(values).T
+        ey = ey.T
 
     ex = (edges[1:] - edges[:-1])/2.
 

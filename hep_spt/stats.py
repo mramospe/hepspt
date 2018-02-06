@@ -31,7 +31,7 @@ __poisson_to_gauss__ = 200
 __all__ = ['calc_poisson_fu', 'calc_poisson_llu',
            'cp_fu', 'ks_2samp',
            'gauss_u',
-           'poisson_fu', 'poisson_llu',
+           'poisson_fu', 'poisson_llu', 'sw2_u'
           ]
 
 
@@ -375,6 +375,38 @@ def _process_poisson_u( m, lw, up ):
 
     # numpy.vectorize needs to know the exact type of the output
     return float(s_lw), float(s_up)
+
+
+def sw2_u( arr, bins = 20, rg = None, wgts = None ):
+    '''
+    Calculate the errors of a weighted sample. This uncertainty is
+    calculated as follows:
+
+    .. math::
+
+       \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}
+
+    where *i* refers to the i-th bin and :math:`j \in [0, n]` refers to
+    each entry in that bin with weight :math:`\omega_{i,j}`. If "wgts" is
+    None, then this coincides with the square root of the number of entries
+    in each bin.
+
+    :param arr: input array of data to process.
+    :param bins: see :func:`numpy.histogram`.
+    :type bins: int, sequence of scalars or str
+    :param rg: range to process in the input array.
+    :type rg: tuple(float, float)
+    :param wgts: possible weights for the histogram.
+    :type wgts: collection(value-type)
+    :returns: symmetric uncertainty.
+    :rtype: array-like
+    '''
+    if wgts is not None:
+        values = np.histogram(arr, bins, rg, weights = wgts*wgts)[0]
+    else:
+        values = np.histogram(arr, bins, rg)[0]
+
+    return np.sqrt(values)
 
 
 if __name__ == '__main__':
