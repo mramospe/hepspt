@@ -62,7 +62,6 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;PlotVar&#39;</span><span class="p">,</span>
     <span class="s1">&#39;available_styles&#39;</span><span class="p">,</span>
     <span class="s1">&#39;centers_from_edges&#39;</span><span class="p">,</span>
     <span class="s1">&#39;corr_hist2d&#39;</span><span class="p">,</span>
@@ -78,31 +77,6 @@
 
 <span class="c1"># Path to the directory containing the styles</span>
 <span class="n">__path_to_styles__</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__project_path__</span><span class="p">,</span> <span class="s1">&#39;mpl&#39;</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="PlotVar"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar">[docs]</a><span class="k">class</span> <span class="nc">PlotVar</span><span class="p">:</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Define an object to store plotting information, like a name, a title,</span>
-<span class="sd">    a binning scheme and a range.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-<div class="viewcode-block" id="PlotVar.__init__"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.PlotVar.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">logscale</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        :param name: name of the variable.</span>
-<span class="sd">        :type name: str</span>
-<span class="sd">        :param title: title of the variable.</span>
-<span class="sd">        :type title: str</span>
-<span class="sd">        :param bins: see the argument &quot;bins&quot; in :func:`numpy.histogram`.</span>
-<span class="sd">        :type bins: int or sequence of scalars or str</span>
-<span class="sd">        :param rg: range of this variable (min, max).</span>
-<span class="sd">        :type rg: tuple(float, float)</span>
-<span class="sd">        :param logscale: store whether to use logscale in the plots.</span>
-<span class="sd">        :type logscale: bool</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span>     <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title</span>    <span class="o">=</span> <span class="n">title</span> <span class="ow">or</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span>     <span class="o">=</span> <span class="n">bins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rg</span>       <span class="o">=</span> <span class="n">rg</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logscale</span> <span class="o">=</span> <span class="n">logscale</span></div></div>
 
 
 <div class="viewcode-block" id="available_styles"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.available_styles">[docs]</a><span class="k">def</span> <span class="nf">available_styles</span><span class="p">():</span>
