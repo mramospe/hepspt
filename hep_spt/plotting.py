@@ -13,6 +13,7 @@ from hep_spt.stats import poisson_fu, poisson_llu, sw2_u
 
 # Python
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import numpy as np
 import math, os
 from cycler import cycler
@@ -21,6 +22,8 @@ from cycler import cycler
 __all__ = [
     'PlotVar',
     'available_styles',
+    'centers_from_edges',
+    'corr_hist2d',
     'errorbar_hist',
     'opt_fig_div',
     'path_to_styles',
@@ -68,6 +71,79 @@ def available_styles():
     available_styles = list(map(lambda s: s[:s.find('.mplstyle')],
                                 os.listdir(__path_to_styles__)))
     return available_styles
+
+
+def centers_from_edges( edges ):
+    '''
+    :param edges: edges of a histogram.
+    :type edges: numpy.ndarray
+    :returns: centers of the histogram.
+    :rtype: numpy.ndarray
+    '''
+    return (edges[1:] + edges[:-1])/2.
+
+
+def corr_hist2d( ax, matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None ):
+    '''
+    Plot a given correlation matrix in the given axes.
+
+    :param ax: where to draw the histogram.
+    :type ax: matplotlib.axes.Axes
+    :param matrix: correlation matrix.
+    :type matrix: numpy.ndarray
+    :param titles: name of the variables being represented.
+    :type titles: collection(str)
+    :param frmt: format to display the correlation value in each bin. By \
+    default it is assumed that the values go between :math:`[0, 1]`, so \
+    three significant figures are considered. If "frmt" is None, then \
+    no text is displayed in the bins.
+    :type frmt: str
+    :param vmin: minimum value to represent in the histogram.
+    :type vmin: float
+    :param vmax: maximum value to represent in the histogram.
+    :type vmax: float
+    '''
+    edges = np.linspace(0, len(titles), len(titles) + 1)
+
+    centers = centers_from_edges(edges)
+
+    x, y = np.meshgrid(centers, centers)
+
+    x = x.reshape(x.size)
+    y = y.reshape(y.size)
+    c = matrix.reshape(matrix.size)
+
+    vmin = vmin or c.min()
+    vmax = vmax or c.max()
+
+    ax.hist2d(x, y, (edges, edges), weights=c, vmin=vmin, vmax=vmax)
+
+    # Modify the ticks to display the variable names
+    for i, a in enumerate((ax.xaxis, ax.yaxis)):
+
+        a.set_major_formatter(ticker.NullFormatter())
+        a.set_minor_formatter(ticker.FixedFormatter(titles))
+
+        a.set_major_locator(ticker.FixedLocator(edges))
+        a.set_minor_locator(ticker.FixedLocator(centers))
+
+        for tick in a.get_minor_ticks():
+            tick.tick1line.set_markersize(0)
+            tick.tick2line.set_markersize(0)
+            tick.label1.set_rotation(45)
+
+            if i == 0:
+                tick.label1.set_ha('right')
+            else:
+                tick.label1.set_va('top')
+
+    # Annotate the value of the correlation
+    if frmt is not None:
+        for ix, iy, ic in zip(x, y, c):
+            ax.annotate(frmt.format(ic), xy=(ix, iy), ha='center', va='center')
+
+    # Draw the grid
+    ax.grid()
 
 
 def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert = None ):
