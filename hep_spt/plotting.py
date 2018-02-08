@@ -20,7 +20,6 @@ from cycler import cycler
 
 
 __all__ = [
-    'PlotVar',
     'available_styles',
     'centers_from_edges',
     'corr_hist2d',
@@ -36,31 +35,6 @@ __all__ = [
 
 # Path to the directory containing the styles
 __path_to_styles__ = os.path.join(__project_path__, 'mpl')
-
-
-class PlotVar:
-    '''
-    Define an object to store plotting information, like a name, a title,
-    a binning scheme and a range.
-    '''
-    def __init__( self, name, title = None, bins = 20, rg = None, logscale = False ):
-        '''
-        :param name: name of the variable.
-        :type name: str
-        :param title: title of the variable.
-        :type title: str
-        :param bins: see the argument "bins" in :func:`numpy.histogram`.
-        :type bins: int or sequence of scalars or str
-        :param rg: range of this variable (min, max).
-        :type rg: tuple(float, float)
-        :param logscale: store whether to use logscale in the plots.
-        :type logscale: bool
-        '''
-        self.name     = name
-        self.title    = title or name
-        self.bins     = bins
-        self.rg       = rg
-        self.logscale = logscale
 
 
 def available_styles():
