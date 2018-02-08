@@ -92,6 +92,45 @@ a binning scheme and a range.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="hep_spt.plotting.centers_from_edges">
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">centers_from_edges</code><span class="sig-paren">(</span><em>edges</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#centers_from_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.centers_from_edges" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>edges</strong> (<em>numpy.ndarray</em>) – edges of a histogram.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">centers of the histogram.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hep_spt.plotting.corr_hist2d">
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">corr_hist2d</code><span class="sig-paren">(</span><em>ax</em>, <em>matrix</em>, <em>titles</em>, <em>frmt='{:.2f}'</em>, <em>vmin=None</em>, <em>vmax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#corr_hist2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.corr_hist2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a given correlation matrix in the given axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – where to draw the histogram.</li>
+<li><strong>matrix</strong> (<em>numpy.ndarray</em>) – correlation matrix.</li>
+<li><strong>titles</strong> (<em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>)</em>) – name of the variables being represented.</li>
+<li><strong>frmt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – format to display the correlation value in each bin. By     default it is assumed that the values go between <span class="math">\([0, 1]\)</span>, so     three significant figures are considered. If “frmt” is None, then     no text is displayed in the bins.</li>
+<li><strong>vmin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – minimum value to represent in the histogram.</li>
+<li><strong>vmax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – maximum value to represent in the histogram.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="hep_spt.plotting.errorbar_hist">
 <code class="descclassname">hep_spt.plotting.</code><code class="descname">errorbar_hist</code><span class="sig-paren">(</span><em>arr</em>, <em>bins=20</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>norm=False</em>, <em>uncert=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#errorbar_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.errorbar_hist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the values needed to create an error bar histogram.</p>
