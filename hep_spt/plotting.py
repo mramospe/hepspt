@@ -162,7 +162,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert 
             warnings.warn('Uncertainties of type "{}" can not be used on '\
                           'weighted data'.format(uncert))
 
-        values, edges = np.histogram(arr, bins, weights = wgts)
+        values, edges = np.histogram(arr, bins, rg, weights = wgts)
 
         # Use sum of the square of weights to calculate the error
         ey = sw2_u(arr, bins, rg, wgts)
