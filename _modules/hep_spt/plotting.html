@@ -69,6 +69,7 @@
     <span class="s1">&#39;opt_fig_div&#39;</span><span class="p">,</span>
     <span class="s1">&#39;path_to_styles&#39;</span><span class="p">,</span>
     <span class="s1">&#39;process_range&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;profile&#39;</span><span class="p">,</span>
     <span class="s1">&#39;pull&#39;</span><span class="p">,</span>
     <span class="s1">&#39;samples_cycler&#39;</span><span class="p">,</span>
     <span class="s1">&#39;set_style&#39;</span><span class="p">,</span>
@@ -294,6 +295,33 @@
         <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="n">amax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span></div>
+
+
+<div class="viewcode-block" id="profile"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.profile">[docs]</a><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the profile from a 2D data sample. It corresponds to the mean of</span>
+<span class="sd">    the values in &quot;y&quot; for each bin in &quot;x&quot;.</span>
+
+<span class="sd">    :param x: values to consider for the binning.</span>
+<span class="sd">    :type x: collection(value-type)</span>
+<span class="sd">    :param y: values to calculate the mean with.</span>
+<span class="sd">    :type y: collection(value-type)</span>
+<span class="sd">    :param bins: see :func:`numpy.histogram`.</span>
+<span class="sd">    :type bins: int or sequence of scalars or str</span>
+<span class="sd">    :param rg: range to process in the input array.</span>
+<span class="sd">    :type rg: tuple(float, float)</span>
+<span class="sd">    :returns: profile in &quot;y&quot;.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">)</span>
+
+    <span class="n">dig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
+
+    <span class="n">prof</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">dig</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))</span>
+    <span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">prof</span></div>
 
 
 <div class="viewcode-block" id="pull"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.pull">[docs]</a><span class="k">def</span> <span class="nf">pull</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span> <span class="p">):</span>
