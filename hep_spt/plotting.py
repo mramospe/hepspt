@@ -27,6 +27,7 @@ __all__ = [
     'opt_fig_div',
     'path_to_styles',
     'process_range',
+    'profile',
     'pull',
     'samples_cycler',
     'set_style',
@@ -252,6 +253,33 @@ def process_range( arr, rg = None ):
         vmax = np.nextafter(amax, np.infty)
 
     return vmin, vmax
+
+
+def profile( x, y, bins = 20, rg = None ):
+    '''
+    Calculate the profile from a 2D data sample. It corresponds to the mean of
+    the values in "y" for each bin in "x".
+
+    :param x: values to consider for the binning.
+    :type x: collection(value-type)
+    :param y: values to calculate the mean with.
+    :type y: collection(value-type)
+    :param bins: see :func:`numpy.histogram`.
+    :type bins: int or sequence of scalars or str
+    :param rg: range to process in the input array.
+    :type rg: tuple(float, float)
+    :returns: profile in "y".
+    :rtype: numpy.ndarray
+    '''
+    _, edges = np.histogram(x, bins, rg)
+
+    dig = np.digitize(x, edges)
+
+    prof = np.array([
+        y[dig == i].mean() for i in range(1, len(edges))
+    ])
+
+    return prof
 
 
 def pull( vals, err, ref ):
