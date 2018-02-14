@@ -24,18 +24,23 @@ def test_adbin_class():
     '''
     size = 2000
 
-    smp_x   = np.random.normal(0., 2, size)
-    smp_y   = np.random.normal(0., 2, size)
+    smp_x = np.random.normal(0., 2, size)
+    smp_y = np.random.normal(0., 2, size)
+    smp   = np.array([smp_x, smp_y])
 
-    b = hep_spt.AdBin(np.array([smp_x, smp_y]))
+    b = hep_spt.AdBin(smp)
 
     bins = b.divide()
 
     # Default division is in two bins
     assert len(bins) == 2
 
-    # Test raising of RuntimeError in "divide"
+    # Both bins must have the same amount of entries
     bl, br = bins
+
+    assert bl.sw(smp) == br.sw(smp)
+
+    # Test raising of RuntimeError in "divide"
     with pytest.raises(RuntimeError):
         bl.free_memory()
         bl.divide()
