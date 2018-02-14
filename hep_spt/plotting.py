@@ -58,12 +58,10 @@ def centers_from_edges( edges ):
     return (edges[1:] + edges[:-1])/2.
 
 
-def corr_hist2d( ax, matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None ):
+def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax = None ):
     '''
     Plot a given correlation matrix in the given axes.
 
-    :param ax: where to draw the histogram.
-    :type ax: matplotlib.axes.Axes
     :param matrix: correlation matrix.
     :type matrix: numpy.ndarray
     :param titles: name of the variables being represented.
@@ -77,7 +75,11 @@ def corr_hist2d( ax, matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None )
     :type vmin: float
     :param vmax: maximum value to represent in the histogram.
     :type vmax: float
+    :param cax: axes where to draw. If None, then the current axes are taken.
+    :type cax: matplotlib.axes.Axes
     '''
+    cax = cax or plt.gca()
+
     edges = np.linspace(0, len(titles), len(titles) + 1)
 
     centers = centers_from_edges(edges)
@@ -91,10 +93,10 @@ def corr_hist2d( ax, matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None )
     vmin = vmin or c.min()
     vmax = vmax or c.max()
 
-    ax.hist2d(x, y, (edges, edges), weights=c, vmin=vmin, vmax=vmax)
+    cax.hist2d(x, y, (edges, edges), weights=c, vmin=vmin, vmax=vmax)
 
     # Modify the ticks to display the variable names
-    for i, a in enumerate((ax.xaxis, ax.yaxis)):
+    for i, a in enumerate((cax.xaxis, cax.yaxis)):
 
         a.set_major_formatter(ticker.NullFormatter())
         a.set_minor_formatter(ticker.FixedFormatter(titles))
@@ -115,10 +117,10 @@ def corr_hist2d( ax, matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None )
     # Annotate the value of the correlation
     if frmt is not None:
         for ix, iy, ic in zip(x, y, c):
-            ax.annotate(frmt.format(ic), xy=(ix, iy), ha='center', va='center')
+            cax.annotate(frmt.format(ic), xy=(ix, iy), ha='center', va='center')
 
     # Draw the grid
-    ax.grid()
+    cax.grid()
 
 
 def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert = None ):
@@ -415,23 +417,26 @@ def set_style( *args ):
     plt.style.use(sty_args)
 
 
-def text_in_rectangles( ax, recs, txt, **kwargs ):
+def text_in_rectangles( recs, txt, cax = None, **kwargs ):
     '''
     Write text inside matplotlib.patches.Rectangle instances.
 
-    :param ax: axes where the rectangles are being drawn.
-    :type ax: matplotlib.axes.Axes
     :param recs: set of rectangles to work with.
     :type recs: collection(matplotlib.patches.Rectangle)
     :param txt: text to fill with in each rectangle.
     :type txt: collection(str)
+    :param cax: axes where the rectangles are being drawn. If None, then the \
+    current axes are taken.
+    :type cax: matplotlib.axes.Axes
     :param kwargs: any other argument to matplotlib.axes.Axes.annotate.
     :type kwargs: dict
     '''
+    cax = cax or plt.gca()
+
     for r, t in zip(recs, txt):
         x, y = r.get_xy()
 
         cx = x + r.get_width()/2.
         cy = y + r.get_height()/2.
 
-        ax.annotate(t, (cx, cy), **kwargs)
+        cax.annotate(t, (cx, cy), **kwargs)
