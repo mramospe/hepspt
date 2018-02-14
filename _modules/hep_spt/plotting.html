@@ -100,12 +100,10 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span></div>
 
 
-<div class="viewcode-block" id="corr_hist2d"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.corr_hist2d">[docs]</a><span class="k">def</span> <span class="nf">corr_hist2d</span><span class="p">(</span> <span class="n">ax</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="corr_hist2d"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.corr_hist2d">[docs]</a><span class="k">def</span> <span class="nf">corr_hist2d</span><span class="p">(</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Plot a given correlation matrix in the given axes.</span>
 
-<span class="sd">    :param ax: where to draw the histogram.</span>
-<span class="sd">    :type ax: matplotlib.axes.Axes</span>
 <span class="sd">    :param matrix: correlation matrix.</span>
 <span class="sd">    :type matrix: numpy.ndarray</span>
 <span class="sd">    :param titles: name of the variables being represented.</span>
@@ -119,7 +117,11 @@
 <span class="sd">    :type vmin: float</span>
 <span class="sd">    :param vmax: maximum value to represent in the histogram.</span>
 <span class="sd">    :type vmax: float</span>
+<span class="sd">    :param cax: axes where to draw. If None, then the current axes are taken.</span>
+<span class="sd">    :type cax: matplotlib.axes.Axes</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">cax</span> <span class="o">=</span> <span class="n">cax</span> <span class="ow">or</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
     <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="n">centers</span> <span class="o">=</span> <span class="n">centers_from_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
@@ -133,10 +135,10 @@
     <span class="n">vmin</span> <span class="o">=</span> <span class="n">vmin</span> <span class="ow">or</span> <span class="n">c</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
     <span class="n">vmax</span> <span class="o">=</span> <span class="n">vmax</span> <span class="ow">or</span> <span class="n">c</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">edges</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">cax</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">edges</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
 
     <span class="c1"># Modify the ticks to display the variable names</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">cax</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">cax</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)):</span>
 
         <span class="n">a</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">NullFormatter</span><span class="p">())</span>
         <span class="n">a</span><span class="o">.</span><span class="n">set_minor_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FixedFormatter</span><span class="p">(</span><span class="n">titles</span><span class="p">))</span>
@@ -157,10 +159,10 @@
     <span class="c1"># Annotate the value of the correlation</span>
     <span class="k">if</span> <span class="n">frmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">iy</span><span class="p">,</span> <span class="n">ic</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">frmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ic</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">iy</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+            <span class="n">cax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">frmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ic</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">iy</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
 
     <span class="c1"># Draw the grid</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span></div>
+    <span class="n">cax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="errorbar_hist"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.errorbar_hist">[docs]</a><span class="k">def</span> <span class="nf">errorbar_hist</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uncert</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
@@ -204,7 +206,7 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Uncertainties of type &quot;</span><span class="si">{}</span><span class="s1">&quot; can not be used on &#39;</span>\
                           <span class="s1">&#39;weighted data&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uncert</span><span class="p">))</span>
 
-        <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">wgts</span><span class="p">)</span>
 
         <span class="c1"># Use sum of the square of weights to calculate the error</span>
         <span class="n">ey</span> <span class="o">=</span> <span class="n">sw2_u</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span>
@@ -287,12 +289,12 @@
 <span class="sd">    :returns: minimum and maximum values.</span>
 <span class="sd">    :rtype: float, float</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">rg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">rg</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">amax</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">vmin</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="n">amax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rg</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
     <span class="k">return</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span></div>
 
@@ -313,7 +315,9 @@
 <span class="sd">    :returns: profile in &quot;y&quot;.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">rg</span><span class="p">)</span>
+    <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">process_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rg</span><span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">))</span>
 
     <span class="n">dig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
 
@@ -457,26 +461,29 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">sty_args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="text_in_rectangles"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.text_in_rectangles">[docs]</a><span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">ax</span><span class="p">,</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<div class="viewcode-block" id="text_in_rectangles"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.text_in_rectangles">[docs]</a><span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Write text inside matplotlib.patches.Rectangle instances.</span>
 
-<span class="sd">    :param ax: axes where the rectangles are being drawn.</span>
-<span class="sd">    :type ax: matplotlib.axes.Axes</span>
 <span class="sd">    :param recs: set of rectangles to work with.</span>
 <span class="sd">    :type recs: collection(matplotlib.patches.Rectangle)</span>
 <span class="sd">    :param txt: text to fill with in each rectangle.</span>
 <span class="sd">    :type txt: collection(str)</span>
+<span class="sd">    :param cax: axes where the rectangles are being drawn. If None, then the \</span>
+<span class="sd">    current axes are taken.</span>
+<span class="sd">    :type cax: matplotlib.axes.Axes</span>
 <span class="sd">    :param kwargs: any other argument to matplotlib.axes.Axes.annotate.</span>
 <span class="sd">    :type kwargs: dict</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">cax</span> <span class="o">=</span> <span class="n">cax</span> <span class="ow">or</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
     <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">):</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get_xy</span><span class="p">()</span>
 
         <span class="n">cx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mf">2.</span>
         <span class="n">cy</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mf">2.</span>
 
-        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">cax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

@@ -78,19 +78,19 @@
 
 <dl class="function">
 <dt id="hep_spt.plotting.corr_hist2d">
-<code class="descclassname">hep_spt.plotting.</code><code class="descname">corr_hist2d</code><span class="sig-paren">(</span><em>ax</em>, <em>matrix</em>, <em>titles</em>, <em>frmt='{:.2f}'</em>, <em>vmin=None</em>, <em>vmax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#corr_hist2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.corr_hist2d" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">corr_hist2d</code><span class="sig-paren">(</span><em>matrix</em>, <em>titles</em>, <em>frmt='{:.2f}'</em>, <em>vmin=None</em>, <em>vmax=None</em>, <em>cax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#corr_hist2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.corr_hist2d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a given correlation matrix in the given axes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – where to draw the histogram.</li>
 <li><strong>matrix</strong> (<em>numpy.ndarray</em>) – correlation matrix.</li>
 <li><strong>titles</strong> (<em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>)</em>) – name of the variables being represented.</li>
 <li><strong>frmt</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – format to display the correlation value in each bin. By     default it is assumed that the values go between <span class="math">\([0, 1]\)</span>, so     three significant figures are considered. If “frmt” is None, then     no text is displayed in the bins.</li>
 <li><strong>vmin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – minimum value to represent in the histogram.</li>
 <li><strong>vmax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – maximum value to represent in the histogram.</li>
+<li><strong>cax</strong> (<em>matplotlib.axes.Axes</em>) – axes where to draw. If None, then the current axes are taken.</li>
 </ul>
 </td>
 </tr>
@@ -308,16 +308,16 @@ are:</p>
 
 <dl class="function">
 <dt id="hep_spt.plotting.text_in_rectangles">
-<code class="descclassname">hep_spt.plotting.</code><code class="descname">text_in_rectangles</code><span class="sig-paren">(</span><em>ax</em>, <em>recs</em>, <em>txt</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#text_in_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.text_in_rectangles" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.plotting.</code><code class="descname">text_in_rectangles</code><span class="sig-paren">(</span><em>recs</em>, <em>txt</em>, <em>cax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/plotting.html#text_in_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.plotting.text_in_rectangles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write text inside matplotlib.patches.Rectangle instances.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – axes where the rectangles are being drawn.</li>
 <li><strong>recs</strong> (<em>collection</em><em>(</em><em>matplotlib.patches.Rectangle</em><em>)</em>) – set of rectangles to work with.</li>
 <li><strong>txt</strong> (<em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>)</em>) – text to fill with in each rectangle.</li>
+<li><strong>cax</strong> (<em>matplotlib.axes.Axes</em>) – axes where the rectangles are being drawn. If None, then the     current axes are taken.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – any other argument to matplotlib.axes.Axes.annotate.</li>
 </ul>
 </td>

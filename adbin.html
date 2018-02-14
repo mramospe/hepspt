@@ -134,6 +134,13 @@ the smallest bin.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="hep_spt.adbin.AdBin.free_memory">
+<code class="descname">free_memory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin.free_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin.free_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the pointers to the arrays of data and weights. The method
+<a class="reference internal" href="#hep_spt.adbin.AdBin.divide" title="hep_spt.adbin.AdBin.divide"><code class="xref py py-meth docutils literal"><span class="pre">AdBin.divide()</span></code></a> will become unavailable after this.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="hep_spt.adbin.AdBin.size">
 <code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#AdBin.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.AdBin.size" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
@@ -318,6 +325,7 @@ the adbin_histnd function.</p>
 <li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data with the variables as columns.</li>
 <li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of bins.</li>
 <li><strong>wgts</strong> (<em>numpy.ndarray</em>) – optional array of weights.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – extra arguments to <a class="reference internal" href="#hep_spt.adbin.adbin_histnd" title="hep_spt.adbin.adbin_histnd"><code class="xref py py-func docutils literal"><span class="pre">adbin_histnd()</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -333,7 +341,7 @@ the adbin_histnd function.</p>
 
 <dl class="function">
 <dt id="hep_spt.adbin.adbin_histnd">
-<code class="descclassname">hep_spt.adbin.</code><code class="descname">adbin_histnd</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>ndiv=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#adbin_histnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.adbin_histnd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.adbin.</code><code class="descname">adbin_histnd</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>ndiv=2</em>, <em>free_memory=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hep_spt/adbin.html#adbin_histnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin.adbin_histnd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a ND adaptive binned histogram.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -345,6 +353,7 @@ the adbin_histnd function.</p>
 <li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of bins. In this algorithm, divisions will be made     till the real number of bins is equal or greater than “nbins”. If this     number is a power of “ndiv”, then the real number of bins will match     “nbins”.</li>
 <li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – optional array of weights.</li>
 <li><strong>ndiv</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – see <a class="reference internal" href="#hep_spt.adbin.AdBin.divide" title="hep_spt.adbin.AdBin.divide"><code class="xref py py-meth docutils literal"><span class="pre">AdBin.divide()</span></code></a>.</li>
+<li><strong>free_memory</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether to free the pointers pointing to the arrays of     data and weights in the bins.</li>
 </ul>
 </td>
 </tr>
