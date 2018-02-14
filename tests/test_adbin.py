@@ -9,12 +9,36 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Python
 import numpy as np
 import matplotlib.pyplot as plt
+import pytest
 
 # Custom
 import hep_spt
 
 # Set the random seed for reproducibility
 np.random.seed(8563)
+
+
+def test_adbin_class():
+    '''
+    Test the behaviour of the AdBin class.
+    '''
+    size = 2000
+
+    smp_x   = np.random.normal(0., 2, size)
+    smp_y   = np.random.normal(0., 2, size)
+
+    b = hep_spt.AdBin(np.array([smp_x, smp_y]))
+
+    bins = b.divide()
+
+    # Default division is in two bins
+    assert len(bins) == 2
+
+    # Test raising of RuntimeError in "divide"
+    bl, br = bins
+    with pytest.raises(RuntimeError):
+        bl.free_memory()
+        bl.divide()
 
 
 def test_adbin_hist1d():
@@ -48,7 +72,7 @@ def test_adbin_hist2d():
     # Number of bins is a power of "ndiv". The requested and actual
     # number of bins are identical.
     nbins = 16
-    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 2)
+    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, ndiv=2, free_memory=False)
     assert nbins == len(bins)
 
     exp = float(size)/nbins
@@ -58,7 +82,7 @@ def test_adbin_hist2d():
     # Number of bins is not a power of "ndiv". Requested and actual
     # number of bins are different.
     nbins = 11
-    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, ndiv = 3)
+    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, ndiv=3, free_memory=False)
     assert nbins != len(bins)
 
     exp = float(size)/27
@@ -67,7 +91,7 @@ def test_adbin_hist2d():
 
     # Weighted case
     nbins = 8
-    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, wgts = weights)
+    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, wgts=weights, free_memory=False)
 
     exp = float(weights.sum())/nbins
 

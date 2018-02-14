@@ -83,6 +83,10 @@ class AdBin:
         '''
         assert ndiv > 1
 
+        if self.arr is None:
+            raise RuntimeError('Attempt to call AdBin.divide on a bin whose '\
+                               'pointers have been freed')
+
         srt   = self.arr.argsort(axis = 0)
         sarr  = np.array([self.arr.T[i][s] for i, s in enumerate(srt.T)]).T
         swgts = self.wgts[srt]
@@ -150,6 +154,14 @@ class AdBin:
             all_bins.append(br)
 
         return all_bins
+
+    def free_memory( self ):
+        '''
+        Remove the pointers to the arrays of data and weights. The method
+        :meth:`AdBin.divide` will become unavailable after this.
+        '''
+        self.arr  = None
+        self.wgts = None
 
     def size( self ):
         '''
@@ -319,10 +331,12 @@ def adbin_hist2d( x, y, *args, **kwargs ):
     :type nbins: int
     :param wgts: optional array of weights.
     :type wgts: numpy.ndarray
+    :param kwargs: extra arguments to :func:`adbin_histnd`.
+    :type kwargs: dict
     :returns: adaptive bins of the histogram, with size (nbins + 1).
     :rtype: list(AdBin)
 
-    .. seealso: :func:`adbin_hist2d`
+    .. seealso: :func:`adbin_histnd`
     '''
     return adbin_histnd(np.array([x, y]).T, *args, **kwargs)
 
@@ -391,7 +405,7 @@ def adbin_hist2d_rectangles( bins, arr,
     return recs, contents
 
 
-def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2 ):
+def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2, free_memory = True ):
     '''
     Create a ND adaptive binned histogram.
 
@@ -409,16 +423,22 @@ def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2 ):
     :type wgts: numpy.ndarray or None
     :param ndiv: see :meth:`AdBin.divide`.
     :type ndiv: int
+    :param free_memory: whether to free the pointers pointing to the arrays of \
+    data and weights in the bins.
+    :type free_memory: bool
     :returns: adaptive bins of the histogram, with size (nbins + 1).
     :rtype: list(AdBin)
 
-    .. seealso: :meth:`AdBin.divide`
+    .. seealso: :meth:`AdBin.divide`, :meth:`AdBin.free_memory`
     '''
     assert len(arr) // nbins > 0
 
     bins = [AdBin(arr, rg, wgts)]
     while len(bins) < nbins:
         bins = list(itertools.chain.from_iterable(a.divide(ndiv) for a in bins))
+
+    if free_memory:
+        map(AdBin.free_memory, bins)
 
     return bins
 
