@@ -92,7 +92,8 @@ class AdBin:
         swgts = self.wgts[srt]
         csw   = swgts.cumsum(axis = 0)
 
-        co = np.max(csw)/float(ndiv)
+        # Normalize using the total sum of weights: csw[-1][0]
+        co = csw[-1][0]/float(ndiv)
 
         p = np.array([bisect.bisect_left(c, co) for c in csw.T])
 
@@ -137,13 +138,13 @@ class AdBin:
 
         d = bounds[min_dim]
 
-        lbd = np.array(self.vmax)
-        lbd[min_dim] = d
-        bl = AdBin(left, (self.vmin, lbd), wleft)
+        lbd = np.array([self.vmin, self.vmax]).T
+        lbd[min_dim][1] = d
+        bl = AdBin(left, lbd, wleft)
 
-        rbd = np.array(self.vmin)
-        rbd[min_dim] = d
-        br = AdBin(right, (rbd, self.vmax), wright)
+        rbd = np.array([self.vmin, self.vmax]).T
+        rbd[min_dim][0] = d
+        br = AdBin(right, rbd, wright)
 
         # If the number of divisions is greater than 2, perform again the same
         # operation in the bin on the right

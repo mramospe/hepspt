@@ -247,12 +247,12 @@ def process_range( arr, rg = None ):
     :returns: minimum and maximum values.
     :rtype: float, float
     '''
-    if rg is not None:
-        vmin, vmax = rg
-    else:
+    if rg is None:
         amax = arr.max(axis = 0)
         vmin = arr.min(axis = 0)
         vmax = np.nextafter(amax, np.infty)
+    else:
+        vmin, vmax = np.array(rg).T
 
     return vmin, vmax
 
@@ -273,7 +273,9 @@ def profile( x, y, bins = 20, rg = None ):
     :returns: profile in "y".
     :rtype: numpy.ndarray
     '''
-    _, edges = np.histogram(x, bins, rg)
+    vmin, vmax = process_range(x, rg)
+
+    _, edges = np.histogram(x, bins, range=(vmin, vmax))
 
     dig = np.digitize(x, edges)
 
