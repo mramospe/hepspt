@@ -26,7 +26,7 @@ def test_adbin_class():
 
     smp_x = np.random.normal(0., 2, size)
     smp_y = np.random.normal(0., 2, size)
-    smp   = np.array([smp_x, smp_y])
+    smp   = np.array([smp_x, smp_y]).T
 
     b = hep_spt.AdBin(smp)
 
