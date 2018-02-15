@@ -41,4 +41,4 @@ To use the **latest development version**, clone the repository and install with
 
    git clone https://github.com/mramospe/hep_spt.git
    cd hep_spt
-   sudo pip install .
+   pip install .
