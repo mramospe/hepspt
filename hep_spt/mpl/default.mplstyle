@@ -5,10 +5,11 @@
 #
 
 # Axes
-axes.labelpad     : 10.0
-axes.linewidth    : 1.5
-axes.spines.right : False
-axes.spines.top   : False
+axes.formatter.limits : -5, +5
+axes.labelpad         : 10.0
+axes.linewidth        : 1.5
+axes.spines.right     : False
+axes.spines.top       : False
 
 # Error bar
 errorbar.capsize : 1.5
