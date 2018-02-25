@@ -19,9 +19,8 @@ following sections:
 .. toctree::
    :maxdepth: 2
 
-   modules
+   main
    examples
-
 
 
 Indices and tables

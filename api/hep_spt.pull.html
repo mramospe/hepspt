@@ -1,0 +1,157 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pull &#8212; hep_spt 0.0.0.dev1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0.dev1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="samples_cycler" href="hep_spt.samples_cycler.html" />
+    <link rel="prev" title="profile" href="hep_spt.profile.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pull">
+<h1>pull<a class="headerlink" href="#pull" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="hep_spt.pull">
+<code class="descclassname">hep_spt.</code><code class="descname">pull</code><span class="sig-paren">(</span><em>vals</em>, <em>err</em>, <em>ref</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.pull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the pull with the associated errors for a given set of values and a
+reference. Considering, <span class="math">\(v\)</span> as the experimental value and <span class="math">\(r\)</span>
+as the rerference, the definition of this quantity is <span class="math">\((v - r)/\sigma\)</span>
+in case symmetric errors are provided. In the case of asymmetric errors the
+definition is:</p>
+<div class="math">
+\[\text{pull}
+=
+\Biggl \lbrace
+{
+(v - r)/\sigma_{low},\text{ if } v - r \geq 0
+\atop
+(v - r)/\sigma_{up}\text{ otherwise }
+}\]</div>
+<p>In the latter case, the errors are computed in such a way that the closer to
+the reference is equal to 1 and the other is scaled accordingly, so if
+<span class="math">\(v - r &gt; 0\)</span>, then <span class="math">\(\sigma^{pull}_{low} = 1\)</span> and
+<span class="math">\(\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vals</strong> (<em>array-like</em>) – values to compare with.</li>
+<li><strong>err</strong> (<em>array-like</em>) – array of errors. Both symmetric and asymmetric errors     can be provided. In the latter case, they must be provided as a     (2, n) array.</li>
+<li><strong>ref</strong> (<em>array-like</em>) – reference to follow.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pull of the values with respect to the reference and     associated errors. In case asymmetric errors have been provided,     the returning array has shape (2, n).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array-like, array-like</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="hep_spt.profile.html" title="previous chapter">profile</a></li>
+      <li>Next: <a href="hep_spt.samples_cycler.html" title="next chapter">samples_cycler</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/api/hep_spt.pull.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -80,8 +80,10 @@
 <span class="n">__path_to_styles__</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__project_path__</span><span class="p">,</span> <span class="s1">&#39;mpl&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="available_styles"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.available_styles">[docs]</a><span class="k">def</span> <span class="nf">available_styles</span><span class="p">():</span>
+<div class="viewcode-block" id="available_styles"><a class="viewcode-back" href="../../api/hep_spt.available_styles.html#hep_spt.available_styles">[docs]</a><span class="k">def</span> <span class="nf">available_styles</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get a list with the names of the available styles.</span>
+
 <span class="sd">    :returns: list with the names of the available styles within this package.</span>
 <span class="sd">    :rtype: list(str)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -90,8 +92,10 @@
     <span class="k">return</span> <span class="n">available_styles</span></div>
 
 
-<div class="viewcode-block" id="centers_from_edges"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.centers_from_edges">[docs]</a><span class="k">def</span> <span class="nf">centers_from_edges</span><span class="p">(</span> <span class="n">edges</span> <span class="p">):</span>
+<div class="viewcode-block" id="centers_from_edges"><a class="viewcode-back" href="../../api/hep_spt.centers_from_edges.html#hep_spt.centers_from_edges">[docs]</a><span class="k">def</span> <span class="nf">centers_from_edges</span><span class="p">(</span> <span class="n">edges</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the centers of the bins given their edges.</span>
+
 <span class="sd">    :param edges: edges of a histogram.</span>
 <span class="sd">    :type edges: numpy.ndarray</span>
 <span class="sd">    :returns: centers of the histogram.</span>
@@ -100,7 +104,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span></div>
 
 
-<div class="viewcode-block" id="corr_hist2d"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.corr_hist2d">[docs]</a><span class="k">def</span> <span class="nf">corr_hist2d</span><span class="p">(</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="corr_hist2d"><a class="viewcode-back" href="../../api/hep_spt.corr_hist2d.html#hep_spt.corr_hist2d">[docs]</a><span class="k">def</span> <span class="nf">corr_hist2d</span><span class="p">(</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Plot a given correlation matrix in the given axes.</span>
 
@@ -165,7 +169,7 @@
     <span class="n">cax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="errorbar_hist"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.errorbar_hist">[docs]</a><span class="k">def</span> <span class="nf">errorbar_hist</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uncert</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="errorbar_hist"><a class="viewcode-back" href="../../api/hep_spt.errorbar_hist.html#hep_spt.errorbar_hist">[docs]</a><span class="k">def</span> <span class="nf">errorbar_hist</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uncert</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the values needed to create an error bar histogram.</span>
 
@@ -243,7 +247,7 @@
     <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span></div>
 
 
-<div class="viewcode-block" id="opt_fig_div"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.opt_fig_div">[docs]</a><span class="k">def</span> <span class="nf">opt_fig_div</span><span class="p">(</span> <span class="n">naxes</span> <span class="p">):</span>
+<div class="viewcode-block" id="opt_fig_div"><a class="viewcode-back" href="../../api/hep_spt.opt_fig_div.html#hep_spt.opt_fig_div">[docs]</a><span class="k">def</span> <span class="nf">opt_fig_div</span><span class="p">(</span> <span class="n">naxes</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the optimal figure division for a given number of axes, where</span>
 <span class="sd">    all the axes have the same dimensions.</span>
@@ -267,15 +271,17 @@
     <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span></div>
 
 
-<div class="viewcode-block" id="path_to_styles"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.path_to_styles">[docs]</a><span class="k">def</span> <span class="nf">path_to_styles</span><span class="p">():</span>
+<div class="viewcode-block" id="path_to_styles"><a class="viewcode-back" href="../../api/hep_spt.path_to_styles.html#hep_spt.path_to_styles">[docs]</a><span class="k">def</span> <span class="nf">path_to_styles</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Retrieve the path to the directory containing the styles.</span>
+
 <span class="sd">    :returns: path to the directory containing the styles.</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">__path_to_styles__</span></div>
 
 
-<div class="viewcode-block" id="process_range"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.process_range">[docs]</a><span class="k">def</span> <span class="nf">process_range</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="process_range"><a class="viewcode-back" href="../../api/hep_spt.process_range.html#hep_spt.process_range">[docs]</a><span class="k">def</span> <span class="nf">process_range</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Process the given range, determining the minimum and maximum</span>
 <span class="sd">    values for a 1D histogram.</span>
@@ -299,7 +305,7 @@
     <span class="k">return</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span></div>
 
 
-<div class="viewcode-block" id="profile"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.profile">[docs]</a><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="profile"><a class="viewcode-back" href="../../api/hep_spt.profile.html#hep_spt.profile">[docs]</a><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the profile from a 2D data sample. It corresponds to the mean of</span>
 <span class="sd">    the values in &quot;y&quot; for each bin in &quot;x&quot;.</span>
@@ -328,7 +334,7 @@
     <span class="k">return</span> <span class="n">prof</span></div>
 
 
-<div class="viewcode-block" id="pull"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.pull">[docs]</a><span class="k">def</span> <span class="nf">pull</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span> <span class="p">):</span>
+<div class="viewcode-block" id="pull"><a class="viewcode-back" href="../../api/hep_spt.pull.html#hep_spt.pull">[docs]</a><span class="k">def</span> <span class="nf">pull</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the pull with the associated errors for a given set of values and a</span>
 <span class="sd">    reference. Considering, :math:`v` as the experimental value and :math:`r`</span>
@@ -393,7 +399,7 @@
     <span class="k">return</span> <span class="n">pull</span><span class="p">,</span> <span class="n">perr</span></div>
 
 
-<div class="viewcode-block" id="samples_cycler"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.samples_cycler">[docs]</a><span class="k">def</span> <span class="nf">samples_cycler</span><span class="p">(</span> <span class="n">smps</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<div class="viewcode-block" id="samples_cycler"><a class="viewcode-back" href="../../api/hep_spt.samples_cycler.html#hep_spt.samples_cycler">[docs]</a><span class="k">def</span> <span class="nf">samples_cycler</span><span class="p">(</span> <span class="n">smps</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Often, one wants to plot several samples with different matplotlib</span>
 <span class="sd">    styles. This function allows to create a cycler.cycler object</span>
@@ -428,7 +434,7 @@
     <span class="k">return</span> <span class="n">re_cyc</span> <span class="o">+</span> <span class="n">cycler</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="n">smps</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="set_style"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.set_style">[docs]</a><span class="k">def</span> <span class="nf">set_style</span><span class="p">(</span> <span class="o">*</span><span class="n">args</span> <span class="p">):</span>
+<div class="viewcode-block" id="set_style"><a class="viewcode-back" href="../../api/hep_spt.set_style.html#hep_spt.set_style">[docs]</a><span class="k">def</span> <span class="nf">set_style</span><span class="p">(</span> <span class="o">*</span><span class="n">args</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Set the style for matplotlib to one within this project. Available styles</span>
 <span class="sd">    are:</span>
@@ -461,7 +467,7 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">sty_args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="text_in_rectangles"><a class="viewcode-back" href="../../plotting.html#hep_spt.plotting.text_in_rectangles">[docs]</a><span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<div class="viewcode-block" id="text_in_rectangles"><a class="viewcode-back" href="../../api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles">[docs]</a><span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Write text inside matplotlib.patches.Rectangle instances.</span>
 
@@ -502,7 +508,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Functions and classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 </ul>
 

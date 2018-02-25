@@ -93,7 +93,7 @@
     <span class="k">return</span> <span class="n">table</span>
 
 
-<div class="viewcode-block" id="calc_poisson_fu"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.calc_poisson_fu">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
+<div class="viewcode-block" id="calc_poisson_fu"><a class="viewcode-back" href="../../api/hep_spt.calc_poisson_fu.html#hep_spt.stats.calc_poisson_fu">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">calc_poisson_fu</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the lower and upper frequentist uncertainties for</span>
@@ -131,7 +131,7 @@
     <span class="k">return</span> <span class="n">_process_poisson_u</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="calc_poisson_llu"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.calc_poisson_llu">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
+<div class="viewcode-block" id="calc_poisson_llu"><a class="viewcode-back" href="../../api/hep_spt.calc_poisson_llu.html#hep_spt.stats.calc_poisson_llu">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">calc_poisson_llu</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate poisson uncertainties based on the logarithm of likelihood.</span>
@@ -165,7 +165,7 @@
     <span class="k">return</span> <span class="n">_process_poisson_u</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cp_fu"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.cp_fu">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
+<div class="viewcode-block" id="cp_fu"><a class="viewcode-back" href="../../api/hep_spt.cp_fu.html#hep_spt.stats.cp_fu">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cp_fu</span><span class="p">(</span> <span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the frequentist Clopper-Pearson uncertainties of having</span>
@@ -242,7 +242,7 @@
     <span class="k">return</span> <span class="n">out</span>
 
 
-<div class="viewcode-block" id="gauss_u"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.gauss_u">[docs]</a><span class="k">def</span> <span class="nf">gauss_u</span><span class="p">(</span> <span class="n">s</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
+<div class="viewcode-block" id="gauss_u"><a class="viewcode-back" href="../../api/hep_spt.gauss_u.html#hep_spt.stats.gauss_u">[docs]</a><span class="k">def</span> <span class="nf">gauss_u</span><span class="p">(</span> <span class="n">s</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the gaussian uncertainty for a given confidence level.</span>
 
@@ -285,7 +285,7 @@
     <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">hs</span><span class="p">,</span> <span class="n">sw</span>
 
 
-<div class="viewcode-block" id="ks_2samp"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.ks_2samp">[docs]</a><span class="k">def</span> <span class="nf">ks_2samp</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">wa</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wb</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="ks_2samp"><a class="viewcode-back" href="../../api/hep_spt.ks_2samp.html#hep_spt.stats.ks_2samp">[docs]</a><span class="k">def</span> <span class="nf">ks_2samp</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">wa</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wb</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Compute the Kolmogorov-Smirnov statistic on 2 samples. This is a two-sided</span>
 <span class="sd">    test for the null hypothesis that 2 independent samples are drawn from the</span>
@@ -326,7 +326,7 @@
     <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">prob</span></div>
 
 
-<div class="viewcode-block" id="poisson_fu"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.poisson_fu">[docs]</a><span class="k">def</span> <span class="nf">poisson_fu</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>
+<div class="viewcode-block" id="poisson_fu"><a class="viewcode-back" href="../../api/hep_spt.poisson_fu.html#hep_spt.stats.poisson_fu">[docs]</a><span class="k">def</span> <span class="nf">poisson_fu</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the poisson frequentist uncertainty at one standard</span>
 <span class="sd">    deviation of confidence level.</span>
@@ -341,7 +341,7 @@
     <span class="k">return</span> <span class="n">_poisson_u_from_db</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;poisson_fu.dat&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="poisson_llu"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.poisson_llu">[docs]</a><span class="k">def</span> <span class="nf">poisson_llu</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>
+<div class="viewcode-block" id="poisson_llu"><a class="viewcode-back" href="../../api/hep_spt.poisson_llu.html#hep_spt.stats.poisson_llu">[docs]</a><span class="k">def</span> <span class="nf">poisson_llu</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the poisson uncertainty at one standard deviation of</span>
 <span class="sd">    confidence level. The lower and upper uncertainties are defined</span>
@@ -419,7 +419,7 @@
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_lw</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_up</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="sw2_u"><a class="viewcode-back" href="../../stats.html#hep_spt.stats.sw2_u">[docs]</a><span class="k">def</span> <span class="nf">sw2_u</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="sw2_u"><a class="viewcode-back" href="../../api/hep_spt.sw2_u.html#hep_spt.stats.sw2_u">[docs]</a><span class="k">def</span> <span class="nf">sw2_u</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the errors of a weighted sample. This uncertainty is</span>
 <span class="sd">    calculated as follows:</span>
@@ -488,7 +488,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Functions and classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 </ul>
 

@@ -1,0 +1,237 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Functions and classes &#8212; hep_spt 0.0.0.dev1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.0.dev1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="adbin_as_rectangle" href="api/hep_spt.adbin_as_rectangle.html" />
+    <link rel="prev" title="Introduction" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="functions-and-classes">
+<h1>Functions and classes<a class="headerlink" href="#functions-and-classes" title="Permalink to this headline">¶</a></h1>
+<p>Here you can find the documentation on the functions and classes
+of the hep_spt package. The class inheritance diagram is also shown.</p>
+<span class="target" id="module-hep_spt"></span><div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.adbin_as_rectangle.html#hep_spt.adbin_as_rectangle" title="hep_spt.adbin_as_rectangle"><code class="xref py py-obj docutils literal"><span class="pre">adbin_as_rectangle</span></code></a>(adb,&nbsp;**kwargs)</td>
+<td>Extract the bounds so it can be processed by a matplotlib.patches.Rectangle object and properly fill the area inside it.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_hist2d_rectangles.html#hep_spt.adbin_hist2d_rectangles" title="hep_spt.adbin_hist2d_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist2d_rectangles</span></code></a>(bins,&nbsp;arr[,&nbsp;rg,&nbsp;…])</td>
+<td>Create a collection of rectangles from a collection of bins, using the input data to calculate the associated quantity (specified in “fill”).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.adbin_hist1d.html#hep_spt.adbin_hist1d" title="hep_spt.adbin_hist1d"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist1d</span></code></a>(arr[,&nbsp;nbins,&nbsp;rg,&nbsp;wgts])</td>
+<td>Create an adaptive binned histogram.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_hist1d_edges.html#hep_spt.adbin_hist1d_edges" title="hep_spt.adbin_hist1d_edges"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist1d_edges</span></code></a>(arr[,&nbsp;nbins,&nbsp;rg,&nbsp;wgts])</td>
+<td>Create adaptive binned edges from the given array.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.adbin_hist2d.html#hep_spt.adbin_hist2d" title="hep_spt.adbin_hist2d"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist2d</span></code></a>(x,&nbsp;y,&nbsp;*args,&nbsp;**kwargs)</td>
+<td>Create a 2D adaptive binned histogram.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_histnd.html#hep_spt.adbin_histnd" title="hep_spt.adbin_histnd"><code class="xref py py-obj docutils literal"><span class="pre">adbin_histnd</span></code></a>(arr[,&nbsp;nbins,&nbsp;rg,&nbsp;wgts,&nbsp;ndiv,&nbsp;…])</td>
+<td>Create a ND adaptive binned histogram.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.gcd.html#hep_spt.gcd" title="hep_spt.gcd"><code class="xref py py-obj docutils literal"><span class="pre">gcd</span></code></a>(a,&nbsp;b,&nbsp;*args)</td>
+<td>Calculate the greatest common divisor of a set of numbers.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.is_power_2.html#hep_spt.is_power_2" title="hep_spt.is_power_2"><code class="xref py py-obj docutils literal"><span class="pre">is_power_2</span></code></a>(n)</td>
+<td>Determine whether the input number is a power of 2 or not.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.lcm.html#hep_spt.lcm" title="hep_spt.lcm"><code class="xref py py-obj docutils literal"><span class="pre">lcm</span></code></a>(a,&nbsp;b,&nbsp;*args)</td>
+<td>Calculate the least common multiple of a set of numbers.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.next_power_2.html#hep_spt.next_power_2" title="hep_spt.next_power_2"><code class="xref py py-obj docutils literal"><span class="pre">next_power_2</span></code></a>(n)</td>
+<td>Calculate the next number greater than that given and being a power of 2.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.available_styles.html#hep_spt.available_styles" title="hep_spt.available_styles"><code class="xref py py-obj docutils literal"><span class="pre">available_styles</span></code></a>()</td>
+<td>Get a list with the names of the available styles.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.centers_from_edges.html#hep_spt.centers_from_edges" title="hep_spt.centers_from_edges"><code class="xref py py-obj docutils literal"><span class="pre">centers_from_edges</span></code></a>(edges)</td>
+<td>Calculate the centers of the bins given their edges.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.corr_hist2d.html#hep_spt.corr_hist2d" title="hep_spt.corr_hist2d"><code class="xref py py-obj docutils literal"><span class="pre">corr_hist2d</span></code></a>(matrix,&nbsp;titles[,&nbsp;frmt,&nbsp;vmin,&nbsp;…])</td>
+<td>Plot a given correlation matrix in the given axes.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.errorbar_hist.html#hep_spt.errorbar_hist" title="hep_spt.errorbar_hist"><code class="xref py py-obj docutils literal"><span class="pre">errorbar_hist</span></code></a>(arr[,&nbsp;bins,&nbsp;rg,&nbsp;wgts,&nbsp;norm,&nbsp;…])</td>
+<td>Calculate the values needed to create an error bar histogram.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.opt_fig_div.html#hep_spt.opt_fig_div" title="hep_spt.opt_fig_div"><code class="xref py py-obj docutils literal"><span class="pre">opt_fig_div</span></code></a>(naxes)</td>
+<td>Get the optimal figure division for a given number of axes, where all the axes have the same dimensions.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.path_to_styles.html#hep_spt.path_to_styles" title="hep_spt.path_to_styles"><code class="xref py py-obj docutils literal"><span class="pre">path_to_styles</span></code></a>()</td>
+<td>Retrieve the path to the directory containing the styles.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.process_range.html#hep_spt.process_range" title="hep_spt.process_range"><code class="xref py py-obj docutils literal"><span class="pre">process_range</span></code></a>(arr[,&nbsp;rg])</td>
+<td>Process the given range, determining the minimum and maximum values for a 1D histogram.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.profile.html#hep_spt.profile" title="hep_spt.profile"><code class="xref py py-obj docutils literal"><span class="pre">profile</span></code></a>(x,&nbsp;y[,&nbsp;bins,&nbsp;rg])</td>
+<td>Calculate the profile from a 2D data sample.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-obj docutils literal"><span class="pre">pull</span></code></a>(vals,&nbsp;err,&nbsp;ref)</td>
+<td>Get the pull with the associated errors for a given set of values and a reference.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.samples_cycler.html#hep_spt.samples_cycler" title="hep_spt.samples_cycler"><code class="xref py py-obj docutils literal"><span class="pre">samples_cycler</span></code></a>(smps,&nbsp;*args,&nbsp;**kwargs)</td>
+<td>Often, one wants to plot several samples with different matplotlib styles.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.set_style.html#hep_spt.set_style" title="hep_spt.set_style"><code class="xref py py-obj docutils literal"><span class="pre">set_style</span></code></a>(*args)</td>
+<td>Set the style for matplotlib to one within this project.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles" title="hep_spt.text_in_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">text_in_rectangles</span></code></a>(recs,&nbsp;txt[,&nbsp;cax])</td>
+<td>Write text inside matplotlib.patches.Rectangle instances.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.calc_poisson_fu.html#hep_spt.calc_poisson_fu" title="hep_spt.calc_poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_fu</span></code></a>(m[,&nbsp;cl])</td>
+<td>Return the lower and upper frequentist uncertainties for a poisson distribution with mean “m”.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.calc_poisson_llu.html#hep_spt.calc_poisson_llu" title="hep_spt.calc_poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_llu</span></code></a>(m[,&nbsp;cl])</td>
+<td>Calculate poisson uncertainties based on the logarithm of likelihood.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.cp_fu.html#hep_spt.cp_fu" title="hep_spt.cp_fu"><code class="xref py py-obj docutils literal"><span class="pre">cp_fu</span></code></a>(k,&nbsp;N[,&nbsp;cl])</td>
+<td>Return the frequentist Clopper-Pearson uncertainties of having “k” events in “N”.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.ks_2samp.html#hep_spt.ks_2samp" title="hep_spt.ks_2samp"><code class="xref py py-obj docutils literal"><span class="pre">ks_2samp</span></code></a>(a,&nbsp;b[,&nbsp;wa,&nbsp;wb])</td>
+<td>Compute the Kolmogorov-Smirnov statistic on 2 samples.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.gauss_u.html#hep_spt.gauss_u" title="hep_spt.gauss_u"><code class="xref py py-obj docutils literal"><span class="pre">gauss_u</span></code></a>(s[,&nbsp;cl])</td>
+<td>Calculate the gaussian uncertainty for a given confidence level.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.poisson_fu.html#hep_spt.poisson_fu" title="hep_spt.poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_fu</span></code></a>(m)</td>
+<td>Return the poisson frequentist uncertainty at one standard deviation of confidence level.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.poisson_llu.html#hep_spt.poisson_llu" title="hep_spt.poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_llu</span></code></a>(m)</td>
+<td>Return the poisson uncertainty at one standard deviation of confidence level.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.sw2_u.html#hep_spt.sw2_u" title="hep_spt.sw2_u"><code class="xref py py-obj docutils literal"><span class="pre">sw2_u</span></code></a>(arr[,&nbsp;bins,&nbsp;rg,&nbsp;wgts])</td>
+<td>Calculate the errors of a weighted sample.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><code class="xref py py-obj docutils literal"><span class="pre">AdBin</span></code></a>(arr[,&nbsp;rg,&nbsp;wgts])</td>
+<td>Represent a n-dimensional adaptive bin.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="class-inheritance-diagram">
+<h2>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<img src="_images/inheritance-5d45ce2b57b17527fa32ff6c72bd24f52acff416.png" alt="Inheritance diagram of hep_spt.adbin.AdBin" usemap="#inheritance40ec34ef72" class="inheritance"/>
+<map id="inheritance40ec34ef72" name="inheritance40ec34ef72">
+<area shape="rect" id="node1" title="Represent a n&#45;dimensional adaptive bin. This class is meant so serve" alt="" coords="5,5,77,31"/>
+</map>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions and classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="api/hep_spt.adbin_as_rectangle.html" title="next chapter">adbin_as_rectangle</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/main.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

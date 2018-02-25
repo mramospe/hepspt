@@ -1,0 +1,29 @@
+AdBin
+=====
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: AdBin
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~AdBin.contains
+      ~AdBin.dens
+      ~AdBin.divide
+      ~AdBin.free_memory
+      ~AdBin.size
+      ~AdBin.sw
+      ~AdBin.sw_uncert
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: contains
+   .. automethod:: dens
+   .. automethod:: divide
+   .. automethod:: free_memory
+   .. automethod:: size
+   .. automethod:: sw
+   .. automethod:: sw_uncert
