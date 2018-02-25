@@ -40,6 +40,8 @@ __path_to_styles__ = os.path.join(__project_path__, 'mpl')
 
 def available_styles():
     '''
+    Get a list with the names of the available styles.
+
     :returns: list with the names of the available styles within this package.
     :rtype: list(str)
     '''
@@ -50,6 +52,8 @@ def available_styles():
 
 def centers_from_edges( edges ):
     '''
+    Calculate the centers of the bins given their edges.
+
     :param edges: edges of a histogram.
     :type edges: numpy.ndarray
     :returns: centers of the histogram.
@@ -227,6 +231,8 @@ def opt_fig_div( naxes ):
 
 def path_to_styles():
     '''
+    Retrieve the path to the directory containing the styles.
+
     :returns: path to the directory containing the styles.
     :rtype: str
     '''

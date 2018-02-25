@@ -20,13 +20,15 @@ __all__ = ['gcd', 'is_power_2', 'lcm', 'next_power_2']
 @decorate(np.vectorize)
 def gcd( a, b, *args ):
     '''
+    Calculate the greatest common divisor of a set of numbers.
+
     :param a: first number.
     :type a: int
     :param b: second number.
     :type b: int
     :param args: any other numbers.
     :type args: collection(int)
-    :returns: greatest common divisor of "a" and "b".
+    :returns: greatest common divisor of a set of numbers.
     :rtype: int
     '''
     if len(args) == 0:
@@ -40,6 +42,8 @@ def gcd( a, b, *args ):
 @decorate(np.vectorize)
 def is_power_2( n ):
     '''
+    Determine whether the input number is a power of 2 or not.
+
     :param n: input number.
     :type n: int
     :returns: whether the input number is a power of 2 or not.
@@ -51,13 +55,15 @@ def is_power_2( n ):
 @decorate(np.vectorize)
 def lcm( a, b, *args ):
     '''
+    Calculate the least common multiple of a set of numbers.
+
     :param a: first number.
     :type a: int
     :param b: second number.
     :type b: int
     :param args: any other numbers.
     :type args: collection(int)
-    :returns: least common multiple of "a" and "b".
+    :returns: least common multiple of a set of numbers.
     :rtype: int
     '''
     if len(args) == 0:
@@ -69,6 +75,8 @@ def lcm( a, b, *args ):
 @decorate(np.vectorize)
 def next_power_2( n ):
     '''
+    Calculate the next number greater than that given and being a power of 2.
+
     :param n: input number.
     :type n: int
     :returns: next power of 2 to the given number.
