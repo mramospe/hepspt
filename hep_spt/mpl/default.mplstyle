@@ -19,8 +19,11 @@ font.family : serif
 
 # Lines
 lines.linewidth  : 1.5
-lines.marker     : 3
-lines.markersize : 10
+lines.marker     : o
+lines.markersize : 3
+
+# Scatter
+scatter.marker : o
 
 # Text
 text.latex.preamble : \usepackage{amsmath}
