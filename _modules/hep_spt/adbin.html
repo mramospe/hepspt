@@ -65,13 +65,13 @@
            <span class="p">]</span>
 
 
-<div class="viewcode-block" id="AdBin"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin">[docs]</a><span class="k">class</span> <span class="nc">AdBin</span><span class="p">:</span>
+<div class="viewcode-block" id="AdBin"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin">[docs]</a><span class="k">class</span> <span class="nc">AdBin</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Represent a n-dimensional adaptive bin. This class is meant so serve</span>
 <span class="sd">    as interface between the user and matplotlib to plot adaptive</span>
 <span class="sd">    binned histograms.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-<div class="viewcode-block" id="AdBin.__init__"><a class="viewcode-back" href="../../adbin.html#hep_spt.adbin.AdBin.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :param arr: array of data.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
@@ -86,9 +86,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">arr</span>  <span class="o">=</span> <span class="n">arr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wgts</span> <span class="o">=</span> <span class="n">wgts</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vmax</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vmax</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
 
-<div class="viewcode-block" id="AdBin.contains"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span> <span class="p">):</span>
+<div class="viewcode-block" id="AdBin.contains"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :param arr: input data.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
@@ -98,7 +98,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">arr</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">,</span> <span class="n">arr</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AdBin.dens"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin.dens">[docs]</a>    <span class="k">def</span> <span class="nf">dens</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="AdBin.dens"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.dens">[docs]</a>    <span class="k">def</span> <span class="nf">dens</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :param arr: array of data to process.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
@@ -109,7 +109,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sw</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="AdBin.divide"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin.divide">[docs]</a>    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ndiv</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">):</span>
+<div class="viewcode-block" id="AdBin.divide"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.divide">[docs]</a>    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ndiv</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Divide this bin in two, using the median in each dimension. The</span>
 <span class="sd">        dimension used to make the division is taken as that which generates</span>
@@ -198,7 +198,7 @@
 
         <span class="k">return</span> <span class="n">all_bins</span></div>
 
-<div class="viewcode-block" id="AdBin.free_memory"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin.free_memory">[docs]</a>    <span class="k">def</span> <span class="nf">free_memory</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+<div class="viewcode-block" id="AdBin.free_memory"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.free_memory">[docs]</a>    <span class="k">def</span> <span class="nf">free_memory</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Remove the pointers to the arrays of data and weights. The method</span>
 <span class="sd">        :meth:`AdBin.divide` will become unavailable after this.</span>
@@ -206,7 +206,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">arr</span>  <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="AdBin.size"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+<div class="viewcode-block" id="AdBin.size"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :returns: size of this bin calculated as the product of \</span>
 <span class="sd">        the individual sizes in each dimension.</span>
@@ -214,7 +214,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vmax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="AdBin.sw"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin.sw">[docs]</a>    <span class="k">def</span> <span class="nf">sw</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="AdBin.sw"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.sw">[docs]</a>    <span class="k">def</span> <span class="nf">sw</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :param arr: array of data to process.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
@@ -232,7 +232,7 @@
 
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AdBin.sw_uncert"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.adbin.AdBin.sw_uncert">[docs]</a>    <span class="k">def</span> <span class="nf">sw_uncert</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="AdBin.sw_uncert"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.sw_uncert">[docs]</a>    <span class="k">def</span> <span class="nf">sw_uncert</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        :param arr: array of data to process.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
@@ -255,7 +255,7 @@
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">uncert</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="adbin_as_rectangle"><a class="viewcode-back" href="../../api/hep_spt.adbin_as_rectangle.html#hep_spt.adbin.adbin_as_rectangle">[docs]</a><span class="k">def</span> <span class="nf">adbin_as_rectangle</span><span class="p">(</span> <span class="n">adb</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<div class="viewcode-block" id="adbin_as_rectangle"><a class="viewcode-back" href="../../api/hep_spt.adbin_as_rectangle.html#hep_spt.adbin_as_rectangle">[docs]</a><span class="k">def</span> <span class="nf">adbin_as_rectangle</span><span class="p">(</span> <span class="n">adb</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Extract the bounds so it can be processed by a matplotlib.patches.Rectangle</span>
 <span class="sd">    object and properly fill the area inside it.</span>
@@ -276,7 +276,7 @@
     <span class="k">return</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="adbin_hist1d"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist1d.html#hep_spt.adbin.adbin_hist1d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<div class="viewcode-block" id="adbin_hist1d"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist1d.html#hep_spt.adbin_hist1d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Create an adaptive binned histogram.</span>
 
@@ -294,6 +294,8 @@
 <span class="sd">    In the non-weighted case, errors in Y are returned as two arrays, with the \</span>
 <span class="sd">    lower and upper uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</span>
+
+<span class="sd">    .. seealso:: :func:`adbin_hist2d`, :func:`adbin_histnd`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">pws</span> <span class="o">=</span> <span class="n">_proc_hist_input_1d</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">)</span>
 
@@ -316,7 +318,7 @@
     <span class="k">return</span> <span class="n">errorbar_hist</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">rg</span><span class="p">,</span> <span class="n">wgts</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="adbin_hist1d_edges"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist1d_edges.html#hep_spt.adbin.adbin_hist1d_edges">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d_edges</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+<div class="viewcode-block" id="adbin_hist1d_edges"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist1d_edges.html#hep_spt.adbin_hist1d_edges">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d_edges</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Create adaptive binned edges from the given array.</span>
 
@@ -363,7 +365,7 @@
     <span class="k">return</span> <span class="n">edges</span></div>
 
 
-<div class="viewcode-block" id="adbin_hist2d"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist2d.html#hep_spt.adbin.adbin_hist2d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<div class="viewcode-block" id="adbin_hist2d"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist2d.html#hep_spt.adbin_hist2d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Create a 2D adaptive binned histogram. This function calls</span>
 <span class="sd">    the adbin_histnd function.</span>
@@ -379,12 +381,12 @@
 <span class="sd">    :returns: adaptive bins of the histogram, with size (nbins + 1).</span>
 <span class="sd">    :rtype: list(AdBin)</span>
 
-<span class="sd">    .. seealso: :func:`adbin_histnd`</span>
+<span class="sd">    .. seealso:: :func:`adbin_hist1d`, :func:`adbin_histnd`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">adbin_histnd</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="adbin_hist2d_rectangles"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist2d_rectangles.html#hep_spt.adbin.adbin_hist2d_rectangles">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d_rectangles</span><span class="p">(</span> <span class="n">bins</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span>
+<div class="viewcode-block" id="adbin_hist2d_rectangles"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist2d_rectangles.html#hep_spt.adbin_hist2d_rectangles">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d_rectangles</span><span class="p">(</span> <span class="n">bins</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span>
                              <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                              <span class="n">cmap</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="s1">&#39;sw&#39;</span><span class="p">,</span>
                              <span class="n">color</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -448,7 +450,7 @@
     <span class="k">return</span> <span class="n">recs</span><span class="p">,</span> <span class="n">contents</span></div>
 
 
-<div class="viewcode-block" id="adbin_histnd"><a class="viewcode-back" href="../../api/hep_spt.adbin_histnd.html#hep_spt.adbin.adbin_histnd">[docs]</a><span class="k">def</span> <span class="nf">adbin_histnd</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ndiv</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">free_memory</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">):</span>
+<div class="viewcode-block" id="adbin_histnd"><a class="viewcode-back" href="../../api/hep_spt.adbin_histnd.html#hep_spt.adbin_histnd">[docs]</a><span class="k">def</span> <span class="nf">adbin_histnd</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wgts</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ndiv</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">free_memory</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Create a ND adaptive binned histogram.</span>
 
@@ -472,7 +474,8 @@
 <span class="sd">    :returns: adaptive bins of the histogram, with size (nbins + 1).</span>
 <span class="sd">    :rtype: list(AdBin)</span>
 
-<span class="sd">    .. seealso: :meth:`AdBin.divide`, :meth:`AdBin.free_memory`</span>
+<span class="sd">    .. seealso:: :func:`adbin_hist1d`, :func:`adbin_hist2d`,</span>
+<span class="sd">       :meth:`AdBin.divide`, :meth:`AdBin.free_memory`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">//</span> <span class="n">nbins</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
