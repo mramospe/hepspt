@@ -252,6 +252,8 @@ def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None, **kwargs ):
     In the non-weighted case, errors in Y are returned as two arrays, with the \
     lower and upper uncertainties.
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
+
+    .. seealso:: :func:`adbin_hist2d`, :func:`adbin_histnd`
     '''
     arr, rg, pws = _proc_hist_input_1d(arr, rg, wgts)
 
@@ -337,7 +339,7 @@ def adbin_hist2d( x, y, *args, **kwargs ):
     :returns: adaptive bins of the histogram, with size (nbins + 1).
     :rtype: list(AdBin)
 
-    .. seealso: :func:`adbin_histnd`
+    .. seealso:: :func:`adbin_hist1d`, :func:`adbin_histnd`
     '''
     return adbin_histnd(np.array([x, y]).T, *args, **kwargs)
 
@@ -430,7 +432,8 @@ def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2, free_memor
     :returns: adaptive bins of the histogram, with size (nbins + 1).
     :rtype: list(AdBin)
 
-    .. seealso: :meth:`AdBin.divide`, :meth:`AdBin.free_memory`
+    .. seealso:: :func:`adbin_hist1d`, :func:`adbin_hist2d`,
+       :meth:`AdBin.divide`, :meth:`AdBin.free_memory`
     '''
     assert len(arr) // nbins > 0
 
