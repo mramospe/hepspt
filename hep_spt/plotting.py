@@ -200,7 +200,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert 
             values = values/s
             ey = ey/s
         else:
-            ey *= np.finfo(ey.dtype).max
+            ey = np.finfo(ey.dtype).max
 
     return values, edges, ex, ey
 
