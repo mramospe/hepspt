@@ -10,6 +10,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 import os, warnings
 import numpy as np
 from math import exp, log, sqrt
+from scipy.interpolate import interp1d
 from scipy.optimize import fsolve
 from scipy.special import gamma
 from scipy.stats import beta, chi2, kstwobign, poisson
@@ -29,7 +30,7 @@ __poisson_to_gauss__ = 200
 
 
 __all__ = ['calc_poisson_fu', 'calc_poisson_llu',
-           'cp_fu', 'ks_2samp',
+           'cp_fu', 'FlatDistTransform', 'ks_2samp',
            'gauss_u',
            'poisson_fu', 'poisson_llu', 'sw2_u'
           ]
@@ -157,47 +158,71 @@ def cp_fu( k, N, cl = __one_sigma__ ):
     return p - lw, up - p
 
 
-def _poisson_u_from_db( m, database ):
+class FlatDistTransform:
     '''
-    Decorator for functions to calculate poissonian uncertainties,
-    which are partially stored on databases. If "m" is above the
-    maximum number stored in the database, the gaussian approximation
-    is taken instead.
+    Instance to transform values following an unknown distribution :math:`f(x)`
+    into a flat distribution. This class takes into account the inverse
+    transform sampling theorem, which states that, given a distribution
+    :math:`f(x)` where :math:`x\\in[a, b]` then, given a random variable
+    following a flat distribution r, then
 
-    :param database: name of the database.
-    :type database: str
-    :returns: lower and upper frequentist uncertainties.
-    :rtype: array-like(float, float)
+    .. math::
+       F(x) - F(x_0) = \int_{x_0}^x f(x) dx = \int_0^r r dr = r
+
+    So this allows us to generate values following the distribution :math:`f(x)`
+    from values from a flat distribution
+
+    .. math::
+       x = F^{-1}(r + F(x_0))
+
+    In this class, the inverse process is performed. From a given set of values
+    from a certain distribution, we build a method to generate numbers following
+    a flat distribution.
+
+    The class performs an interpolation to get the transformated values from
+    an array holding the cumulative of the distribution. The function
+    :func:`scipy.interpolate.interp1d` is used for this purpose.
     '''
-    m = np.array(m, dtype = np.int32)
+    def __init__( self, points, values=None, kind='cubic' ):
+        '''
+        Build the class from a given set of values following a certain
+        distribution (the use of weights is allowed), or x and y values of
+        a PDF. This last method is not recommended, since the precision
+        relies on the dispersion of the values, sometimes concentrated around
+        peaking regions which might not be well described by an interpolation.
 
-    scalar_input = False
-    if m.ndim == 0:
-        m = m[None]
-        scalar_input = True
+        :param points: x-values of the distribution (PDF).
+        :type points: numpy.ndarray
+        :param values: weights or PDF values to use.
+        :type values: numpy.ndarray
+        :param kind: kind of interpolation to use. For more details see \
+        :func:`scipy.interpolate.interp1d`.
+        :type kind: str or int
+        '''
+        srt = points.argsort()
 
-    no_app = (m < __poisson_to_gauss__)
+        points = points[srt]
+        if values is None:
+            c = np.linspace(1./len(points), 1., len(points))
+        else:
+            c  = np.cumsum(values[srt])
+            c *= 1./c[-1]
 
-    if np.count_nonzero(no_app) == 0:
-        # We can use the gaussian approximation in all
-        out = np.array(2*[np.sqrt(m)]).T
-    else:
-        # Non-approximated uncertainties
-        table = _access_db(database)
+        self._trans = interp1d(points, c,
+                               copy=False,
+                               kind=kind,
+                               bounds_error=False,
+                               fill_value=(0, 1)
+        )
 
-        out = np.zeros((len(m), 2), dtype = np.float64)
+    def transform( self, values ):
+        '''
+        Return the value of the transformation of the given values.
 
-        out[no_app] = table[m[no_app]]
-
-        mk_app = np.logical_not(no_app)
-
-        if mk_app.any():
-            # Use the gaussian approximation for the rest
-            out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
-
-    if scalar_input:
-        return np.squeeze(out)
-    return out
+        :param values: values to transform.
+        :type values: array-like
+        '''
+        return self._trans(values)
 
 
 def gauss_u( s, cl = __one_sigma__ ):
@@ -350,6 +375,49 @@ def _poisson_initials( m ):
     ir = m + sm
 
     return il, ir
+
+
+def _poisson_u_from_db( m, database ):
+    '''
+    Decorator for functions to calculate poissonian uncertainties,
+    which are partially stored on databases. If "m" is above the
+    maximum number stored in the database, the gaussian approximation
+    is taken instead.
+
+    :param database: name of the database.
+    :type database: str
+    :returns: lower and upper frequentist uncertainties.
+    :rtype: array-like(float, float)
+    '''
+    m = np.array(m, dtype = np.int32)
+
+    scalar_input = False
+    if m.ndim == 0:
+        m = m[None]
+        scalar_input = True
+
+    no_app = (m < __poisson_to_gauss__)
+
+    if np.count_nonzero(no_app) == 0:
+        # We can use the gaussian approximation in all
+        out = np.array(2*[np.sqrt(m)]).T
+    else:
+        # Non-approximated uncertainties
+        table = _access_db(database)
+
+        out = np.zeros((len(m), 2), dtype = np.float64)
+
+        out[no_app] = table[m[no_app]]
+
+        mk_app = np.logical_not(no_app)
+
+        if mk_app.any():
+            # Use the gaussian approximation for the rest
+            out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
+
+    if scalar_input:
+        return np.squeeze(out)
+    return out
 
 
 def _process_poisson_u( m, lw, up ):
