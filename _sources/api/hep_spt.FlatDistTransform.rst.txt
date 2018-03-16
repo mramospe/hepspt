@@ -1,0 +1,17 @@
+FlatDistTransform
+=================
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: FlatDistTransform
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~FlatDistTransform.transform
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: transform
