@@ -164,19 +164,20 @@ class FlatDistTransform:
     into a flat distribution. This class takes into account the inverse
     transform sampling theorem, which states that, given a distribution
     :math:`f(x)` where :math:`x\\in[a, b]` then, given a random variable
-    following a flat distribution r, then
+    following a flat distribution *r*,
 
     .. math::
        F(x) - F(x_0) = \int_{x_0}^x f(x) dx = \int_0^r r dr = r
 
-    So this allows us to generate values following the distribution :math:`f(x)`
-    from values from a flat distribution
+    where :math:`F(x)` is the primitive of :math:`f(x)`. This allows us to
+    generate values following the distribution :math:`f(x)` given values from
+    a flat distribution
 
     .. math::
        x = F^{-1}(r + F(x_0))
 
     In this class, the inverse process is performed. From a given set of values
-    from a certain distribution, we build a method to generate numbers following
+    of a certain distribution, we build a method to generate numbers following
     a flat distribution.
 
     The class performs an interpolation to get the transformated values from
