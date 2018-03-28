@@ -80,6 +80,9 @@ class AdBin:
         :returns: two new bins, supposed to contain half the sum of weights of \
         the parent.
         :rtype: AdBin, AdBin
+        :raises RuntimeError: if called after the data pointers have been freed.
+
+        .. seealso:: :meth:`AdBin.free_memory`
         '''
         assert ndiv > 1
 
@@ -190,7 +193,7 @@ class AdBin:
 
         return float(sw)
 
-    def sw_uncert( self, arr, wgts = None ):
+    def sw_u( self, arr, wgts = None ):
         '''
         :param arr: array of data to process.
         :type arr: numpy.ndarray

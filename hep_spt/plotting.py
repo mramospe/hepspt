@@ -156,6 +156,7 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert 
     In the non-weighted case, errors in Y are returned as two arrays, with the \
     lower and upper uncertainties.
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
+    :raises ValueError: if the uncertainty type is not among the possibilities.
 
     .. seealso:: :func:`hep_spt.stats.poisson_fu`, :func:`hep_spt.stats.poisson_llu`
     '''
@@ -327,6 +328,7 @@ def pull( vals, err, ref ):
     associated errors. In case asymmetric errors have been provided, \
     the returning array has shape (2, n).
     :rtype: array-like, array-like
+    :raises TypeError: if the array does not have shape (2, n) or (n,).
     '''
     pull = vals - ref
 
