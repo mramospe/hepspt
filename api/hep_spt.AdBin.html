@@ -46,7 +46,8 @@
 <dl class="class">
 <dt id="hep_spt.AdBin">
 <em class="property">class </em><code class="descclassname">hep_spt.</code><code class="descname">AdBin</code><span class="sig-paren">(</span><em>arr</em>, <em>rg=None</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#AdBin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.AdBin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represent a n-dimensional adaptive bin. This class is meant so serve
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Represent a n-dimensional adaptive bin. This class is meant so serve
 as interface between the user and matplotlib to plot adaptive
 binned histograms.</p>
 <p class="rubric">Methods Summary</p>
@@ -106,16 +107,8 @@ binned histograms.</p>
 </table>
 </td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#hep_spt.AdBin.sw_uncert" title="hep_spt.AdBin.sw_uncert"><code class="xref py py-obj docutils literal"><span class="pre">sw_uncert</span></code></a>(arr[,&nbsp;wgts])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param arr:</th><td class="field-body">array of data to process.</td>
-</tr>
-</tbody>
-</table>
-</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">AdBin.sw_uncert</span></code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -176,8 +169,14 @@ the smallest bin.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hep_spt.AdBin" title="hep_spt.AdBin">AdBin</a>, <a class="reference internal" href="#hep_spt.AdBin" title="hep_spt.AdBin">AdBin</a></td>
 </tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><strong>RuntimeError</strong></a> – if called after the data pointers have been freed.</td>
+</tr>
 </tbody>
 </table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#hep_spt.AdBin.free_memory" title="hep_spt.AdBin.free_memory"><code class="xref py py-meth docutils literal"><span class="pre">AdBin.free_memory()</span></code></a></p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -216,29 +215,6 @@ the smallest bin.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sum of weights for this bin.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="hep_spt.AdBin.sw_uncert">
-<code class="descname">sw_uncert</code><span class="sig-paren">(</span><em>arr</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#AdBin.sw_uncert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.AdBin.sw_uncert" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data to process.</li>
-<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – possible weights.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">uncertainty of the sum of weights in the bin. If “wgts” is         provided, this magnitude is equal to the square root of the sum of         weights in the bin. Otherwise poissonian errors are considered.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a></p>
