@@ -9,7 +9,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Python
 import numpy as np
 
-# Custom
+# Local
 import hep_spt
 
 

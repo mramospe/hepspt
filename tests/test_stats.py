@@ -6,13 +6,13 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
-# Custom
-import hep_spt
-
 # Python
 import numpy as np
 from scipy.stats import norm
 from scipy.stats import ks_2samp as scipy_ks_2samp
+
+# Local
+import hep_spt
 
 
 def _integral_transformer_aux( points, comp, values=None ):

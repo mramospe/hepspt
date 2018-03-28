@@ -29,10 +29,16 @@ __one_sigma__    = __chi2_one_dof__.cdf(1)
 __poisson_to_gauss__ = 200
 
 
-__all__ = ['calc_poisson_fu', 'calc_poisson_llu',
-           'cp_fu', 'FlatDistTransform', 'ks_2samp',
+__all__ = ['calc_poisson_fu',
+           'calc_poisson_llu',
+           'cp_fu',
+           'FlatDistTransform',
+           'ks_2samp',
            'gauss_u',
-           'poisson_fu', 'poisson_llu', 'sw2_u'
+           'poisson_fu',
+           'poisson_llu',
+           'rv_random_sample',
+           'sw2_u'
           ]
 
 
@@ -444,6 +450,31 @@ def _process_poisson_u( m, lw, up ):
 
     # numpy.vectorize needs to know the exact type of the output
     return float(s_lw), float(s_up)
+
+
+def rv_random_sample( func, size = 10000, **kwargs ):
+    '''
+    Create a random sample from the given rv_frozen object. This is typically
+    created after building a scipy.stats.rv_discrete or
+    scipy.stats.rv_continuous functions.
+
+    :param func: function to use for the generation.
+    :type func: scipy.stats.rv_frozen
+    :param size: size of the sample.
+    :type size: int
+    :param kwargs: any other argument to scipy.stats.rv_frozen.rvs.
+    :type kwargs: dict
+    :returns: generated sample.
+    :rtype: array-like
+    '''
+    args = np.array(func.args)
+
+    if len(args.shape) == 1:
+        size = (size,)
+    else:
+        size = (size, args.shape[1])
+
+    return func.rvs(size=size, **kwargs)
 
 
 def sw2_u( arr, bins = 20, rg = None, wgts = None ):

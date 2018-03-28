@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pytest
 
-# Custom
+# Local
 import hep_spt
 
 # Set the random seed for reproducibility
