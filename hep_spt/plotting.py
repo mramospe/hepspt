@@ -26,7 +26,6 @@ __all__ = [
     'errorbar_hist',
     'opt_fig_div',
     'path_to_styles',
-    'process_range',
     'profile',
     'pull',
     'samples_cycler',
@@ -259,7 +258,7 @@ def process_range( arr, rg = None ):
         vmin = arr.min(axis = 0)
         vmax = np.nextafter(amax, np.infty)
     else:
-        vmin, vmax = np.array(rg).T
+        vmin, vmax = rg
 
     return vmin, vmax
 

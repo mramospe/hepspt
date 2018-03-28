@@ -141,12 +141,12 @@ class AdBin:
 
         d = bounds[min_dim]
 
-        lbd = np.array([self.vmin, self.vmax]).T
-        lbd[min_dim][1] = d
+        lbd = np.array([self.vmin, self.vmax])
+        lbd[1][min_dim] = d
         bl = AdBin(left, lbd, wleft)
 
-        rbd = np.array([self.vmin, self.vmax]).T
-        rbd[min_dim][0] = d
+        rbd = np.array([self.vmin, self.vmax])
+        rbd[0][min_dim] = d
         br = AdBin(right, rbd, wright)
 
         # If the number of divisions is greater than 2, perform again the same
