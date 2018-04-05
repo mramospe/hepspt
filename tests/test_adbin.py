@@ -61,7 +61,7 @@ def test_adbin_hist1d():
     v, ev, ex, ey = hep_spt.adbin_hist1d(sample, bins, rg)
 
     # Case with weights
-    v_w, ev_w, ex_w, ey_w = hep_spt.adbin_hist1d(sample, bins, rg, wgts = weights)
+    v_w, ev_w, ex_w, ey_w = hep_spt.adbin_hist1d(sample, bins, rg, weights = weights)
 
 
 def test_adbin_hist2d():
@@ -96,7 +96,7 @@ def test_adbin_hist2d():
 
     # Weighted case
     nbins = 8
-    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, wgts=weights, free_memory=False)
+    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins, weights=weights, free_memory=False)
 
     exp = float(weights.sum())/nbins
 
@@ -107,6 +107,6 @@ def _within_expectations( bins, vmin, vmax ):
     '''
     Check whether the values in the input array are inside the expectations.
     '''
-    arr = np.array([b.sw(b.arr, b.wgts) for b in bins])
+    arr = np.array([b.sw(b.array, b.weights) for b in bins])
 
     return np.logical_and(np.all(arr > vmin), np.all(arr < vmax))

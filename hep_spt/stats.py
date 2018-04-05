@@ -248,25 +248,25 @@ def gauss_u( s, cl = __one_sigma__ ):
     return n*s
 
 
-def _ks_2samp_values( arr, wgts = None ):
+def _ks_2samp_values( arr, weights = None ):
     '''
     Calculate the values needed to perform the Kolmogorov-Smirnov test.
 
     :param arr: input sample.
     :type arr: array-like
-    :param wgts: possible weights.
-    :type wgts: array-like
+    :param weights: possible weights.
+    :type weights: array-like
     :returns: sorted sample, stack with the cumulative distribution and
     sum of weights.
     :rtype: array-like, array-like, float
     '''
-    wgts = wgts if wgts is not None else np.ones(len(arr), dtype=float)
+    weights = weights if weights is not None else np.ones(len(arr), dtype=float)
 
-    ix   = np.argsort(arr)
-    arr  = arr[ix]
-    wgts = wgts[ix]
+    ix  = np.argsort(arr)
+    arr = arr[ix]
+    weights = weights[ix]
 
-    cs = np.cumsum(wgts)
+    cs = np.cumsum(weights)
 
     sw = cs[-1]
 
@@ -477,7 +477,7 @@ def rv_random_sample( func, size = 10000, **kwargs ):
     return func.rvs(size=size, **kwargs)
 
 
-def sw2_u( arr, bins = 20, rg = None, wgts = None ):
+def sw2_u( arr, bins = 20, range = None, weights = None ):
     '''
     Calculate the errors of a weighted sample. This uncertainty is
     calculated as follows:
@@ -487,24 +487,24 @@ def sw2_u( arr, bins = 20, rg = None, wgts = None ):
        \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}
 
     where *i* refers to the i-th bin and :math:`j \in [0, n]` refers to
-    each entry in that bin with weight :math:`\omega_{i,j}`. If "wgts" is
+    each entry in that bin with weight :math:`\omega_{i,j}`. If "weights" is
     None, then this coincides with the square root of the number of entries
     in each bin.
 
     :param arr: input array of data to process.
     :param bins: see :func:`numpy.histogram`.
     :type bins: int, sequence of scalars or str
-    :param rg: range to process in the input array.
-    :type rg: tuple(float, float)
-    :param wgts: possible weights for the histogram.
-    :type wgts: collection(value-type)
+    :param range: range to process in the input array.
+    :type range: tuple(float, float)
+    :param weights: possible weights for the histogram.
+    :type weights: collection(value-type)
     :returns: symmetric uncertainty.
     :rtype: array-like
     '''
-    if wgts is not None:
-        values = np.histogram(arr, bins, rg, weights = wgts*wgts)[0]
+    if weights is not None:
+        values = np.histogram(arr, bins, range, weights = weights*weights)[0]
     else:
-        values = np.histogram(arr, bins, rg)[0]
+        values = np.histogram(arr, bins, range)[0]
 
     return np.sqrt(values)
 
