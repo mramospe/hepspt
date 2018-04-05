@@ -26,7 +26,6 @@ __all__ = [
     'errorbar_hist',
     'opt_fig_div',
     'path_to_styles',
-    'process_range',
     'profile',
     'pull',
     'samples_cycler',
@@ -127,17 +126,17 @@ def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax 
     cax.grid()
 
 
-def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert = None ):
+def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, uncert = None ):
     '''
     Calculate the values needed to create an error bar histogram.
 
     :param arr: input array of data to process.
     :param bins: see :func:`numpy.histogram`.
     :type bins: int or sequence of scalars or str
-    :param rg: range to process in the input array.
-    :type rg: tuple(float, float)
-    :param wgts: possible weights for the histogram.
-    :type wgts: collection(value-type)
+    :param range: range to process in the input array.
+    :type range: tuple(float, float)
+    :param weights: possible weights for the histogram.
+    :type weights: collection(value-type)
     :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
@@ -163,30 +162,30 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert 
     if uncert not in (None, 'freq', 'dll', 'sw2'):
         raise ValueError('Unknown uncertainty type "{}"'.format(uncert))
 
-    if wgts is not None:
+    if weights is not None:
 
         if uncert in ('freq', 'dll'):
             warnings.warn('Uncertainties of type "{}" can not be used on '\
                           'weighted data'.format(uncert))
 
-        values, edges = np.histogram(arr, bins, rg, weights = wgts)
+        values, edges = np.histogram(arr, bins, range, weights = weights)
 
         # Use sum of the square of weights to calculate the error
-        ey = sw2_u(arr, bins, rg, wgts)
+        ey = sw2_u(arr, bins, range, weights)
 
     else:
         # By default use frequentist poissonian errors
         uncert = uncert or 'freq'
 
         # Use the poissonian errors
-        values, edges = np.histogram(arr, bins, rg, weights = wgts)
+        values, edges = np.histogram(arr, bins, range, weights = weights)
 
         if uncert == 'freq':
             ey = poisson_fu(values)
         elif uncert == 'dll':
             ey = poisson_llu(values)
         else:
-            ey = sw2_u(arr, bins, rg, wgts)
+            ey = sw2_u(arr, bins, range, weights)
 
         # For compatibility with matplotlib.pyplot.errorbar
         ey = ey.T
@@ -240,31 +239,31 @@ def path_to_styles():
     return __path_to_styles__
 
 
-def process_range( arr, rg = None ):
+def process_range( arr, range = None ):
     '''
     Process the given range, determining the minimum and maximum
     values for a 1D histogram.
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param rg: range of the histogram. It must contain tuple(min, max), \
+    :param range: range of the histogram. It must contain tuple(min, max), \
     where "min" and "max" can be either floats (1D case) or collections \
     (ND case).
-    :type rg: tuple or None
+    :type range: tuple or None
     :returns: minimum and maximum values.
     :rtype: float, float
     '''
-    if rg is None:
+    if range is None:
         amax = arr.max(axis = 0)
         vmin = arr.min(axis = 0)
         vmax = np.nextafter(amax, np.infty)
     else:
-        vmin, vmax = np.array(rg).T
+        vmin, vmax = range
 
     return vmin, vmax
 
 
-def profile( x, y, bins = 20, rg = None ):
+def profile( x, y, bins = 20, range = None ):
     '''
     Calculate the profile from a 2D data sample. It corresponds to the mean of
     the values in "y" for each bin in "x".
@@ -275,19 +274,19 @@ def profile( x, y, bins = 20, rg = None ):
     :type y: collection(value-type)
     :param bins: see :func:`numpy.histogram`.
     :type bins: int or sequence of scalars or str
-    :param rg: range to process in the input array.
-    :type rg: tuple(float, float)
+    :param range: range to process in the input array.
+    :type range: tuple(float, float)
     :returns: profile in "y".
     :rtype: numpy.ndarray
     '''
-    vmin, vmax = process_range(x, rg)
+    vmin, vmax = process_range(x, range)
 
     _, edges = np.histogram(x, bins, range=(vmin, vmax))
 
     dig = np.digitize(x, edges)
 
     prof = np.array([
-        y[dig == i].mean() for i in range(1, len(edges))
+        y[dig == i].mean() for i in np.arange(1, len(edges))
     ])
 
     return prof

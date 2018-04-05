@@ -29,22 +29,22 @@ class AdBin:
     as interface between the user and matplotlib to plot adaptive
     binned histograms.
     '''
-    def __init__( self, arr, rg = None, wgts = None ):
+    def __init__( self, arr, range = None, weights = None ):
         '''
         :param arr: array of data.
         :type arr: numpy.ndarray
-        :param rg: range of the histogram in each dimension. As \
+        :param range: range of the histogram in each dimension. As \
         [(xmin, ymin), (xmax, ymax)].
-        :type rg: numpy.ndarray(float, float) or None.
-        :param wgts: possible weights.
-        :type wgts: numpy.ndarray or None
+        :type range: numpy.ndarray(float, float) or None.
+        :param weights: possible weights.
+        :type weights: numpy.ndarray or None
         '''
-        arr, (vmin, vmax), wgts = _proc_hist_input(arr, rg, wgts)
+        arr, (vmin, vmax), weights = _proc_hist_input(arr, range, weights)
 
-        self.arr  = arr
-        self.wgts = wgts
-        self.vmin = np.array(vmin, dtype = float)
-        self.vmax = np.array(vmax, dtype = float)
+        self.array   = arr
+        self.weights = weights
+        self.vmin    = np.array(vmin, dtype = float)
+        self.vmax    = np.array(vmax, dtype = float)
 
     def contains( self, arr ):
         '''
@@ -56,16 +56,16 @@ class AdBin:
         '''
         return np.logical_and(arr >= self.vmin, arr < self.vmax).all(axis = 1)
 
-    def dens( self, arr, wgts = None ):
+    def dens( self, arr, weights = None ):
         '''
         :param arr: array of data to process.
         :type arr: numpy.ndarray
-        :param wgts: possible weights.
-        :type wgts: numpy.ndarray or None
+        :param weights: possible weights.
+        :type weights: numpy.ndarray or None
         :returns: density of this bin.
         :rtype: float
         '''
-        return self.sw(arr, wgts)/float(self.size())
+        return self.sw(arr, weights)/float(self.size())
 
     def divide( self, ndiv = 2 ):
         '''
@@ -86,13 +86,13 @@ class AdBin:
         '''
         assert ndiv > 1
 
-        if self.arr is None:
+        if self.array is None:
             raise RuntimeError('Attempt to call AdBin.divide on a bin whose '\
                                'pointers have been freed')
 
-        srt   = self.arr.argsort(axis = 0)
-        sarr  = np.array([self.arr.T[i][s] for i, s in enumerate(srt.T)]).T
-        swgts = self.wgts[srt]
+        srt   = self.array.argsort(axis = 0)
+        sarr  = np.array([self.array.T[i][s] for i, s in enumerate(srt.T)]).T
+        swgts = self.weights[srt]
         csw   = swgts.cumsum(axis = 0)
 
         # Normalize using the total sum of weights: csw[-1][0]
@@ -103,8 +103,8 @@ class AdBin:
         bounds = np.array([np.nextafter(sarr[p,i], np.infty)
                            for i, p in enumerate(p)])
 
-        mask_left  = (self.arr < bounds)
-        mask_right = (self.arr >= bounds)
+        mask_left  = (self.array < bounds)
+        mask_right = (self.array >= bounds)
 
         # These functions calculate the sizes of the bins generated
         # with each cut.
@@ -124,7 +124,7 @@ class AdBin:
 
             return min(sl, sr)
 
-        frags = np.array([_msz(self.arr, i) for i in range(self.arr.shape[1])])
+        frags = np.array([_msz(self.array, i) for i in np.arange(self.array.shape[1])])
 
         # The sample is cut following the criteria that leads to the
         # smallest bin possible.
@@ -134,19 +134,19 @@ class AdBin:
         il = mask_left[:,min_dim]
         ir = mask_right[:,min_dim]
 
-        left   = self.arr[il]
-        right  = self.arr[ir]
-        wleft  = self.wgts[il]
-        wright = self.wgts[ir]
+        left   = self.array[il]
+        right  = self.array[ir]
+        wleft  = self.weights[il]
+        wright = self.weights[ir]
 
         d = bounds[min_dim]
 
-        lbd = np.array([self.vmin, self.vmax]).T
-        lbd[min_dim][1] = d
+        lbd = np.array([self.vmin, self.vmax])
+        lbd[1][min_dim] = d
         bl = AdBin(left, lbd, wleft)
 
-        rbd = np.array([self.vmin, self.vmax]).T
-        rbd[min_dim][0] = d
+        rbd = np.array([self.vmin, self.vmax])
+        rbd[0][min_dim] = d
         br = AdBin(right, rbd, wright)
 
         # If the number of divisions is greater than 2, perform again the same
@@ -164,8 +164,8 @@ class AdBin:
         Remove the pointers to the arrays of data and weights. The method
         :meth:`AdBin.divide` will become unavailable after this.
         '''
-        self.arr  = None
-        self.wgts = None
+        self.array   = None
+        self.weights = None
 
     def size( self ):
         '''
@@ -175,39 +175,39 @@ class AdBin:
         '''
         return float(np.prod(self.vmax - self.vmin))
 
-    def sw( self, arr, wgts = None ):
+    def sw( self, arr, weights = None ):
         '''
         :param arr: array of data to process.
         :type arr: numpy.ndarray
-        :param wgts: possible weights.
-        :type wgts: numpy.ndarray or None
+        :param weights: possible weights.
+        :type weights: numpy.ndarray or None
         :returns: sum of weights for this bin.
         :rtype: float
         '''
         true = self.contains(arr)
 
-        if wgts is not None:
-            sw = wgts[true].sum()
+        if weights is not None:
+            sw = weights[true].sum()
         else:
             sw = np.count_nonzero(true)
 
         return float(sw)
 
-    def sw_u( self, arr, wgts = None ):
+    def sw_u( self, arr, weights = None ):
         '''
         :param arr: array of data to process.
         :type arr: numpy.ndarray
-        :param wgts: possible weights.
-        :type wgts: numpy.ndarray or None
-        :returns: uncertainty of the sum of weights in the bin. If "wgts" is \
+        :param weights: possible weights.
+        :type weights: numpy.ndarray or None
+        :returns: uncertainty of the sum of weights in the bin. If "weights" is \
         provided, this magnitude is equal to the square root of the sum of \
         weights in the bin. Otherwise poissonian errors are considered.
         :rtype: float
         '''
         true = self.contains(arr)
 
-        if wgts is not None:
-            uncert = np.sqrt((wgts*wgts)[true].sum())
+        if weights is not None:
+            uncert = np.sqrt((weights*weights)[true].sum())
         else:
             sw = np.count_nonzero(true)
 
@@ -237,7 +237,7 @@ def adbin_as_rectangle( adb, **kwargs ):
     return Rectangle((xmin, ymin), width, height, **kwargs)
 
 
-def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None, **kwargs ):
+def adbin_hist1d( arr, nbins = 100, range = None, weights = None, **kwargs ):
     '''
     Create an adaptive binned histogram.
 
@@ -245,10 +245,10 @@ def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None, **kwargs ):
     :type arr: numpy.ndarray
     :param nbins: number of bins.
     :type nbins: int
-    :param rg: range of the histogram.
-    :type rg: tuple(float, float) or None
-    :param wgts: optional array of weights.
-    :type wgts: numpy.ndarray or None
+    :param range: range of the histogram.
+    :type range: tuple(float, float) or None
+    :param weights: optional array of weights.
+    :type weights: numpy.ndarray or None
     :param kwargs: any other argument to :func:`plotting.errorbar_hist`.
     :type kwargs: dict
     :returns: values, edges, the spacing between bins in X the Y errors. \
@@ -258,7 +258,7 @@ def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None, **kwargs ):
 
     .. seealso:: :func:`adbin_hist2d`, :func:`adbin_histnd`
     '''
-    arr, rg, pws = _proc_hist_input_1d(arr, rg, wgts)
+    arr, range, pws = _proc_hist_input_1d(arr, range, weights)
 
     # Sort the data
     srt = arr.argsort()
@@ -267,19 +267,19 @@ def adbin_hist1d( arr, nbins = 100, rg = None, wgts = None, **kwargs ):
 
     # Solving the problem from the left and from the right reduces
     # the bias in the last edges
-    le = adbin_hist1d_edges(arr, nbins, rg, pws)
-    re = adbin_hist1d_edges(arr[::-1], nbins, rg, pws[::-1])[::-1]
+    le = adbin_hist1d_edges(arr, nbins, range, pws)
+    re = adbin_hist1d_edges(arr[::-1], nbins, range, pws[::-1])[::-1]
 
     edges = (re + le)/2.
 
-    vmin, vmax = rg
+    vmin, vmax = range
     edges[0]   = vmin
     edges[-1]  = vmax
 
-    return errorbar_hist(arr, edges, rg, wgts, **kwargs)
+    return errorbar_hist(arr, edges, range, weights, **kwargs)
 
 
-def adbin_hist1d_edges( arr, nbins = 100, rg = None, wgts = None ):
+def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None ):
     '''
     Create adaptive binned edges from the given array.
 
@@ -287,20 +287,20 @@ def adbin_hist1d_edges( arr, nbins = 100, rg = None, wgts = None ):
     :type arr: numpy.ndarray
     :param nbins: number of bins.
     :type nbins: int
-    :param rg: range of the histogram.
-    :type rg: tuple(float, float) or None
-    :param wgts: optional array of weights.
-    :type wgts: numpy.ndarray or None
+    :param range: range of the histogram.
+    :type range: tuple(float, float) or None
+    :param weights: optional array of weights.
+    :type weights: numpy.ndarray or None
     :returns: edges of the histogram, with size (nbins + 1).
     :rtype: numpy.ndarray
     '''
-    arr, (vmin, vmax), wgts = _proc_hist_input_1d(arr, rg, wgts)
+    arr, (vmin, vmax), weights = _proc_hist_input_1d(arr, range, weights)
 
     edges = np.zeros(nbins + 1)
 
-    for i in range(nbins - 1):
+    for i in np.arange(nbins - 1):
 
-        csum = wgts.cumsum()
+        csum = weights.cumsum()
         reqs = csum[-1]/float(nbins - i)
 
         p = bisect.bisect_left(csum, reqs)
@@ -317,8 +317,8 @@ def adbin_hist1d_edges( arr, nbins = 100, rg = None, wgts = None ):
 
         edges[i + 1]  = (arr[p] + arr[p + 1])/2.
 
-        arr  = arr[p + 1:]
-        wgts = wgts[p + 1:]
+        arr = arr[p + 1:]
+        weights = weights[p + 1:]
 
     edges[0]  = vmin
     edges[-1] = vmax
@@ -335,8 +335,8 @@ def adbin_hist2d( x, y, *args, **kwargs ):
     :type arr: numpy.ndarray
     :param nbins: number of bins.
     :type nbins: int
-    :param wgts: optional array of weights.
-    :type wgts: numpy.ndarray
+    :param weights: optional array of weights.
+    :type weights: numpy.ndarray
     :param kwargs: extra arguments to :func:`adbin_histnd`.
     :type kwargs: dict
     :returns: adaptive bins of the histogram, with size (nbins + 1).
@@ -348,7 +348,7 @@ def adbin_hist2d( x, y, *args, **kwargs ):
 
 
 def adbin_hist2d_rectangles( bins, arr,
-                             rg = None, wgts = None,
+                             range = None, weights = None,
                              cmap = None, fill = 'sw',
                              color = True,
                              **kwargs ):
@@ -360,11 +360,11 @@ def adbin_hist2d_rectangles( bins, arr,
     :type bins: collection(AdBin)
     :param arr: input data.
     :type arr: collection(value-type)
-    :param rg: range of the histogram in each dimension. As \
+    :param range: range of the histogram in each dimension. As \
     [(xmin, ymin), (xmax, ymax)].
-    :type rg: tuple(np.ndarray, np.ndarray) or None
-    :param wgts: input weights.
-    :type wgts: collection(value-type)
+    :type range: tuple(np.ndarray, np.ndarray) or None
+    :param weights: input weights.
+    :type weights: collection(value-type)
     :param cmap: optional color map. If "None", the default from \
     matplotlib.pyplot is used.
     :type cmap: matplotlib.colors.Colormap or None
@@ -381,11 +381,11 @@ def adbin_hist2d_rectangles( bins, arr,
 
     recs = [adbin_as_rectangle(b, **kwargs) for b in bins]
 
-    arr, rg, wgts = _proc_hist_input(arr, rg, wgts)
+    arr, range, weights = _proc_hist_input(arr, range, weights)
 
     # Get the contents associated to each bin
     func = getattr(AdBin, fill)
-    contents = np.array(list(map(lambda b: func(b, arr, wgts), bins)))
+    contents = np.array(list(map(lambda b: func(b, arr, weights), bins)))
 
     if color:
 
@@ -411,22 +411,22 @@ def adbin_hist2d_rectangles( bins, arr,
     return recs, contents
 
 
-def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2, free_memory = True ):
+def adbin_histnd( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_memory = True ):
     '''
     Create a ND adaptive binned histogram.
 
     :param arr: array of data with the variables as columns.
     :type arr: numpy.ndarray
-    :param rg: range of the histogram in each dimension. As \
+    :param range: range of the histogram in each dimension. As \
     [(xmin, ymin), (xmax, ymax)].
-    :type rg: numpy.ndarray(float, float) or None.
+    :type range: numpy.ndarray(float, float) or None.
     :param nbins: number of bins. In this algorithm, divisions will be made \
     till the real number of bins is equal or greater than "nbins". If this \
     number is a power of "ndiv", then the real number of bins will match \
     "nbins".
     :type nbins: int
-    :param wgts: optional array of weights.
-    :type wgts: numpy.ndarray or None
+    :param weights: optional array of weights.
+    :type weights: numpy.ndarray or None
     :param ndiv: see :meth:`AdBin.divide`.
     :type ndiv: int
     :param free_memory: whether to free the pointers pointing to the arrays of \
@@ -440,7 +440,7 @@ def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2, free_memor
     '''
     assert len(arr) // nbins > 0
 
-    bins = [AdBin(arr, rg, wgts)]
+    bins = [AdBin(arr, range, weights)]
     while len(bins) < nbins:
         bins = list(itertools.chain.from_iterable(a.divide(ndiv) for a in bins))
 
@@ -450,60 +450,60 @@ def adbin_histnd( arr, nbins = 100, rg = None, wgts = None, ndiv = 2, free_memor
     return bins
 
 
-def _proc_hist_input_1d( arr, rg = None, wgts = None ):
+def _proc_hist_input_1d( arr, range = None, weights = None ):
     '''
     Process some of the input arguments of the functions to
     manage 1D histograms.
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param rg: range of the histogram.
-    :type rg: tuple(float, float) or None
-    :param wgts: optional array of weights.
-    :type wgts: numpy.ndarray or None
+    :param range: range of the histogram.
+    :type range: tuple(float, float) or None
+    :param weights: optional array of weights.
+    :type weights: numpy.ndarray or None
     :returns: processed array of data, weights, and the minimum \
     and maximum values.
     :rtype: numpy.ndarray, tuple(float, float), numpy.ndarray
     '''
-    vmin, vmax = process_range(arr, rg)
+    vmin, vmax = process_range(arr, range)
 
     cond = np.logical_and(arr >= vmin, arr < vmax)
 
     arr = arr[cond]
 
-    if wgts is not None:
-        wgts = wgts[cond]
+    if weights is not None:
+        weights = weights[cond]
     else:
-        wgts = np.ones(len(arr))
+        weights = np.ones(len(arr))
 
-    return arr, (vmin, vmax), wgts
+    return arr, (vmin, vmax), weights
 
 
-def _proc_hist_input( arr, rg = None, wgts = None ):
+def _proc_hist_input( arr, range = None, weights = None ):
     '''
     Process some of the input arguments of the functions to
     manage ND histograms.
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param rg: range of the histogram in each dimension. As \
+    :param range: range of the histogram in each dimension. As \
     [(xmin, ymin), (xmax, ymax)].
-    :type rg: tuple(np.ndarray, np.ndarray) or None
-    :param wgts: optional array of weights.
-    :type wgts: numpy.ndarray or None
+    :type range: tuple(np.ndarray, np.ndarray) or None
+    :param weights: optional array of weights.
+    :type weights: numpy.ndarray or None
     :returns: processed array of data, weights, and the minimum \
     and maximum values for each dimension.
     :rtype: numpy.ndarray, tuple(np.ndarray, np.ndarray), numpy.ndarray
     '''
-    vmin, vmax = process_range(arr, rg)
+    vmin, vmax = process_range(arr, range)
 
     cond = np.logical_and(arr >= vmin, arr < vmax).all(axis = 1)
 
     arr = arr[cond]
 
-    if wgts is not None:
-        wgts = wgts[cond]
+    if weights is not None:
+        weights = weights[cond]
     else:
-        wgts = np.ones(len(arr))
+        weights = np.ones(len(arr))
 
-    return arr, (vmin, vmax), wgts
+    return arr, (vmin, vmax), weights
