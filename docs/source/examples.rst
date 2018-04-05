@@ -9,3 +9,4 @@ The following examples have been generated using Jupyter notebooks:
    notebooks/stats
    notebooks/plotting
    notebooks/adbin
+   notebooks/cls
