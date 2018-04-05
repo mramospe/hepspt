@@ -1,0 +1,10 @@
+<map id="inheritancef5228a9d82" name="inheritancef5228a9d82">
+<area shape="rect" id="node1" title="Represent a n&#45;dimensional adaptive bin. This class is meant so serve" alt="" coords="36,201,108,227"/>
+<area shape="rect" id="node2" title="Represent an hypothesis to be used in the CLs method." alt="" coords="33,152,111,177"/>
+<area shape="rect" id="node3" title="Represent an hypothesis which works on a continuous domain." alt="" coords="187,128,341,153"/>
+<area shape="rect" id="node4" title="Represent an hypothesis which works on a discrete domain." alt="" coords="196,177,332,203"/>
+<area shape="rect" id="node5" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="36,55,108,80"/>
+<area shape="rect" id="node6" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="195,29,333,55"/>
+<area shape="rect" id="node7" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="205,79,323,104"/>
+<area shape="rect" id="node8" title="Instance to transform values following an unknown distribution :math:`f(x)`" alt="" coords="5,5,139,31"/>
+</map>

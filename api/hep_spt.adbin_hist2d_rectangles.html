@@ -45,7 +45,7 @@
 <h1>adbin_hist2d_rectangles<a class="headerlink" href="#adbin-hist2d-rectangles" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="hep_spt.adbin_hist2d_rectangles">
-<code class="descclassname">hep_spt.</code><code class="descname">adbin_hist2d_rectangles</code><span class="sig-paren">(</span><em>bins</em>, <em>arr</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>cmap=None</em>, <em>fill='sw'</em>, <em>color=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d_rectangles" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.</code><code class="descname">adbin_hist2d_rectangles</code><span class="sig-paren">(</span><em>bins</em>, <em>arr</em>, <em>range=None</em>, <em>weights=None</em>, <em>cmap=None</em>, <em>fill='sw'</em>, <em>color=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d_rectangles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a collection of rectangles from a collection of bins, using
 the input data to calculate the associated quantity (specified in “fill”).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -55,8 +55,8 @@ the input data to calculate the associated quantity (specified in “fill”).</
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>bins</strong> (<em>collection</em><em>(</em><a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><em>AdBin</em></a><em>)</em>) – input bins.</li>
 <li><strong>arr</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – input data.</li>
-<li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><em>np.ndarray</em><em>, </em><em>np.ndarray</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
-<li><strong>wgts</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – input weights.</li>
+<li><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><em>np.ndarray</em><em>, </em><em>np.ndarray</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
+<li><strong>weights</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – input weights.</li>
 <li><strong>cmap</strong> (<em>matplotlib.colors.Colormap</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional color map. If “None”, the default from     matplotlib.pyplot is used.</li>
 <li><strong>fill</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – method to use for filling (‘sw’ or ‘dens’).</li>
 <li><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – whether the output rectangles are filled with a color or not.</li>

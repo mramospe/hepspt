@@ -56,20 +56,26 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.adbin_as_rectangle.html#hep_spt.adbin_as_rectangle" title="hep_spt.adbin_as_rectangle"><code class="xref py py-obj docutils literal"><span class="pre">adbin_as_rectangle</span></code></a>(adb,&nbsp;**kwargs)</td>
 <td>Extract the bounds so it can be processed by a matplotlib.patches.Rectangle object and properly fill the area inside it.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_hist2d_rectangles.html#hep_spt.adbin_hist2d_rectangles" title="hep_spt.adbin_hist2d_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist2d_rectangles</span></code></a>(bins,&nbsp;arr[,&nbsp;rg,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_hist2d_rectangles.html#hep_spt.adbin_hist2d_rectangles" title="hep_spt.adbin_hist2d_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist2d_rectangles</span></code></a>(bins,&nbsp;arr[,&nbsp;range,&nbsp;…])</td>
 <td>Create a collection of rectangles from a collection of bins, using the input data to calculate the associated quantity (specified in “fill”).</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.adbin_hist1d.html#hep_spt.adbin_hist1d" title="hep_spt.adbin_hist1d"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist1d</span></code></a>(arr[,&nbsp;nbins,&nbsp;rg,&nbsp;wgts])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.adbin_hist1d.html#hep_spt.adbin_hist1d" title="hep_spt.adbin_hist1d"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist1d</span></code></a>(arr[,&nbsp;nbins,&nbsp;range,&nbsp;weights])</td>
 <td>Create an adaptive binned histogram.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_hist1d_edges.html#hep_spt.adbin_hist1d_edges" title="hep_spt.adbin_hist1d_edges"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist1d_edges</span></code></a>(arr[,&nbsp;nbins,&nbsp;rg,&nbsp;wgts])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_hist1d_edges.html#hep_spt.adbin_hist1d_edges" title="hep_spt.adbin_hist1d_edges"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist1d_edges</span></code></a>(arr[,&nbsp;nbins,&nbsp;range,&nbsp;weights])</td>
 <td>Create adaptive binned edges from the given array.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.adbin_hist2d.html#hep_spt.adbin_hist2d" title="hep_spt.adbin_hist2d"><code class="xref py py-obj docutils literal"><span class="pre">adbin_hist2d</span></code></a>(x,&nbsp;y,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Create a 2D adaptive binned histogram.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_histnd.html#hep_spt.adbin_histnd" title="hep_spt.adbin_histnd"><code class="xref py py-obj docutils literal"><span class="pre">adbin_histnd</span></code></a>(arr[,&nbsp;nbins,&nbsp;rg,&nbsp;wgts,&nbsp;ndiv,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.adbin_histnd.html#hep_spt.adbin_histnd" title="hep_spt.adbin_histnd"><code class="xref py py-obj docutils literal"><span class="pre">adbin_histnd</span></code></a>(arr[,&nbsp;nbins,&nbsp;range,&nbsp;weights,&nbsp;…])</td>
 <td>Create a ND adaptive binned histogram.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.cls_hypo.html#hep_spt.cls_hypo" title="hep_spt.cls_hypo"><code class="xref py py-obj docutils literal"><span class="pre">cls_hypo</span></code></a>(func,&nbsp;*args,&nbsp;**kwargs)</td>
+<td>Create an instance of CLsHypo without needing to worry if the probability function is discrete or continuous.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.cls_ts.html#hep_spt.cls_ts" title="hep_spt.cls_ts"><code class="xref py py-obj docutils literal"><span class="pre">cls_ts</span></code></a>(alt,&nbsp;null)</td>
+<td>Create an instance of CLsTS without needing to worry about the type of hypothesis (discrete or continuous).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.gcd.html#hep_spt.gcd" title="hep_spt.gcd"><code class="xref py py-obj docutils literal"><span class="pre">gcd</span></code></a>(a,&nbsp;b,&nbsp;*args)</td>
 <td>Calculate the greatest common divisor of a set of numbers.</td>
@@ -92,7 +98,7 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.corr_hist2d.html#hep_spt.corr_hist2d" title="hep_spt.corr_hist2d"><code class="xref py py-obj docutils literal"><span class="pre">corr_hist2d</span></code></a>(matrix,&nbsp;titles[,&nbsp;frmt,&nbsp;vmin,&nbsp;…])</td>
 <td>Plot a given correlation matrix in the given axes.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.errorbar_hist.html#hep_spt.errorbar_hist" title="hep_spt.errorbar_hist"><code class="xref py py-obj docutils literal"><span class="pre">errorbar_hist</span></code></a>(arr[,&nbsp;bins,&nbsp;rg,&nbsp;wgts,&nbsp;norm,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.errorbar_hist.html#hep_spt.errorbar_hist" title="hep_spt.errorbar_hist"><code class="xref py py-obj docutils literal"><span class="pre">errorbar_hist</span></code></a>(arr[,&nbsp;bins,&nbsp;range,&nbsp;weights,&nbsp;…])</td>
 <td>Calculate the values needed to create an error bar histogram.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.opt_fig_div.html#hep_spt.opt_fig_div" title="hep_spt.opt_fig_div"><code class="xref py py-obj docutils literal"><span class="pre">opt_fig_div</span></code></a>(naxes)</td>
@@ -101,46 +107,46 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <tr class="row-even"><td><a class="reference internal" href="api/hep_spt.path_to_styles.html#hep_spt.path_to_styles" title="hep_spt.path_to_styles"><code class="xref py py-obj docutils literal"><span class="pre">path_to_styles</span></code></a>()</td>
 <td>Retrieve the path to the directory containing the styles.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.process_range.html#hep_spt.process_range" title="hep_spt.process_range"><code class="xref py py-obj docutils literal"><span class="pre">process_range</span></code></a>(arr[,&nbsp;rg])</td>
-<td>Process the given range, determining the minimum and maximum values for a 1D histogram.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.profile.html#hep_spt.profile" title="hep_spt.profile"><code class="xref py py-obj docutils literal"><span class="pre">profile</span></code></a>(x,&nbsp;y[,&nbsp;bins,&nbsp;rg])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.profile.html#hep_spt.profile" title="hep_spt.profile"><code class="xref py py-obj docutils literal"><span class="pre">profile</span></code></a>(x,&nbsp;y[,&nbsp;bins,&nbsp;range])</td>
 <td>Calculate the profile from a 2D data sample.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-obj docutils literal"><span class="pre">pull</span></code></a>(vals,&nbsp;err,&nbsp;ref)</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-obj docutils literal"><span class="pre">pull</span></code></a>(vals,&nbsp;err,&nbsp;ref)</td>
 <td>Get the pull with the associated errors for a given set of values and a reference.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.samples_cycler.html#hep_spt.samples_cycler" title="hep_spt.samples_cycler"><code class="xref py py-obj docutils literal"><span class="pre">samples_cycler</span></code></a>(smps,&nbsp;*args,&nbsp;**kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.samples_cycler.html#hep_spt.samples_cycler" title="hep_spt.samples_cycler"><code class="xref py py-obj docutils literal"><span class="pre">samples_cycler</span></code></a>(smps,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Often, one wants to plot several samples with different matplotlib styles.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.set_style.html#hep_spt.set_style" title="hep_spt.set_style"><code class="xref py py-obj docutils literal"><span class="pre">set_style</span></code></a>(*args)</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.set_style.html#hep_spt.set_style" title="hep_spt.set_style"><code class="xref py py-obj docutils literal"><span class="pre">set_style</span></code></a>(*args)</td>
 <td>Set the style for matplotlib to one within this project.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles" title="hep_spt.text_in_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">text_in_rectangles</span></code></a>(recs,&nbsp;txt[,&nbsp;cax])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles" title="hep_spt.text_in_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">text_in_rectangles</span></code></a>(recs,&nbsp;txt[,&nbsp;cax])</td>
 <td>Write text inside matplotlib.patches.Rectangle instances.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.calc_poisson_fu.html#hep_spt.calc_poisson_fu" title="hep_spt.calc_poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_fu</span></code></a>(m[,&nbsp;cl])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.calc_poisson_fu.html#hep_spt.calc_poisson_fu" title="hep_spt.calc_poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_fu</span></code></a>(m[,&nbsp;cl])</td>
 <td>Return the lower and upper frequentist uncertainties for a poisson distribution with mean “m”.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.calc_poisson_llu.html#hep_spt.calc_poisson_llu" title="hep_spt.calc_poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_llu</span></code></a>(m[,&nbsp;cl])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.calc_poisson_llu.html#hep_spt.calc_poisson_llu" title="hep_spt.calc_poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_llu</span></code></a>(m[,&nbsp;cl])</td>
 <td>Calculate poisson uncertainties based on the logarithm of likelihood.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.cp_fu.html#hep_spt.cp_fu" title="hep_spt.cp_fu"><code class="xref py py-obj docutils literal"><span class="pre">cp_fu</span></code></a>(k,&nbsp;N[,&nbsp;cl])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.cp_fu.html#hep_spt.cp_fu" title="hep_spt.cp_fu"><code class="xref py py-obj docutils literal"><span class="pre">cp_fu</span></code></a>(k,&nbsp;N[,&nbsp;cl])</td>
 <td>Return the frequentist Clopper-Pearson uncertainties of having “k” events in “N”.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.ks_2samp.html#hep_spt.ks_2samp" title="hep_spt.ks_2samp"><code class="xref py py-obj docutils literal"><span class="pre">ks_2samp</span></code></a>(a,&nbsp;b[,&nbsp;wa,&nbsp;wb])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.ks_2samp.html#hep_spt.ks_2samp" title="hep_spt.ks_2samp"><code class="xref py py-obj docutils literal"><span class="pre">ks_2samp</span></code></a>(a,&nbsp;b[,&nbsp;wa,&nbsp;wb])</td>
 <td>Compute the Kolmogorov-Smirnov statistic on 2 samples.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.gauss_u.html#hep_spt.gauss_u" title="hep_spt.gauss_u"><code class="xref py py-obj docutils literal"><span class="pre">gauss_u</span></code></a>(s[,&nbsp;cl])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.gauss_u.html#hep_spt.gauss_u" title="hep_spt.gauss_u"><code class="xref py py-obj docutils literal"><span class="pre">gauss_u</span></code></a>(s[,&nbsp;cl])</td>
 <td>Calculate the gaussian uncertainty for a given confidence level.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.poisson_fu.html#hep_spt.poisson_fu" title="hep_spt.poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_fu</span></code></a>(m)</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.poisson_fu.html#hep_spt.poisson_fu" title="hep_spt.poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_fu</span></code></a>(m)</td>
 <td>Return the poisson frequentist uncertainty at one standard deviation of confidence level.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.poisson_llu.html#hep_spt.poisson_llu" title="hep_spt.poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_llu</span></code></a>(m)</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.poisson_llu.html#hep_spt.poisson_llu" title="hep_spt.poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_llu</span></code></a>(m)</td>
 <td>Return the poisson uncertainty at one standard deviation of confidence level.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.sw2_u.html#hep_spt.sw2_u" title="hep_spt.sw2_u"><code class="xref py py-obj docutils literal"><span class="pre">sw2_u</span></code></a>(arr[,&nbsp;bins,&nbsp;rg,&nbsp;wgts])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.rv_random_sample.html#hep_spt.rv_random_sample" title="hep_spt.rv_random_sample"><code class="xref py py-obj docutils literal"><span class="pre">rv_random_sample</span></code></a>(func[,&nbsp;size])</td>
+<td>Create a random sample from the given rv_frozen object.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.sw2_u.html#hep_spt.sw2_u" title="hep_spt.sw2_u"><code class="xref py py-obj docutils literal"><span class="pre">sw2_u</span></code></a>(arr[,&nbsp;bins,&nbsp;range,&nbsp;weights])</td>
 <td>Calculate the errors of a weighted sample.</td>
 </tr>
 </tbody>
@@ -154,8 +160,20 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><code class="xref py py-obj docutils literal"><span class="pre">AdBin</span></code></a>(arr[,&nbsp;rg,&nbsp;wgts])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><code class="xref py py-obj docutils literal"><span class="pre">AdBin</span></code></a>(arr[,&nbsp;range,&nbsp;weights])</td>
 <td>Represent a n-dimensional adaptive bin.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.CLsTS_discrete.html#hep_spt.CLsTS_discrete" title="hep_spt.CLsTS_discrete"><code class="xref py py-obj docutils literal"><span class="pre">CLsTS_discrete</span></code></a>(alt,&nbsp;null)</td>
+<td>Base class to represent the test-statistics function to work with the CLs method using hypothesis working on a discrete domain.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.CLsTS_continuous.html#hep_spt.CLsTS_continuous" title="hep_spt.CLsTS_continuous"><code class="xref py py-obj docutils literal"><span class="pre">CLsTS_continuous</span></code></a>(alt,&nbsp;null)</td>
+<td>Base class to represent the test-statistics function to work with the CLs method using hypothesis working on a continuous domain.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete" title="hep_spt.CLsHypo_discrete"><code class="xref py py-obj docutils literal"><span class="pre">CLsHypo_discrete</span></code></a>(pdf)</td>
+<td>Represent an hypothesis which works on a discrete domain.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" title="hep_spt.CLsHypo_continuous"><code class="xref py py-obj docutils literal"><span class="pre">CLsHypo_continuous</span></code></a>(pdf)</td>
+<td>Represent an hypothesis which works on a continuous domain.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="api/hep_spt.FlatDistTransform.html#hep_spt.FlatDistTransform" title="hep_spt.FlatDistTransform"><code class="xref py py-obj docutils literal"><span class="pre">FlatDistTransform</span></code></a>(points[,&nbsp;values,&nbsp;kind])</td>
 <td>Instance to transform values following an unknown distribution <span class="math">\(f(x)\)</span> into a flat distribution.</td>
@@ -165,10 +183,16 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 </div>
 <div class="section" id="class-inheritance-diagram">
 <h2>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Permalink to this headline">¶</a></h2>
-<img src="_images/inheritance-9ece80daec346f40926ff6d13f4aadb4064fac04.png" alt="Inheritance diagram of hep_spt.adbin.AdBin, hep_spt.stats.FlatDistTransform" usemap="#inheritance472a85058b" class="inheritance"/>
-<map id="inheritance472a85058b" name="inheritance472a85058b">
-<area shape="rect" id="node1" title="Represent a n&#45;dimensional adaptive bin. This class is meant so serve" alt="" coords="36,55,108,80"/>
-<area shape="rect" id="node2" title="Instance to transform values following an unknown distribution :math:`f(x)`" alt="" coords="5,5,139,31"/>
+<img src="_images/inheritance-aa2446e8494e6b20ec8b74fcd16fc1d7f9ed77d6.png" alt="Inheritance diagram of hep_spt.adbin.AdBin, hep_spt.cls.CLsTS_discrete, hep_spt.cls.CLsTS_continuous, hep_spt.cls.CLsHypo_discrete, hep_spt.cls.CLsHypo_continuous, hep_spt.stats.FlatDistTransform" usemap="#inheritancef5228a9d82" class="inheritance"/>
+<map id="inheritancef5228a9d82" name="inheritancef5228a9d82">
+<area shape="rect" id="node1" title="Represent a n&#45;dimensional adaptive bin. This class is meant so serve" alt="" coords="36,201,108,227"/>
+<area shape="rect" id="node2" title="Represent an hypothesis to be used in the CLs method." alt="" coords="33,152,111,177"/>
+<area shape="rect" id="node3" title="Represent an hypothesis which works on a continuous domain." alt="" coords="187,128,341,153"/>
+<area shape="rect" id="node4" title="Represent an hypothesis which works on a discrete domain." alt="" coords="196,177,332,203"/>
+<area shape="rect" id="node5" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="36,55,108,80"/>
+<area shape="rect" id="node6" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="195,29,333,55"/>
+<area shape="rect" id="node7" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="205,79,323,104"/>
+<area shape="rect" id="node8" title="Instance to transform values following an unknown distribution :math:`f(x)`" alt="" coords="5,5,139,31"/>
 </map>
 </div>
 </div>

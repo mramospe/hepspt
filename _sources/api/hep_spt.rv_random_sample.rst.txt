@@ -1,0 +1,6 @@
+rv_random_sample
+================
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: rv_random_sample

@@ -1,0 +1,7 @@
+CLsTS_discrete
+==============
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: CLsTS_discrete
+   :show-inheritance:

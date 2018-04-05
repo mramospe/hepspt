@@ -1,0 +1,17 @@
+CLsHypo_continuous
+==================
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: CLsHypo_continuous
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~CLsHypo_continuous.__call__
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: __call__

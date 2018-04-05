@@ -1,0 +1,7 @@
+CLsTS_continuous
+================
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: CLsTS_continuous
+   :show-inheritance:

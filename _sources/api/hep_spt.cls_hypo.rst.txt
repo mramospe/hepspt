@@ -1,0 +1,6 @@
+cls_hypo
+========
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: cls_hypo

@@ -1,0 +1,6 @@
+cls_ts
+======
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: cls_ts

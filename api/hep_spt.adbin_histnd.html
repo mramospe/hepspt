@@ -24,7 +24,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="gcd" href="hep_spt.gcd.html" />
+    <link rel="next" title="cls_hypo" href="hep_spt.cls_hypo.html" />
     <link rel="prev" title="adbin_hist2d" href="hep_spt.adbin_hist2d.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -45,7 +45,7 @@
 <h1>adbin_histnd<a class="headerlink" href="#adbin-histnd" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="hep_spt.adbin_histnd">
-<code class="descclassname">hep_spt.</code><code class="descname">adbin_histnd</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>rg=None</em>, <em>wgts=None</em>, <em>ndiv=2</em>, <em>free_memory=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_histnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_histnd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.</code><code class="descname">adbin_histnd</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>range=None</em>, <em>weights=None</em>, <em>ndiv=2</em>, <em>free_memory=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_histnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_histnd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a ND adaptive binned histogram.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -53,9 +53,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data with the variables as columns.</li>
-<li><strong>rg</strong> (<em>numpy.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>) or </em><em>None.</em>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
+<li><strong>range</strong> (<em>numpy.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>) or </em><em>None.</em>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
 <li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of bins. In this algorithm, divisions will be made     till the real number of bins is equal or greater than “nbins”. If this     number is a power of “ndiv”, then the real number of bins will match     “nbins”.</li>
-<li><strong>wgts</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional array of weights.</li>
+<li><strong>weights</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional array of weights.</li>
 <li><strong>ndiv</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – see <a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin.divide" title="hep_spt.AdBin.divide"><code class="xref py py-meth docutils literal"><span class="pre">AdBin.divide()</span></code></a>.</li>
 <li><strong>free_memory</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – whether to free the pointers pointing to the arrays of     data and weights in the bins.</li>
 </ul>
@@ -110,7 +110,7 @@
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
       <li>Previous: <a href="hep_spt.adbin_hist2d.html" title="previous chapter">adbin_hist2d</a></li>
-      <li>Next: <a href="hep_spt.gcd.html" title="next chapter">gcd</a></li>
+      <li>Next: <a href="hep_spt.cls_hypo.html" title="next chapter">cls_hypo</a></li>
   </ul></li>
   </ul></li>
 </ul>

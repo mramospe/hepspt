@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>adbin_hist1d &#8212; hep_spt 0.0.0.dev1 documentation</title>
+    <title>cls_ts &#8212; hep_spt 0.0.0.dev1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="adbin_hist1d_edges" href="hep_spt.adbin_hist1d_edges.html" />
-    <link rel="prev" title="adbin_hist2d_rectangles" href="hep_spt.adbin_hist2d_rectangles.html" />
+    <link rel="next" title="gcd" href="hep_spt.gcd.html" />
+    <link rel="prev" title="cls_hypo" href="hep_spt.cls_hypo.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,36 +41,38 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="adbin-hist1d">
-<h1>adbin_hist1d<a class="headerlink" href="#adbin-hist1d" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="cls-ts">
+<h1>cls_ts<a class="headerlink" href="#cls-ts" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="hep_spt.adbin_hist1d">
-<code class="descclassname">hep_spt.</code><code class="descname">adbin_hist1d</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>range=None</em>, <em>weights=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist1d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an adaptive binned histogram.</p>
+<dt id="hep_spt.cls_ts">
+<code class="descclassname">hep_spt.</code><code class="descname">cls_ts</code><span class="sig-paren">(</span><em>alt</em>, <em>null</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#cls_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.cls_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of CLsTS without needing to worry about the type of
+hypothesis (discrete or continuous). However, a check is done to see if
+both types coincide.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data.</li>
-<li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of bins.</li>
-<li><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – range of the histogram.</li>
-<li><strong>weights</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional array of weights.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – any other argument to <code class="xref py py-func docutils literal"><span class="pre">plotting.errorbar_hist()</span></code>.</li>
+<li><strong>alt</strong> (<em>CLsHypo</em>) – alternative hypothesis.</li>
+<li><strong>null</strong> (<em>CLsHypo</em>) – null hypothesis.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">values, edges, the spacing between bins in X the Y errors.     In the non-weighted case, errors in Y are returned as two arrays, with the     lower and upper uncertainties.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">CLs test-statistics proxy.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">CLsTS</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><strong>RuntimeError</strong></a> – if the type of both hypotheses is different.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="hep_spt.adbin_hist2d.html#hep_spt.adbin_hist2d" title="hep_spt.adbin_hist2d"><code class="xref py py-func docutils literal"><span class="pre">adbin_hist2d()</span></code></a>, <a class="reference internal" href="hep_spt.adbin_histnd.html#hep_spt.adbin_histnd" title="hep_spt.adbin_histnd"><code class="xref py py-func docutils literal"><span class="pre">adbin_histnd()</span></code></a></p>
+<p class="last">CLsTS_discrete, CLsTS_continuous</p>
 </div>
 </dd></dl>
 
@@ -107,8 +109,8 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.adbin_hist2d_rectangles.html" title="previous chapter">adbin_hist2d_rectangles</a></li>
-      <li>Next: <a href="hep_spt.adbin_hist1d_edges.html" title="next chapter">adbin_hist1d_edges</a></li>
+      <li>Previous: <a href="hep_spt.cls_hypo.html" title="previous chapter">cls_hypo</a></li>
+      <li>Next: <a href="hep_spt.gcd.html" title="next chapter">gcd</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -135,7 +137,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/api/hep_spt.adbin_hist1d.rst.txt"
+      <a href="../_sources/api/hep_spt.cls_ts.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

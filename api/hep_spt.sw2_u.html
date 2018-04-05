@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="AdBin" href="hep_spt.AdBin.html" />
-    <link rel="prev" title="poisson_llu" href="hep_spt.poisson_llu.html" />
+    <link rel="prev" title="rv_random_sample" href="hep_spt.rv_random_sample.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -45,13 +45,13 @@
 <h1>sw2_u<a class="headerlink" href="#sw2-u" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="hep_spt.sw2_u">
-<code class="descclassname">hep_spt.</code><code class="descname">sw2_u</code><span class="sig-paren">(</span><em>arr</em>, <em>bins=20</em>, <em>rg=None</em>, <em>wgts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/stats.html#sw2_u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.sw2_u" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.</code><code class="descname">sw2_u</code><span class="sig-paren">(</span><em>arr</em>, <em>bins=20</em>, <em>range=None</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/stats.html#sw2_u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.sw2_u" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the errors of a weighted sample. This uncertainty is
 calculated as follows:</p>
 <div class="math">
 \[\sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}\]</div>
 <p>where <em>i</em> refers to the i-th bin and <span class="math">\(j \in [0, n]\)</span> refers to
-each entry in that bin with weight <span class="math">\(\omega_{i,j}\)</span>. If “wgts” is
+each entry in that bin with weight <span class="math">\(\omega_{i,j}\)</span>. If “weights” is
 None, then this coincides with the square root of the number of entries
 in each bin.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -61,8 +61,8 @@ in each bin.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>arr</strong> – input array of data to process.</li>
 <li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><em>sequence of scalars</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – see <code class="xref py py-func docutils literal"><span class="pre">numpy.histogram()</span></code>.</li>
-<li><strong>rg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em>) – range to process in the input array.</li>
-<li><strong>wgts</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – possible weights for the histogram.</li>
+<li><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em>) – range to process in the input array.</li>
+<li><strong>weights</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – possible weights for the histogram.</li>
 </ul>
 </td>
 </tr>
@@ -109,7 +109,7 @@ in each bin.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.poisson_llu.html" title="previous chapter">poisson_llu</a></li>
+      <li>Previous: <a href="hep_spt.rv_random_sample.html" title="previous chapter">rv_random_sample</a></li>
       <li>Next: <a href="hep_spt.AdBin.html" title="next chapter">AdBin</a></li>
   </ul></li>
   </ul></li>

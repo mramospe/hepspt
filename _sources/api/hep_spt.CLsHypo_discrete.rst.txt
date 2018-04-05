@@ -1,0 +1,17 @@
+CLsHypo_discrete
+================
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: CLsHypo_discrete
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~CLsHypo_discrete.__call__
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: __call__

@@ -1,0 +1,518 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>hep_spt.cls &#8212; hep_spt 0.0.0.dev1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.0.dev1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hep_spt.cls</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Classes and functions to work with the CLs method.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Miguel Ramos Pernas&#39;</span><span class="p">]</span>
+<span class="n">__email__</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;miguel.ramos.pernas@cern.ch&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># Python</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">rv_discrete</span><span class="p">,</span> <span class="n">rv_continuous</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+
+<span class="c1"># Local</span>
+<span class="kn">from</span> <span class="nn">hep_spt.stats</span> <span class="k">import</span> <span class="n">rv_random_sample</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;CLsTS_discrete&#39;</span><span class="p">,</span> <span class="s1">&#39;CLsTS_continuous&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CLsHypo_discrete&#39;</span><span class="p">,</span> <span class="s1">&#39;CLsHypo_continuous&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cls_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;cls_ts&#39;</span>
+    <span class="p">]</span>
+
+<span class="c1"># Class to hold the results of a CLs evaluation</span>
+<span class="n">CLsResult</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;CLsResult&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;CLs&#39;</span><span class="p">,</span> <span class="s1">&#39;CLb&#39;</span><span class="p">,</span> <span class="s1">&#39;CLsb&#39;</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">CLsTS</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Base class to represent the test-statistics function to work with the</span>
+<span class="sd">    CLs method.</span>
+
+<span class="sd">    .. seealso:: CLsTS_discrete, CLsTS_continuous</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Build the class using the alternative and null hypotheses.</span>
+
+<span class="sd">        :param alt: alternative hypothesis.</span>
+<span class="sd">        :type alt: CLsHypo</span>
+<span class="sd">        :param null: null hypothesis.</span>
+<span class="sd">        :type null: CLsHypo</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ah</span> <span class="o">=</span> <span class="n">alt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nh</span> <span class="o">=</span> <span class="n">null</span>
+
+    <span class="k">def</span> <span class="nf">_cl</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">hyp</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">size</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Method to get the confidence level for a given hypothesis and value for</span>
+<span class="sd">        the test statistics. The size determines the precision of the output</span>
+<span class="sd">        value.</span>
+
+<span class="sd">        :param hyp: hypothesis.</span>
+<span class="sd">        :type hyp: CLsHypo</span>
+<span class="sd">        :param tv: value of the test-statistics.</span>
+<span class="sd">        :type tv: array-like</span>
+<span class="sd">        :param size: size of the sample to generate.</span>
+<span class="sd">        :type size: int</span>
+<span class="sd">        :returns: confidence level.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Attempt to call abstract class method&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_stat</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">v</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the test-statistics associated to the given value.</span>
+
+<span class="sd">        :param v: input value:</span>
+<span class="sd">        :type v: array-like</span>
+<span class="sd">        :returns: test-statistics value.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ah</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">num</span><span class="o">/</span><span class="n">den</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">100000</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the CLs, CLb and CLsb for the given value. In order to boost</span>
+<span class="sd">        any script using this function, and to prevent misbehaviours due</span>
+<span class="sd">        to the use of different generated samples, it is recommended to call it</span>
+<span class="sd">        using an array. As an examples, oftenly one wants to evaluate this</span>
+<span class="sd">        function on the median, 1 and 2 \sigma intervals, and on the observed</span>
+<span class="sd">        value. All this can be passed to the function as an array, and the</span>
+<span class="sd">        CLsResult instance will contain, instead of single floating values,</span>
+<span class="sd">        numpy.ndarray objects.</span>
+
+<span class="sd">        :param v: input value</span>
+<span class="sd">        :type v: array-like</span>
+<span class="sd">        :param size: size of the sample to generate.</span>
+<span class="sd">        :type size: int</span>
+<span class="sd">        :returns: tuple with the CLs, CLb and CLsb values.</span>
+<span class="sd">        :rtype: collections.namedtuple</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">tv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_stat</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="n">clsb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ah</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">clb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="bp">cls</span> <span class="o">=</span> <span class="n">clsb</span><span class="o">/</span><span class="n">clb</span>
+
+        <span class="k">return</span> <span class="n">CLsResult</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">clb</span><span class="p">,</span> <span class="n">clsb</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CLsTS_discrete"><a class="viewcode-back" href="../../api/hep_spt.CLsTS_discrete.html#hep_spt.CLsTS_discrete">[docs]</a><span class="k">class</span> <span class="nc">CLsTS_discrete</span><span class="p">(</span><span class="n">CLsTS</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Base class to represent the test-statistics function to work with the</span>
+<span class="sd">    CLs method using hypothesis working on a discrete domain.</span>
+
+<span class="sd">    .. seealso:: CLsTS, CLsTS_continuous</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Build the class using the alternative and null hypotheses.</span>
+
+<span class="sd">        :param alt: alternative hypothesis.</span>
+<span class="sd">        :type alt: CLsHypo</span>
+<span class="sd">        :param null: null hypothesis.</span>
+<span class="sd">        :type null: CLsHypo</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">CLsTS</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_cl</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">hyp</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">size</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Method to get the confidence level for a given hypothesis and value for</span>
+<span class="sd">        the test statistics. The size determines the precision of the output</span>
+<span class="sd">        value.</span>
+
+<span class="sd">        :param hyp: hypothesis.</span>
+<span class="sd">        :type hyp: CLsHypo</span>
+<span class="sd">        :param tv: value of the test-statistics.</span>
+<span class="sd">        :type tv: float or array-like</span>
+<span class="sd">        :param size: size of the sample to generate.</span>
+<span class="sd">        :type size: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">smp</span> <span class="o">=</span> <span class="n">rv_random_sample</span><span class="p">(</span><span class="n">hyp</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_stat</span><span class="p">(</span><span class="n">smp</span><span class="p">)</span>
+
+        <span class="c1"># Apart from boosting the process, this allows to correctly</span>
+        <span class="c1"># calculate the CLs, since in the discrete case there can</span>
+        <span class="c1"># be several cases where the values of the test-statistics are</span>
+        <span class="c1"># the same.</span>
+        <span class="n">ts</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">size</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">tv</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">idx</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">idx</span><span class="p">[</span><span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)]</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+            <span class="n">idx</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">cs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="CLsTS_continuous"><a class="viewcode-back" href="../../api/hep_spt.CLsTS_continuous.html#hep_spt.CLsTS_continuous">[docs]</a><span class="k">class</span> <span class="nc">CLsTS_continuous</span><span class="p">(</span><span class="n">CLsTS</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Base class to represent the test-statistics function to work with the</span>
+<span class="sd">    CLs method using hypothesis working on a continuous domain.</span>
+
+<span class="sd">    .. seealso:: CLsTS, CLsTS_discrete</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Build the class using the alternative and null hypotheses.</span>
+
+<span class="sd">        :param alt: alternative hypothesis.</span>
+<span class="sd">        :type alt: CLsHypo</span>
+<span class="sd">        :param null: null hypothesis.</span>
+<span class="sd">        :type null: CLsHypo</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">CLsTS</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_cl</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">hyp</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">size</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Method to get the confidence level for a given hypothesis and value for</span>
+<span class="sd">        the test statistics. The size determines the precision of the output</span>
+<span class="sd">        value.</span>
+
+<span class="sd">        :param hyp: hypothesis.</span>
+<span class="sd">        :type hyp: CLsHypo</span>
+<span class="sd">        :param tv: value of the test-statistics.</span>
+<span class="sd">        :type tv: array-like</span>
+<span class="sd">        :param size: size of the sample to generate.</span>
+<span class="sd">        :type size: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">smp</span> <span class="o">=</span> <span class="n">rv_random_sample</span><span class="p">(</span><span class="n">hyp</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_stat</span><span class="p">(</span><span class="n">smp</span><span class="p">)</span>
+
+        <span class="n">srt</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">srt</span><span class="p">]</span>
+
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">size</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">tv</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">idx</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">idx</span><span class="p">[</span><span class="n">idx</span> <span class="o">==</span> <span class="n">size</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+            <span class="n">idx</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">cs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">_call_wrap</span><span class="p">(</span> <span class="n">meth</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Wrapper function for the __call__ method of classes inheriting from CLsHypo.</span>
+
+<span class="sd">    :param meth: method to wrap.</span>
+<span class="sd">    :type meth: method</span>
+<span class="sd">    :returns: wrapped function.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">_wrapper</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Wrapper function which calls the method multiplying the probabilities</span>
+<span class="sd">        if necessary.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">meth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">la</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">lp</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prob</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">lp</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="c1"># The probability is an array of the form (n,)</span>
+
+            <span class="k">if</span> <span class="n">la</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+
+                <span class="c1"># The arguments of the probability function are arrays</span>
+
+                <span class="n">prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">lp</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+
+            <span class="c1"># Multiply the probabilities for each column</span>
+
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prob</span>
+
+    <span class="k">return</span> <span class="n">_wrapper</span>
+
+
+<span class="k">class</span> <span class="nc">CLsHypo</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Represent an hypothesis to be used in the CLs method.</span>
+
+<span class="sd">    .. seealso:: CLsHypo_discrete, CLsHypo_continuous</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Build using a given probability function.</span>
+
+<span class="sd">        :param pdf: probability function.</span>
+<span class="sd">        :type pdf: scipy.stats.rv_frozen</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">pdf</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">v</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the global probability for the given input value(s). If the</span>
+<span class="sd">        arguments of the probability function are arrays, then it is assumed</span>
+<span class="sd">        that &quot;v&quot; is either an array of length equal to the number of values</span>
+<span class="sd">        per argument, or that it is an array of arrays following the latter</span>
+<span class="sd">        structure. If &quot;v&quot; does not match any of the previous requirements,</span>
+<span class="sd">        then the global probability is calculated assuming this value for</span>
+<span class="sd">        all the sub-functions. Assuming &quot;pmf&quot; as &quot;poisson.pmf&quot;:</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from scipy.stats import poisson</span>
+<span class="sd">        &gt;&gt;&gt; ha = cls_hypo(poisson, 4)</span>
+<span class="sd">        &gt;&gt;&gt; ha(4) # Same as pmf(4, 4)</span>
+<span class="sd">        0.19536681481316454</span>
+<span class="sd">        &gt;&gt;&gt; hb = cls_hypo(poisson, np.array([4, 8]))</span>
+<span class="sd">        &gt;&gt;&gt; hb([4, 8]) # Same as pmf(4, 4)*pmf(4, 8)</span>
+<span class="sd">        0.02727057613800409</span>
+<span class="sd">        &gt;&gt;&gt; hb([[4, 8], [6, 10]]) # Same as [pmf(4, 4)*pmf(8, 8), pmf(6, 4)*pmf(10, 8)]</span>
+<span class="sd">        &gt;&gt;&gt; hb(4) # Same as pmf(4, 4)*pmf(4, 4)</span>
+<span class="sd">        0.011185197244103258</span>
+
+<span class="sd">        :param v: input value(s).</span>
+<span class="sd">        :type v: array-like</span>
+<span class="sd">        :returns: global probability.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Attempt to call abstract class method&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">median</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the median of the distribution associated to this</span>
+<span class="sd">        hypothesis. This is equivalent to call CLsHypo.percentil(0.5).</span>
+
+<span class="sd">        :returns: median of the distribution.</span>
+<span class="sd">        :rtype: array-like</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">percentil</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">percentil</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">prob</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the percentil associated to the given probability.</span>
+
+<span class="sd">        :param prob: probability.</span>
+<span class="sd">        :type prob: float</span>
+<span class="sd">        :returns: percentil.</span>
+<span class="sd">        :rtype: array-like</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CLsHypo_discrete"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete">[docs]</a><span class="k">class</span> <span class="nc">CLsHypo_discrete</span><span class="p">(</span><span class="n">CLsHypo</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Represent an hypothesis which works on a discrete domain.</span>
+
+<span class="sd">    .. seealso:: CLsHypo, CLsHypo_continuous</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Build using a given probability function.</span>
+
+<span class="sd">        :param pdf: probability function.</span>
+<span class="sd">        :type pdf: scipy.stats.rv_frozen</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">CLsHypo</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLsHypo_discrete.__call__"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete.__call__">[docs]</a>    <span class="nd">@_call_wrap</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">v</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the global probability for the given input value(s). See</span>
+<span class="sd">        :meth:`CLsHypo.__call__` for more details.</span>
+
+<span class="sd">        :param v: input value(s).</span>
+<span class="sd">        :type v: array-like</span>
+<span class="sd">        :returns: global probability.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CLsHypo_continuous"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous">[docs]</a><span class="k">class</span> <span class="nc">CLsHypo_continuous</span><span class="p">(</span><span class="n">CLsHypo</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Represent an hypothesis which works on a continuous domain.</span>
+
+<span class="sd">    .. seealso:: CLsHypo, CLsHypo_discrete</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Build using a given probability function.</span>
+
+<span class="sd">        :param pdf: probability function.</span>
+<span class="sd">        :type pdf: scipy.stats.rv_frozen</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">CLsHypo</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLsHypo_continuous.__call__"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous.__call__">[docs]</a>    <span class="nd">@_call_wrap</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">v</span> <span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the global probability for the given input value(s). See</span>
+<span class="sd">        :meth:`CLsHypo.__call__` for more details.</span>
+
+<span class="sd">        :param v: input value(s).</span>
+<span class="sd">        :type v: array-like</span>
+<span class="sd">        :returns: global probability.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="cls_ts"><a class="viewcode-back" href="../../api/hep_spt.cls_ts.html#hep_spt.cls_ts">[docs]</a><span class="k">def</span> <span class="nf">cls_ts</span><span class="p">(</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create an instance of CLsTS without needing to worry about the type of</span>
+<span class="sd">    hypothesis (discrete or continuous). However, a check is done to see if</span>
+<span class="sd">    both types coincide.</span>
+
+<span class="sd">    :param alt: alternative hypothesis.</span>
+<span class="sd">    :type alt: CLsHypo</span>
+<span class="sd">    :param null: null hypothesis.</span>
+<span class="sd">    :type null: CLsHypo</span>
+<span class="sd">    :returns: CLs test-statistics proxy.</span>
+<span class="sd">    :rtype: CLsTS</span>
+<span class="sd">    :raises RuntimeError: if the type of both hypotheses is different.</span>
+
+<span class="sd">    .. seealso:: CLsTS_discrete, CLsTS_continuous</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">discrete</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="n">CLsHypo_discrete</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">discrete</span> <span class="o">!=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">null</span><span class="p">,</span> <span class="n">CLsHypo_discrete</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Both hypotheses must be of the same type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">discrete</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CLsTS_discrete</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CLsTS_continuous</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cls_hypo"><a class="viewcode-back" href="../../api/hep_spt.cls_hypo.html#hep_spt.cls_hypo">[docs]</a><span class="k">def</span> <span class="nf">cls_hypo</span><span class="p">(</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create an instance of CLsHypo without needing to worry if</span>
+<span class="sd">    the probability function is discrete or continuous.</span>
+
+<span class="sd">    :param func: probability function.</span>
+<span class="sd">    :type func: scipy.stats.rv_discrete or scipy.stats.rv_continuous</span>
+<span class="sd">    :param args: input arguments to &quot;func&quot;.</span>
+<span class="sd">    :type args: tuple</span>
+<span class="sd">    :param kwargs: input arguments to &quot;func&quot;.</span>
+<span class="sd">    :type kwargs: dict</span>
+
+<span class="sd">    .. seealso:: CLsHypo_discrete, CLsHypo_continuous</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">rv_discrete</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CLsHypo_discrete</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CLsHypo_continuous</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Functions and classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
