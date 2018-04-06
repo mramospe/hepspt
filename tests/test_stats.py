@@ -85,6 +85,13 @@ def test_poisson_fu():
     with pytest.raises(TypeError):
         hep_spt.poisson_fu(1.)
 
+    # Calling the function with non-positive values raises a ValueError
+    with pytest.raises(ValueError):
+        hep_spt.poisson_fu(-1)
+
+    with pytest.raises(ValueError):
+        hep_spt.poisson_fu([-1, 1])
+
 
 def test_poisson_llu():
     '''
@@ -106,6 +113,13 @@ def test_poisson_llu():
     # Calling the function with a float value must raise a TypeError
     with pytest.raises(TypeError):
         hep_spt.poisson_llu(1.)
+
+    # Calling the function with non-positive values raises a ValueError
+    with pytest.raises(ValueError):
+        hep_spt.poisson_llu(-1)
+
+    with pytest.raises(ValueError):
+        hep_spt.poisson_llu([-1, 1])
 
 
 def test_cp_fu():
