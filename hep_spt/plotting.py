@@ -165,7 +165,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
     # By default use frequentist poissonian errors
     uncert = uncert or 'freq'
 
-    values, edges = np.histogram(arr, bins, range, weights=wgts)
+    values, edges = np.histogram(arr, bins, range, weights=weights)
 
     if uncert == 'freq':
         ey = poisson_fu(values)
