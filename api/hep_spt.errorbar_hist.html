@@ -57,7 +57,7 @@
 <li><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em>) – range to process in the input array.</li>
 <li><strong>weights</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – possible weights for the histogram.</li>
 <li><strong>norm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – if True, normalize the histogram. If it is set to a number,     the histogram is normalized and multiplied by that number.</li>
-<li><strong>uncert</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – type of uncertainties to consider. If None, frequentist     poissonian uncertainties will be considered for non-weighted data, while     the sum of squares of weights is used for weighted data. The possibilities     are:     - “freq”: frequentist uncertainties.     - “dll”: uncertainty based on the difference on the logarithm of     likelihood.     - “sw2”: sum of square of weights. In case of non-weighted data, the     uncertainties will be equal to the square root of the entries in the bin.     A warning is raised if one tries to use “freq” or “dll” on weighted data.</li>
+<li><strong>uncert</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – type of uncertainty to consider. If None, the square root     of the sum of squared weights is considered. The possibilities     are:     - “freq”: frequentist uncertainties.     - “dll”: uncertainty based on the difference on the logarithm of     likelihood.     - “sw2”: sum of square of weights. In case of non-weighted data, the     uncertainties will be equal to the square root of the entries in the bin.</li>
 </ul>
 </td>
 </tr>
@@ -67,7 +67,10 @@
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the uncertainty type is not among the possibilities.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the uncertainty type is not among the possibilities.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if the uncertainty is “freq” or “dll” and “weights” is     not of integer type.</li>
+</ul>
 </td>
 </tr>
 </tbody>

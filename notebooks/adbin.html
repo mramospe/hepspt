@@ -216,14 +216,14 @@ adaptive binned histograms.</p>
 <span></span>In [1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">hep_spt</span>
 <span class="n">hep_spt</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;multiplot&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="k">import</span> <span class="n">make_axes_locatable</span>
 </pre></div>
 </div>
 </div>
@@ -238,7 +238,7 @@ same as the latter but considering some weights for the input sample.</p>
 <span></span>In [2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Create a random sample</span>
 <span class="n">size</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">smp</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
@@ -254,7 +254,7 @@ same as the latter but considering some weights for the input sample.</p>
 <span class="n">root</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;raw&#39;</span><span class="p">)</span>
 
 <span class="c1"># Draw both the non-weighted and the weighted adaptive binned histograms</span>
-<span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">((</span><span class="n">smp</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">al</span><span class="p">,</span> <span class="s1">&#39;adaptive binned&#39;</span><span class="p">),</span>
+<span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">((</span><span class="n">smp</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">al</span><span class="p">,</span> <span class="s1">&#39;adaptive binned&#39;</span><span class="p">),</span>
                    <span class="p">(</span><span class="n">smp</span><span class="p">,</span> <span class="n">wgts</span><span class="p">,</span> <span class="n">ar</span><span class="p">,</span> <span class="s1">&#39;weighted adaptive binned&#39;</span><span class="p">)):</span>
 
     <span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span> <span class="o">=</span> <span class="n">hep_spt</span><span class="o">.</span><span class="n">adbin_hist1d</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="n">rg</span><span class="p">)</span>
@@ -277,14 +277,14 @@ same as the latter but considering some weights for the input sample.</p>
 <div class="section" id="Adaptive-binning-in-2-dimensions">
 <h2>Adaptive binning in 2 dimensions<a class="headerlink" href="#Adaptive-binning-in-2-dimensions" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s take a look at 2-dimensional histograms. First we will define
-a function to help us to draw 2-dimensional adaptive binned histograms</p>
+a function to help us to draw 2-dimensional adaptive binned histograms.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">_draw_adbin_hist2d</span><span class="p">(</span> <span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">nbins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">_draw_adbin_hist2d</span><span class="p">(</span> <span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">nbins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Helper function to plot points and overlaid an adaptive binned histogram.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -315,7 +315,7 @@ and another histogram with the weighted case.</p>
 <span></span>In [4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># For reproducibility</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">187391</span><span class="p">)</span>
 
@@ -343,21 +343,21 @@ and another histogram with the weighted case.</p>
 
         <span class="n">_draw_adbin_hist2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 
-        <span class="n">a</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;{} divisions&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> divisions&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
 
 <span class="c1"># Create a histogram with the data displayed as text in the bins</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ny</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;{} divisions&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> divisions&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 
-<span class="n">recs</span><span class="p">,</span> <span class="n">cons</span> <span class="o">=</span> <span class="n">_draw_adbin_hist2d</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">recs</span><span class="p">,</span> <span class="n">cons</span> <span class="o">=</span> <span class="n">_draw_adbin_hist2d</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="n">txt</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;{:.2f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cons</span><span class="p">]</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cons</span><span class="p">]</span>
 
 <span class="n">hep_spt</span><span class="o">.</span><span class="n">text_in_rectangles</span><span class="p">(</span><span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
 <span class="c1"># Draw the weighted sample with the color bar</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="o">*</span><span class="p">(</span><span class="n">ny</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;{} divisions (weighted)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> divisions (weighted)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 
 <span class="n">_</span><span class="p">,</span> <span class="n">cons</span> <span class="o">=</span> <span class="n">_draw_adbin_hist2d</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 

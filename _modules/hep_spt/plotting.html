@@ -182,55 +182,42 @@
 <span class="sd">    :param norm: if True, normalize the histogram. If it is set to a number, \</span>
 <span class="sd">    the histogram is normalized and multiplied by that number.</span>
 <span class="sd">    :type norm: bool, int or float</span>
-<span class="sd">    :param uncert: type of uncertainties to consider. If None, frequentist \</span>
-<span class="sd">    poissonian uncertainties will be considered for non-weighted data, while \</span>
-<span class="sd">    the sum of squares of weights is used for weighted data. The possibilities \</span>
+<span class="sd">    :param uncert: type of uncertainty to consider. If None, the square root \</span>
+<span class="sd">    of the sum of squared weights is considered. The possibilities \</span>
 <span class="sd">    are: \</span>
 <span class="sd">    - &quot;freq&quot;: frequentist uncertainties. \</span>
 <span class="sd">    - &quot;dll&quot;: uncertainty based on the difference on the logarithm of \</span>
 <span class="sd">    likelihood. \</span>
 <span class="sd">    - &quot;sw2&quot;: sum of square of weights. In case of non-weighted data, the \</span>
-<span class="sd">    uncertainties will be equal to the square root of the entries in the bin. \</span>
-<span class="sd">    A warning is raised if one tries to use &quot;freq&quot; or &quot;dll&quot; on weighted data.</span>
+<span class="sd">    uncertainties will be equal to the square root of the entries in the bin.</span>
 <span class="sd">    :type uncert: str or None</span>
 <span class="sd">    :returns: values, edges, the spacing between bins in X the Y errors. \</span>
 <span class="sd">    In the non-weighted case, errors in Y are returned as two arrays, with the \</span>
 <span class="sd">    lower and upper uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</span>
 <span class="sd">    :raises ValueError: if the uncertainty type is not among the possibilities.</span>
+<span class="sd">    :raises TypeError: if the uncertainty is &quot;freq&quot; or &quot;dll&quot; and &quot;weights&quot; is \</span>
+<span class="sd">    not of integer type.</span>
 
 <span class="sd">    .. seealso:: :func:`hep_spt.stats.poisson_fu`, :func:`hep_spt.stats.poisson_llu`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">uncert</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;dll&#39;</span><span class="p">,</span> <span class="s1">&#39;sw2&#39;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown uncertainty type &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uncert</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># By default use square root of the sum of squared weights</span>
+    <span class="n">uncert</span> <span class="o">=</span> <span class="n">uncert</span> <span class="ow">or</span> <span class="s1">&#39;sw2&#39;</span>
 
-        <span class="k">if</span> <span class="n">uncert</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;dll&#39;</span><span class="p">):</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Uncertainties of type &quot;</span><span class="si">{}</span><span class="s1">&quot; can not be used on &#39;</span>\
-                          <span class="s1">&#39;weighted data&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uncert</span><span class="p">))</span>
+    <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
 
-        <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">)</span>
-
-        <span class="c1"># Use sum of the square of weights to calculate the error</span>
+    <span class="k">if</span> <span class="n">uncert</span> <span class="o">==</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_fu</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">uncert</span> <span class="o">==</span> <span class="s1">&#39;dll&#39;</span><span class="p">:</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_llu</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
         <span class="n">ey</span> <span class="o">=</span> <span class="n">sw2_u</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># By default use frequentist poissonian errors</span>
-        <span class="n">uncert</span> <span class="o">=</span> <span class="n">uncert</span> <span class="ow">or</span> <span class="s1">&#39;freq&#39;</span>
-
-        <span class="c1"># Use the poissonian errors</span>
-        <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">uncert</span> <span class="o">==</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span>
-            <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_fu</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">uncert</span> <span class="o">==</span> <span class="s1">&#39;dll&#39;</span><span class="p">:</span>
-            <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_llu</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ey</span> <span class="o">=</span> <span class="n">sw2_u</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-
-        <span class="c1"># For compatibility with matplotlib.pyplot.errorbar</span>
-        <span class="n">ey</span> <span class="o">=</span> <span class="n">ey</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1"># For compatibility with matplotlib.pyplot.errorbar</span>
+    <span class="n">ey</span> <span class="o">=</span> <span class="n">ey</span><span class="o">.</span><span class="n">T</span>
 
     <span class="n">ex</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
 
@@ -296,8 +283,8 @@
 <span class="sd">    :rtype: float, float</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="nb">range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">amax</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">vmin</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">amax</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="n">amax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="nb">range</span>
