@@ -162,33 +162,20 @@ def errorbar_hist( arr, bins = 20, rg = None, wgts = None, norm = False, uncert 
     if uncert not in (None, 'freq', 'dll', 'sw2'):
         raise ValueError('Unknown uncertainty type "{}"'.format(uncert))
 
-    if wgts is not None:
+    # By default use frequentist poissonian errors
+    uncert = uncert or 'freq'
 
-        if uncert in ('freq', 'dll'):
-            warnings.warn('Uncertainties of type "{}" can not be used on '\
-                          'weighted data'.format(uncert))
+    values, edges = np.histogram(arr, bins, rg, weights=wgts)
 
-        values, edges = np.histogram(arr, bins, rg, weights = wgts)
-
-        # Use sum of the square of weights to calculate the error
+    if uncert == 'freq':
+        ey = poisson_fu(values)
+    elif uncert == 'dll':
+        ey = poisson_llu(values)
+    else:
         ey = sw2_u(arr, bins, rg, wgts)
 
-    else:
-        # By default use frequentist poissonian errors
-        uncert = uncert or 'freq'
-
-        # Use the poissonian errors
-        values, edges = np.histogram(arr, bins, rg, weights = wgts)
-
-        if uncert == 'freq':
-            ey = poisson_fu(values)
-        elif uncert == 'dll':
-            ey = poisson_llu(values)
-        else:
-            ey = sw2_u(arr, bins, rg, wgts)
-
-        # For compatibility with matplotlib.pyplot.errorbar
-        ey = ey.T
+    # For compatibility with matplotlib.pyplot.errorbar
+    ey = ey.T
 
     ex = (edges[1:] - edges[:-1])/2.
 
@@ -254,8 +241,8 @@ def process_range( arr, rg = None ):
     :rtype: float, float
     '''
     if rg is None:
-        amax = arr.max(axis = 0)
-        vmin = arr.min(axis = 0)
+        amax = arr.max(axis=0)
+        vmin = arr.min(axis=0)
         vmax = np.nextafter(amax, np.infty)
     else:
         vmin, vmax = np.array(rg).T
