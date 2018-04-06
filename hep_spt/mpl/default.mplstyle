@@ -12,7 +12,7 @@ axes.spines.right     : False
 axes.spines.top       : False
 
 # Error bar
-errorbar.capsize : 1.5
+errorbar.capsize : 4
 
 # Font
 font.family : serif
