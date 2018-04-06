@@ -325,8 +325,6 @@ def poisson_fu( m ):
     :type m: array-like
     :returns: lower and upper frequentist uncertainties.
     :rtype: array-like(float, float)
-
-    .. note:: The input array is recasted to integer type before doing the operation.
     '''
     return _poisson_u_from_db(m, 'poisson_fu.dat')
 
@@ -356,8 +354,6 @@ def poisson_llu( m ):
     :type m: array-like
     :returns: lower and upper frequentist uncertainties.
     :rtype: array-like(float, float)
-
-    .. note:: The input array is recasted to integer type before doing the operation.
     '''
     return _poisson_u_from_db(m, 'poisson_llu.dat')
 

@@ -24,14 +24,14 @@ def test_errorbar_hist():
 
     v, c = np.unique(arr, return_counts=True)
 
-    values, edges, ex, ey = hep_spt.errorbar_hist(v, weights=c)
+    values, edges, ex, ey = hep_spt.errorbar_hist(v, weights=c, uncert='freq')
 
     assert np.any(ey[0] != ey[1])
 
     # With weights the error must be a single array
     wgts = np.random.uniform(0, 1, 100)
 
-    values, edges, ex, ey = hep_spt.errorbar_hist(arr, bins=20, weights=wgts, uncert='sw2')
+    values, edges, ex, ey = hep_spt.errorbar_hist(arr, bins=20, weights=wgts)
 
     assert ey.shape == (20,)
 

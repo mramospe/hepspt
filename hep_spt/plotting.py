@@ -140,30 +140,30 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
     :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
-    :param uncert: type of uncertainties to consider. If None, frequentist \
-    poissonian uncertainties will be considered for non-weighted data, while \
-    the sum of squares of weights is used for weighted data. The possibilities \
+    :param uncert: type of uncertainty to consider. If None, the square root \
+    of the sum of squared weights is considered. The possibilities \
     are: \
     - "freq": frequentist uncertainties. \
     - "dll": uncertainty based on the difference on the logarithm of \
     likelihood. \
     - "sw2": sum of square of weights. In case of non-weighted data, the \
-    uncertainties will be equal to the square root of the entries in the bin. \
-    A warning is raised if one tries to use "freq" or "dll" on weighted data.
+    uncertainties will be equal to the square root of the entries in the bin.
     :type uncert: str or None
     :returns: values, edges, the spacing between bins in X the Y errors. \
     In the non-weighted case, errors in Y are returned as two arrays, with the \
     lower and upper uncertainties.
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
     :raises ValueError: if the uncertainty type is not among the possibilities.
+    :raises TypeError: if the uncertainty is "freq" or "dll" and "weights" is \
+    not of integer type.
 
     .. seealso:: :func:`hep_spt.stats.poisson_fu`, :func:`hep_spt.stats.poisson_llu`
     '''
     if uncert not in (None, 'freq', 'dll', 'sw2'):
         raise ValueError('Unknown uncertainty type "{}"'.format(uncert))
 
-    # By default use frequentist poissonian errors
-    uncert = uncert or 'freq'
+    # By default use square root of the sum of squared weights
+    uncert = uncert or 'sw2'
 
     values, edges = np.histogram(arr, bins, range, weights=weights)
 
