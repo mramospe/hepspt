@@ -169,7 +169,11 @@ def _poisson_u_from_db( m, database ):
     :returns: lower and upper frequentist uncertainties.
     :rtype: array-like(float, float)
     '''
-    m = np.array(m, dtype = np.int32)
+    m = np.array(m)
+    if not np.issubdtype(m.dtype, np.integer):
+        raise ValueError('Attempt to calculate poissonian uncertainties on non-integer values')
+    if np.any(m < 0):
+        raise ValueError('Attempt to calculate poissonian uncertainties on negative values')
 
     scalar_input = False
     if m.ndim == 0:

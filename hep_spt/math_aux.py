@@ -42,7 +42,8 @@ def gcd( a, b, *args ):
 @decorate(np.vectorize)
 def is_power_2( n ):
     '''
-    Determine whether the input number is a power of 2 or not.
+    Determine whether the input number is a power of 2 or not. Only
+    works with positive numbers.
 
     :param n: input number.
     :type n: int
