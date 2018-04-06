@@ -8,9 +8,36 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Python
 import numpy as np
+import pytest
 
 # Local
 import hep_spt
+
+
+def test_errorbar_hist():
+    '''
+    Test the behaviour of the function "errorbar_hist".
+    '''
+    # Check that if the weights are integers, the default error type is
+    # not based on the squared sum of weights
+    arr = np.random.poisson(4, 100)
+
+    v, c = np.unique(arr, return_counts=True)
+
+    values, edges, ex, ey = hep_spt.errorbar_hist(v, weights=c)
+
+    assert np.any(ey[0] != ey[1])
+
+    # With weights the error must be a single array
+    wgts = np.random.uniform(0, 1, 100)
+
+    values, edges, ex, ey = hep_spt.errorbar_hist(arr, bins=20, weights=wgts, uncert='sw2')
+
+    assert ey.shape == (20,)
+
+    # If the uncertainty type is unknown, raise an error
+    with pytest.raises(ValueError):
+        hep_spt.errorbar_hist(arr, bins=20, weights=wgts, uncert='none')
 
 
 def test_process_range():

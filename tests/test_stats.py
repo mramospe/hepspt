@@ -8,6 +8,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Python
 import numpy as np
+import pytest
 from scipy.stats import norm
 from scipy.stats import ks_2samp as scipy_ks_2samp
 
@@ -80,6 +81,10 @@ def test_poisson_fu():
         lr, rr = hep_spt.calc_poisson_fu(i)
         assert np.isclose((l, r), (lr, rr)).all()
 
+    # Calling the function with a float value must raise a TypeError
+    with pytest.raises(TypeError):
+        hep_spt.poisson_fu(1.)
+
 
 def test_poisson_llu():
     '''
@@ -97,6 +102,10 @@ def test_poisson_llu():
     for i, (l, r) in enumerate(zip(sl, sr)):
         lr, rr = hep_spt.calc_poisson_llu(i)
         assert np.isclose((l, r), (lr, rr)).all()
+
+    # Calling the function with a float value must raise a TypeError
+    with pytest.raises(TypeError):
+        hep_spt.poisson_llu(1.)
 
 
 def test_cp_fu():

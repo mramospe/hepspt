@@ -61,7 +61,7 @@ def test_adbin_hist1d():
     v, ev, ex, ey = hep_spt.adbin_hist1d(sample, bins, rg)
 
     # Case with weights
-    v_w, ev_w, ex_w, ey_w = hep_spt.adbin_hist1d(sample, bins, rg, weights = weights)
+    v_w, ev_w, ex_w, ey_w = hep_spt.adbin_hist1d(sample, bins, rg, weights=weights, uncert='sw2')
 
 
 def test_adbin_hist2d():

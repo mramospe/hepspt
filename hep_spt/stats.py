@@ -395,8 +395,11 @@ def _poisson_u_from_db( m, database ):
     :type database: str
     :returns: lower and upper frequentist uncertainties.
     :rtype: array-like(float, float)
+    :raises TypeError: if the input array has non-integer values.
     '''
-    m = np.array(m, dtype = np.int32)
+    m = np.array(m)
+    if not np.issubdtype(m.dtype, np.integer):
+        raise TypeError('Calling function with a non-integer value')
 
     scalar_input = False
     if m.ndim == 0:
