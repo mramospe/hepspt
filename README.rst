@@ -40,5 +40,4 @@ To use the **latest development version**, clone the repository and install with
 .. code-block:: bash
 
    git clone https://github.com/mramospe/hep_spt.git
-   cd hep_spt
-   pip install .
+   pip install hep_spt
