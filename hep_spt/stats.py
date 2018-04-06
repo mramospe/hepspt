@@ -10,6 +10,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 import os, warnings
 import numpy as np
 from math import exp, log, sqrt
+from scipy.interpolate import interp1d
 from scipy.optimize import fsolve
 from scipy.special import gamma
 from scipy.stats import beta, chi2, kstwobign, poisson
@@ -28,10 +29,16 @@ __one_sigma__    = __chi2_one_dof__.cdf(1)
 __poisson_to_gauss__ = 200
 
 
-__all__ = ['calc_poisson_fu', 'calc_poisson_llu',
-           'cp_fu', 'ks_2samp',
+__all__ = ['calc_poisson_fu',
+           'calc_poisson_llu',
+           'cp_fu',
+           'FlatDistTransform',
+           'ks_2samp',
            'gauss_u',
-           'poisson_fu', 'poisson_llu', 'sw2_u'
+           'poisson_fu',
+           'poisson_llu',
+           'rv_random_sample',
+           'sw2_u'
           ]
 
 
@@ -157,51 +164,72 @@ def cp_fu( k, N, cl = __one_sigma__ ):
     return p - lw, up - p
 
 
-def _poisson_u_from_db( m, database ):
+class FlatDistTransform:
     '''
-    Decorator for functions to calculate poissonian uncertainties,
-    which are partially stored on databases. If "m" is above the
-    maximum number stored in the database, the gaussian approximation
-    is taken instead.
+    Instance to transform values following an unknown distribution :math:`f(x)`
+    into a flat distribution. This class takes into account the inverse
+    transform sampling theorem, which states that, given a distribution
+    :math:`f(x)` where :math:`x\\in[a, b]` then, given a random variable
+    following a flat distribution *r*,
 
-    :param database: name of the database.
-    :type database: str
-    :returns: lower and upper frequentist uncertainties.
-    :rtype: array-like(float, float)
+    .. math::
+       F(x) - F(x_0) = \int_{x_0}^x f(x) dx = \int_0^r r dr = r
+
+    where :math:`F(x)` is the primitive of :math:`f(x)`. This allows us to
+    generate values following the distribution :math:`f(x)` given values from
+    a flat distribution
+
+    .. math::
+       x = F^{-1}(r + F(x_0))
+
+    In this class, the inverse process is performed. From a given set of values
+    of a certain distribution, we build a method to generate numbers following
+    a flat distribution.
+
+    The class performs an interpolation to get the transformated values from
+    an array holding the cumulative of the distribution. The function
+    :func:`scipy.interpolate.interp1d` is used for this purpose.
     '''
-    m = np.array(m)
-    if not np.issubdtype(m.dtype, np.integer):
-        raise ValueError('Attempt to calculate poissonian uncertainties on non-integer values')
-    if np.any(m < 0):
-        raise ValueError('Attempt to calculate poissonian uncertainties on negative values')
+    def __init__( self, points, values=None, kind='cubic' ):
+        '''
+        Build the class from a given set of values following a certain
+        distribution (the use of weights is allowed), or x and y values of
+        a PDF. This last method is not recommended, since the precision
+        relies on the dispersion of the values, sometimes concentrated around
+        peaking regions which might not be well described by an interpolation.
 
-    scalar_input = False
-    if m.ndim == 0:
-        m = m[None]
-        scalar_input = True
+        :param points: x-values of the distribution (PDF).
+        :type points: numpy.ndarray
+        :param values: weights or PDF values to use.
+        :type values: numpy.ndarray
+        :param kind: kind of interpolation to use. For more details see \
+        :func:`scipy.interpolate.interp1d`.
+        :type kind: str or int
+        '''
+        srt = points.argsort()
 
-    no_app = (m < __poisson_to_gauss__)
+        points = points[srt]
+        if values is None:
+            c = np.linspace(1./len(points), 1., len(points))
+        else:
+            c  = np.cumsum(values[srt])
+            c *= 1./c[-1]
 
-    if np.count_nonzero(no_app) == 0:
-        # We can use the gaussian approximation in all
-        out = np.array(2*[np.sqrt(m)]).T
-    else:
-        # Non-approximated uncertainties
-        table = _access_db(database)
+        self._trans = interp1d(points, c,
+                               copy=False,
+                               kind=kind,
+                               bounds_error=False,
+                               fill_value=(0, 1)
+        )
 
-        out = np.zeros((len(m), 2), dtype = np.float64)
+    def transform( self, values ):
+        '''
+        Return the value of the transformation of the given values.
 
-        out[no_app] = table[m[no_app]]
-
-        mk_app = np.logical_not(no_app)
-
-        if mk_app.any():
-            # Use the gaussian approximation for the rest
-            out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
-
-    if scalar_input:
-        return np.squeeze(out)
-    return out
+        :param values: values to transform.
+        :type values: array-like
+        '''
+        return self._trans(values)
 
 
 def gauss_u( s, cl = __one_sigma__ ):
@@ -220,25 +248,25 @@ def gauss_u( s, cl = __one_sigma__ ):
     return n*s
 
 
-def _ks_2samp_values( arr, wgts = None ):
+def _ks_2samp_values( arr, weights = None ):
     '''
     Calculate the values needed to perform the Kolmogorov-Smirnov test.
 
     :param arr: input sample.
     :type arr: array-like
-    :param wgts: possible weights.
-    :type wgts: array-like
+    :param weights: possible weights.
+    :type weights: array-like
     :returns: sorted sample, stack with the cumulative distribution and
     sum of weights.
     :rtype: array-like, array-like, float
     '''
-    wgts = wgts if wgts is not None else np.ones(len(arr), dtype=float)
+    weights = weights if weights is not None else np.ones(len(arr), dtype=float)
 
-    ix   = np.argsort(arr)
-    arr  = arr[ix]
-    wgts = wgts[ix]
+    ix  = np.argsort(arr)
+    arr = arr[ix]
+    weights = weights[ix]
 
-    cs = np.cumsum(wgts)
+    cs = np.cumsum(weights)
 
     sw = cs[-1]
 
@@ -356,6 +384,49 @@ def _poisson_initials( m ):
     return il, ir
 
 
+def _poisson_u_from_db( m, database ):
+    '''
+    Decorator for functions to calculate poissonian uncertainties,
+    which are partially stored on databases. If "m" is above the
+    maximum number stored in the database, the gaussian approximation
+    is taken instead.
+
+    :param database: name of the database.
+    :type database: str
+    :returns: lower and upper frequentist uncertainties.
+    :rtype: array-like(float, float)
+    '''
+    m = np.array(m, dtype = np.int32)
+
+    scalar_input = False
+    if m.ndim == 0:
+        m = m[None]
+        scalar_input = True
+
+    no_app = (m < __poisson_to_gauss__)
+
+    if np.count_nonzero(no_app) == 0:
+        # We can use the gaussian approximation in all
+        out = np.array(2*[np.sqrt(m)]).T
+    else:
+        # Non-approximated uncertainties
+        table = _access_db(database)
+
+        out = np.zeros((len(m), 2), dtype = np.float64)
+
+        out[no_app] = table[m[no_app]]
+
+        mk_app = np.logical_not(no_app)
+
+        if mk_app.any():
+            # Use the gaussian approximation for the rest
+            out[mk_app] = np.array(2*[np.sqrt(m[mk_app])]).T
+
+    if scalar_input:
+        return np.squeeze(out)
+    return out
+
+
 def _process_poisson_u( m, lw, up ):
     '''
     Calculate the uncertainties and display an error if they
@@ -381,7 +452,32 @@ def _process_poisson_u( m, lw, up ):
     return float(s_lw), float(s_up)
 
 
-def sw2_u( arr, bins = 20, rg = None, wgts = None ):
+def rv_random_sample( func, size = 10000, **kwargs ):
+    '''
+    Create a random sample from the given rv_frozen object. This is typically
+    created after building a scipy.stats.rv_discrete or
+    scipy.stats.rv_continuous functions.
+
+    :param func: function to use for the generation.
+    :type func: scipy.stats.rv_frozen
+    :param size: size of the sample.
+    :type size: int
+    :param kwargs: any other argument to scipy.stats.rv_frozen.rvs.
+    :type kwargs: dict
+    :returns: generated sample.
+    :rtype: array-like
+    '''
+    args = np.array(func.args)
+
+    if len(args.shape) == 1:
+        size = (size,)
+    else:
+        size = (size, args.shape[1])
+
+    return func.rvs(size=size, **kwargs)
+
+
+def sw2_u( arr, bins = 20, range = None, weights = None ):
     '''
     Calculate the errors of a weighted sample. This uncertainty is
     calculated as follows:
@@ -391,24 +487,24 @@ def sw2_u( arr, bins = 20, rg = None, wgts = None ):
        \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}
 
     where *i* refers to the i-th bin and :math:`j \in [0, n]` refers to
-    each entry in that bin with weight :math:`\omega_{i,j}`. If "wgts" is
+    each entry in that bin with weight :math:`\omega_{i,j}`. If "weights" is
     None, then this coincides with the square root of the number of entries
     in each bin.
 
     :param arr: input array of data to process.
     :param bins: see :func:`numpy.histogram`.
     :type bins: int, sequence of scalars or str
-    :param rg: range to process in the input array.
-    :type rg: tuple(float, float)
-    :param wgts: possible weights for the histogram.
-    :type wgts: collection(value-type)
+    :param range: range to process in the input array.
+    :type range: tuple(float, float)
+    :param weights: possible weights for the histogram.
+    :type weights: collection(value-type)
     :returns: symmetric uncertainty.
     :rtype: array-like
     '''
-    if wgts is not None:
-        values = np.histogram(arr, bins, rg, weights = wgts*wgts)[0]
+    if weights is not None:
+        values = np.histogram(arr, bins, range, weights = weights*weights)[0]
     else:
-        values = np.histogram(arr, bins, rg)[0]
+        values = np.histogram(arr, bins, range)[0]
 
     return np.sqrt(values)
 

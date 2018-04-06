@@ -6,11 +6,11 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
-# Custom
-import hep_spt
-
 # Python
 import numpy as np
+
+# Local
+import hep_spt
 
 
 def test_gcd():

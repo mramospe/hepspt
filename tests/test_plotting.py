@@ -9,7 +9,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Python
 import numpy as np
 
-# Custom
+# Local
 import hep_spt
 
 
@@ -23,10 +23,10 @@ def test_process_range():
     arr = np.append(arr, +2)
 
     # 1D case
-    vmin, vmax = hep_spt.process_range(arr)
+    vmin, vmax = hep_spt.plotting.process_range(arr)
     assert vmin == -2 and vmax == np.nextafter(+2, np.infty)
 
-    vmin, vmax = hep_spt.process_range(arr, (-3, +3))
+    vmin, vmax = hep_spt.plotting.process_range(arr, (-3, +3))
     assert vmin == -3 and vmax == +3
 
     # 2D case
@@ -38,10 +38,10 @@ def test_process_range():
     arr = np.append(arr, (-2, +2))
     arr = np.append(arr, (+2, -2))
 
-    vmin, vmax = hep_spt.process_range(arr)
+    vmin, vmax = hep_spt.plotting.process_range(arr)
     assert np.all(vmin == (-2, -2)) and np.all(vmax == np.nextafter((+2, +2), np.infty))
 
-    vmin, vmax = hep_spt.process_range(arr, [(-3, +3), (-3, +3)])
+    vmin, vmax = hep_spt.plotting.process_range(arr, [(-3, -3), (+3, +3)])
     assert np.all(vmin == (-3, -3)) and np.all(vmax == (+3, +3))
 
 

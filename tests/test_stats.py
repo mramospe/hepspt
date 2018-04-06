@@ -6,13 +6,61 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
-# Custom
-import hep_spt
-
 # Python
 import numpy as np
 from scipy.stats import norm
 from scipy.stats import ks_2samp as scipy_ks_2samp
+
+# Local
+import hep_spt
+
+
+def _integral_transformer_aux( points, comp, values=None ):
+    '''
+    Auxiliar function to perform check of the FlatDistTransform class.
+    '''
+    tr = hep_spt.FlatDistTransform(points, values)
+
+    vals = tr.transform(comp)
+
+    # Check that the values are between 0 and 1
+    assert np.all(vals >= 0) and np.all(vals <= 1)
+
+    bins = 20
+    values, edges = np.histogram(vals, bins, range=(0, 1))
+
+    centers = hep_spt.centers_from_edges(edges)
+
+    p, residuals, _, _, _ = np.polyfit(centers, values, 0, full=True)
+
+    # Check the mean of the values (depends on the number of bins and on the
+    # length of the samples)
+    assert np.isclose(p, len(points)/float(bins))
+
+    chi2_ndof = residuals/(len(values) - 1.)
+
+    return chi2_ndof
+
+
+def test_integral_transformer():
+    '''
+    Test function for the integral transformer instance.
+    '''
+    np.random.seed(1357)
+
+    points = np.linspace(0., 50., 10000)
+    values = np.exp(-points)
+    runi = np.random.exponential(1, 10000)
+
+    # Build a transformer from function values (not recommended, but might be
+    # possible).
+    _integral_transformer_aux(points, runi, values)
+
+    # Build the transformer from a distribution, and check that it transforms
+    # into a flat distribution with a nice chi2/ndof.
+    chi2_ndof = _integral_transformer_aux(runi, runi)
+
+    assert chi2_ndof < 1.
 
 
 def test_poisson_fu():
