@@ -39,6 +39,12 @@ def test_errorbar_hist():
     with pytest.raises(ValueError):
         hep_spt.errorbar_hist(arr, bins=20, weights=wgts, uncert='none')
 
+    # Normalizing with empty values in the bins will raise a RuntimeWarning
+    with pytest.warns(RuntimeWarning):
+        hep_spt.errorbar_hist(np.random.uniform(10, 20, 100),
+                              range=(30, 40),
+                              norm=True)
+
 
 def test_process_range():
     '''
