@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Plotting &#8212; hep_spt 0.0.0.dev1 documentation</title>
+    <title>Plotting &#8212; hep_spt 0.0.0.dev2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.0.0.dev1',
+        VERSION:     '0.0.0.dev2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -301,14 +301,14 @@ with the original curve. The pull plot is shown below.</p>
 <span class="n">pref</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">rct</span><span class="p">)</span>
 <span class="n">pref</span> <span class="o">=</span> <span class="n">size</span><span class="o">*</span><span class="n">pref</span><span class="o">/</span><span class="n">pref</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">step</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gridspec_kw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;height_ratios&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]})</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gridspec_kw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;height_ratios&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 
 <span class="c1"># Draw the histogram and the reference</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">ey</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rct</span><span class="p">,</span> <span class="n">pref</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;reference&#39;</span><span class="p">)</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">)</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Entries&#39;</span><span class="p">)</span>
-<span class="n">ax0</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">})</span>
 
 <span class="c1"># Draw the pull and lines for -3, 0 and +3 standard deviations</span>
 <span class="n">add_pull_line</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">],</span> <span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
@@ -332,9 +332,8 @@ with the original curve. The pull plot is shown below.</p>
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="Plotting-efficiencies">
-<h1>Plotting efficiencies<a class="headerlink" href="#Plotting-efficiencies" title="Permalink to this headline">¶</a></h1>
+<h2>Plotting efficiencies<a class="headerlink" href="#Plotting-efficiencies" title="Permalink to this headline">¶</a></h2>
 <p>Let’s suppose we build two histograms from the same sample, one of them
 after having applied some requirements. The first histogram will follow
 a gaussian distribution with center at 0 and standard deviation equal to
@@ -372,6 +371,7 @@ would be calculated as follows:</p>
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/notebooks_plotting_7_0.png" src="../_images/notebooks_plotting_7_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="Displaying-the-correlation-between-variables-on-a-sample">
@@ -478,7 +478,6 @@ or Y of the given distribution. This can be done as follows:</p>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Statistical tools</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Plotting-efficiencies">Plotting efficiencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="adbin.html">Adaptive binning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cls.html">CLs method</a></li>
 </ul>
