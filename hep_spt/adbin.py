@@ -82,8 +82,9 @@ class AdBin:
         :rtype: AdBin, AdBin
         :raises RuntimeError: if called after the data pointers have been freed.
 
-        .. warning:: This method can not be called after AdBin.free_memory,
-        since it destroys the arrays of data and weights.
+        .. warning:: This method can not be called after
+           :meth:`AdBin.free_memory`, since it destroys the arrays of data and
+           weights.
 
         .. seealso:: :meth:`AdBin.free_memory`
         '''
@@ -167,7 +168,7 @@ class AdBin:
         Remove the pointers to the arrays of data and weights.
 
         .. warning:: The method :meth:`AdBin.divide` will become unavailable
-        after this.
+           after this.
         '''
         self.array   = None
         self.weights = None
@@ -348,10 +349,10 @@ def adbin_hist2d( x, y, *args, **kwargs ):
     :rtype: list(AdBin)
 
     .. note:: This function will automatically delete the arrays of data and
-    weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
-    set "free_memory" to False. In such case, the user is responsible of
-    deleting the data in each bin by calling the aforementioned function, if
-    necessary.
+       weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
+       set "free_memory" to False. In such case, the user is responsible of
+       deleting the data in each bin by calling the aforementioned function, if
+       necessary.
 
     .. seealso:: :func:`adbin_hist1d`, :func:`adbin_histnd`
     '''
@@ -447,10 +448,10 @@ def adbin_histnd( arr, nbins = 100, range = None, weights = None, ndiv = 2, free
     :rtype: list(AdBin)
 
     .. note:: This function will automatically delete the arrays of data and
-    weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
-    set "free_memory" to False. In such case, the user is responsible of
-    deleting the data in each bin by calling the aforementioned function, if
-    necessary.
+       weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
+       set "free_memory" to False. In such case, the user is responsible of
+       deleting the data in each bin by calling the aforementioned function, if
+       necessary.
 
     .. seealso:: :func:`adbin_hist1d`, :func:`adbin_hist2d`,
        :meth:`AdBin.divide`, :meth:`AdBin.free_memory`
