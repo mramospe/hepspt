@@ -24,13 +24,13 @@ __all__ = ['AdBin', 'adbin_as_rectangle', 'adbin_hist2d_rectangles',
 
 
 class AdBin:
-    '''
-    Represent a n-dimensional adaptive bin. This class is meant so serve
-    as interface between the user and matplotlib to plot adaptive
-    binned histograms.
-    '''
+
     def __init__( self, arr, range = None, weights = None ):
         '''
+        Represent a n-dimensional adaptive bin. This class is meant so serve
+        as interface between the user and matplotlib to plot adaptive
+        binned histograms.
+
         :param arr: array of data.
         :type arr: numpy.ndarray
         :param range: range of the histogram in each dimension. As \
