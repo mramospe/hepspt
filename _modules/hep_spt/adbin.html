@@ -90,6 +90,9 @@
 
 <div class="viewcode-block" id="AdBin.contains"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return whether the values in the input array are inside this bin or \</span>
+<span class="sd">        not.</span>
+
 <span class="sd">        :param arr: input data.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
 <span class="sd">        :returns: whether the values in the input array are inside this bin or \</span>
@@ -100,6 +103,8 @@
 
 <div class="viewcode-block" id="AdBin.dens"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.dens">[docs]</a>    <span class="k">def</span> <span class="nf">dens</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the density of this bin.</span>
+
 <span class="sd">        :param arr: array of data to process.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
 <span class="sd">        :param weights: possible weights.</span>
@@ -217,6 +222,8 @@
 
 <div class="viewcode-block" id="AdBin.size"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the size of the bin.</span>
+
 <span class="sd">        :returns: size of this bin calculated as the product of \</span>
 <span class="sd">        the individual sizes in each dimension.</span>
 <span class="sd">        :rtype: float</span>
@@ -225,6 +232,8 @@
 
 <div class="viewcode-block" id="AdBin.sw"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.sw">[docs]</a>    <span class="k">def</span> <span class="nf">sw</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute and return the sum of weights.</span>
+
 <span class="sd">        :param arr: array of data to process.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
 <span class="sd">        :param weights: possible weights.</span>
@@ -243,6 +252,8 @@
 
 <div class="viewcode-block" id="AdBin.sw_u"><a class="viewcode-back" href="../../api/hep_spt.AdBin.html#hep_spt.AdBin.sw_u">[docs]</a>    <span class="k">def</span> <span class="nf">sw_u</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate and return the uncertainty on the sum of weights.</span>
+
 <span class="sd">        :param arr: array of data to process.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
 <span class="sd">        :param weights: possible weights.</span>

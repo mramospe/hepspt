@@ -71,26 +71,10 @@ binned histograms.</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#hep_spt.AdBin.contains" title="hep_spt.AdBin.contains"><code class="xref py py-obj docutils literal"><span class="pre">contains</span></code></a>(arr)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param arr:</th><td class="field-body">input data.</td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Return whether the values in the input array are inside this bin or         not.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#hep_spt.AdBin.dens" title="hep_spt.AdBin.dens"><code class="xref py py-obj docutils literal"><span class="pre">dens</span></code></a>(arr[,&nbsp;weights])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param arr:</th><td class="field-body">array of data to process.</td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Return the density of this bin.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#hep_spt.AdBin.divide" title="hep_spt.AdBin.divide"><code class="xref py py-obj docutils literal"><span class="pre">divide</span></code></a>([ndiv])</td>
 <td>Divide this bin in two, using the median in each dimension.</td>
@@ -99,37 +83,13 @@ binned histograms.</p>
 <td>Remove the pointers to the arrays of data and weights.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#hep_spt.AdBin.size" title="hep_spt.AdBin.size"><code class="xref py py-obj docutils literal"><span class="pre">size</span></code></a>()</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">size of this bin calculated as the product of         the individual sizes in each dimension.</td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Return the size of the bin.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#hep_spt.AdBin.sw" title="hep_spt.AdBin.sw"><code class="xref py py-obj docutils literal"><span class="pre">sw</span></code></a>(arr[,&nbsp;weights])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param arr:</th><td class="field-body">array of data to process.</td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Compute and return the sum of weights.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#hep_spt.AdBin.sw_u" title="hep_spt.AdBin.sw_u"><code class="xref py py-obj docutils literal"><span class="pre">sw_u</span></code></a>(arr[,&nbsp;weights])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param arr:</th><td class="field-body">array of data to process.</td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Calculate and return the uncertainty on the sum of weights.</td>
 </tr>
 </tbody>
 </table>
@@ -137,7 +97,8 @@ binned histograms.</p>
 <dl class="method">
 <dt id="hep_spt.AdBin.contains">
 <code class="descname">contains</code><span class="sig-paren">(</span><em>arr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#AdBin.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.AdBin.contains" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Return whether the values in the input array are inside this bin or         not.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -154,7 +115,8 @@ binned histograms.</p>
 <dl class="method">
 <dt id="hep_spt.AdBin.dens">
 <code class="descname">dens</code><span class="sig-paren">(</span><em>arr</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#AdBin.dens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.AdBin.dens" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Return the density of this bin.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -220,7 +182,8 @@ after this.</p>
 <dl class="method">
 <dt id="hep_spt.AdBin.size">
 <code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#AdBin.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.AdBin.size" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Return the size of the bin.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -235,7 +198,8 @@ after this.</p>
 <dl class="method">
 <dt id="hep_spt.AdBin.sw">
 <code class="descname">sw</code><span class="sig-paren">(</span><em>arr</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#AdBin.sw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.AdBin.sw" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Compute and return the sum of weights.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -258,7 +222,8 @@ after this.</p>
 <dl class="method">
 <dt id="hep_spt.AdBin.sw_u">
 <code class="descname">sw_u</code><span class="sig-paren">(</span><em>arr</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#AdBin.sw_u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.AdBin.sw_u" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Calculate and return the uncertainty on the sum of weights.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
