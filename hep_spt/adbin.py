@@ -48,6 +48,9 @@ class AdBin:
 
     def contains( self, arr ):
         '''
+        Return whether the values in the input array are inside this bin or \
+        not.
+
         :param arr: input data.
         :type arr: numpy.ndarray
         :returns: whether the values in the input array are inside this bin or \
@@ -58,6 +61,8 @@ class AdBin:
 
     def dens( self, arr, weights = None ):
         '''
+        Return the density of this bin.
+
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
@@ -175,6 +180,8 @@ class AdBin:
 
     def size( self ):
         '''
+        Return the size of the bin.
+
         :returns: size of this bin calculated as the product of \
         the individual sizes in each dimension.
         :rtype: float
@@ -183,6 +190,8 @@ class AdBin:
 
     def sw( self, arr, weights = None ):
         '''
+        Compute and return the sum of weights.
+
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
@@ -201,6 +210,8 @@ class AdBin:
 
     def sw_u( self, arr, weights = None ):
         '''
+        Calculate and return the uncertainty on the sum of weights.
+
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
