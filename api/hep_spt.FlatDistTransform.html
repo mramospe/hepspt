@@ -47,24 +47,24 @@
 <dt id="hep_spt.FlatDistTransform">
 <em class="property">class </em><code class="descclassname">hep_spt.</code><code class="descname">FlatDistTransform</code><span class="sig-paren">(</span><em>points</em>, <em>values=None</em>, <em>kind='cubic'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/stats.html#FlatDistTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.FlatDistTransform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Instance to transform values following an unknown distribution <span class="math">\(f(x)\)</span>
-into a flat distribution. This class takes into account the inverse
-transform sampling theorem, which states that, given a distribution
-<span class="math">\(f(x)\)</span> where <span class="math">\(x\in[a, b]\)</span> then, given a random variable
-following a flat distribution <em>r</em>,</p>
-<div class="math">
-\[F(x) - F(x_0) = \int_{x_0}^x f(x) dx = \int_0^r r dr = r\]</div>
-<p>where <span class="math">\(F(x)\)</span> is the primitive of <span class="math">\(f(x)\)</span>. This allows us to
-generate values following the distribution <span class="math">\(f(x)\)</span> given values from
-a flat distribution</p>
-<div class="math">
-\[x = F^{-1}(r + F(x_0))\]</div>
-<p>In this class, the inverse process is performed. From a given set of values
-of a certain distribution, we build a method to generate numbers following
-a flat distribution.</p>
-<p>The class performs an interpolation to get the transformated values from
-an array holding the cumulative of the distribution. The function
-<code class="xref py py-func docutils literal"><span class="pre">scipy.interpolate.interp1d()</span></code> is used for this purpose.</p>
+<p>Build the class from a given set of values following a certain
+distribution (the use of weights is allowed), or x and y values of
+a PDF. This last method is not recommended, since the precision
+relies on the dispersion of the values, sometimes concentrated around
+peaking regions which might not be well described by an interpolation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>points</strong> (<em>numpy.ndarray</em>) – x-values of the distribution (PDF).</li>
+<li><strong>values</strong> (<em>numpy.ndarray</em>) – weights or PDF values to use.</li>
+<li><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – kind of interpolation to use. For more details see         <code class="xref py py-func docutils literal"><span class="pre">scipy.interpolate.interp1d()</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods Summary</p>
 <table border="1" class="longtable docutils">
 <colgroup>

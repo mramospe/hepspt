@@ -24,7 +24,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="CLsTS_discrete" href="hep_spt.CLsTS_discrete.html" />
+    <link rel="next" title="CLsTS" href="hep_spt.CLsTS.html" />
     <link rel="prev" title="sw2_u" href="hep_spt.sw2_u.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -50,6 +50,19 @@
 <p>Represent a n-dimensional adaptive bin. This class is meant so serve
 as interface between the user and matplotlib to plot adaptive
 binned histograms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data.</li>
+<li><strong>range</strong> (<em>numpy.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>) or </em><em>None.</em>) – range of the histogram in each dimension. As         [(xmin, ymin), (xmax, ymax)].</li>
+<li><strong>weights</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – possible weights.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods Summary</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -183,8 +196,9 @@ the smallest bin.</p>
 </table>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">This method can not be called after AdBin.free_memory,
-since it destroys the arrays of data and weights.</p>
+<p class="last">This method can not be called after
+<a class="reference internal" href="#hep_spt.AdBin.free_memory" title="hep_spt.AdBin.free_memory"><code class="xref py py-meth docutils literal"><span class="pre">AdBin.free_memory()</span></code></a>, since it destroys the arrays of data and
+weights.</p>
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
@@ -300,7 +314,7 @@ after this.</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
       <li>Previous: <a href="hep_spt.sw2_u.html" title="previous chapter">sw2_u</a></li>
-      <li>Next: <a href="hep_spt.CLsTS_discrete.html" title="next chapter">CLsTS_discrete</a></li>
+      <li>Next: <a href="hep_spt.CLsTS.html" title="next chapter">CLsTS</a></li>
   </ul></li>
   </ul></li>
 </ul>

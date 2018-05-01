@@ -1,0 +1,226 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CLsHypo &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0.dev2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CLsHypo_discrete" href="hep_spt.CLsHypo_discrete.html" />
+    <link rel="prev" title="CLsTS_continuous" href="hep_spt.CLsTS_continuous.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="clshypo">
+<h1>CLsHypo<a class="headerlink" href="#clshypo" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hep_spt.CLsHypo">
+<em class="property">class </em><code class="descclassname">hep_spt.</code><code class="descname">CLsHypo</code><span class="sig-paren">(</span><em>pdf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Represent an hypothesis to be used in the CLs method.
+The class is built from a given probability function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdf</strong> (<em>scipy.stats.rv_frozen</em>) – probability function.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete" title="hep_spt.CLsHypo_discrete"><code class="xref py py-class docutils literal"><span class="pre">CLsHypo_discrete</span></code></a>, <a class="reference internal" href="hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" title="hep_spt.CLsHypo_continuous"><code class="xref py py-class docutils literal"><span class="pre">CLsHypo_continuous</span></code></a></p>
+</div>
+<p class="rubric">Methods Summary</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hep_spt.CLsHypo.__call__" title="hep_spt.CLsHypo.__call__"><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code></a>(v)</td>
+<td>Calculate the global probability for the given input value(s).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hep_spt.CLsHypo.median" title="hep_spt.CLsHypo.median"><code class="xref py py-obj docutils literal"><span class="pre">median</span></code></a>()</td>
+<td>Calculate the median of the distribution associated to this hypothesis.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hep_spt.CLsHypo.percentil" title="hep_spt.CLsHypo.percentil"><code class="xref py py-obj docutils literal"><span class="pre">percentil</span></code></a>(prob)</td>
+<td>Calculate the percentil associated to the given probability.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="hep_spt.CLsHypo.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the global probability for the given input value(s). If the
+arguments of the probability function are arrays, then it is assumed
+that “v” is either an array of length equal to the number of values
+per argument, or that it is an array of arrays following the latter
+structure. If “v” does not match any of the previous requirements,
+then the global probability is calculated assuming this value for
+all the sub-functions. Assuming “pmf” as “poisson.pmf”:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">poisson</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ha</span> <span class="o">=</span> <span class="n">cls_hypo</span><span class="p">(</span><span class="n">poisson</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ha</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># Same as pmf(4, 4)</span>
+<span class="go">0.19536681481316454</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hb</span> <span class="o">=</span> <span class="n">cls_hypo</span><span class="p">(</span><span class="n">poisson</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hb</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span> <span class="c1"># Same as pmf(4, 4)*pmf(4, 8)</span>
+<span class="go">0.02727057613800409</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hb</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">]])</span> <span class="c1"># Same as [pmf(4, 4)*pmf(8, 8), pmf(6, 4)*pmf(10, 8)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hb</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># Same as pmf(4, 4)*pmf(4, 4)</span>
+<span class="go">0.011185197244103258</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> (<em>array-like</em>) – input value(s).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">global probability.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_spt.CLsHypo.median">
+<code class="descname">median</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo.median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the median of the distribution associated to this
+hypothesis. This is equivalent to call CLsHypo.percentil(0.5).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">median of the distribution.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array-like</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_spt.CLsHypo.percentil">
+<code class="descname">percentil</code><span class="sig-paren">(</span><em>prob</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo.percentil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo.percentil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the percentil associated to the given probability.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prob</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – probability.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">percentil.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array-like</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="hep_spt.CLsTS_continuous.html" title="previous chapter">CLsTS_continuous</a></li>
+      <li>Next: <a href="hep_spt.CLsHypo_discrete.html" title="next chapter">CLsHypo_discrete</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/api/hep_spt.CLsHypo.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

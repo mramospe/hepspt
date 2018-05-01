@@ -75,7 +75,7 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <td>Create an instance of CLsHypo without needing to worry if the probability function is discrete or continuous.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="api/hep_spt.cls_ts.html#hep_spt.cls_ts" title="hep_spt.cls_ts"><code class="xref py py-obj docutils literal"><span class="pre">cls_ts</span></code></a>(alt,&nbsp;null)</td>
-<td>Create an instance of CLsTS without needing to worry about the type of hypothesis (discrete or continuous).</td>
+<td>Create an instance of <a class="reference internal" href="api/hep_spt.CLsTS.html#hep_spt.CLsTS" title="hep_spt.CLsTS"><code class="xref py py-class docutils literal"><span class="pre">CLsTS</span></code></a> without needing to worry about the type of hypothesis (discrete or continuous).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.gcd.html#hep_spt.gcd" title="hep_spt.gcd"><code class="xref py py-obj docutils literal"><span class="pre">gcd</span></code></a>(a,&nbsp;b,&nbsp;*args)</td>
 <td>Calculate the greatest common divisor of a set of numbers.</td>
@@ -163,11 +163,17 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><code class="xref py py-obj docutils literal"><span class="pre">AdBin</span></code></a>(arr[,&nbsp;range,&nbsp;weights])</td>
 <td>Represent a n-dimensional adaptive bin.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.CLsTS_discrete.html#hep_spt.CLsTS_discrete" title="hep_spt.CLsTS_discrete"><code class="xref py py-obj docutils literal"><span class="pre">CLsTS_discrete</span></code></a>(alt,&nbsp;null)</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.CLsTS.html#hep_spt.CLsTS" title="hep_spt.CLsTS"><code class="xref py py-obj docutils literal"><span class="pre">CLsTS</span></code></a>(alt,&nbsp;null)</td>
+<td>Base class to represent the test-statistics function to work with the CLs method.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.CLsTS_discrete.html#hep_spt.CLsTS_discrete" title="hep_spt.CLsTS_discrete"><code class="xref py py-obj docutils literal"><span class="pre">CLsTS_discrete</span></code></a>(alt,&nbsp;null)</td>
 <td>Base class to represent the test-statistics function to work with the CLs method using hypothesis working on a discrete domain.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.CLsTS_continuous.html#hep_spt.CLsTS_continuous" title="hep_spt.CLsTS_continuous"><code class="xref py py-obj docutils literal"><span class="pre">CLsTS_continuous</span></code></a>(alt,&nbsp;null)</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.CLsTS_continuous.html#hep_spt.CLsTS_continuous" title="hep_spt.CLsTS_continuous"><code class="xref py py-obj docutils literal"><span class="pre">CLsTS_continuous</span></code></a>(alt,&nbsp;null)</td>
 <td>Base class to represent the test-statistics function to work with the CLs method using hypothesis working on a continuous domain.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.CLsHypo.html#hep_spt.CLsHypo" title="hep_spt.CLsHypo"><code class="xref py py-obj docutils literal"><span class="pre">CLsHypo</span></code></a>(pdf)</td>
+<td>Represent an hypothesis to be used in the CLs method.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete" title="hep_spt.CLsHypo_discrete"><code class="xref py py-obj docutils literal"><span class="pre">CLsHypo_discrete</span></code></a>(pdf)</td>
 <td>Represent an hypothesis which works on a discrete domain.</td>
@@ -176,22 +182,15 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <td>Represent an hypothesis which works on a continuous domain.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="api/hep_spt.FlatDistTransform.html#hep_spt.FlatDistTransform" title="hep_spt.FlatDistTransform"><code class="xref py py-obj docutils literal"><span class="pre">FlatDistTransform</span></code></a>(points[,&nbsp;values,&nbsp;kind])</td>
-<td>Instance to transform values following an unknown distribution <span class="math">\(f(x)\)</span> into a flat distribution.</td>
+<td>Build the class from a given set of values following a certain distribution (the use of weights is allowed), or x and y values of a PDF.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="class-inheritance-diagram">
 <h2>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Permalink to this headline">¶</a></h2>
-<img src="_images/inheritance-aa2446e8494e6b20ec8b74fcd16fc1d7f9ed77d6.png" alt="Inheritance diagram of hep_spt.adbin.AdBin, hep_spt.cls.CLsTS_discrete, hep_spt.cls.CLsTS_continuous, hep_spt.cls.CLsHypo_discrete, hep_spt.cls.CLsHypo_continuous, hep_spt.stats.FlatDistTransform" usemap="#inheritancef5228a9d82" class="inheritance"/>
-<map id="inheritancef5228a9d82" name="inheritancef5228a9d82">
-<area shape="rect" id="node1" title="Represent a n&#45;dimensional adaptive bin. This class is meant so serve" alt="" coords="36,201,108,227"/>
-<area shape="rect" id="node2" title="Represent an hypothesis to be used in the CLs method." alt="" coords="33,152,111,177"/>
-<area shape="rect" id="node3" title="Represent an hypothesis which works on a continuous domain." alt="" coords="187,128,341,153"/>
-<area shape="rect" id="node4" title="Represent an hypothesis which works on a discrete domain." alt="" coords="196,177,332,203"/>
-<area shape="rect" id="node5" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="36,55,108,80"/>
-<area shape="rect" id="node6" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="195,29,333,55"/>
-<area shape="rect" id="node7" title="Base class to represent the test&#45;statistics function to work with the" alt="" coords="205,79,323,104"/>
+<img src="_images/inheritance-f02a43444703fd03f92366410321099e9c176e69.png" alt="Inheritance diagram of hep_spt.adbin.AdBin, hep_spt.cls.CLsTS, hep_spt.cls.CLsTS_discrete, hep_spt.cls.CLsTS_continuous, hep_spt.cls.CLsHypo, hep_spt.cls.CLsHypo_discrete, hep_spt.cls.CLsHypo_continuous, hep_spt.stats.FlatDistTransform" usemap="#inheritancefa020e0949" class="inheritance"/>
+<map id="inheritancefa020e0949" name="inheritancefa020e0949">
 <area shape="rect" id="node8" title="Instance to transform values following an unknown distribution :math:`f(x)`" alt="" coords="5,5,139,31"/>
 </map>
 </div>

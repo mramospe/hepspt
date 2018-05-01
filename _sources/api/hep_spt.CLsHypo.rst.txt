@@ -1,0 +1,21 @@
+CLsHypo
+=======
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: CLsHypo
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~CLsHypo.__call__
+      ~CLsHypo.median
+      ~CLsHypo.percentil
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: __call__
+   .. automethod:: median
+   .. automethod:: percentil

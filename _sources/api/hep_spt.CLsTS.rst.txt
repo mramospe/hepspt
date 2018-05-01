@@ -1,0 +1,19 @@
+CLsTS
+=====
+
+.. currentmodule:: hep_spt
+
+.. autoclass:: CLsTS
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~CLsTS.evaluate
+      ~CLsTS.test_stat
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: evaluate
+   .. automethod:: test_stat
