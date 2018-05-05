@@ -144,7 +144,7 @@ def test_cp_fu():
 
 def test_ks():
     '''
-    Test the Kolmogorov-Smirnov test function.
+    Test the Kolmogorov-Smirnov function.
     '''
     na = 200
     nb = 300
