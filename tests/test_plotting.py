@@ -9,6 +9,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Python
 import numpy as np
 import pytest
+from scipy.stats import norm
 
 # Local
 import hep_spt
@@ -38,6 +39,12 @@ def test_errorbar_hist():
     # If the uncertainty type is unknown, raise an error
     with pytest.raises(ValueError):
         hep_spt.errorbar_hist(arr, bins=20, weights=wgts, uncert='none')
+
+    # Normalizing with empty values in the bins will raise a RuntimeWarning
+    with pytest.warns(RuntimeWarning):
+        hep_spt.errorbar_hist(np.random.uniform(10, 20, 100),
+                              range=(30, 40),
+                              norm=True)
 
 
 def test_process_range():
@@ -82,3 +89,48 @@ def test_profile():
     prof = hep_spt.profile(x, y, bins=10)
 
     assert np.all(prof == 1)
+
+
+def test_pull():
+    '''
+    Test the pull function.
+    '''
+    # Symmetric errors
+    size = 10000
+    data = np.random.normal(0, 2, size)
+
+    values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='sw2')
+
+    centers = hep_spt.centers_from_edges(edges)
+
+    rv = norm.pdf(centers)
+    ref = float(size)*rv/rv.sum()
+
+    pull, perr = hep_spt.pull(values, ey, ref)
+
+    assert perr.shape == (len(values),)
+
+    p = values - ref
+
+    assert np.all(pull[p >= 0] >= 0) == True
+    assert np.all(pull[p < 0] < 0) == True
+
+    # Asymmetric errors
+    size = 1000
+    data = np.random.normal(0, 2, size)
+
+    values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='freq')
+
+    centers = hep_spt.centers_from_edges(edges)
+
+    rv = norm.pdf(centers)
+    ref = float(size)*rv/rv.sum()
+
+    pull, perr = hep_spt.pull(values, ey, ref)
+
+    assert perr.shape == (2, len(values))
+
+    p = values - ref
+
+    assert np.all(pull[p >= 0] >= 0) == True
+    assert np.all(pull[p < 0] < 0) == True

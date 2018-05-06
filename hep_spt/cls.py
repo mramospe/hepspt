@@ -15,8 +15,8 @@ from collections import namedtuple
 from hep_spt.stats import rv_random_sample
 
 __all__ = [
-    'CLsTS_discrete', 'CLsTS_continuous',
-    'CLsHypo_discrete', 'CLsHypo_continuous',
+    'CLsTS', 'CLsTS_discrete', 'CLsTS_continuous',
+    'CLsHypo', 'CLsHypo_discrete', 'CLsHypo_continuous',
     'cls_hypo', 'cls_ts'
     ]
 
@@ -25,20 +25,18 @@ CLsResult = namedtuple('CLsResult', ('CLs', 'CLb', 'CLsb'))
 
 
 class CLsTS:
-    '''
-    Base class to represent the test-statistics function to work with the
-    CLs method.
 
-    .. seealso:: CLsTS_discrete, CLsTS_continuous
-    '''
     def __init__( self, alt, null ):
         '''
-        Build the class using the alternative and null hypotheses.
+        Base class to represent the test-statistics function to work with the
+        CLs method. The class is built from the alternative and null hypotheses.
 
         :param alt: alternative hypothesis.
         :type alt: CLsHypo
         :param null: null hypothesis.
         :type null: CLsHypo
+
+        .. seealso:: :class:`CLsTS_discrete`, :class:`CLsTS_continuous`
         '''
         self.ah = alt
         self.nh = null
@@ -104,20 +102,19 @@ class CLsTS:
 
 
 class CLsTS_discrete(CLsTS):
-    '''
-    Base class to represent the test-statistics function to work with the
-    CLs method using hypothesis working on a discrete domain.
 
-    .. seealso:: CLsTS, CLsTS_continuous
-    '''
     def __init__( self, alt, null ):
         '''
-        Build the class using the alternative and null hypotheses.
+        Base class to represent the test-statistics function to work with the
+        CLs method using hypothesis working on a discrete domain. The class is
+        built from the alternative and null hypotheses.
 
         :param alt: alternative hypothesis.
         :type alt: CLsHypo
         :param null: null hypothesis.
         :type null: CLsHypo
+
+        .. seealso:: :class:`CLsTS`, :class:`CLsTS_continuous`
         '''
         CLsTS.__init__(self, alt, null)
 
@@ -157,20 +154,19 @@ class CLsTS_discrete(CLsTS):
 
 
 class CLsTS_continuous(CLsTS):
-    '''
-    Base class to represent the test-statistics function to work with the
-    CLs method using hypothesis working on a continuous domain.
 
-    .. seealso:: CLsTS, CLsTS_discrete
-    '''
     def __init__( self, alt, null ):
         '''
-        Build the class using the alternative and null hypotheses.
+        Base class to represent the test-statistics function to work with the
+        CLs method using hypothesis working on a continuous domain.
+        The class is built from the alternative and null hypotheses.
 
         :param alt: alternative hypothesis.
         :type alt: CLsHypo
         :param null: null hypothesis.
         :type null: CLsHypo
+
+        .. seealso:: :class:`CLsTS`, :class:`CLsTS_discrete`
         '''
         CLsTS.__init__(self, alt, null)
 
@@ -209,7 +205,8 @@ class CLsTS_continuous(CLsTS):
 
 def _call_wrap( meth ):
     '''
-    Wrapper function for the __call__ method of classes inheriting from CLsHypo.
+    Wrapper function for the __call__ method of classes inheriting from
+    :class:`CLsHypo`.
 
     :param meth: method to wrap.
     :type meth: method
@@ -248,17 +245,16 @@ def _call_wrap( meth ):
 
 
 class CLsHypo:
-    '''
-    Represent an hypothesis to be used in the CLs method.
 
-    .. seealso:: CLsHypo_discrete, CLsHypo_continuous
-    '''
     def __init__( self, pdf ):
         '''
-        Build using a given probability function.
+        Represent an hypothesis to be used in the CLs method.
+        The class is built from a given probability function.
 
         :param pdf: probability function.
         :type pdf: scipy.stats.rv_frozen
+
+        .. seealso:: :class:`CLsHypo_discrete`, :class:`CLsHypo_continuous`
         '''
         self.func = pdf
 
@@ -314,17 +310,16 @@ class CLsHypo:
 
 
 class CLsHypo_discrete(CLsHypo):
-    '''
-    Represent an hypothesis which works on a discrete domain.
 
-    .. seealso:: CLsHypo, CLsHypo_continuous
-    '''
     def __init__( self, pdf ):
         '''
-        Build using a given probability function.
+        Represent an hypothesis which works on a discrete domain.
+        The class is built from a given probability function.
 
         :param pdf: probability function.
         :type pdf: scipy.stats.rv_frozen
+
+        .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_continuous`
         '''
         CLsHypo.__init__(self, pdf)
 
@@ -343,17 +338,16 @@ class CLsHypo_discrete(CLsHypo):
 
 
 class CLsHypo_continuous(CLsHypo):
-    '''
-    Represent an hypothesis which works on a continuous domain.
 
-    .. seealso:: CLsHypo, CLsHypo_discrete
-    '''
     def __init__( self, pdf ):
         '''
-        Build using a given probability function.
+        Represent an hypothesis which works on a continuous domain.
+        The class is built from a given probability function.
 
         :param pdf: probability function.
         :type pdf: scipy.stats.rv_frozen
+
+        .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_discrete`
         '''
         CLsHypo.__init__(self, pdf)
 
@@ -373,9 +367,9 @@ class CLsHypo_continuous(CLsHypo):
 
 def cls_ts( alt, null ):
     '''
-    Create an instance of CLsTS without needing to worry about the type of
-    hypothesis (discrete or continuous). However, a check is done to see if
-    both types coincide.
+    Create an instance of :class:`CLsTS` without needing to worry about the
+    type of hypothesis (discrete or continuous).
+    However, a check is done to see if both types coincide.
 
     :param alt: alternative hypothesis.
     :type alt: CLsHypo
@@ -385,7 +379,7 @@ def cls_ts( alt, null ):
     :rtype: CLsTS
     :raises RuntimeError: if the type of both hypotheses is different.
 
-    .. seealso:: CLsTS_discrete, CLsTS_continuous
+    .. seealso:: :class:`CLsTS_discrete`, :class:`CLsTS_continuous`
     '''
     discrete = isinstance(alt, CLsHypo_discrete)
     if discrete != isinstance(null, CLsHypo_discrete):
@@ -409,7 +403,7 @@ def cls_hypo( func, *args, **kwargs ):
     :param kwargs: input arguments to "func".
     :type kwargs: dict
 
-    .. seealso:: CLsHypo_discrete, CLsHypo_continuous
+    .. seealso:: :class:`CLsHypo_discrete`, :class:`CLsHypo_continuous`
     '''
     if isinstance(func, rv_discrete):
         return CLsHypo_discrete(func(*args, **kwargs))

@@ -183,11 +183,8 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
 
         s = float(values.sum())/norm
 
-        if s != 0:
-            values = values/s
-            ey = ey/s
-        else:
-            ey = np.finfo(ey.dtype).max
+        values = values/s
+        ey = ey/s
 
     return values, edges, ex, ey
 

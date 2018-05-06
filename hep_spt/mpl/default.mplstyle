@@ -12,21 +12,23 @@ axes.spines.right     : False
 axes.spines.top       : False
 
 # Error bar
-errorbar.capsize : 1.5
+errorbar.capsize : 3
 
 # Font
 font.family : serif
+font.serif  : Times
 
 # Lines
 lines.linewidth  : 1.5
 lines.marker     : o
-lines.markersize : 3
+lines.markersize : 6
 
 # Scatter
 scatter.marker : o
 
 # Text
 text.latex.preamble : \usepackage{amsmath}
+text.latex.unicode  : True
 text.usetex         : True
 
 # Ticks

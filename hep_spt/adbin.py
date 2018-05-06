@@ -24,13 +24,13 @@ __all__ = ['AdBin', 'adbin_as_rectangle', 'adbin_hist2d_rectangles',
 
 
 class AdBin:
-    '''
-    Represent a n-dimensional adaptive bin. This class is meant so serve
-    as interface between the user and matplotlib to plot adaptive
-    binned histograms.
-    '''
+
     def __init__( self, arr, range = None, weights = None ):
         '''
+        Represent a n-dimensional adaptive bin. This class is meant so serve
+        as interface between the user and matplotlib to plot adaptive
+        binned histograms.
+
         :param arr: array of data.
         :type arr: numpy.ndarray
         :param range: range of the histogram in each dimension. As \
@@ -48,6 +48,9 @@ class AdBin:
 
     def contains( self, arr ):
         '''
+        Return whether the values in the input array are inside this bin or \
+        not.
+
         :param arr: input data.
         :type arr: numpy.ndarray
         :returns: whether the values in the input array are inside this bin or \
@@ -58,6 +61,8 @@ class AdBin:
 
     def dens( self, arr, weights = None ):
         '''
+        Return the density of this bin.
+
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
@@ -81,6 +86,10 @@ class AdBin:
         the parent.
         :rtype: AdBin, AdBin
         :raises RuntimeError: if called after the data pointers have been freed.
+
+        .. warning:: This method can not be called after
+           :meth:`AdBin.free_memory`, since it destroys the arrays of data and
+           weights.
 
         .. seealso:: :meth:`AdBin.free_memory`
         '''
@@ -161,14 +170,18 @@ class AdBin:
 
     def free_memory( self ):
         '''
-        Remove the pointers to the arrays of data and weights. The method
-        :meth:`AdBin.divide` will become unavailable after this.
+        Remove the pointers to the arrays of data and weights.
+
+        .. warning:: The method :meth:`AdBin.divide` will become unavailable
+           after this.
         '''
         self.array   = None
         self.weights = None
 
     def size( self ):
         '''
+        Return the size of the bin.
+
         :returns: size of this bin calculated as the product of \
         the individual sizes in each dimension.
         :rtype: float
@@ -177,6 +190,8 @@ class AdBin:
 
     def sw( self, arr, weights = None ):
         '''
+        Compute and return the sum of weights.
+
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
@@ -195,6 +210,8 @@ class AdBin:
 
     def sw_u( self, arr, weights = None ):
         '''
+        Calculate and return the uncertainty on the sum of weights.
+
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
@@ -342,6 +359,12 @@ def adbin_hist2d( x, y, *args, **kwargs ):
     :returns: adaptive bins of the histogram, with size (nbins + 1).
     :rtype: list(AdBin)
 
+    .. note:: This function will automatically delete the arrays of data and
+       weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
+       set "free_memory" to False. In such case, the user is responsible of
+       deleting the data in each bin by calling the aforementioned function, if
+       necessary.
+
     .. seealso:: :func:`adbin_hist1d`, :func:`adbin_histnd`
     '''
     return adbin_histnd(np.array([x, y]).T, *args, **kwargs)
@@ -434,6 +457,12 @@ def adbin_histnd( arr, nbins = 100, range = None, weights = None, ndiv = 2, free
     :type free_memory: bool
     :returns: adaptive bins of the histogram, with size (nbins + 1).
     :rtype: list(AdBin)
+
+    .. note:: This function will automatically delete the arrays of data and
+       weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
+       set "free_memory" to False. In such case, the user is responsible of
+       deleting the data in each bin by calling the aforementioned function, if
+       necessary.
 
     .. seealso:: :func:`adbin_hist1d`, :func:`adbin_hist2d`,
        :meth:`AdBin.divide`, :meth:`AdBin.free_memory`
