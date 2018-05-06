@@ -70,6 +70,7 @@
     <span class="s1">&#39;path_to_styles&#39;</span><span class="p">,</span>
     <span class="s1">&#39;profile&#39;</span><span class="p">,</span>
     <span class="s1">&#39;pull&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;residual&#39;</span><span class="p">,</span>
     <span class="s1">&#39;samples_cycler&#39;</span><span class="p">,</span>
     <span class="s1">&#39;set_style&#39;</span><span class="p">,</span>
     <span class="s1">&#39;text_in_rectangles&#39;</span>
@@ -318,7 +319,7 @@
     <span class="k">return</span> <span class="n">prof</span></div>
 
 
-<div class="viewcode-block" id="pull"><a class="viewcode-back" href="../../api/hep_spt.pull.html#hep_spt.pull">[docs]</a><span class="k">def</span> <span class="nf">pull</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span> <span class="p">):</span>
+<div class="viewcode-block" id="pull"><a class="viewcode-back" href="../../api/hep_spt.pull.html#hep_spt.pull">[docs]</a><span class="k">def</span> <span class="nf">pull</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_err</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the pull with the associated errors for a given set of values and a</span>
 <span class="sd">    reference. Considering, :math:`v` as the experimental value and :math:`r`</span>
@@ -341,6 +342,13 @@
 <span class="sd">    :math:`v - r &gt; 0`, then :math:`\sigma^{pull}_{low} = 1` and</span>
 <span class="sd">    :math:`\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}`.</span>
 
+<span class="sd">    If the uncertainties are also provided for the reference, then the</span>
+<span class="sd">    definition is the same but considering the sum of squares rule:</span>
+
+<span class="sd">    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`</span>
+
+<span class="sd">    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`</span>
+
 <span class="sd">    :param vals: values to compare with.</span>
 <span class="sd">    :type vals: array-like</span>
 <span class="sd">    :param err: array of errors. Both symmetric and asymmetric errors \</span>
@@ -349,13 +357,17 @@
 <span class="sd">    :type err: array-like</span>
 <span class="sd">    :param ref: reference to follow.</span>
 <span class="sd">    :type ref: array-like</span>
+<span class="sd">    :param ref_err: possible errors for the reference.</span>
+<span class="sd">    :type ref_err: array-like</span>
 <span class="sd">    :returns: pull of the values with respect to the reference and \</span>
 <span class="sd">    associated errors. In case asymmetric errors have been provided, \</span>
 <span class="sd">    the returning array has shape (2, n).</span>
 <span class="sd">    :rtype: array-like, array-like</span>
-<span class="sd">    :raises TypeError: if the array does not have shape (2, n) or (n,).</span>
+<span class="sd">    :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).</span>
+
+<span class="sd">    .. seealso:: :func:`residual`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">pull</span> <span class="o">=</span> <span class="n">vals</span> <span class="o">-</span> <span class="n">ref</span>
+    <span class="n">pull</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">residual</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_err</span><span class="p">)</span>
 
     <span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
@@ -363,7 +375,7 @@
         <span class="c1"># Symmetric errors</span>
         <span class="n">pull</span> <span class="o">/=</span> <span class="n">err</span>
 
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Asymmetric errors</span>
 
         <span class="n">up</span> <span class="o">=</span> <span class="p">(</span><span class="n">pull</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
@@ -378,10 +390,53 @@
 
         <span class="n">perr_l</span><span class="p">[</span><span class="n">lw</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="n">lw</span><span class="p">]</span><span class="o">/</span><span class="n">eu</span><span class="p">[</span><span class="n">lw</span><span class="p">])</span>
         <span class="n">perr_u</span><span class="p">[</span><span class="n">up</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">eu</span><span class="p">[</span><span class="n">up</span><span class="p">]</span><span class="o">/</span><span class="n">el</span><span class="p">[</span><span class="n">up</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The error array must have shape (2, n) or (n,)&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pull</span><span class="p">,</span> <span class="n">perr</span></div>
+
+
+<div class="viewcode-block" id="residual"><a class="viewcode-back" href="../../api/hep_spt.residual.html#hep_spt.residual">[docs]</a><span class="k">def</span> <span class="nf">residual</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_err</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the residual values from &quot;vals&quot; with respect to &quot;ref&quot;.</span>
+<span class="sd">    If the uncertainties are also provided for the reference, the errors</span>
+<span class="sd">    are recalculated, using the sum of squares rule. Being :math:`v` the</span>
+<span class="sd">    value and :math:`r` the reference, this translates into:</span>
+
+<span class="sd">    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`</span>
+
+<span class="sd">    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`</span>
+
+<span class="sd">    :param vals: values to compare with.</span>
+<span class="sd">    :type vals: array-like</span>
+<span class="sd">    :param err: array of errors. Both symmetric and asymmetric errors \</span>
+<span class="sd">    can be provided. In the latter case, they must be provided as a \</span>
+<span class="sd">    (2, n) array.</span>
+<span class="sd">    :type err: array-like</span>
+<span class="sd">    :param ref: reference to follow.</span>
+<span class="sd">    :type ref: array-like</span>
+<span class="sd">    :param ref_err: possible errors for the reference.</span>
+<span class="sd">    :type ref_err: array-like</span>
+<span class="sd">    :returns: residual of the values with respect to the reference and \</span>
+<span class="sd">    associated errors. In case asymmetric errors have been provided, \</span>
+<span class="sd">    the returning array has shape (2, n).</span>
+<span class="sd">    :rtype: array-like, array-like</span>
+<span class="sd">    :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).</span>
+
+<span class="sd">    .. seealso:: :func:`pull`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vals</span> <span class="o">-</span> <span class="n">ref</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">ref_err</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The error arrays must have shape (2, n) or (n,)&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ref_err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Recalculate the error using the sum of squares rule</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_err</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">ref_err</span> <span class="o">=</span> <span class="n">ref_err</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ref_err</span><span class="o">*</span><span class="n">ref_err</span> <span class="o">+</span> <span class="n">err</span><span class="o">*</span><span class="n">err</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span></div>
 
 
 <div class="viewcode-block" id="samples_cycler"><a class="viewcode-back" href="../../api/hep_spt.samples_cycler.html#hep_spt.samples_cycler">[docs]</a><span class="k">def</span> <span class="nf">samples_cycler</span><span class="p">(</span> <span class="n">smps</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>

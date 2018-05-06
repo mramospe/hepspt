@@ -110,43 +110,46 @@ of the hep_spt package. The class inheritance diagram is also shown.</p>
 <tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.profile.html#hep_spt.profile" title="hep_spt.profile"><code class="xref py py-obj docutils literal"><span class="pre">profile</span></code></a>(x,&nbsp;y[,&nbsp;bins,&nbsp;range])</td>
 <td>Calculate the profile from a 2D data sample.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-obj docutils literal"><span class="pre">pull</span></code></a>(vals,&nbsp;err,&nbsp;ref)</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-obj docutils literal"><span class="pre">pull</span></code></a>(vals,&nbsp;err,&nbsp;ref[,&nbsp;ref_err])</td>
 <td>Get the pull with the associated errors for a given set of values and a reference.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.samples_cycler.html#hep_spt.samples_cycler" title="hep_spt.samples_cycler"><code class="xref py py-obj docutils literal"><span class="pre">samples_cycler</span></code></a>(smps,&nbsp;*args,&nbsp;**kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.residual.html#hep_spt.residual" title="hep_spt.residual"><code class="xref py py-obj docutils literal"><span class="pre">residual</span></code></a>(vals,&nbsp;err,&nbsp;ref[,&nbsp;ref_err])</td>
+<td>Calculate the residual values from “vals” with respect to “ref”.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.samples_cycler.html#hep_spt.samples_cycler" title="hep_spt.samples_cycler"><code class="xref py py-obj docutils literal"><span class="pre">samples_cycler</span></code></a>(smps,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Often, one wants to plot several samples with different matplotlib styles.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.set_style.html#hep_spt.set_style" title="hep_spt.set_style"><code class="xref py py-obj docutils literal"><span class="pre">set_style</span></code></a>(*args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.set_style.html#hep_spt.set_style" title="hep_spt.set_style"><code class="xref py py-obj docutils literal"><span class="pre">set_style</span></code></a>(*args)</td>
 <td>Set the style for matplotlib to one within this project.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles" title="hep_spt.text_in_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">text_in_rectangles</span></code></a>(recs,&nbsp;txt[,&nbsp;cax])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles" title="hep_spt.text_in_rectangles"><code class="xref py py-obj docutils literal"><span class="pre">text_in_rectangles</span></code></a>(recs,&nbsp;txt[,&nbsp;cax])</td>
 <td>Write text inside matplotlib.patches.Rectangle instances.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.calc_poisson_fu.html#hep_spt.calc_poisson_fu" title="hep_spt.calc_poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_fu</span></code></a>(m[,&nbsp;cl])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.calc_poisson_fu.html#hep_spt.calc_poisson_fu" title="hep_spt.calc_poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_fu</span></code></a>(m[,&nbsp;cl])</td>
 <td>Return the lower and upper frequentist uncertainties for a poisson distribution with mean “m”.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.calc_poisson_llu.html#hep_spt.calc_poisson_llu" title="hep_spt.calc_poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_llu</span></code></a>(m[,&nbsp;cl])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.calc_poisson_llu.html#hep_spt.calc_poisson_llu" title="hep_spt.calc_poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">calc_poisson_llu</span></code></a>(m[,&nbsp;cl])</td>
 <td>Calculate poisson uncertainties based on the logarithm of likelihood.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.cp_fu.html#hep_spt.cp_fu" title="hep_spt.cp_fu"><code class="xref py py-obj docutils literal"><span class="pre">cp_fu</span></code></a>(k,&nbsp;N[,&nbsp;cl])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.cp_fu.html#hep_spt.cp_fu" title="hep_spt.cp_fu"><code class="xref py py-obj docutils literal"><span class="pre">cp_fu</span></code></a>(k,&nbsp;N[,&nbsp;cl])</td>
 <td>Return the frequentist Clopper-Pearson uncertainties of having “k” events in “N”.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.ks_2samp.html#hep_spt.ks_2samp" title="hep_spt.ks_2samp"><code class="xref py py-obj docutils literal"><span class="pre">ks_2samp</span></code></a>(a,&nbsp;b[,&nbsp;wa,&nbsp;wb])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.ks_2samp.html#hep_spt.ks_2samp" title="hep_spt.ks_2samp"><code class="xref py py-obj docutils literal"><span class="pre">ks_2samp</span></code></a>(a,&nbsp;b[,&nbsp;wa,&nbsp;wb])</td>
 <td>Compute the Kolmogorov-Smirnov statistic on 2 samples.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.gauss_u.html#hep_spt.gauss_u" title="hep_spt.gauss_u"><code class="xref py py-obj docutils literal"><span class="pre">gauss_u</span></code></a>(s[,&nbsp;cl])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.gauss_u.html#hep_spt.gauss_u" title="hep_spt.gauss_u"><code class="xref py py-obj docutils literal"><span class="pre">gauss_u</span></code></a>(s[,&nbsp;cl])</td>
 <td>Calculate the gaussian uncertainty for a given confidence level.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.poisson_fu.html#hep_spt.poisson_fu" title="hep_spt.poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_fu</span></code></a>(m)</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.poisson_fu.html#hep_spt.poisson_fu" title="hep_spt.poisson_fu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_fu</span></code></a>(m)</td>
 <td>Return the poisson frequentist uncertainty at one standard deviation of confidence level.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.poisson_llu.html#hep_spt.poisson_llu" title="hep_spt.poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_llu</span></code></a>(m)</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.poisson_llu.html#hep_spt.poisson_llu" title="hep_spt.poisson_llu"><code class="xref py py-obj docutils literal"><span class="pre">poisson_llu</span></code></a>(m)</td>
 <td>Return the poisson uncertainty at one standard deviation of confidence level.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.rv_random_sample.html#hep_spt.rv_random_sample" title="hep_spt.rv_random_sample"><code class="xref py py-obj docutils literal"><span class="pre">rv_random_sample</span></code></a>(func[,&nbsp;size])</td>
+<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.rv_random_sample.html#hep_spt.rv_random_sample" title="hep_spt.rv_random_sample"><code class="xref py py-obj docutils literal"><span class="pre">rv_random_sample</span></code></a>(func[,&nbsp;size])</td>
 <td>Create a random sample from the given rv_frozen object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/hep_spt.sw2_u.html#hep_spt.sw2_u" title="hep_spt.sw2_u"><code class="xref py py-obj docutils literal"><span class="pre">sw2_u</span></code></a>(arr[,&nbsp;bins,&nbsp;range,&nbsp;weights])</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/hep_spt.sw2_u.html#hep_spt.sw2_u" title="hep_spt.sw2_u"><code class="xref py py-obj docutils literal"><span class="pre">sw2_u</span></code></a>(arr[,&nbsp;bins,&nbsp;range,&nbsp;weights])</td>
 <td>Calculate the errors of a weighted sample.</td>
 </tr>
 </tbody>

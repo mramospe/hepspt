@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>samples_cycler &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>residual &#8212; hep_spt 0.0.0.dev2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="set_style" href="hep_spt.set_style.html" />
-    <link rel="prev" title="residual" href="hep_spt.residual.html" />
+    <link rel="next" title="samples_cycler" href="hep_spt.samples_cycler.html" />
+    <link rel="prev" title="pull" href="hep_spt.pull.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,34 +41,44 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="samples-cycler">
-<h1>samples_cycler<a class="headerlink" href="#samples-cycler" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="residual">
+<h1>residual<a class="headerlink" href="#residual" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="hep_spt.samples_cycler">
-<code class="descclassname">hep_spt.</code><code class="descname">samples_cycler</code><span class="sig-paren">(</span><em>smps</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#samples_cycler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.samples_cycler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Often, one wants to plot several samples with different matplotlib
-styles. This function allows to create a cycler.cycler object
-to loop over the given samples, where the “label” key is filled
-with the values from “smps”.</p>
+<dt id="hep_spt.residual">
+<code class="descclassname">hep_spt.</code><code class="descname">residual</code><span class="sig-paren">(</span><em>vals</em>, <em>err</em>, <em>ref</em>, <em>ref_err=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the residual values from “vals” with respect to “ref”.
+If the uncertainties are also provided for the reference, the errors
+are recalculated, using the sum of squares rule. Being <span class="math">\(v\)</span> the
+value and <span class="math">\(r\)</span> the reference, this translates into:</p>
+<p><span class="math">\((\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2\)</span></p>
+<p><span class="math">\((\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>smps</strong> (<em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>)</em>) – list of names for the samples.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – position argument to cycler.cycler.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – keyword arguments to cycler.cycler.</li>
+<li><strong>vals</strong> (<em>array-like</em>) – values to compare with.</li>
+<li><strong>err</strong> (<em>array-like</em>) – array of errors. Both symmetric and asymmetric errors     can be provided. In the latter case, they must be provided as a     (2, n) array.</li>
+<li><strong>ref</strong> (<em>array-like</em>) – reference to follow.</li>
+<li><strong>ref_err</strong> (<em>array-like</em>) – possible errors for the reference.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">cycler object with the styles for each sample.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">residual of the values with respect to the reference and     associated errors. In case asymmetric errors have been provided,     the returning array has shape (2, n).</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cycler.cycler</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array-like, array-like</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if any of the error arrays does not have shape (2, n) or (n,).</p>
 </td>
 </tr>
 </tbody>
 </table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-func docutils literal"><span class="pre">pull()</span></code></a></p>
+</div>
 </dd></dl>
 
 </div>
@@ -104,8 +114,8 @@ with the values from “smps”.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.residual.html" title="previous chapter">residual</a></li>
-      <li>Next: <a href="hep_spt.set_style.html" title="next chapter">set_style</a></li>
+      <li>Previous: <a href="hep_spt.pull.html" title="previous chapter">pull</a></li>
+      <li>Next: <a href="hep_spt.samples_cycler.html" title="next chapter">samples_cycler</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -132,7 +142,7 @@ with the values from “smps”.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/api/hep_spt.samples_cycler.rst.txt"
+      <a href="../_sources/api/hep_spt.residual.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

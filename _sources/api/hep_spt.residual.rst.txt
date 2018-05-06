@@ -1,0 +1,6 @@
+residual
+========
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: residual

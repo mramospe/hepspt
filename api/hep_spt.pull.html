@@ -24,7 +24,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="samples_cycler" href="hep_spt.samples_cycler.html" />
+    <link rel="next" title="residual" href="hep_spt.residual.html" />
     <link rel="prev" title="profile" href="hep_spt.profile.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -45,7 +45,7 @@
 <h1>pull<a class="headerlink" href="#pull" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="hep_spt.pull">
-<code class="descclassname">hep_spt.</code><code class="descname">pull</code><span class="sig-paren">(</span><em>vals</em>, <em>err</em>, <em>ref</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.pull" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.</code><code class="descname">pull</code><span class="sig-paren">(</span><em>vals</em>, <em>err</em>, <em>ref</em>, <em>ref_err=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.pull" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the pull with the associated errors for a given set of values and a
 reference. Considering, <span class="math">\(v\)</span> as the experimental value and <span class="math">\(r\)</span>
 as the rerference, the definition of this quantity is <span class="math">\((v - r)/\sigma\)</span>
@@ -64,6 +64,10 @@ definition is:</p>
 the reference is equal to 1 and the other is scaled accordingly, so if
 <span class="math">\(v - r &gt; 0\)</span>, then <span class="math">\(\sigma^{pull}_{low} = 1\)</span> and
 <span class="math">\(\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}\)</span>.</p>
+<p>If the uncertainties are also provided for the reference, then the
+definition is the same but considering the sum of squares rule:</p>
+<p><span class="math">\((\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2\)</span></p>
+<p><span class="math">\((\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -72,6 +76,7 @@ the reference is equal to 1 and the other is scaled accordingly, so if
 <li><strong>vals</strong> (<em>array-like</em>) – values to compare with.</li>
 <li><strong>err</strong> (<em>array-like</em>) – array of errors. Both symmetric and asymmetric errors     can be provided. In the latter case, they must be provided as a     (2, n) array.</li>
 <li><strong>ref</strong> (<em>array-like</em>) – reference to follow.</li>
+<li><strong>ref_err</strong> (<em>array-like</em>) – possible errors for the reference.</li>
 </ul>
 </td>
 </tr>
@@ -81,11 +86,15 @@ the reference is equal to 1 and the other is scaled accordingly, so if
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array-like, array-like</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if the array does not have shape (2, n) or (n,).</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if any of the error arrays does not have shape (2, n) or (n,).</p>
 </td>
 </tr>
 </tbody>
 </table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="hep_spt.residual.html#hep_spt.residual" title="hep_spt.residual"><code class="xref py py-func docutils literal"><span class="pre">residual()</span></code></a></p>
+</div>
 </dd></dl>
 
 </div>
@@ -122,7 +131,7 @@ the reference is equal to 1 and the other is scaled accordingly, so if
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
       <li>Previous: <a href="hep_spt.profile.html" title="previous chapter">profile</a></li>
-      <li>Next: <a href="hep_spt.samples_cycler.html" title="next chapter">samples_cycler</a></li>
+      <li>Next: <a href="hep_spt.residual.html" title="next chapter">residual</a></li>
   </ul></li>
   </ul></li>
 </ul>
