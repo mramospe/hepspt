@@ -303,9 +303,9 @@ def pull( vals, err, ref, ref_err = None ):
     If the uncertainties are also provided for the reference, then the
     definition is the same but considering the sum of squares rule:
 
-    :math:`\left(\sigma'^{v}_{low}\right)^2` = \sqrt{\left(\sigma^{v}_{low}\right)^2 + \left(\sigma^{r}_{up}\right)^2}
+    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`
 
-    :math:`\left(\sigma'^{v}_{up}\right)^2` = \sqrt{\left(\sigma^{v}_{up}\right)^2 + \left(\sigma^{r}_{low}\right)^2}
+    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`
 
     :param vals: values to compare with.
     :type vals: array-like
@@ -322,6 +322,8 @@ def pull( vals, err, ref, ref_err = None ):
     the returning array has shape (2, n).
     :rtype: array-like, array-like
     :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).
+
+    .. seealso:: :func:`residual`
     '''
     pull, err = residual(vals, err, ref, ref_err)
 
@@ -357,9 +359,9 @@ def residual( vals, err, ref, ref_err = None ):
     are recalculated, using the sum of squares rule. Being :math:`v` the
     value and :math:`r` the reference, this translates into:
 
-    :math:`\left(\sigma'^{v}_{low}\right)^2` = \sqrt{\left(\sigma^{v}_{low}\right)^2 + \left(\sigma^{r}_{up}\right)^2}
+    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`
 
-    :math:`\left(\sigma'^{v}_{up}\right)^2` = \sqrt{\left(\sigma^{v}_{up}\right)^2 + \left(\sigma^{r}_{low}\right)^2}
+    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`
 
     :param vals: values to compare with.
     :type vals: array-like
@@ -376,6 +378,8 @@ def residual( vals, err, ref, ref_err = None ):
     the returning array has shape (2, n).
     :rtype: array-like, array-like
     :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).
+
+    .. seealso:: :func:`pull`
     '''
     res = np.array(vals - ref, dtype=float)
 
