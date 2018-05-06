@@ -279,7 +279,7 @@ def profile( x, y, bins = 20, range = None ):
     return prof
 
 
-def pull( vals, err, ref ):
+def pull( vals, err, ref, ref_err = None ):
     '''
     Get the pull with the associated errors for a given set of values and a
     reference. Considering, :math:`v` as the experimental value and :math:`r`
@@ -302,6 +302,13 @@ def pull( vals, err, ref ):
     :math:`v - r > 0`, then :math:`\sigma^{pull}_{low} = 1` and
     :math:`\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}`.
 
+    If the uncertainties are also provided for the reference, then the
+    definition is the same but considering the sum of squares rule:
+
+    :math:`\left(\sigma'^{v}_{low}\right)^2` = \sqrt{\left(\sigma^{v}_{low}\right)^2 + \left(\sigma^{r}_{low}\right)^2}
+
+    :math:`\left(\sigma'^{v}_{up}\right)^2` = \sqrt{\left(\sigma^{v}_{up}\right)^2 + \left(\sigma^{r}_{low}\right)^2}
+
     :param vals: values to compare with.
     :type vals: array-like
     :param err: array of errors. Both symmetric and asymmetric errors \
@@ -310,6 +317,8 @@ def pull( vals, err, ref ):
     :type err: array-like
     :param ref: reference to follow.
     :type ref: array-like
+    :param ref_err: possible errors for the reference.
+    :type ref_err: array-like
     :returns: pull of the values with respect to the reference and \
     associated errors. In case asymmetric errors have been provided, \
     the returning array has shape (2, n).
@@ -320,11 +329,22 @@ def pull( vals, err, ref ):
 
     perr = np.ones_like(err)
 
+    for a in filter(lambda e: e is not None, (err, ref_err)):
+        if (len(a.shape) == 2 and a.shape[0] != 2) or len(a.shape) > 2:
+            raise TypeError('The error arrays must have shape (2, n) or (n,)')
+
+    if ref_err is not None:
+        # Recalculate the error using the sum of squares rule
+        if len(ref_err.shape) == 2:
+            ref_err = ref_err[::-1]
+
+        err = np.sqrt(ref_err*ref_err + err*err)
+
     if len(err.shape) == 1:
         # Symmetric errors
         pull /= err
 
-    elif len(err.shape) == 2:
+    else:
         # Asymmetric errors
 
         up = (pull >= 0)
@@ -339,8 +359,6 @@ def pull( vals, err, ref ):
 
         perr_l[lw] = (el[lw]/eu[lw])
         perr_u[up] = (eu[up]/el[up])
-    else:
-        raise TypeError('The error array must have shape (2, n) or (n,)')
 
     return pull, perr
 
