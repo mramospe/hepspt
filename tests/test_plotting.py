@@ -91,11 +91,10 @@ def test_profile():
     assert np.all(prof == 1)
 
 
-def test_pull():
+def test_pull_sym():
     '''
-    Test the pull function.
+    Test the "pull" function with symmetric errors.
     '''
-    # Symmetric errors
     size = 10000
     data = np.random.normal(0, 2, size)
 
@@ -112,10 +111,14 @@ def test_pull():
 
     p = values - ref
 
-    assert np.all(pull[p >= 0] >= 0) == True
-    assert np.all(pull[p < 0] < 0) == True
+    assert np.all(pull[p >= 0] >= 0)
+    assert np.all(pull[p < 0] < 0)
 
-    # Asymmetric errors
+
+def test_pull_asym():
+    '''
+    Test the "pull" function with asymmetric errors.
+    '''
     size = 1000
     data = np.random.normal(0, 2, size)
 
@@ -132,5 +135,101 @@ def test_pull():
 
     p = values - ref
 
-    assert np.all(pull[p >= 0] >= 0) == True
-    assert np.all(pull[p < 0] < 0) == True
+    assert np.all(pull[p >= 0] >= 0)
+    assert np.all(pull[p < 0] < 0)
+
+
+def test_pull_sym_sym():
+    '''
+    Test the "pull" function with symmetric errors in the values and in the
+    reference
+    '''
+    values     = np.array([4, 20, 13])
+    values_err = np.array([3,  6, 12])
+    ref        = np.array([9, 10, 26])
+    ref_err    = np.array([4,  8,  5])
+
+    pull, perr = hep_spt.pull(values, values_err, ref, ref_err)
+
+    assert perr.shape == (len(values),)
+
+    p = values - ref
+
+    assert np.all(pull[p >= 0] >= 0)
+    assert np.all(pull[p < 0] < 0)
+    assert np.allclose(pull, [-1, +1, -1])
+
+
+def test_pull_asym_asym():
+    '''
+    Test the "pull" function with asymmetric errors in the values and in the
+    reference
+    '''
+    values     = np.array([4, 20, 13])
+    values_err = np.array([
+        np.array([3,  6, 12]),
+        np.array([4,  8,  5])
+        ])
+    ref     = np.array([9, 10, 26])
+    ref_err = np.array([
+        np.array([3,  6, 12]),
+        np.array([4,  8,  5])
+        ])
+
+    pull, perr = hep_spt.pull(values, values_err, ref, ref_err)
+
+    assert perr.shape == (2, len(values))
+
+    p = values - ref
+
+    assert np.all(pull[p >= 0] >= 0)
+    assert np.all(pull[p < 0] < 0)
+    assert np.allclose(pull, [-1, +1, -1])
+
+
+def test_pull_sym_asym():
+    '''
+    Test the "pull" function with symmetric errors in the values and
+    asymmetric in the reference
+    '''
+    values     = np.array([4, 20, 13])
+    values_err = np.array([4,  8,  5])
+    ref        = np.array([9, 10, 26])
+    ref_err    = np.array([
+            np.array([3,  8, 12]),
+            np.array([4,  6,  5])
+            ])
+
+    pull, perr = hep_spt.pull(values, values_err, ref, ref_err)
+
+    assert perr.shape == (2, len(values))
+
+    p = values - ref
+
+    assert np.all(pull[p >= 0] >= 0)
+    assert np.all(pull[p < 0] < 0)
+    assert np.allclose(pull, [-1, +1, -1])
+
+
+def test_pull_asym_sym():
+    '''
+    Test the "pull" function with asymmetric errors in the values and
+    symmetric in the reference
+    '''
+    values     = np.array([4, 20, 13])
+    values_err = np.array([
+            np.array([4,  6,  5]),
+            np.array([3,  8, 12])
+            ])
+    ref     = np.array([9, 10, 26])
+    ref_err = np.array([4,  8,  5])
+
+    pull, perr = hep_spt.pull(values, values_err, ref, ref_err)
+
+    assert perr.shape == (2, len(values))
+
+    p = values - ref
+
+    assert np.all(pull[p >= 0] >= 0)
+    assert np.all(pull[p < 0] < 0)
+    assert np.allclose(pull, [-1, +1, -1])

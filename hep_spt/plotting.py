@@ -320,11 +320,9 @@ def pull( vals, err, ref, ref_err = None ):
     associated errors. In case asymmetric errors have been provided, \
     the returning array has shape (2, n).
     :rtype: array-like, array-like
-    :raises TypeError: if the array does not have shape (2, n) or (n,).
+    :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).
     '''
-    pull = vals - ref
-
-    perr = np.ones_like(err)
+    pull = np.array(vals - ref, dtype=float)
 
     for a in filter(lambda e: e is not None, (err, ref_err)):
         if (len(a.shape) == 2 and a.shape[0] != 2) or len(a.shape) > 2:
@@ -336,6 +334,8 @@ def pull( vals, err, ref, ref_err = None ):
             ref_err = ref_err[::-1]
 
         err = np.sqrt(ref_err*ref_err + err*err)
+
+    perr = np.ones_like(err)
 
     if len(err.shape) == 1:
         # Symmetric errors
