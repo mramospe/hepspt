@@ -28,6 +28,7 @@ __all__ = [
     'path_to_styles',
     'profile',
     'pull',
+    'residual',
     'samples_cycler',
     'set_style',
     'text_in_rectangles'
@@ -302,7 +303,7 @@ def pull( vals, err, ref, ref_err = None ):
     If the uncertainties are also provided for the reference, then the
     definition is the same but considering the sum of squares rule:
 
-    :math:`\left(\sigma'^{v}_{low}\right)^2` = \sqrt{\left(\sigma^{v}_{low}\right)^2 + \left(\sigma^{r}_{low}\right)^2}
+    :math:`\left(\sigma'^{v}_{low}\right)^2` = \sqrt{\left(\sigma^{v}_{low}\right)^2 + \left(\sigma^{r}_{up}\right)^2}
 
     :math:`\left(\sigma'^{v}_{up}\right)^2` = \sqrt{\left(\sigma^{v}_{up}\right)^2 + \left(\sigma^{r}_{low}\right)^2}
 
@@ -322,18 +323,7 @@ def pull( vals, err, ref, ref_err = None ):
     :rtype: array-like, array-like
     :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).
     '''
-    pull = np.array(vals - ref, dtype=float)
-
-    for a in filter(lambda e: e is not None, (err, ref_err)):
-        if (len(a.shape) == 2 and a.shape[0] != 2) or len(a.shape) > 2:
-            raise TypeError('The error arrays must have shape (2, n) or (n,)')
-
-    if ref_err is not None:
-        # Recalculate the error using the sum of squares rule
-        if len(ref_err.shape) == 2:
-            ref_err = ref_err[::-1]
-
-        err = np.sqrt(ref_err*ref_err + err*err)
+    pull, err = residual(vals, err, ref, ref_err)
 
     perr = np.ones_like(err)
 
@@ -358,6 +348,49 @@ def pull( vals, err, ref, ref_err = None ):
         perr_u[up] = (eu[up]/el[up])
 
     return pull, perr
+
+
+def residual( vals, err, ref, ref_err = None ):
+    '''
+    Calculate the residual values from "vals" with respect to "ref".
+    If the uncertainties are also provided for the reference, the errors
+    are recalculated, using the sum of squares rule. Being :math:`v` the
+    value and :math:`r` the reference, this translates into:
+
+    :math:`\left(\sigma'^{v}_{low}\right)^2` = \sqrt{\left(\sigma^{v}_{low}\right)^2 + \left(\sigma^{r}_{up}\right)^2}
+
+    :math:`\left(\sigma'^{v}_{up}\right)^2` = \sqrt{\left(\sigma^{v}_{up}\right)^2 + \left(\sigma^{r}_{low}\right)^2}
+
+    :param vals: values to compare with.
+    :type vals: array-like
+    :param err: array of errors. Both symmetric and asymmetric errors \
+    can be provided. In the latter case, they must be provided as a \
+    (2, n) array.
+    :type err: array-like
+    :param ref: reference to follow.
+    :type ref: array-like
+    :param ref_err: possible errors for the reference.
+    :type ref_err: array-like
+    :returns: residual of the values with respect to the reference and \
+    associated errors. In case asymmetric errors have been provided, \
+    the returning array has shape (2, n).
+    :rtype: array-like, array-like
+    :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).
+    '''
+    res = np.array(vals - ref, dtype=float)
+
+    for a in filter(lambda e: e is not None, (err, ref_err)):
+        if (len(a.shape) == 2 and a.shape[0] != 2) or len(a.shape) > 2:
+            raise TypeError('The error arrays must have shape (2, n) or (n,)')
+
+    if ref_err is not None:
+        # Recalculate the error using the sum of squares rule
+        if len(ref_err.shape) == 2:
+            ref_err = ref_err[::-1]
+
+        err = np.sqrt(ref_err*ref_err + err*err)
+
+    return res, err
 
 
 def samples_cycler( smps, *args, **kwargs ):

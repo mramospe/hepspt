@@ -233,3 +233,126 @@ def test_pull_asym_sym():
     assert np.all(pull[p >= 0] >= 0)
     assert np.all(pull[p < 0] < 0)
     assert np.allclose(pull, [-1, +1, -1])
+
+
+def test_residual_sym():
+    '''
+    Test the "residual" function given symmetric errors.
+    '''
+    size = 10000
+    data = np.random.normal(0, 2, size)
+
+    values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='sw2')
+
+    centers = hep_spt.centers_from_edges(edges)
+
+    rv = norm.pdf(centers)
+    ref = float(size)*rv/rv.sum()
+
+    res, perr = hep_spt.residual(values, ey, ref)
+
+    assert perr.shape == (len(values),)
+    assert np.allclose(res, values - ref)
+
+
+def test_residual_asym():
+    '''
+    Test the "residual" function with asymmetric errors.
+    '''
+    size = 1000
+    data = np.random.normal(0, 2, size)
+
+    values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='freq')
+
+    centers = hep_spt.centers_from_edges(edges)
+
+    rv = norm.pdf(centers)
+    ref = float(size)*rv/rv.sum()
+
+    res, perr = hep_spt.residual(values, ey, ref)
+
+    assert perr.shape == (2, len(values))
+    assert np.allclose(res, values - ref)
+
+
+def test_residual_sym_sym():
+    '''
+    Test the "residual" function with symmetric errors in the values and in the
+    reference.
+    '''
+    values     = np.array([4, 20, 13])
+    values_err = np.array([3,  6, 12])
+    ref        = np.array([9, 10, 26])
+    ref_err    = np.array([4,  8,  5])
+
+    res, perr = hep_spt.residual(values, values_err, ref, ref_err)
+
+    assert perr.shape == (len(values),)
+    assert np.allclose(res, values - ref)
+    assert np.allclose(perr, [5, 10, 13])
+
+
+def test_residual_asym_asym():
+    '''
+    Test the "residual" function with asymmetric errors in the values and in the
+    reference.
+    '''
+    values     = np.array([4, 20, 13])
+    values_err = np.array([
+        np.array([3,  6, 12]),
+        np.array([4,  8,  5])
+        ])
+    ref     = np.array([9, 10, 26])
+    ref_err = np.array([
+        np.array([3,  6, 12]),
+        np.array([4,  8,  5])
+        ])
+
+    res, perr = hep_spt.residual(values, values_err, ref, ref_err)
+
+    assert perr.shape == (2, len(values))
+    assert np.allclose(res, values - ref)
+    assert np.allclose(perr[0], [5, 10, 13])
+    assert np.allclose(perr[1], [5, 10, 13])
+
+
+def test_residual_sym_asym():
+    '''
+    Test the "residual" function with symmetric errors in the values and
+    asymmetric in the reference.
+    '''
+    values     = np.array([4, 23, 13])
+    values_err = np.array([3,  8,  5])
+    ref        = np.array([9, 10, 26])
+    ref_err    = np.array([
+            np.array([4,  6,  5]),
+            np.array([3,  6, 12])
+            ])
+
+    res, perr = hep_spt.residual(values, values_err, ref, ref_err)
+
+    assert perr.shape == (2, len(values))
+    assert np.allclose(res, values - ref)
+    assert np.allclose(perr[0][1:], [10, 13])
+    assert np.allclose(perr[1][0] , 5)
+
+
+def test_residual_asym_sym():
+    '''
+    Test the "residual" function with asymmetric errors in the values and
+    symmetric in the reference.
+    '''
+    values     = np.array([4, 20, 13])
+    values_err = np.array([
+            np.array([4,  6,  5]),
+            np.array([3,  6, 12])
+            ])
+    ref     = np.array([9, 10, 26])
+    ref_err = np.array([3,  8,  5])
+
+    res, perr = hep_spt.residual(values, values_err, ref, ref_err)
+
+    assert perr.shape == (2, len(values))
+    assert np.allclose(res, values - ref)
+    assert np.allclose(perr[0][0] , 5)
+    assert np.allclose(perr[1][1:], [10, 13])
