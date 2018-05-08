@@ -65,13 +65,13 @@
 <span class="sd">    Calculate the greatest common divisor of a set of numbers.</span>
 
 <span class="sd">    :param a: first number.</span>
-<span class="sd">    :type a: int</span>
+<span class="sd">    :type a: int or numpy.ndarray(int)</span>
 <span class="sd">    :param b: second number.</span>
-<span class="sd">    :type b: int</span>
+<span class="sd">    :type b: int or numpy.ndarray(int)</span>
 <span class="sd">    :param args: any other numbers.</span>
-<span class="sd">    :type args: collection(int)</span>
-<span class="sd">    :returns: greatest common divisor of a set of numbers.</span>
-<span class="sd">    :rtype: int</span>
+<span class="sd">    :type args: tuple(int or numpy.ndarray(int))</span>
+<span class="sd">    :returns: Greatest common divisor of a set of numbers.</span>
+<span class="sd">    :rtype: int or numpy.ndarray(int)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">while</span> <span class="n">b</span><span class="p">:</span>
@@ -84,13 +84,13 @@
 <div class="viewcode-block" id="is_power_2"><a class="viewcode-back" href="../../api/hep_spt.is_power_2.html#hep_spt.is_power_2">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">is_power_2</span><span class="p">(</span> <span class="n">n</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Determine whether the input number is a power of 2 or not. Only</span>
+<span class="sd">    Determine whether the input number(s) is a power of 2 or not. Only</span>
 <span class="sd">    works with positive numbers.</span>
 
-<span class="sd">    :param n: input number.</span>
-<span class="sd">    :type n: int</span>
-<span class="sd">    :returns: whether the input number is a power of 2 or not.</span>
-<span class="sd">    :rtype: bool</span>
+<span class="sd">    :param n: input number(s).</span>
+<span class="sd">    :type n: int or numpy.ndarray(int)</span>
+<span class="sd">    :returns: Whether the input number(s) is(are) a power of 2 or not.</span>
+<span class="sd">    :rtype: bool or numpy.ndarray(bool)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">((</span><span class="n">n</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span></div>
 
@@ -100,14 +100,14 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the least common multiple of a set of numbers.</span>
 
-<span class="sd">    :param a: first number.</span>
-<span class="sd">    :type a: int</span>
-<span class="sd">    :param b: second number.</span>
-<span class="sd">    :type b: int</span>
+<span class="sd">    :param a: first number(s).</span>
+<span class="sd">    :type a: int or numpy.ndarray(int)</span>
+<span class="sd">    :param b: second number(s).</span>
+<span class="sd">    :type b: int or numpy.ndarray(int)</span>
 <span class="sd">    :param args: any other numbers.</span>
-<span class="sd">    :type args: collection(int)</span>
-<span class="sd">    :returns: least common multiple of a set of numbers.</span>
-<span class="sd">    :rtype: int</span>
+<span class="sd">    :type args: tuple(int or numpy.ndarray(int))</span>
+<span class="sd">    :returns: Least common multiple of a set of numbers.</span>
+<span class="sd">    :rtype: int or numpy.ndarray(int)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">//</span><span class="n">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
@@ -118,12 +118,12 @@
 <div class="viewcode-block" id="next_power_2"><a class="viewcode-back" href="../../api/hep_spt.next_power_2.html#hep_spt.next_power_2">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">next_power_2</span><span class="p">(</span> <span class="n">n</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Calculate the next number greater than that given and being a power of 2.</span>
+<span class="sd">    Calculate the next number(s) greater than that(those) given and being a power(s) of 2.</span>
 
-<span class="sd">    :param n: input number.</span>
-<span class="sd">    :type n: int</span>
-<span class="sd">    :returns: next power of 2 to the given number.</span>
-<span class="sd">    :rtype: int</span>
+<span class="sd">    :param n: input number(s).</span>
+<span class="sd">    :type n: int or numpy.ndarray(int)</span>
+<span class="sd">    :returns: Next power of 2 to the given number.</span>
+<span class="sd">    :rtype: int or numpy.ndarray(int)</span>
 
 <span class="sd">    .. note: If the input number is a power of two, it will return the \</span>
 <span class="sd">    same number.</span>

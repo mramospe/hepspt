@@ -46,12 +46,14 @@
 <dl class="function">
 <dt id="hep_spt.residual">
 <code class="descclassname">hep_spt.</code><code class="descname">residual</code><span class="sig-paren">(</span><em>vals</em>, <em>err</em>, <em>ref</em>, <em>ref_err=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.residual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the residual values from “vals” with respect to “ref”.
-If the uncertainties are also provided for the reference, the errors
-are recalculated, using the sum of squares rule. Being <span class="math">\(v\)</span> the
-value and <span class="math">\(r\)</span> the reference, this translates into:</p>
-<p><span class="math">\((\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2\)</span></p>
-<p><span class="math">\((\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2\)</span></p>
+<dd><p>Calculate the residual with its errors, for a set of values with
+respect to a reference.
+If uncertainties are also provided for the reference, then the
+definition is the same but considering the sum of squares rule:</p>
+<div class="math">
+\[(\sigma'^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2\]</div>
+<div class="math">
+\[(\sigma'^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -64,7 +66,7 @@ value and <span class="math">\(r\)</span> the reference, this translates into:</
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">residual of the values with respect to the reference and     associated errors. In case asymmetric errors have been provided,     the returning array has shape (2, n).</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Residual of the values with respect to the reference and     associated errors. In case asymmetric errors have been provided,     the returning array has shape (2, n).</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array-like, array-like</p>

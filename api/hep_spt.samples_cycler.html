@@ -46,25 +46,28 @@
 <dl class="function">
 <dt id="hep_spt.samples_cycler">
 <code class="descclassname">hep_spt.</code><code class="descname">samples_cycler</code><span class="sig-paren">(</span><em>smps</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#samples_cycler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.samples_cycler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Often, one wants to plot several samples with different matplotlib
-styles. This function allows to create a cycler.cycler object
-to loop over the given samples, where the “label” key is filled
-with the values from “smps”.</p>
+<dd><p>Generate a <code class="xref py py-class docutils literal"><span class="pre">cycler.Cycler</span></code> object were the labels are defined by
+“smps”, and the other parameters are left to the user.
+This function is useful when one wants to plot several samples with
+different matplotlib styles.
+This function allows to create a <code class="xref py py-class docutils literal"><span class="pre">cycler.Cycler</span></code> object
+to loop over the given samples and associated formats, where the “label”
+key is filled with the values from “smps”.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>smps</strong> (<em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>)</em>) – list of names for the samples.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – position argument to cycler.cycler.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – keyword arguments to cycler.cycler.</li>
+<li><strong>smps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>)</em>) – list of names for the samples.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – position argument to <code class="xref py py-func docutils literal"><span class="pre">cycler.cycler()</span></code>.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – keyword arguments to <code class="xref py py-func docutils literal"><span class="pre">cycler.cycler()</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">cycler object with the styles for each sample.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Object with the styles for each sample and a defined “label” key.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cycler.cycler</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">cycler.Cycler</span></code></p>
 </td>
 </tr>
 </tbody>

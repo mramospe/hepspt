@@ -46,28 +46,28 @@
 <dl class="function">
 <dt id="hep_spt.adbin_hist2d_rectangles">
 <code class="descclassname">hep_spt.</code><code class="descname">adbin_hist2d_rectangles</code><span class="sig-paren">(</span><em>bins</em>, <em>arr</em>, <em>range=None</em>, <em>weights=None</em>, <em>cmap=None</em>, <em>fill='sw'</em>, <em>color=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d_rectangles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a collection of rectangles from a collection of bins, using
-the input data to calculate the associated quantity (specified in “fill”).</p>
+<dd><p>Create a list of rectangles from a list of bins. It uses the input data
+in “arr” to calculate the associated quantity, which is specified in “fill”.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>bins</strong> (<em>collection</em><em>(</em><a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><em>AdBin</em></a><em>)</em>) – input bins.</li>
-<li><strong>arr</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – input data.</li>
+<li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><em>AdBin</em></a><em>)</em>) – input bins.</li>
+<li><strong>arr</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><em>value-type</em><em>)</em>) – input data.</li>
 <li><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><em>np.ndarray</em><em>, </em><em>np.ndarray</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
-<li><strong>weights</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – input weights.</li>
-<li><strong>cmap</strong> (<em>matplotlib.colors.Colormap</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional color map. If “None”, the default from     matplotlib.pyplot is used.</li>
+<li><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><em>value-type</em><em>)</em>) – input weights.</li>
+<li><strong>cmap</strong> (<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Colormap.html#matplotlib.colors.Colormap" title="(in Matplotlib v2.2.2)"><em>matplotlib.colors.Colormap</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional color map. If “None”, the default from     matplotlib.pyplot is used.</li>
 <li><strong>fill</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – method to use for filling (‘sw’ or ‘dens’).</li>
 <li><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – whether the output rectangles are filled with a color or not.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – any other argument to <a class="reference internal" href="hep_spt.adbin_as_rectangle.html#hep_spt.adbin_as_rectangle" title="hep_spt.adbin_as_rectangle"><code class="xref py py-func docutils literal"><span class="pre">adbin_as_rectangle()</span></code></a>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">rectangles and contents.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Rectangles and contents.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray, numpy.ndarray</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a></p>
 </td>
 </tr>
 </tbody>

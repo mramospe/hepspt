@@ -46,24 +46,24 @@
 <dl class="function">
 <dt id="hep_spt.rv_random_sample">
 <code class="descclassname">hep_spt.</code><code class="descname">rv_random_sample</code><span class="sig-paren">(</span><em>func</em>, <em>size=10000</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/stats.html#rv_random_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.rv_random_sample" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a random sample from the given rv_frozen object. This is typically
-created after building a scipy.stats.rv_discrete or
-scipy.stats.rv_continuous functions.</p>
+<dd><p>Create a random sample from the given rv_frozen object.
+This is usually used after creating a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_discrete.html#scipy.stats.rv_discrete" title="(in SciPy v1.1.0)"><code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_discrete</span></code></a>
+or <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html#scipy.stats.rv_continuous" title="(in SciPy v1.1.0)"><code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_continuous</span></code></a> class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>func</strong> (<em>scipy.stats.rv_frozen</em>) – function to use for the generation.</li>
+<li><strong>func</strong> (<code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_frozen</span></code>) – function to use for the generation.</li>
 <li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – size of the sample.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – any other argument to scipy.stats.rv_frozen.rvs.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – any other argument to <code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_frozen.rvs</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">generated sample.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Generated sample.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array-like</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a></p>
 </td>
 </tr>
 </tbody>

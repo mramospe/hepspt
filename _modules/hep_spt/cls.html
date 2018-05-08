@@ -95,7 +95,7 @@
 <span class="sd">        :type tv: array-like</span>
 <span class="sd">        :param size: size of the sample to generate.</span>
 <span class="sd">        :type size: int</span>
-<span class="sd">        :returns: confidence level.</span>
+<span class="sd">        :returns: Confidence level.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Attempt to call abstract class method&#39;</span><span class="p">)</span>
@@ -106,7 +106,7 @@
 
 <span class="sd">        :param v: input value:</span>
 <span class="sd">        :type v: array-like</span>
-<span class="sd">        :returns: test-statistics value.</span>
+<span class="sd">        :returns: Value of the test-statistics.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ah</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -129,7 +129,7 @@
 <span class="sd">        :type v: array-like</span>
 <span class="sd">        :param size: size of the sample to generate.</span>
 <span class="sd">        :type size: int</span>
-<span class="sd">        :returns: tuple with the CLs, CLb and CLsb values.</span>
+<span class="sd">        :returns: Tuple with the CLs, CLb and CLsb values.</span>
 <span class="sd">        :rtype: collections.namedtuple</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">tv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_stat</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -252,7 +252,7 @@
 
 <span class="sd">    :param meth: method to wrap.</span>
 <span class="sd">    :type meth: method</span>
-<span class="sd">    :returns: wrapped function.</span>
+<span class="sd">    :returns: Wrapped function.</span>
 <span class="sd">    :rtype: function</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">_wrapper</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
@@ -324,7 +324,7 @@
 
 <span class="sd">        :param v: input value(s).</span>
 <span class="sd">        :type v: array-like</span>
-<span class="sd">        :returns: global probability.</span>
+<span class="sd">        :returns: Global probability.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Attempt to call abstract class method&#39;</span><span class="p">)</span></div>
@@ -334,7 +334,7 @@
 <span class="sd">        Calculate the median of the distribution associated to this</span>
 <span class="sd">        hypothesis. This is equivalent to call CLsHypo.percentil(0.5).</span>
 
-<span class="sd">        :returns: median of the distribution.</span>
+<span class="sd">        :returns: Median of the distribution.</span>
 <span class="sd">        :rtype: array-like</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">percentil</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
@@ -345,7 +345,7 @@
 
 <span class="sd">        :param prob: probability.</span>
 <span class="sd">        :type prob: float</span>
-<span class="sd">        :returns: percentil.</span>
+<span class="sd">        :returns: Percentil.</span>
 <span class="sd">        :rtype: array-like</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span></div></div>
@@ -373,7 +373,7 @@
 
 <span class="sd">        :param v: input value(s).</span>
 <span class="sd">        :type v: array-like</span>
-<span class="sd">        :returns: global probability.</span>
+<span class="sd">        :returns: Global probability.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div></div>
@@ -401,7 +401,7 @@
 
 <span class="sd">        :param v: input value(s).</span>
 <span class="sd">        :type v: array-like</span>
-<span class="sd">        :returns: global probability.</span>
+<span class="sd">        :returns: Global probability.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div></div>
@@ -409,9 +409,10 @@
 
 <div class="viewcode-block" id="cls_ts"><a class="viewcode-back" href="../../api/hep_spt.cls_ts.html#hep_spt.cls_ts">[docs]</a><span class="k">def</span> <span class="nf">cls_ts</span><span class="p">(</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create an instance of :class:`CLsTS` without needing to worry about the</span>
-<span class="sd">    type of hypothesis (discrete or continuous).</span>
-<span class="sd">    However, a check is done to see if both types coincide.</span>
+<span class="sd">    Create an instance of :class:`CLsTS` from the alternative an null</span>
+<span class="sd">    hypotheses.</span>
+<span class="sd">    A check is done to see if both refere to the same type of probability</span>
+<span class="sd">    function (discrete or continuous).</span>
 
 <span class="sd">    :param alt: alternative hypothesis.</span>
 <span class="sd">    :type alt: CLsHypo</span>
@@ -435,8 +436,9 @@
 
 <div class="viewcode-block" id="cls_hypo"><a class="viewcode-back" href="../../api/hep_spt.cls_hypo.html#hep_spt.cls_hypo">[docs]</a><span class="k">def</span> <span class="nf">cls_hypo</span><span class="p">(</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create an instance of CLsHypo without needing to worry if</span>
-<span class="sd">    the probability function is discrete or continuous.</span>
+<span class="sd">    Create an instance of CLsHypo given a probability density(mass) function,</span>
+<span class="sd">    as an object of type :class:`scipy.stats.rv_discrete` or</span>
+<span class="sd">    :class:`scipy.stats.rv_continuous`.</span>
 
 <span class="sd">    :param func: probability function.</span>
 <span class="sd">    :type func: scipy.stats.rv_discrete or scipy.stats.rv_continuous</span>

@@ -95,7 +95,7 @@
 
 <span class="sd">        :param arr: input data.</span>
 <span class="sd">        :type arr: numpy.ndarray</span>
-<span class="sd">        :returns: whether the values in the input array are inside this bin or \</span>
+<span class="sd">        :returns: Whether the values in the input array are inside this bin or \</span>
 <span class="sd">        not.</span>
 <span class="sd">        :rtype: bool or numpy.ndarray(bool)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -109,7 +109,7 @@
 <span class="sd">        :type arr: numpy.ndarray</span>
 <span class="sd">        :param weights: possible weights.</span>
 <span class="sd">        :type weights: numpy.ndarray or None</span>
-<span class="sd">        :returns: density of this bin.</span>
+<span class="sd">        :returns: Density of this bin.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sw</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">())</span></div>
@@ -124,7 +124,7 @@
 <span class="sd">        algorithm will ask for having a low sum of weights for the first \</span>
 <span class="sd">        bin, which will translate in having a long thin bin.</span>
 <span class="sd">        :type ndiv: int</span>
-<span class="sd">        :returns: two new bins, supposed to contain half the sum of weights of \</span>
+<span class="sd">        :returns: Two new bins, supposed to contain half the sum of weights of \</span>
 <span class="sd">        the parent.</span>
 <span class="sd">        :rtype: AdBin, AdBin</span>
 <span class="sd">        :raises RuntimeError: if called after the data pointers have been freed.</span>
@@ -224,7 +224,7 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Return the size of the bin.</span>
 
-<span class="sd">        :returns: size of this bin calculated as the product of \</span>
+<span class="sd">        :returns: Size of this bin calculated as the product of \</span>
 <span class="sd">        the individual sizes in each dimension.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -238,7 +238,7 @@
 <span class="sd">        :type arr: numpy.ndarray</span>
 <span class="sd">        :param weights: possible weights.</span>
 <span class="sd">        :type weights: numpy.ndarray or None</span>
-<span class="sd">        :returns: sum of weights for this bin.</span>
+<span class="sd">        :returns: Sum of weights for this bin.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">true</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
@@ -258,7 +258,7 @@
 <span class="sd">        :type arr: numpy.ndarray</span>
 <span class="sd">        :param weights: possible weights.</span>
 <span class="sd">        :type weights: numpy.ndarray or None</span>
-<span class="sd">        :returns: uncertainty of the sum of weights in the bin. If &quot;weights&quot; is \</span>
+<span class="sd">        :returns: Uncertainty of the sum of weights in the bin. If &quot;weights&quot; is \</span>
 <span class="sd">        provided, this magnitude is equal to the square root of the sum of \</span>
 <span class="sd">        weights in the bin. Otherwise poissonian errors are considered.</span>
 <span class="sd">        :rtype: float</span>
@@ -277,14 +277,15 @@
 
 <div class="viewcode-block" id="adbin_as_rectangle"><a class="viewcode-back" href="../../api/hep_spt.adbin_as_rectangle.html#hep_spt.adbin_as_rectangle">[docs]</a><span class="k">def</span> <span class="nf">adbin_as_rectangle</span><span class="p">(</span> <span class="n">adb</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Extract the bounds so it can be processed by a matplotlib.patches.Rectangle</span>
-<span class="sd">    object and properly fill the area inside it.</span>
+<span class="sd">    Extract the bounds of a :class:`AdBin` object so it can be processed by</span>
+<span class="sd">    a :class:`matplotlib.patches.Rectangle` and properly fill the area</span>
+<span class="sd">    inside it.</span>
 
 <span class="sd">    :param adb: input adaptive bin.</span>
 <span class="sd">    :type adb: AdBin</span>
-<span class="sd">    :param kwargs: extra arguments to matplotlib.patches.Rectangle.</span>
+<span class="sd">    :param kwargs: extra arguments to :class:`matplotlib.patches.Rectangle`.</span>
 <span class="sd">    :type kwargs: dict</span>
-<span class="sd">    :returns: rectangle to be drawn with matplotlib.</span>
+<span class="sd">    :returns: Rectangle to be drawn with matplotlib.</span>
 <span class="sd">    :rtype: matplotlib.patches.Rectangle</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">adb</span><span class="o">.</span><span class="n">vmin</span>
@@ -298,7 +299,7 @@
 
 <div class="viewcode-block" id="adbin_hist1d"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist1d.html#hep_spt.adbin_hist1d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create an adaptive binned histogram.</span>
+<span class="sd">    Create an adaptive binned histogram in one dimension.</span>
 
 <span class="sd">    :param arr: array of data.</span>
 <span class="sd">    :type arr: numpy.ndarray</span>
@@ -308,9 +309,10 @@
 <span class="sd">    :type range: tuple(float, float) or None</span>
 <span class="sd">    :param weights: optional array of weights.</span>
 <span class="sd">    :type weights: numpy.ndarray or None</span>
-<span class="sd">    :param kwargs: any other argument to :func:`plotting.errorbar_hist`.</span>
+<span class="sd">    :param kwargs: any other argument to be passed to \</span>
+<span class="sd">    :func:`plotting.errorbar_hist`.</span>
 <span class="sd">    :type kwargs: dict</span>
-<span class="sd">    :returns: values, edges, the spacing between bins in X the Y errors. \</span>
+<span class="sd">    :returns: Values, edges, the spacing between bins in X, the Y errors. \</span>
 <span class="sd">    In the non-weighted case, errors in Y are returned as two arrays, with the \</span>
 <span class="sd">    lower and upper uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</span>
@@ -340,7 +342,7 @@
 
 <div class="viewcode-block" id="adbin_hist1d_edges"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist1d_edges.html#hep_spt.adbin_hist1d_edges">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d_edges</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create adaptive binned edges from the given array.</span>
+<span class="sd">    Create adaptive binned edges to make a histogram from the given data.</span>
 
 <span class="sd">    :param arr: array of data.</span>
 <span class="sd">    :type arr: numpy.ndarray</span>
@@ -350,7 +352,7 @@
 <span class="sd">    :type range: tuple(float, float) or None</span>
 <span class="sd">    :param weights: optional array of weights.</span>
 <span class="sd">    :type weights: numpy.ndarray or None</span>
-<span class="sd">    :returns: edges of the histogram, with size (nbins + 1).</span>
+<span class="sd">    :returns: Edges of the histogram, with size (nbins + 1).</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">arr</span><span class="p">,</span> <span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">),</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_proc_hist_input_1d</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
@@ -387,8 +389,8 @@
 
 <div class="viewcode-block" id="adbin_hist2d"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist2d.html#hep_spt.adbin_hist2d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create a 2D adaptive binned histogram. This function calls</span>
-<span class="sd">    the adbin_histnd function.</span>
+<span class="sd">    Create a adaptive binned histogram in two dimensions.</span>
+<span class="sd">    This function calls the :func:`adbin_histnd` function.</span>
 
 <span class="sd">    :param arr: array of data with the variables as columns.</span>
 <span class="sd">    :type arr: numpy.ndarray</span>
@@ -398,7 +400,7 @@
 <span class="sd">    :type weights: numpy.ndarray</span>
 <span class="sd">    :param kwargs: extra arguments to :func:`adbin_histnd`.</span>
 <span class="sd">    :type kwargs: dict</span>
-<span class="sd">    :returns: adaptive bins of the histogram, with size (nbins + 1).</span>
+<span class="sd">    :returns: Adaptive bins of the histogram, with size (nbins + 1).</span>
 <span class="sd">    :rtype: list(AdBin)</span>
 
 <span class="sd">    .. note:: This function will automatically delete the arrays of data and</span>
@@ -418,18 +420,18 @@
                              <span class="n">color</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                              <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create a collection of rectangles from a collection of bins, using</span>
-<span class="sd">    the input data to calculate the associated quantity (specified in &quot;fill&quot;).</span>
+<span class="sd">    Create a list of rectangles from a list of bins. It uses the input data</span>
+<span class="sd">    in &quot;arr&quot; to calculate the associated quantity, which is specified in &quot;fill&quot;.</span>
 
 <span class="sd">    :param bins: input bins.</span>
-<span class="sd">    :type bins: collection(AdBin)</span>
+<span class="sd">    :type bins: list(AdBin)</span>
 <span class="sd">    :param arr: input data.</span>
-<span class="sd">    :type arr: collection(value-type)</span>
+<span class="sd">    :type arr: list(value-type)</span>
 <span class="sd">    :param range: range of the histogram in each dimension. As \</span>
 <span class="sd">    [(xmin, ymin), (xmax, ymax)].</span>
 <span class="sd">    :type range: tuple(np.ndarray, np.ndarray) or None</span>
 <span class="sd">    :param weights: input weights.</span>
-<span class="sd">    :type weights: collection(value-type)</span>
+<span class="sd">    :type weights: list(value-type)</span>
 <span class="sd">    :param cmap: optional color map. If &quot;None&quot;, the default from \</span>
 <span class="sd">    matplotlib.pyplot is used.</span>
 <span class="sd">    :type cmap: matplotlib.colors.Colormap or None</span>
@@ -439,7 +441,7 @@
 <span class="sd">    :type color: bool</span>
 <span class="sd">    :param kwargs: any other argument to :func:`adbin_as_rectangle`.</span>
 <span class="sd">    :type kwargs: dict</span>
-<span class="sd">    :returns: rectangles and contents.</span>
+<span class="sd">    :returns: Rectangles and contents.</span>
 <span class="sd">    :rtype: numpy.ndarray, numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">assert</span> <span class="n">fill</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;sw&#39;</span><span class="p">,</span> <span class="s1">&#39;dens&#39;</span><span class="p">)</span>
@@ -478,7 +480,7 @@
 
 <div class="viewcode-block" id="adbin_histnd"><a class="viewcode-back" href="../../api/hep_spt.adbin_histnd.html#hep_spt.adbin_histnd">[docs]</a><span class="k">def</span> <span class="nf">adbin_histnd</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ndiv</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">free_memory</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create a ND adaptive binned histogram.</span>
+<span class="sd">    Create an adaptive binned histogram in N dimensions.</span>
 
 <span class="sd">    :param arr: array of data with the variables as columns.</span>
 <span class="sd">    :type arr: numpy.ndarray</span>
@@ -497,7 +499,7 @@
 <span class="sd">    :param free_memory: whether to free the pointers pointing to the arrays of \</span>
 <span class="sd">    data and weights in the bins.</span>
 <span class="sd">    :type free_memory: bool</span>
-<span class="sd">    :returns: adaptive bins of the histogram, with size (nbins + 1).</span>
+<span class="sd">    :returns: Adaptive bins of the histogram, with size (nbins + 1).</span>
 <span class="sd">    :rtype: list(AdBin)</span>
 
 <span class="sd">    .. note:: This function will automatically delete the arrays of data and</span>
@@ -532,7 +534,7 @@
 <span class="sd">    :type range: tuple(float, float) or None</span>
 <span class="sd">    :param weights: optional array of weights.</span>
 <span class="sd">    :type weights: numpy.ndarray or None</span>
-<span class="sd">    :returns: processed array of data, weights, and the minimum \</span>
+<span class="sd">    :returns: Processed array of data, weights, and the minimum \</span>
 <span class="sd">    and maximum values.</span>
 <span class="sd">    :rtype: numpy.ndarray, tuple(float, float), numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -562,7 +564,7 @@
 <span class="sd">    :type range: tuple(np.ndarray, np.ndarray) or None</span>
 <span class="sd">    :param weights: optional array of weights.</span>
 <span class="sd">    :type weights: numpy.ndarray or None</span>
-<span class="sd">    :returns: processed array of data, weights, and the minimum \</span>
+<span class="sd">    :returns: Processed array of data, weights, and the minimum \</span>
 <span class="sd">    and maximum values for each dimension.</span>
 <span class="sd">    :rtype: numpy.ndarray, tuple(np.ndarray, np.ndarray), numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>

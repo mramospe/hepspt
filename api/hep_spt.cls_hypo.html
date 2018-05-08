@@ -46,14 +46,15 @@
 <dl class="function">
 <dt id="hep_spt.cls_hypo">
 <code class="descclassname">hep_spt.</code><code class="descname">cls_hypo</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#cls_hypo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.cls_hypo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an instance of CLsHypo without needing to worry if
-the probability function is discrete or continuous.</p>
+<dd><p>Create an instance of CLsHypo given a probability density(mass) function,
+as an object of type <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_discrete.html#scipy.stats.rv_discrete" title="(in SciPy v1.1.0)"><code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_discrete</span></code></a> or
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html#scipy.stats.rv_continuous" title="(in SciPy v1.1.0)"><code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_continuous</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>func</strong> (<em>scipy.stats.rv_discrete</em><em> or </em><em>scipy.stats.rv_continuous</em>) – probability function.</li>
+<li><strong>func</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_discrete.html#scipy.stats.rv_discrete" title="(in SciPy v1.1.0)"><em>scipy.stats.rv_discrete</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html#scipy.stats.rv_continuous" title="(in SciPy v1.1.0)"><em>scipy.stats.rv_continuous</em></a>) – probability function.</li>
 <li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – input arguments to “func”.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – input arguments to “func”.</li>
 </ul>

@@ -46,21 +46,21 @@
 <dl class="function">
 <dt id="hep_spt.adbin_hist2d">
 <code class="descclassname">hep_spt.</code><code class="descname">adbin_hist2d</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a 2D adaptive binned histogram. This function calls
-the adbin_histnd function.</p>
+<dd><p>Create a adaptive binned histogram in two dimensions.
+This function calls the <a class="reference internal" href="hep_spt.adbin_histnd.html#hep_spt.adbin_histnd" title="hep_spt.adbin_histnd"><code class="xref py py-func docutils literal"><span class="pre">adbin_histnd()</span></code></a> function.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data with the variables as columns.</li>
+<li><strong>arr</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a>) – array of data with the variables as columns.</li>
 <li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of bins.</li>
-<li><strong>weights</strong> (<em>numpy.ndarray</em>) – optional array of weights.</li>
+<li><strong>weights</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a>) – optional array of weights.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – extra arguments to <a class="reference internal" href="hep_spt.adbin_histnd.html#hep_spt.adbin_histnd" title="hep_spt.adbin_histnd"><code class="xref py py-func docutils literal"><span class="pre">adbin_histnd()</span></code></a>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">adaptive bins of the histogram, with size (nbins + 1).</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Adaptive bins of the histogram, with size (nbins + 1).</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a>(<a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin">AdBin</a>)</p>

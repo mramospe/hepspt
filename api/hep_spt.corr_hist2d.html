@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="errorbar_hist" href="hep_spt.errorbar_hist.html" />
-    <link rel="prev" title="centers_from_edges" href="hep_spt.centers_from_edges.html" />
+    <link rel="prev" title="cfe" href="hep_spt.cfe.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -46,18 +46,18 @@
 <dl class="function">
 <dt id="hep_spt.corr_hist2d">
 <code class="descclassname">hep_spt.</code><code class="descname">corr_hist2d</code><span class="sig-paren">(</span><em>matrix</em>, <em>titles</em>, <em>frmt='{:.2f}'</em>, <em>vmin=None</em>, <em>vmax=None</em>, <em>cax=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#corr_hist2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.corr_hist2d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot a given correlation matrix in the given axes.</p>
+<dd><p>Plot a correlation matrix in the given axes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>matrix</strong> (<em>numpy.ndarray</em>) – correlation matrix.</li>
-<li><strong>titles</strong> (<em>collection</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>)</em>) – name of the variables being represented.</li>
+<li><strong>matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a>) – correlation matrix.</li>
+<li><strong>titles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>)</em>) – name of the variables being represented.</li>
 <li><strong>frmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – format to display the correlation value in each bin. By     default it is assumed that the values go between <span class="math">\([0, 1]\)</span>, so     three significant figures are considered. If “frmt” is None, then     no text is displayed in the bins.</li>
 <li><strong>vmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – minimum value to represent in the histogram.</li>
 <li><strong>vmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – maximum value to represent in the histogram.</li>
-<li><strong>cax</strong> (<em>matplotlib.axes.Axes</em>) – axes where to draw. If None, then the current axes are taken.</li>
+<li><strong>cax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.2.2)"><em>matplotlib.axes.Axes</em></a>) – axes where to draw. If None, then the current axes are taken.</li>
 </ul>
 </td>
 </tr>
@@ -98,7 +98,7 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.centers_from_edges.html" title="previous chapter">centers_from_edges</a></li>
+      <li>Previous: <a href="hep_spt.cfe.html" title="previous chapter">cfe</a></li>
       <li>Next: <a href="hep_spt.errorbar_hist.html" title="next chapter">errorbar_hist</a></li>
   </ul></li>
   </ul></li>

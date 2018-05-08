@@ -46,22 +46,22 @@
 <dl class="function">
 <dt id="hep_spt.adbin_histnd">
 <code class="descclassname">hep_spt.</code><code class="descname">adbin_histnd</code><span class="sig-paren">(</span><em>arr</em>, <em>nbins=100</em>, <em>range=None</em>, <em>weights=None</em>, <em>ndiv=2</em>, <em>free_memory=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_histnd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_histnd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a ND adaptive binned histogram.</p>
+<dd><p>Create an adaptive binned histogram in N dimensions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arr</strong> (<em>numpy.ndarray</em>) – array of data with the variables as columns.</li>
-<li><strong>range</strong> (<em>numpy.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>) or </em><em>None.</em>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
+<li><strong>arr</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a>) – array of data with the variables as columns.</li>
+<li><strong>range</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>) or </em><em>None.</em>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
 <li><strong>nbins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of bins. In this algorithm, divisions will be made     till the real number of bins is equal or greater than “nbins”. If this     number is a power of “ndiv”, then the real number of bins will match     “nbins”.</li>
-<li><strong>weights</strong> (<em>numpy.ndarray</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional array of weights.</li>
+<li><strong>weights</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional array of weights.</li>
 <li><strong>ndiv</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – see <a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin.divide" title="hep_spt.AdBin.divide"><code class="xref py py-meth docutils literal"><span class="pre">AdBin.divide()</span></code></a>.</li>
 <li><strong>free_memory</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – whether to free the pointers pointing to the arrays of     data and weights in the bins.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">adaptive bins of the histogram, with size (nbins + 1).</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Adaptive bins of the histogram, with size (nbins + 1).</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a>(<a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin">AdBin</a>)</p>

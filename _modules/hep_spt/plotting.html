@@ -63,7 +63,7 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;available_styles&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;centers_from_edges&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cfe&#39;</span><span class="p">,</span>
     <span class="s1">&#39;corr_hist2d&#39;</span><span class="p">,</span>
     <span class="s1">&#39;errorbar_hist&#39;</span><span class="p">,</span>
     <span class="s1">&#39;opt_fig_div&#39;</span><span class="p">,</span>
@@ -84,7 +84,7 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get a list with the names of the available styles.</span>
 
-<span class="sd">    :returns: list with the names of the available styles within this package.</span>
+<span class="sd">    :returns: List with the names of the available styles within this package.</span>
 <span class="sd">    :rtype: list(str)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">available_styles</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[:</span><span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.mplstyle&#39;</span><span class="p">)],</span>
@@ -92,13 +92,13 @@
     <span class="k">return</span> <span class="n">available_styles</span></div>
 
 
-<div class="viewcode-block" id="centers_from_edges"><a class="viewcode-back" href="../../api/hep_spt.centers_from_edges.html#hep_spt.centers_from_edges">[docs]</a><span class="k">def</span> <span class="nf">centers_from_edges</span><span class="p">(</span> <span class="n">edges</span> <span class="p">):</span>
+<div class="viewcode-block" id="cfe"><a class="viewcode-back" href="../../api/hep_spt.cfe.html#hep_spt.cfe">[docs]</a><span class="k">def</span> <span class="nf">cfe</span><span class="p">(</span> <span class="n">edges</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Calculate the centers of the bins given their edges.</span>
+<span class="sd">    Calculate the centers of a set of bins given their edges.</span>
 
 <span class="sd">    :param edges: edges of a histogram.</span>
 <span class="sd">    :type edges: numpy.ndarray</span>
-<span class="sd">    :returns: centers of the histogram.</span>
+<span class="sd">    :returns: Centers of the histogram.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span></div>
@@ -106,12 +106,12 @@
 
 <div class="viewcode-block" id="corr_hist2d"><a class="viewcode-back" href="../../api/hep_spt.corr_hist2d.html#hep_spt.corr_hist2d">[docs]</a><span class="k">def</span> <span class="nf">corr_hist2d</span><span class="p">(</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Plot a given correlation matrix in the given axes.</span>
+<span class="sd">    Plot a correlation matrix in the given axes.</span>
 
 <span class="sd">    :param matrix: correlation matrix.</span>
 <span class="sd">    :type matrix: numpy.ndarray</span>
 <span class="sd">    :param titles: name of the variables being represented.</span>
-<span class="sd">    :type titles: collection(str)</span>
+<span class="sd">    :type titles: list(str)</span>
 <span class="sd">    :param frmt: format to display the correlation value in each bin. By \</span>
 <span class="sd">    default it is assumed that the values go between :math:`[0, 1]`, so \</span>
 <span class="sd">    three significant figures are considered. If &quot;frmt&quot; is None, then \</span>
@@ -128,7 +128,7 @@
 
     <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">centers</span> <span class="o">=</span> <span class="n">centers_from_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">cfe</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
 
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">centers</span><span class="p">)</span>
 
@@ -172,6 +172,7 @@
 <div class="viewcode-block" id="errorbar_hist"><a class="viewcode-back" href="../../api/hep_spt.errorbar_hist.html#hep_spt.errorbar_hist">[docs]</a><span class="k">def</span> <span class="nf">errorbar_hist</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uncert</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the values needed to create an error bar histogram.</span>
+<span class="sd">    Different errors can be considered (see below).</span>
 
 <span class="sd">    :param arr: input array of data to process.</span>
 <span class="sd">    :param bins: see :func:`numpy.histogram`.</span>
@@ -179,7 +180,7 @@
 <span class="sd">    :param range: range to process in the input array.</span>
 <span class="sd">    :type range: tuple(float, float)</span>
 <span class="sd">    :param weights: possible weights for the histogram.</span>
-<span class="sd">    :type weights: collection(value-type)</span>
+<span class="sd">    :type weights: numpy.ndarray(value-type)</span>
 <span class="sd">    :param norm: if True, normalize the histogram. If it is set to a number, \</span>
 <span class="sd">    the histogram is normalized and multiplied by that number.</span>
 <span class="sd">    :type norm: bool, int or float</span>
@@ -192,7 +193,7 @@
 <span class="sd">    - &quot;sw2&quot;: sum of square of weights. In case of non-weighted data, the \</span>
 <span class="sd">    uncertainties will be equal to the square root of the entries in the bin.</span>
 <span class="sd">    :type uncert: str or None</span>
-<span class="sd">    :returns: values, edges, the spacing between bins in X the Y errors. \</span>
+<span class="sd">    :returns: Values, edges, the spacing between bins in X the Y errors. \</span>
 <span class="sd">    In the non-weighted case, errors in Y are returned as two arrays, with the \</span>
 <span class="sd">    lower and upper uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</span>
@@ -236,10 +237,12 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get the optimal figure division for a given number of axes, where</span>
 <span class="sd">    all the axes have the same dimensions.</span>
+<span class="sd">    For non-perfect square numbers, this algorithm preferes to increase</span>
+<span class="sd">    the number of columns instead of the number of rows.</span>
 
 <span class="sd">    :param naxes: number of axes to plot in the figure.</span>
 <span class="sd">    :type naxes: int</span>
-<span class="sd">    :returns: number of rows and columns of axes to draw.</span>
+<span class="sd">    :returns: Number of rows and columns of axes to draw.</span>
 <span class="sd">    :rtype: int, int</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">nstsq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">naxes</span><span class="p">)))</span>
@@ -260,7 +263,7 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Retrieve the path to the directory containing the styles.</span>
 
-<span class="sd">    :returns: path to the directory containing the styles.</span>
+<span class="sd">    :returns: Path to the directory containing the styles.</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">__path_to_styles__</span></div>
@@ -277,7 +280,7 @@
 <span class="sd">    where &quot;min&quot; and &quot;max&quot; can be either floats (1D case) or collections \</span>
 <span class="sd">    (ND case).</span>
 <span class="sd">    :type range: tuple or None</span>
-<span class="sd">    :returns: minimum and maximum values.</span>
+<span class="sd">    :returns: Minimum and maximum values.</span>
 <span class="sd">    :rtype: float, float</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="nb">range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -292,18 +295,18 @@
 
 <div class="viewcode-block" id="profile"><a class="viewcode-back" href="../../api/hep_spt.profile.html#hep_spt.profile">[docs]</a><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Calculate the profile from a 2D data sample. It corresponds to the mean of</span>
-<span class="sd">    the values in &quot;y&quot; for each bin in &quot;x&quot;.</span>
+<span class="sd">    Calculate the profile from a 2D data sample.</span>
+<span class="sd">    It corresponds to the mean of the values in &quot;y&quot; for each bin in &quot;x&quot;.</span>
 
 <span class="sd">    :param x: values to consider for the binning.</span>
-<span class="sd">    :type x: collection(value-type)</span>
+<span class="sd">    :type x: numpy.ndarray(value-type)</span>
 <span class="sd">    :param y: values to calculate the mean with.</span>
-<span class="sd">    :type y: collection(value-type)</span>
+<span class="sd">    :type y: numpy.ndarray(value-type)</span>
 <span class="sd">    :param bins: see :func:`numpy.histogram`.</span>
 <span class="sd">    :type bins: int or sequence of scalars or str</span>
 <span class="sd">    :param range: range to process in the input array.</span>
 <span class="sd">    :type range: tuple(float, float)</span>
-<span class="sd">    :returns: profile in &quot;y&quot;.</span>
+<span class="sd">    :returns: Profile in &quot;y&quot;.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">process_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">range</span><span class="p">)</span>
@@ -332,9 +335,9 @@
 <span class="sd">       =</span>
 <span class="sd">       \Biggl \lbrace</span>
 <span class="sd">       {</span>
-<span class="sd">       (v - r)/\sigma_{low},\\text{ if } v - r \geq 0</span>
+<span class="sd">       \\frac{v - r}{\sigma_{low}} \\text{ if } v - r \geq 0</span>
 <span class="sd">       \\atop</span>
-<span class="sd">       (v - r)/\sigma_{up}\\text{ otherwise }</span>
+<span class="sd">       \\frac{v - r}{\sigma_{up}}  \\text{ otherwise }</span>
 <span class="sd">       }</span>
 
 <span class="sd">    In the latter case, the errors are computed in such a way that the closer to</span>
@@ -342,12 +345,14 @@
 <span class="sd">    :math:`v - r &gt; 0`, then :math:`\sigma^{pull}_{low} = 1` and</span>
 <span class="sd">    :math:`\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}`.</span>
 
-<span class="sd">    If the uncertainties are also provided for the reference, then the</span>
+<span class="sd">    If uncertainties are also provided for the reference, then the</span>
 <span class="sd">    definition is the same but considering the sum of squares rule:</span>
 
-<span class="sd">    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`</span>
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2</span>
 
-<span class="sd">    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`</span>
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2</span>
 
 <span class="sd">    :param vals: values to compare with.</span>
 <span class="sd">    :type vals: array-like</span>
@@ -359,7 +364,7 @@
 <span class="sd">    :type ref: array-like</span>
 <span class="sd">    :param ref_err: possible errors for the reference.</span>
 <span class="sd">    :type ref_err: array-like</span>
-<span class="sd">    :returns: pull of the values with respect to the reference and \</span>
+<span class="sd">    :returns: Pull of the values with respect to the reference and \</span>
 <span class="sd">    associated errors. In case asymmetric errors have been provided, \</span>
 <span class="sd">    the returning array has shape (2, n).</span>
 <span class="sd">    :rtype: array-like, array-like</span>
@@ -396,14 +401,16 @@
 
 <div class="viewcode-block" id="residual"><a class="viewcode-back" href="../../api/hep_spt.residual.html#hep_spt.residual">[docs]</a><span class="k">def</span> <span class="nf">residual</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_err</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Calculate the residual values from &quot;vals&quot; with respect to &quot;ref&quot;.</span>
-<span class="sd">    If the uncertainties are also provided for the reference, the errors</span>
-<span class="sd">    are recalculated, using the sum of squares rule. Being :math:`v` the</span>
-<span class="sd">    value and :math:`r` the reference, this translates into:</span>
+<span class="sd">    Calculate the residual with its errors, for a set of values with</span>
+<span class="sd">    respect to a reference.</span>
+<span class="sd">    If uncertainties are also provided for the reference, then the</span>
+<span class="sd">    definition is the same but considering the sum of squares rule:</span>
 
-<span class="sd">    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`</span>
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2</span>
 
-<span class="sd">    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`</span>
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2</span>
 
 <span class="sd">    :param vals: values to compare with.</span>
 <span class="sd">    :type vals: array-like</span>
@@ -415,7 +422,7 @@
 <span class="sd">    :type ref: array-like</span>
 <span class="sd">    :param ref_err: possible errors for the reference.</span>
 <span class="sd">    :type ref_err: array-like</span>
-<span class="sd">    :returns: residual of the values with respect to the reference and \</span>
+<span class="sd">    :returns: Residual of the values with respect to the reference and \</span>
 <span class="sd">    associated errors. In case asymmetric errors have been provided, \</span>
 <span class="sd">    the returning array has shape (2, n).</span>
 <span class="sd">    :rtype: array-like, array-like</span>
@@ -441,19 +448,22 @@
 
 <div class="viewcode-block" id="samples_cycler"><a class="viewcode-back" href="../../api/hep_spt.samples_cycler.html#hep_spt.samples_cycler">[docs]</a><span class="k">def</span> <span class="nf">samples_cycler</span><span class="p">(</span> <span class="n">smps</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Often, one wants to plot several samples with different matplotlib</span>
-<span class="sd">    styles. This function allows to create a cycler.cycler object</span>
-<span class="sd">    to loop over the given samples, where the &quot;label&quot; key is filled</span>
-<span class="sd">    with the values from &quot;smps&quot;.</span>
+<span class="sd">    Generate a :class:`cycler.Cycler` object were the labels are defined by</span>
+<span class="sd">    &quot;smps&quot;, and the other parameters are left to the user.</span>
+<span class="sd">    This function is useful when one wants to plot several samples with</span>
+<span class="sd">    different matplotlib styles.</span>
+<span class="sd">    This function allows to create a :class:`cycler.Cycler` object</span>
+<span class="sd">    to loop over the given samples and associated formats, where the &quot;label&quot;</span>
+<span class="sd">    key is filled with the values from &quot;smps&quot;.</span>
 
 <span class="sd">    :param smps: list of names for the samples.</span>
-<span class="sd">    :type smps: collection(str)</span>
-<span class="sd">    :param args: position argument to cycler.cycler.</span>
+<span class="sd">    :type smps: list(str)</span>
+<span class="sd">    :param args: position argument to :func:`cycler.cycler`.</span>
 <span class="sd">    :type args: tuple</span>
-<span class="sd">    :param kwargs: keyword arguments to cycler.cycler.</span>
+<span class="sd">    :param kwargs: keyword arguments to :func:`cycler.cycler`.</span>
 <span class="sd">    :type kwargs: dict</span>
-<span class="sd">    :returns: cycler object with the styles for each sample.</span>
-<span class="sd">    :rtype: cycler.cycler</span>
+<span class="sd">    :returns: Object with the styles for each sample and a defined &quot;label&quot; key.</span>
+<span class="sd">    :rtype: :class:`cycler.Cycler`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">cyc</span> <span class="o">=</span> <span class="n">cycler</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -509,12 +519,12 @@
 
 <div class="viewcode-block" id="text_in_rectangles"><a class="viewcode-back" href="../../api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles">[docs]</a><span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Write text inside matplotlib.patches.Rectangle instances.</span>
+<span class="sd">    Write text inside :class:`matplotlib.patches.Rectangle` instances.</span>
 
 <span class="sd">    :param recs: set of rectangles to work with.</span>
-<span class="sd">    :type recs: collection(matplotlib.patches.Rectangle)</span>
+<span class="sd">    :type recs: list(matplotlib.patches.Rectangle)</span>
 <span class="sd">    :param txt: text to fill with in each rectangle.</span>
-<span class="sd">    :type txt: collection(str)</span>
+<span class="sd">    :type txt: list(str)</span>
 <span class="sd">    :param cax: axes where the rectangles are being drawn. If None, then the \</span>
 <span class="sd">    current axes are taken.</span>
 <span class="sd">    :type cax: matplotlib.axes.Axes</span>

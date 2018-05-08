@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>gauss_u &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>cfe &#8212; hep_spt 0.0.0.dev2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="poisson_fu" href="hep_spt.poisson_fu.html" />
-    <link rel="prev" title="ks_2samp" href="hep_spt.ks_2samp.html" />
+    <link rel="next" title="corr_hist2d" href="hep_spt.corr_hist2d.html" />
+    <link rel="prev" title="available_styles" href="hep_spt.available_styles.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,27 +41,21 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="gauss-u">
-<h1>gauss_u<a class="headerlink" href="#gauss-u" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="cfe">
+<h1>cfe<a class="headerlink" href="#cfe" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="hep_spt.gauss_u">
-<code class="descclassname">hep_spt.</code><code class="descname">gauss_u</code><span class="sig-paren">(</span><em>s</em>, <em>cl=0.6826894921370859</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/stats.html#gauss_u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.gauss_u" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the gaussian uncertainty for a given confidence level.</p>
+<dt id="hep_spt.cfe">
+<code class="descclassname">hep_spt.</code><code class="descname">cfe</code><span class="sig-paren">(</span><em>edges</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#cfe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.cfe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the centers of a set of bins given their edges.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>s</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em>) – standard deviation of the gaussian.</li>
-<li><strong>cl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – confidence level.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>edges</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a>) – edges of a histogram.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Gaussian uncertainty.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Centers of the histogram.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a> or <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a>)</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a></td>
 </tr>
 </tbody>
 </table>
@@ -100,8 +94,8 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.ks_2samp.html" title="previous chapter">ks_2samp</a></li>
-      <li>Next: <a href="hep_spt.poisson_fu.html" title="next chapter">poisson_fu</a></li>
+      <li>Previous: <a href="hep_spt.available_styles.html" title="previous chapter">available_styles</a></li>
+      <li>Next: <a href="hep_spt.corr_hist2d.html" title="next chapter">corr_hist2d</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -128,7 +122,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/api/hep_spt.gauss_u.rst.txt"
+      <a href="../_sources/api/hep_spt.cfe.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

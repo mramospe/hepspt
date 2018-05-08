@@ -1,0 +1,6 @@
+cfe
+===
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: cfe

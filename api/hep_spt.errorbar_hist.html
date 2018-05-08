@@ -46,25 +46,26 @@
 <dl class="function">
 <dt id="hep_spt.errorbar_hist">
 <code class="descclassname">hep_spt.</code><code class="descname">errorbar_hist</code><span class="sig-paren">(</span><em>arr</em>, <em>bins=20</em>, <em>range=None</em>, <em>weights=None</em>, <em>norm=False</em>, <em>uncert=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#errorbar_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.errorbar_hist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the values needed to create an error bar histogram.</p>
+<dd><p>Calculate the values needed to create an error bar histogram.
+Different errors can be considered (see below).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>arr</strong> – input array of data to process.</li>
-<li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>sequence of scalars</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – see <code class="xref py py-func docutils literal"><span class="pre">numpy.histogram()</span></code>.</li>
+<li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>sequence of scalars</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – see <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html#numpy.histogram" title="(in NumPy v1.14)"><code class="xref py py-func docutils literal"><span class="pre">numpy.histogram()</span></code></a>.</li>
 <li><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em>) – range to process in the input array.</li>
-<li><strong>weights</strong> (<em>collection</em><em>(</em><em>value-type</em><em>)</em>) – possible weights for the histogram.</li>
+<li><strong>weights</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><em>value-type</em><em>)</em>) – possible weights for the histogram.</li>
 <li><strong>norm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – if True, normalize the histogram. If it is set to a number,     the histogram is normalized and multiplied by that number.</li>
 <li><strong>uncert</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – type of uncertainty to consider. If None, the square root     of the sum of squared weights is considered. The possibilities     are:     - “freq”: frequentist uncertainties.     - “dll”: uncertainty based on the difference on the logarithm of     likelihood.     - “sw2”: sum of square of weights. In case of non-weighted data, the     uncertainties will be equal to the square root of the entries in the bin.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">values, edges, the spacing between bins in X the Y errors.     In the non-weighted case, errors in Y are returned as two arrays, with the     lower and upper uncertainties.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Values, edges, the spacing between bins in X the Y errors.     In the non-weighted case, errors in Y are returned as two arrays, with the     lower and upper uncertainties.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
