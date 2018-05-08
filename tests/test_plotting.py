@@ -15,6 +15,13 @@ from scipy.stats import norm
 import hep_spt
 
 
+def test_cfe():
+    '''
+    Test the "cfe" function.
+    '''
+    assert np.all(hep_spt.cfe(np.array([1, 3, 5, 7])) == [2, 4, 6])
+
+
 def test_errorbar_hist():
     '''
     Test the behaviour of the function "errorbar_hist".
@@ -45,6 +52,16 @@ def test_errorbar_hist():
         hep_spt.errorbar_hist(np.random.uniform(10, 20, 100),
                               range=(30, 40),
                               norm=True)
+
+
+def test_opt_fig_div():
+    '''
+    Test for the "opt_fig_div" function.
+    '''
+    assert hep_spt.opt_fig_div(4) == (2, 2)
+    assert hep_spt.opt_fig_div(9) == (3, 3)
+    assert hep_spt.opt_fig_div(5) == (2, 3)
+    assert hep_spt.opt_fig_div(6) == (2, 3)
 
 
 def test_process_range():
@@ -100,7 +117,7 @@ def test_pull_sym():
 
     values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='sw2')
 
-    centers = hep_spt.centers_from_edges(edges)
+    centers = hep_spt.cfe(edges)
 
     rv = norm.pdf(centers)
     ref = float(size)*rv/rv.sum()
@@ -124,7 +141,7 @@ def test_pull_asym():
 
     values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='freq')
 
-    centers = hep_spt.centers_from_edges(edges)
+    centers = hep_spt.cfe(edges)
 
     rv = norm.pdf(centers)
     ref = float(size)*rv/rv.sum()
@@ -244,7 +261,7 @@ def test_residual_sym():
 
     values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='sw2')
 
-    centers = hep_spt.centers_from_edges(edges)
+    centers = hep_spt.cfe(edges)
 
     rv = norm.pdf(centers)
     ref = float(size)*rv/rv.sum()
@@ -264,7 +281,7 @@ def test_residual_asym():
 
     values, edges, ex, ey = hep_spt.errorbar_hist(data, uncert='freq')
 
-    centers = hep_spt.centers_from_edges(edges)
+    centers = hep_spt.cfe(edges)
 
     rv = norm.pdf(centers)
     ref = float(size)*rv/rv.sum()
@@ -356,3 +373,17 @@ def test_residual_asym_sym():
     assert np.allclose(res, values - ref)
     assert np.allclose(perr[0][0] , 5)
     assert np.allclose(perr[1][1:], [10, 13])
+
+
+def test_samples_cycler():
+    '''
+    Test for the function "test_samples_cycler".
+    '''
+    cfg = {'A': '--',
+           'B': '.-',
+           'C': ':'
+    }
+    cyc = hep_spt.samples_cycler(cfg.keys(), ls=cfg.values())
+
+    for c in cyc:
+        c['ls'] == cfg[c['label']]
