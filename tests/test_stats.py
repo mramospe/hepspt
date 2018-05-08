@@ -30,7 +30,7 @@ def _integral_transformer_aux( points, comp, values=None ):
     bins = 20
     values, edges = np.histogram(vals, bins, range=(0, 1))
 
-    centers = hep_spt.centers_from_edges(edges)
+    centers = hep_spt.cfe(edges)
 
     p, residuals, _, _, _ = np.polyfit(centers, values, 0, full=True)
 
