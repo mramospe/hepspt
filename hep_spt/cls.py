@@ -53,7 +53,7 @@ class CLsTS:
         :type tv: array-like
         :param size: size of the sample to generate.
         :type size: int
-        :returns: confidence level.
+        :returns: Confidence level.
         :rtype: float
         '''
         raise NotImplementedError('Attempt to call abstract class method')
@@ -64,7 +64,7 @@ class CLsTS:
 
         :param v: input value:
         :type v: array-like
-        :returns: test-statistics value.
+        :returns: Value of the test-statistics.
         :rtype: float
         '''
         num = self.ah(v)
@@ -87,7 +87,7 @@ class CLsTS:
         :type v: array-like
         :param size: size of the sample to generate.
         :type size: int
-        :returns: tuple with the CLs, CLb and CLsb values.
+        :returns: Tuple with the CLs, CLb and CLsb values.
         :rtype: collections.namedtuple
         '''
         tv = self.test_stat(v)
@@ -210,7 +210,7 @@ def _call_wrap( meth ):
 
     :param meth: method to wrap.
     :type meth: method
-    :returns: wrapped function.
+    :returns: Wrapped function.
     :rtype: function
     '''
     def _wrapper( self, *args, **kwargs ):
@@ -282,7 +282,7 @@ class CLsHypo:
 
         :param v: input value(s).
         :type v: array-like
-        :returns: global probability.
+        :returns: Global probability.
         :rtype: float
         '''
         raise NotImplementedError('Attempt to call abstract class method')
@@ -292,7 +292,7 @@ class CLsHypo:
         Calculate the median of the distribution associated to this
         hypothesis. This is equivalent to call CLsHypo.percentil(0.5).
 
-        :returns: median of the distribution.
+        :returns: Median of the distribution.
         :rtype: array-like
         '''
         return self.percentil(0.5)
@@ -303,7 +303,7 @@ class CLsHypo:
 
         :param prob: probability.
         :type prob: float
-        :returns: percentil.
+        :returns: Percentil.
         :rtype: array-like
         '''
         return self.func.ppf(prob)
@@ -331,7 +331,7 @@ class CLsHypo_discrete(CLsHypo):
 
         :param v: input value(s).
         :type v: array-like
-        :returns: global probability.
+        :returns: Global probability.
         :rtype: float
         '''
         return self.func.pmf(v)
@@ -359,7 +359,7 @@ class CLsHypo_continuous(CLsHypo):
 
         :param v: input value(s).
         :type v: array-like
-        :returns: global probability.
+        :returns: Global probability.
         :rtype: float
         '''
         return self.func.pdf(v)
@@ -367,9 +367,10 @@ class CLsHypo_continuous(CLsHypo):
 
 def cls_ts( alt, null ):
     '''
-    Create an instance of :class:`CLsTS` without needing to worry about the
-    type of hypothesis (discrete or continuous).
-    However, a check is done to see if both types coincide.
+    Create an instance of :class:`CLsTS` from the alternative an null
+    hypotheses.
+    A check is done to see if both refere to the same type of probability
+    function (discrete or continuous).
 
     :param alt: alternative hypothesis.
     :type alt: CLsHypo
@@ -393,8 +394,9 @@ def cls_ts( alt, null ):
 
 def cls_hypo( func, *args, **kwargs ):
     '''
-    Create an instance of CLsHypo without needing to worry if
-    the probability function is discrete or continuous.
+    Create an instance of CLsHypo given a probability density(mass) function,
+    as an object of type :class:`scipy.stats.rv_discrete` or
+    :class:`scipy.stats.rv_continuous`.
 
     :param func: probability function.
     :type func: scipy.stats.rv_discrete or scipy.stats.rv_continuous

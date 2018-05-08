@@ -21,7 +21,7 @@ from cycler import cycler
 
 __all__ = [
     'available_styles',
-    'centers_from_edges',
+    'cfe',
     'corr_hist2d',
     'errorbar_hist',
     'opt_fig_div',
@@ -42,7 +42,7 @@ def available_styles():
     '''
     Get a list with the names of the available styles.
 
-    :returns: list with the names of the available styles within this package.
+    :returns: List with the names of the available styles within this package.
     :rtype: list(str)
     '''
     available_styles = list(map(lambda s: s[:s.find('.mplstyle')],
@@ -50,13 +50,13 @@ def available_styles():
     return available_styles
 
 
-def centers_from_edges( edges ):
+def cfe( edges ):
     '''
-    Calculate the centers of the bins given their edges.
+    Calculate the centers of a set of bins given their edges.
 
     :param edges: edges of a histogram.
     :type edges: numpy.ndarray
-    :returns: centers of the histogram.
+    :returns: Centers of the histogram.
     :rtype: numpy.ndarray
     '''
     return (edges[1:] + edges[:-1])/2.
@@ -64,12 +64,12 @@ def centers_from_edges( edges ):
 
 def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax = None ):
     '''
-    Plot a given correlation matrix in the given axes.
+    Plot a correlation matrix in the given axes.
 
     :param matrix: correlation matrix.
     :type matrix: numpy.ndarray
     :param titles: name of the variables being represented.
-    :type titles: collection(str)
+    :type titles: list(str)
     :param frmt: format to display the correlation value in each bin. By \
     default it is assumed that the values go between :math:`[0, 1]`, so \
     three significant figures are considered. If "frmt" is None, then \
@@ -86,7 +86,7 @@ def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax 
 
     edges = np.linspace(0, len(titles), len(titles) + 1)
 
-    centers = centers_from_edges(edges)
+    centers = cfe(edges)
 
     x, y = np.meshgrid(centers, centers)
 
@@ -130,6 +130,7 @@ def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax 
 def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, uncert = None ):
     '''
     Calculate the values needed to create an error bar histogram.
+    Different errors can be considered (see below).
 
     :param arr: input array of data to process.
     :param bins: see :func:`numpy.histogram`.
@@ -137,7 +138,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
     :param range: range to process in the input array.
     :type range: tuple(float, float)
     :param weights: possible weights for the histogram.
-    :type weights: collection(value-type)
+    :type weights: numpy.ndarray(value-type)
     :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
@@ -150,7 +151,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
     - "sw2": sum of square of weights. In case of non-weighted data, the \
     uncertainties will be equal to the square root of the entries in the bin.
     :type uncert: str or None
-    :returns: values, edges, the spacing between bins in X the Y errors. \
+    :returns: Values, edges, the spacing between bins in X the Y errors. \
     In the non-weighted case, errors in Y are returned as two arrays, with the \
     lower and upper uncertainties.
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
@@ -194,10 +195,12 @@ def opt_fig_div( naxes ):
     '''
     Get the optimal figure division for a given number of axes, where
     all the axes have the same dimensions.
+    For non-perfect square numbers, this algorithm preferes to increase
+    the number of columns instead of the number of rows.
 
     :param naxes: number of axes to plot in the figure.
     :type naxes: int
-    :returns: number of rows and columns of axes to draw.
+    :returns: Number of rows and columns of axes to draw.
     :rtype: int, int
     '''
     nstsq = int(round(math.sqrt(naxes)))
@@ -218,7 +221,7 @@ def path_to_styles():
     '''
     Retrieve the path to the directory containing the styles.
 
-    :returns: path to the directory containing the styles.
+    :returns: Path to the directory containing the styles.
     :rtype: str
     '''
     return __path_to_styles__
@@ -235,7 +238,7 @@ def process_range( arr, range = None ):
     where "min" and "max" can be either floats (1D case) or collections \
     (ND case).
     :type range: tuple or None
-    :returns: minimum and maximum values.
+    :returns: Minimum and maximum values.
     :rtype: float, float
     '''
     if range is None:
@@ -250,18 +253,18 @@ def process_range( arr, range = None ):
 
 def profile( x, y, bins = 20, range = None ):
     '''
-    Calculate the profile from a 2D data sample. It corresponds to the mean of
-    the values in "y" for each bin in "x".
+    Calculate the profile from a 2D data sample.
+    It corresponds to the mean of the values in "y" for each bin in "x".
 
     :param x: values to consider for the binning.
-    :type x: collection(value-type)
+    :type x: numpy.ndarray(value-type)
     :param y: values to calculate the mean with.
-    :type y: collection(value-type)
+    :type y: numpy.ndarray(value-type)
     :param bins: see :func:`numpy.histogram`.
     :type bins: int or sequence of scalars or str
     :param range: range to process in the input array.
     :type range: tuple(float, float)
-    :returns: profile in "y".
+    :returns: Profile in "y".
     :rtype: numpy.ndarray
     '''
     vmin, vmax = process_range(x, range)
@@ -290,9 +293,9 @@ def pull( vals, err, ref, ref_err = None ):
        =
        \Biggl \lbrace
        {
-       (v - r)/\sigma_{low},\\text{ if } v - r \geq 0
+       \\frac{v - r}{\sigma_{low}} \\text{ if } v - r \geq 0
        \\atop
-       (v - r)/\sigma_{up}\\text{ otherwise }
+       \\frac{v - r}{\sigma_{up}}  \\text{ otherwise }
        }
 
     In the latter case, the errors are computed in such a way that the closer to
@@ -300,12 +303,14 @@ def pull( vals, err, ref, ref_err = None ):
     :math:`v - r > 0`, then :math:`\sigma^{pull}_{low} = 1` and
     :math:`\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}`.
 
-    If the uncertainties are also provided for the reference, then the
+    If uncertainties are also provided for the reference, then the
     definition is the same but considering the sum of squares rule:
 
-    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`
+    .. math::
+       (\sigma'^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2
 
-    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`
+    .. math::
+       (\sigma'^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2
 
     :param vals: values to compare with.
     :type vals: array-like
@@ -317,7 +322,7 @@ def pull( vals, err, ref, ref_err = None ):
     :type ref: array-like
     :param ref_err: possible errors for the reference.
     :type ref_err: array-like
-    :returns: pull of the values with respect to the reference and \
+    :returns: Pull of the values with respect to the reference and \
     associated errors. In case asymmetric errors have been provided, \
     the returning array has shape (2, n).
     :rtype: array-like, array-like
@@ -354,14 +359,16 @@ def pull( vals, err, ref, ref_err = None ):
 
 def residual( vals, err, ref, ref_err = None ):
     '''
-    Calculate the residual values from "vals" with respect to "ref".
-    If the uncertainties are also provided for the reference, the errors
-    are recalculated, using the sum of squares rule. Being :math:`v` the
-    value and :math:`r` the reference, this translates into:
+    Calculate the residual with its errors, for a set of values with
+    respect to a reference.
+    If uncertainties are also provided for the reference, then the
+    definition is the same but considering the sum of squares rule:
 
-    :math:`(\sigma^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2`
+    .. math::
+       (\sigma'^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2
 
-    :math:`(\sigma^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2`
+    .. math::
+       (\sigma'^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2
 
     :param vals: values to compare with.
     :type vals: array-like
@@ -373,7 +380,7 @@ def residual( vals, err, ref, ref_err = None ):
     :type ref: array-like
     :param ref_err: possible errors for the reference.
     :type ref_err: array-like
-    :returns: residual of the values with respect to the reference and \
+    :returns: Residual of the values with respect to the reference and \
     associated errors. In case asymmetric errors have been provided, \
     the returning array has shape (2, n).
     :rtype: array-like, array-like
@@ -399,19 +406,22 @@ def residual( vals, err, ref, ref_err = None ):
 
 def samples_cycler( smps, *args, **kwargs ):
     '''
-    Often, one wants to plot several samples with different matplotlib
-    styles. This function allows to create a cycler.cycler object
-    to loop over the given samples, where the "label" key is filled
-    with the values from "smps".
+    Generate a :class:`cycler.Cycler` object were the labels are defined by
+    "smps", and the other parameters are left to the user.
+    This function is useful when one wants to plot several samples with
+    different matplotlib styles.
+    This function allows to create a :class:`cycler.Cycler` object
+    to loop over the given samples and associated formats, where the "label"
+    key is filled with the values from "smps".
 
     :param smps: list of names for the samples.
-    :type smps: collection(str)
-    :param args: position argument to cycler.cycler.
+    :type smps: list(str)
+    :param args: position argument to :func:`cycler.cycler`.
     :type args: tuple
-    :param kwargs: keyword arguments to cycler.cycler.
+    :param kwargs: keyword arguments to :func:`cycler.cycler`.
     :type kwargs: dict
-    :returns: cycler object with the styles for each sample.
-    :rtype: cycler.cycler
+    :returns: Object with the styles for each sample and a defined "label" key.
+    :rtype: :class:`cycler.Cycler`
     '''
     cyc = cycler(*args, **kwargs)
 
@@ -467,12 +477,12 @@ def set_style( *args ):
 
 def text_in_rectangles( recs, txt, cax = None, **kwargs ):
     '''
-    Write text inside matplotlib.patches.Rectangle instances.
+    Write text inside :class:`matplotlib.patches.Rectangle` instances.
 
     :param recs: set of rectangles to work with.
-    :type recs: collection(matplotlib.patches.Rectangle)
+    :type recs: list(matplotlib.patches.Rectangle)
     :param txt: text to fill with in each rectangle.
-    :type txt: collection(str)
+    :type txt: list(str)
     :param cax: axes where the rectangles are being drawn. If None, then the \
     current axes are taken.
     :type cax: matplotlib.axes.Axes

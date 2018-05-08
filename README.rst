@@ -22,19 +22,20 @@ Main points
 Considerations:
 ===============
 
-  * Samples are usually preferred as structured `numpy.ndarray <https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ndarray.html>`_ objects.
+  * Inputs passed to the functions and classes are usually preferred as `numpy.ndarray <https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ndarray.html>`_ objects.
   * Plotting functions and classes are designed to work with `matplotlib <https://matplotlib.org/>`_.
   * Statistical tools are built on top of the standard `scipy <https://www.scipy.org/>`_ package.
 
 Installation:
 =============
 
-This package is available on PyPi, so just type:
+This package is available on PyPi, so just type
 
 .. code-block:: bash
 
    pip install hep-spt
 
+to install the package in your current python environment.
 To use the **latest development version**, clone the repository and install with `pip`:
 
 .. code-block:: bash
