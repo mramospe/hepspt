@@ -13,6 +13,29 @@ import numpy as np
 import hep_spt
 
 
+def test_bit_length():
+    '''
+    Test for the "bit_length" function. It must be equivalent to int.bit_length.
+    '''
+    # Test the function taking scalars
+    assert hep_spt.bit_length(0) == 0
+    assert hep_spt.bit_length(1) == 1
+    assert hep_spt.bit_length(2) == 2
+    assert hep_spt.bit_length(3) == 2
+
+    for i in np.random.randint(0, 300, 20):
+        assert hep_spt.bit_length(i) == int(i).bit_length()
+
+    # Test the function taking arrays
+    assert np.all(hep_spt.bit_length([0, 1, 2, 3]) == [0, 1, 2, 2])
+
+    values = np.random.randint(0, 300, 20)
+
+    std_python = tuple(map(lambda i: int(i).bit_length(), values))
+
+    assert np.all(hep_spt.bit_length(values) == std_python)
+
+
 def test_gcd():
     '''
     Test the function to calculate the greatest common divisor of a set
@@ -24,6 +47,30 @@ def test_gcd():
 
     # Test numpy.vectorize behaviour
     assert np.all(hep_spt.gcd([4, 3], [6, 9]) == [2, 3])
+
+
+def test_ibinary_repr():
+    '''
+    Test for the "ibinary_repr" function. This must be equivalent to
+    numpy.binary_repr but returning integers instead of strings.
+    '''
+    # Test the function taking scalars
+    assert hep_spt.ibinary_repr(0) == 0
+    assert hep_spt.ibinary_repr(1) == 1
+    assert hep_spt.ibinary_repr(2) == 10
+    assert hep_spt.ibinary_repr(3) == 11
+
+    for i in np.random.randint(0, 100, 20):
+        assert str(hep_spt.ibinary_repr(i)) == np.binary_repr(i)
+
+    # Test the function taking arrays
+    assert np.all(hep_spt.ibinary_repr([0, 1, 2, 3]) == [0, 1, 10, 11])
+
+    values = np.random.randint(0, 100, 20)
+
+    std_numpy = tuple(map(np.binary_repr, values))
+
+    assert np.all(hep_spt.ibinary_repr(values).astype(str) == std_numpy)
 
 
 def test_lcm():
