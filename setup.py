@@ -9,7 +9,7 @@ __email__  = 'miguel.ramos.pernas@cern.ch'
 
 # Python
 import os
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 
 #
 # Version of the package. Before a new release is made
@@ -37,6 +37,21 @@ if tag != 'final':
 
 version = frmt.format('.'.join(map(str, version_info[:3])), version_info[4])
 
+# To determine the CPython modules available on the given directory
+def cpython_module( directory ):
+
+    extensions = []
+    for path, _, fnames in os.walk(directory):
+        for f in filter(lambda s: s.endswith('.c'), fnames):
+
+            full_path = os.path.join(path, f)
+
+            ext = Extension(full_path[:-2].replace('/', '.'), [full_path])
+
+            extensions.append(ext)
+
+    return extensions
+
 # Setup function
 setup(
 
@@ -58,6 +73,9 @@ setup(
 
     # Data files
     package_data = {'hep_spt': ['data/*', 'mpl/*']},
+
+    # C-API source
+    ext_modules = cpython_module('hep_spt/cpython'),
 
     # Requisites
     install_requires = ['matplotlib', 'numpy', 'pytest', 'scipy'],

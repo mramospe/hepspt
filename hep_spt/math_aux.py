@@ -8,6 +8,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Custom
 from hep_spt.core import taking_ndarray
+from hep_spt.cpython import math_aux_cpy
 
 # Python
 import numpy as np
@@ -29,53 +30,7 @@ def bit_length( arg ):
     :returns: length of the binary representation.
     :rtype: numpy.ndarray(int)
     '''
-    if arg.ndim == 0:
-
-        r = np.binary_repr(arg)
-
-        if r != '0':
-            return len(r)
-        else:
-            return 0
-
-    coc = arg // 2
-    rem = arg % 2
-
-    lgth = np.logical_or(rem != 0, coc != 0).astype(int)
-
-    idxs = coc != 0
-    if len(idxs) != 0:
-        lgth[idxs] += bit_length(coc[idxs])
-
-    return lgth
-
-
-def _gcd_array( a, b ):
-    '''
-    Auxiliar function to be used in :func:`gcd` to calculate
-    the greatest common divisor of numbers stored in two :class:`numpy.ndarray`
-    objects.
-
-    :param a: first numbers.
-    :type a: numpy.ndarray(int)
-    :param b: second numbers.
-    :type b: numpy.ndarray(int)
-    :param args: any other numbers.
-    :type args: tuple(int or numpy.ndarray(int))
-    :returns: Output of one step in the calculation of the greatest common \
-    divisor with arrays.
-    :rtype: numpy.ndarray(int)
-    '''
-    idxs = b != 0
-    if len(b) != 0:
-
-        ai, bi = a[idxs], b[idxs]
-
-        ai, bi = bi, ai % bi
-
-        a[idxs] = _gcd_array(ai, bi)
-
-    return a
+    return math_aux_cpy.bit_length(arg)
 
 
 @taking_ndarray
@@ -93,14 +48,9 @@ def gcd( a, b, *args ):
     :rtype: int or numpy.ndarray(int)
     '''
     if len(args) == 0:
-        if a.ndim == b.ndim == 0:
-            while b:
-                a, b = b, a % b
-            return a
-        else:
-            return _gcd_array(a, b)
+        return math_aux_cpy.gcd(a, b)
     else:
-        return reduce(gcd, args + (a, b))
+        return reduce(math_aux_cpy.gcd, args + (a, b))
 
 
 @taking_ndarray
@@ -115,17 +65,7 @@ def ibinary_repr( arg ):
     :returns: values in binary representation (as integers).
     :rtype: numpy.ndarray(int)
     '''
-    if arg.ndim == 0:
-        return int(np.binary_repr(arg))
-
-    coc = arg // 2
-    rem = arg % 2
-
-    idxs = coc != 0
-    if len(idxs) != 0:
-        rem[idxs] += 10*ibinary_repr(coc[idxs])
-
-    return rem
+    return math_aux_cpy.ibinary_repr(arg)
 
 
 @taking_ndarray
