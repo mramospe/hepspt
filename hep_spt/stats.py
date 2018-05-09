@@ -18,7 +18,7 @@ from scipy.stats import ks_2samp as scipy_ks_2samp
 
 # Local
 from hep_spt import __project_path__
-from hep_spt.core import decorate
+from hep_spt.core import decorate, taking_ndarray
 
 # Define confidence intervals.
 __chi2_one_dof__ = chi2(1)
@@ -130,7 +130,7 @@ def calc_poisson_llu( m, cl = __one_sigma__ ):
     return _process_poisson_u(m, lw, up)
 
 
-@decorate(np.vectorize)
+@taking_ndarray
 def cp_fu( k, N, cl = __one_sigma__ ):
     '''
     Return the frequentist Clopper-Pearson uncertainties of having
@@ -145,21 +145,47 @@ def cp_fu( k, N, cl = __one_sigma__ ):
     :returns: Lower and upper uncertainties on the efficiency.
     :rtype: float or numpy.ndarray(float)
     '''
-    p = float(k)/N
+    p = k.astype(float)/N
 
     pcl = 0.5*(1. - cl)
 
-    # Lower uncertainty
-    if k != 0:
-        lw = beta(k, N - k + 1).ppf(pcl)
-    else:
-        lw = p
+    if k.ndim == 0:
+        if k != 0:
+            lw = beta(k, N - k + 1).ppf(pcl)
+        else:
+            lw = p
 
-    # Upper uncertainty
-    if k != N:
-        up = beta(k + 1, N - k).ppf(1. - pcl)
+        if k != N:
+            up = beta(k + 1, N - k).ppf(1. - pcl)
+        else:
+            up = p
     else:
-        up = p
+
+        # Solve for low uncertainty
+        lw = np.array(p)
+        cd = (k != 0)
+
+        if pcl.ndim == 0:
+            lpcl = pcl
+        else:
+            lpcl = pcl[cd]
+
+        lk, lN = k[cd], N[cd]
+
+        lw[cd] = beta(lk, lN - lk + 1).ppf(lpcl)
+
+        # Solve for upper uncertainty
+        up = np.array(p)
+        cd = (k != N)
+
+        if pcl.ndim == 0:
+            upcl = pcl
+        else:
+            upcl = pcl[cd]
+
+        uk, uN = k[cd], N[cd]
+
+        up[cd] = beta(uk + 1, uN- uk).ppf(1. - upcl)
 
     return p - lw, up - p
 
@@ -322,7 +348,7 @@ def poisson_fu( m ):
     deviation of confidence level.
 
     :param m: measured value(s).
-    :type m: float or numpy.ndarray(float)
+    :type m: int or numpy.ndarray(int)
     :returns: Lower and upper frequentist uncertainties.
     :rtype: numpy.ndarray(float, float)
     '''
@@ -351,13 +377,14 @@ def poisson_llu( m ):
     where :math:`\\alpha = 2\log P(n_\\text{obs}|n_\\text{obs})`.
 
     :param m: measured value(s).
-    :type m: float or numpy.ndarray(float)
+    :type m: int or numpy.ndarray(int)
     :returns: Lower and upper frequentist uncertainties.
     :rtype: numpy.ndarray(float, float)
     '''
     return _poisson_u_from_db(m, 'poisson_llu.dat')
 
 
+@taking_ndarray
 def _poisson_initials( m ):
     '''
     Return the boundaries to use as initial values in
@@ -372,23 +399,27 @@ def _poisson_initials( m ):
     sm = np.sqrt(m)
 
     il = m - sm
-    if il <= 0:
-        # Needed by "calc_poisson_llu"
-        il = 0.1
     ir = m + sm
+
+    # Needed by "calc_poisson_llu"
+    if il.ndim == 0:
+        if il <= 0:
+            il = 0.1
+    else:
+        il[il <= 0] = 0.1
 
     return il, ir
 
 
 def _poisson_u_from_db( m, database ):
     '''
-    Decorator for functions to calculate poissonian uncertainties,
+    Used in functions to calculate poissonian uncertainties,
     which are partially stored on databases. If "m" is above the
     maximum number stored in the database, the gaussian approximation
     is taken instead.
 
     :param m: measured value(s).
-    :type m: float or numpy.ndarray(float)
+    :type m: int or numpy.ndarray(int)
     :param database: name of the database.
     :type database: str
     :returns: Lower and upper frequentist uncertainties.
