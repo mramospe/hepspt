@@ -29,17 +29,23 @@ def bit_length( arg ):
     :returns: length of the binary representation.
     :rtype: numpy.ndarray(int)
     '''
+    if arg.ndim == 0:
+
+        r = np.binary_repr(arg)
+
+        if r != '0':
+            return len(r)
+        else:
+            return 0
+
     coc = arg // 2
     rem = arg % 2
 
     lgth = np.logical_or(rem != 0, coc != 0).astype(int)
-    if arg.ndim == 0:
-        if coc != 0:
-            lgth += bit_length(coc)
-    else:
-        idxs = coc != 0
-        if len(idxs) != 0:
-            lgth[idxs] += bit_length(coc[idxs])
+
+    idxs = coc != 0
+    if len(idxs) != 0:
+        lgth[idxs] += bit_length(coc[idxs])
 
     return lgth
 
@@ -109,16 +115,15 @@ def ibinary_repr( arg ):
     :returns: values in binary representation (as integers).
     :rtype: numpy.ndarray(int)
     '''
+    if arg.ndim == 0:
+        return int(np.binary_repr(arg))
+
     coc = arg // 2
     rem = arg % 2
 
-    if arg.ndim == 0:
-        if coc != 0:
-            rem += 10*ibinary_repr(coc)
-    else:
-        idxs = coc != 0
-        if len(idxs) != 0:
-            rem[idxs] += 10*ibinary_repr(coc[idxs])
+    idxs = coc != 0
+    if len(idxs) != 0:
+        rem[idxs] += 10*ibinary_repr(coc[idxs])
 
     return rem
 
