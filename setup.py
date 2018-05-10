@@ -9,6 +9,7 @@ __email__  = 'miguel.ramos.pernas@cern.ch'
 
 # Python
 import os
+import textwrap
 from setuptools import setup, find_packages, Extension
 
 #
@@ -60,7 +61,7 @@ def create_version_file():
     Create the file version.py given the version of the package.
     '''
     version_file = open('hep_spt/version.py', 'wt')
-    version_file.write("""
+    version_file.write(textwrap.dedent("""\
     '''
     Auto-generated module holding the version of the hep_spt package
     '''
@@ -69,7 +70,7 @@ def create_version_file():
     __version_info__ = {}
 
     __all__ = ['__version__', '__version_info__']
-    """.format(version, version_info))
+    """.format(version, version_info)))
     version_file.close()
 
 
