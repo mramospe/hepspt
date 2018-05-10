@@ -6,6 +6,7 @@ env:
   - MPLBACKEND=Agg
 # Command to install dependencies
 install:
+  - pip install -r requirements.txt
   - pip install .
 # Command to run tests
 script:
