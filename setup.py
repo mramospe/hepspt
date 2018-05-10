@@ -37,9 +37,11 @@ if tag != 'final':
 
 version = frmt.format('.'.join(map(str, version_info[:3])), version_info[4])
 
-# To determine the CPython modules available on the given directory
-def cpython_module( directory ):
 
+def cpython_module( directory ):
+    '''
+    Determine the CPython modules available on the given directory
+    '''
     extensions = []
     for path, _, fnames in os.walk(directory):
         for f in filter(lambda s: s.endswith('.c'), fnames):
@@ -52,51 +54,77 @@ def cpython_module( directory ):
 
     return extensions
 
-# Setup function
-setup(
 
-    name = 'hep_spt',
+def create_version_file():
+    '''
+    Create the file version.py given the version of the package.
+    '''
+    version_file = open('hep_spt/version.py', 'wt')
+    version_file.write("""
+    '''
+    Auto-generated module holding the version of the hep_spt package
+    '''
 
-    version = version,
+    __version__ = "{}"
+    __version_info__ = {}
 
-    description = 'Provides statistical and plotting tools using general '\
-    'python packages, focused to High Energy Physics.',
+    __all__ = ['__version__', '__version_info__']
+    """.format(version, version_info))
+    version_file.close()
 
-    # Read the long description from the README
-    long_description = open('README.rst').read(),
 
-    # Keywords to search for the package
-    keywords = 'physics hep statistics plotting',
+def install_requirements():
+    '''
+    Get the installation requirements from the "requirements.txt" file.
+    '''
+    reqs = []
+    with open('requirements.txt') as f:
+        for line  in f:
+            li = line.strip()
+            if not li.startswith('#'):
+                reqs.append(li)
+    return reqs
 
-    # Find all the packages in this directory
-    packages = find_packages(),
 
-    # Data files
-    package_data = {'hep_spt': ['data/*', 'mpl/*']},
+def setup_package():
+    '''
+    Do the setup of the package, parsing the input arguments.
+    '''
+    setup(
 
-    # C-API source
-    ext_modules = cpython_module('hep_spt/cpython'),
+        name = 'hep_spt',
 
-    # Requisites
-    install_requires = ['matplotlib', 'numpy', 'pytest', 'scipy'],
+        version = version,
 
-    # Test requirements
-    setup_requires = ['pytest-runner'],
+        description = 'Provides statistical and plotting tools using general '\
+        'python packages, focused to High Energy Physics.',
 
-    tests_require = ['pytest'],
+        # Read the long description from the README
+        long_description = open('README.rst').read(),
+
+        # Keywords to search for the package
+        keywords = 'physics hep statistics plotting',
+
+        # Find all the packages in this directory
+        packages = find_packages(),
+
+        # Data files
+        package_data = {'hep_spt': ['data/*', 'mpl/*']},
+
+        # C-API source
+        ext_modules = cpython_module('hep_spt/cpython'),
+
+        # Requisites
+        install_requires = install_requirements(),
+
+        # Test requirements
+        setup_requires = ['pytest-runner'],
+
+        tests_require = ['pytest'],
     )
 
+    create_version_file()
 
-# Create a module with the versions
-version_file = open('hep_spt/version.py', 'wt')
-version_file.write("""\
-'''
-Auto-generated module holding the version of the hep_spt package
-'''
 
-__version__ = "{}"
-__version_info__ = {}
-
-__all__ = ['__version__', '__version_info__']
-""".format(version, version_info))
-version_file.close()
+if __name__ == '__main__':
+    setup_package()
