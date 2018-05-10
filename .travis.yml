@@ -3,7 +3,7 @@ python:
   - "2.7"
   - "3.5"
 env:
-  - DISPLAY=:0.0
+  - MPLBACKEND=Agg
 # Command to install dependencies
 install:
   - pip install .
