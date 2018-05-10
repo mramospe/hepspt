@@ -7,6 +7,8 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
+import matplotlib
+matplotlib.use('Agg')
 import numpy as np
 import os
 import pytest
