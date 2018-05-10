@@ -7,6 +7,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
+import numpy as np
 from functools import wraps
 
 __all__ = []
@@ -39,3 +40,23 @@ def decorate( deco ):
         return _wrapper
 
     return _deco_wrapper
+
+
+@decorate
+def taking_ndarray( func ):
+    '''
+    Decorator for functions which take :class:`numpy.ndarray` instances
+    as arguments.
+    The array is not copied in the process.
+    '''
+    def _wrapper( *args, **kwargs ):
+        '''
+        Wrap the original function.
+        '''
+        args = tuple(np.array(x, copy=False) for x in args)
+
+        kwargs = {k: np.array(x, copy=False) for k, x in kwargs.items()}
+
+        return func(*args, **kwargs)
+
+    return _wrapper

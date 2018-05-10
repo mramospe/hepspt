@@ -7,7 +7,9 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
+import matplotlib
 import numpy as np
+import os
 import pytest
 from scipy.stats import norm
 
@@ -15,11 +17,29 @@ from scipy.stats import norm
 import hep_spt
 
 
+def test_available_styles():
+    '''
+    Test for the function "available_styles".
+    '''
+    styles = {'default', 'singleplot', 'multiplot'}
+    assert len(set(hep_spt.available_styles()) - styles) == 0
+
+
 def test_cfe():
     '''
     Test the "cfe" function.
     '''
     assert np.all(hep_spt.cfe(np.array([1, 3, 5, 7])) == [2, 4, 6])
+
+
+def test_corr_hist2d():
+    '''
+    Test for the "corr_hist2d" function.
+    '''
+    matrix = np.array([[1., 0., 0.],
+                       [0., 1., 0.],
+                       [0., 0., 1.]])
+    hep_spt.corr_hist2d(matrix, ['a', 'b', 'c'])
 
 
 def test_errorbar_hist():
@@ -62,6 +82,17 @@ def test_opt_fig_div():
     assert hep_spt.opt_fig_div(9) == (3, 3)
     assert hep_spt.opt_fig_div(5) == (2, 3)
     assert hep_spt.opt_fig_div(6) == (2, 3)
+
+
+def test_path_to_styles():
+    '''
+    Test for the function "path_to_styles".
+    '''
+    path = hep_spt.path_to_styles()
+
+    s = set(map(lambda s: s[:s.find('.mplstyle')], os.listdir(path)))
+
+    assert len(s - set(hep_spt.available_styles())) == 0
 
 
 def test_process_range():
@@ -387,3 +418,11 @@ def test_samples_cycler():
 
     for c in cyc:
         c['ls'] == cfg[c['label']]
+
+
+def test_set_style():
+    '''
+    Test for the "set_style" function.
+    '''
+    for s in hep_spt.available_styles():
+        hep_spt.set_style(s)

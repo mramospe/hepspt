@@ -36,6 +36,8 @@ This package is available on PyPi, so just type
    pip install hep-spt
 
 to install the package in your current python environment.
+Since this package uses the Numpy C API, it is necessary to have Numpy already installed.
+If you attempt to install "hep_spt" with no installation of Numpy, an error will be raised.
 To use the **latest development version**, clone the repository and install with `pip`:
 
 .. code-block:: bash

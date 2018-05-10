@@ -18,7 +18,7 @@ import hep_spt
 np.random.seed(8563)
 
 
-def test_adbin_class():
+def test_adbin():
     '''
     Test the behaviour of the AdBin class.
     '''
@@ -50,18 +50,41 @@ def test_adbin_hist1d():
     '''
     Test the creation of an adaptive binned histogram in 1 dimension.
     '''
-    size = 1000
-    bins = 20
-    rg   = (-10, 10)
-
-    sample  = np.random.normal(0., 2, size)
-    weights = np.random.uniform(0, 1, size)
-
     # Case without weights
-    v, ev, ex, ey = hep_spt.adbin_hist1d(sample, bins, rg)
+    arr = np.arange(10)
+    _, e, _, _ = hep_spt.adbin_hist1d(arr + 0.5, 10, range=(0, 10))
+    ref = np.append(arr, 10)
+    assert np.allclose(e, ref)
 
     # Case with weights
-    v_w, ev_w, ex_w, ey_w = hep_spt.adbin_hist1d(sample, bins, rg, weights=weights, uncert='sw2')
+    arr  = np.arange(10)
+    wgts = 0.5*np.ones(10)
+    _, e, _, _ = hep_spt.adbin_hist1d(arr + 0.5, 10, range=(0, 10), weights=wgts)
+    ref = np.append(arr, 10)
+    assert np.allclose(e, ref)
+
+
+def test_adbin_hist1d_edges():
+    '''
+    Test for the "adbin_hist1d_edges" function.
+    '''
+    n   = 10
+    smp = np.arange(n) + 0.5
+    weights = 0.5*np.ones(n)
+
+    # Non-weighted case
+    edges = hep_spt.adbin_hist1d_edges(smp, nbins=len(smp), range=(0, n))
+
+    ref = np.append(smp - 0.5, len(smp))
+
+    assert np.allclose(edges, ref)
+
+    # Weighted case
+    edges = hep_spt.adbin_hist1d_edges(smp, nbins=len(smp), range=(0, n), weights=weights)
+
+    ref = np.append(smp - 0.5, len(smp))
+
+    assert np.allclose(edges, ref)
 
 
 def test_adbin_hist2d():
@@ -101,6 +124,50 @@ def test_adbin_hist2d():
     exp = float(weights.sum())/nbins
 
     assert _within_expectations(bins, exp - 2., exp + 2.)
+
+
+def test_adbin_hist2d_rectangles():
+    '''
+    Test for the "adbin_hist2d_rectangles" function.
+    '''
+    smp_x   = np.array([ 0., 0.,  1., 1.])
+    smp_y   = np.array([ 0., 1.,  0., 1.])
+    weights = np.array([ 2,  1,   2,  1])
+
+    # Non-weighted case
+    nbins = 2
+    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins)
+
+    recs, conts = hep_spt.adbin_hist2d_rectangles(bins, smp_x, smp_y)
+
+    assert np.allclose(conts, [2, 2])
+
+    # Weighted case
+    nbins = 2
+    bins  = hep_spt.adbin_hist2d(smp_x, smp_y, nbins)
+
+    recs, conts = hep_spt.adbin_hist2d_rectangles(bins, smp_x, smp_y, weights=weights)
+
+    assert np.allclose(conts, [3, 3])
+
+
+def test_adbin_histnd():
+    '''
+    Test for the "adbin_histnd" function.
+    '''
+    # Check the one-dimensional case
+    sample = np.array([
+        np.random.uniform(0, 10, 100),
+        np.random.uniform(0, 10, 100),
+        np.random.uniform(0, 10, 100),
+    ]).T
+    weights = np.random.uniform(0, 1, 100)
+
+    # Case without weights
+    bins = hep_spt.adbin_histnd(sample, 10)
+
+    # Case with weights
+    bins = hep_spt.adbin_histnd(sample, 10, weights=weights)
 
 
 def _within_expectations( bins, vmin, vmax ):
