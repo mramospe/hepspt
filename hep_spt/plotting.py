@@ -31,7 +31,6 @@ __all__ = [
     'residual',
     'samples_cycler',
     'set_style',
-    'text_in_rectangles'
     ]
 
 # Path to the directory containing the styles

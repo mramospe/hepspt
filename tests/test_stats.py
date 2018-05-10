@@ -43,9 +43,47 @@ def _integral_transformer_aux( points, comp, values=None ):
     return chi2_ndof
 
 
-def test_integral_transformer():
+def test_calc_poisson_fu():
     '''
-    Test function for the integral transformer instance.
+    Test for the "calc_poisson_fu" function.
+    '''
+    assert np.allclose(hep_spt.calc_poisson_fu(0), hep_spt.poisson_fu(0))
+    assert np.allclose(hep_spt.calc_poisson_fu(10), hep_spt.poisson_fu(10))
+    assert np.allclose(hep_spt.calc_poisson_fu([10, 20]), hep_spt.poisson_fu([10, 20]).T)
+
+
+def test_calc_poisson_llu():
+    '''
+    Test for the "calc_poisson_llu" function.
+    '''
+    assert np.allclose(hep_spt.calc_poisson_llu(0), hep_spt.poisson_llu(0))
+    assert np.allclose(hep_spt.calc_poisson_llu(10), hep_spt.poisson_llu(10))
+    assert np.allclose(hep_spt.calc_poisson_llu([10, 20]), hep_spt.poisson_llu([10, 20]).T)
+
+
+def test_cp_fu():
+    '''
+    Test the function to calculate frequentist uncertainties on
+    efficiencies.
+    '''
+    # Test single value behaviour
+    sl, sr = hep_spt.cp_fu(0, 1)
+    assert sl == 0.
+
+    sl, sr = hep_spt.cp_fu(1, 1)
+    assert sr == 0.
+
+    sl, sr = hep_spt.cp_fu(1, 2)
+    assert np.isclose(sl, sr)
+
+    # Test numpy.vectorize behaviour
+    sl, sr = hep_spt.cp_fu([0, 1, 1], [1, 1, 2])
+    assert sl[0] == 0. and sr[1] == 0. and np.isclose(sl[2], sr[2])
+
+
+def test_flatdisttransform():
+    '''
+    Test function for the class "FlatDistTransform"
     '''
     np.random.seed(1357)
 
@@ -62,6 +100,44 @@ def test_integral_transformer():
     chi2_ndof = _integral_transformer_aux(runi, runi)
 
     assert chi2_ndof < 1.
+
+
+def test_gauss_u():
+    '''
+    Test for the "gauss_u" function.
+    '''
+    r  = np.array([1, 1])
+    s1 = hep_spt.gauss_u(1)
+    s2 = hep_spt.gauss_u(r)
+
+    assert np.allclose(s1, 1)
+    assert np.allclose(s2, r)
+
+
+def test_ks_2samp():
+    '''
+    Test the Kolmogorov-Smirnov function.
+    '''
+    na = 200
+    nb = 300
+
+    a  = norm.rvs(size=na, loc=0., scale=1.)
+    b  = norm.rvs(size=nb, loc=0.5, scale=1.5)
+
+    # The results without weights must be the same as those from scipy
+    scipy_res   = scipy_ks_2samp(a, b)
+    hep_spt_res = hep_spt.ks_2samp(a, b)
+
+    assert scipy_res == hep_spt_res
+
+    # With weights equal to one for each entry, the result must be the
+    # same as in scipy.
+    wa = np.ones(na, dtype=float)
+    wb = np.ones(nb, dtype=float)
+
+    hep_spt_res = hep_spt.ks_2samp(a, b, wa, wb)
+
+    assert scipy_res == hep_spt_res
 
 
 def test_poisson_fu():
@@ -122,47 +198,23 @@ def test_poisson_llu():
         hep_spt.poisson_llu([-1, 1])
 
 
-def test_cp_fu():
+def test_rv_random_sample():
     '''
-    Test the function to calculate frequentist uncertainties on
-    efficiencies.
+    Test for the "rv_random_sample" function.
     '''
-    # Test single value behaviour
-    sl, sr = hep_spt.cp_fu(0, 1)
-    assert sl == 0.
+    pdf = norm(0, 2)
+    smp = hep_spt.rv_random_sample(pdf, size=100)
+    assert smp.shape == (100,)
 
-    sl, sr = hep_spt.cp_fu(1, 1)
-    assert sr == 0.
-
-    sl, sr = hep_spt.cp_fu(1, 2)
-    assert np.isclose(sl, sr)
-
-    # Test numpy.vectorize behaviour
-    sl, sr = hep_spt.cp_fu([0, 1, 1], [1, 1, 2])
-    assert sl[0] == 0. and sr[1] == 0. and np.isclose(sl[2], sr[2])
+    pdf = norm([0, 1], [2, 4])
+    smp = hep_spt.rv_random_sample(pdf, size=100)
+    assert smp.shape == (100,2)
 
 
-def test_ks():
+def test_sw2_u():
     '''
-    Test the Kolmogorov-Smirnov function.
+    Test for the "sw2_u" function.
     '''
-    na = 200
-    nb = 300
-
-    a  = norm.rvs(size=na, loc=0., scale=1.)
-    b  = norm.rvs(size=nb, loc=0.5, scale=1.5)
-
-    # The results without weights must be the same as those from scipy
-    scipy_res   = scipy_ks_2samp(a, b)
-    hep_spt_res = hep_spt.ks_2samp(a, b)
-
-    assert scipy_res == hep_spt_res
-
-    # With weights equal to one for each entry, the result must be the
-    # same as in scipy.
-    wa = np.ones(na, dtype=float)
-    wb = np.ones(nb, dtype=float)
-
-    hep_spt_res = hep_spt.ks_2samp(a, b, wa, wb)
-
-    assert scipy_res == hep_spt_res
+    arr = np.array([1, 2, 3])
+    assert np.allclose(hep_spt.sw2_u(arr, bins=3), np.ones(3))
+    assert np.allclose(hep_spt.sw2_u(arr, bins=3, weights=arr), arr)

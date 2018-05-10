@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
 
-__all__ = ['AdBin', 'adbin_as_rectangle', 'adbin_hist2d_rectangles',
+__all__ = ['AdBin', 'adbin_hist2d_rectangles',
            'adbin_hist1d', 'adbin_hist1d_edges',
            'adbin_hist2d', 'adbin_histnd'
            ]
@@ -235,11 +235,11 @@ class AdBin:
 
 def adbin_as_rectangle( adb, **kwargs ):
     '''
-    Extract the bounds of a :class:`AdBin` object so it can be processed by
-    a :class:`matplotlib.patches.Rectangle` and properly fill the area
-    inside it.
+    Extract the bounds of a 2-dimensional :class:`AdBin` object so it
+    can be processed by a :class:`matplotlib.patches.Rectangle` and properly
+    fill the area inside it.
 
-    :param adb: input adaptive bin.
+    :param adb: input adaptive bin. It must be 2-dimensional.
     :type adb: AdBin
     :param kwargs: extra arguments to :class:`matplotlib.patches.Rectangle`.
     :type kwargs: dict
@@ -372,7 +372,7 @@ def adbin_hist2d( x, y, *args, **kwargs ):
     return adbin_histnd(np.array([x, y]).T, *args, **kwargs)
 
 
-def adbin_hist2d_rectangles( bins, arr,
+def adbin_hist2d_rectangles( bins, x, y,
                              range = None, weights = None,
                              cmap = None, fill = 'sw',
                              color = True,
@@ -397,7 +397,8 @@ def adbin_hist2d_rectangles( bins, arr,
     :type fill: str
     :param color: whether the output rectangles are filled with a color or not.
     :type color: bool
-    :param kwargs: any other argument to :func:`adbin_as_rectangle`.
+    :param kwargs: any other argument to the constructor of \
+    :class:`matplotlib.patches.Rectangle`.
     :type kwargs: dict
     :returns: Rectangles and contents.
     :rtype: numpy.ndarray, numpy.ndarray
@@ -406,7 +407,7 @@ def adbin_hist2d_rectangles( bins, arr,
 
     recs = [adbin_as_rectangle(b, **kwargs) for b in bins]
 
-    arr, range, weights = _proc_hist_input(arr, range, weights)
+    arr, range, weights = _proc_hist_input(np.array([x, y]).T, range, weights)
 
     # Get the contents associated to each bin
     func = getattr(AdBin, fill)
