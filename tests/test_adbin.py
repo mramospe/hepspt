@@ -18,7 +18,7 @@ import hep_spt
 np.random.seed(8563)
 
 
-def test_adbin_class():
+def test_adbin():
     '''
     Test the behaviour of the AdBin class.
     '''

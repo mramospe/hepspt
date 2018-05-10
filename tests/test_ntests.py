@@ -28,7 +28,9 @@ def test_all_modules_have_tests():
     f = filter(lambda s: inspect.ismodule(getattr(hep_spt, s)), hep_spt.__all__)
     modules = set(map(lambda s: s.lower(), f))
 
-    scripts = filter(lambda s: s.endswith('.py'), os.listdir('./'))
+    path = os.path.dirname(__file__)
+
+    scripts = filter(lambda s: s.endswith('.py'), os.listdir(path))
 
     tests = set(map(lambda s: s.lower()[5:-3], scripts))
 
@@ -48,7 +50,9 @@ def test_all_members_have_tests():
     to be considered as good.
     '''
     # Get all the test scripts
-    test_files = filter(lambda s: s.startswith('test') and s.endswith('.py'), os.listdir('./'))
+    path = os.path.dirname(__file__)
+
+    test_files = filter(lambda s: s.startswith('test') and s.endswith('.py'), os.listdir(path))
 
     tests = map(importlib.import_module, map(lambda s: s[:-3], test_files))
 
