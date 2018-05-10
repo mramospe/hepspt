@@ -3,17 +3,6 @@
  */
 
 
-/// Check that the array has dimension no greater than one.
-#ifndef CHECK_DIM_ARRAY
-#define CHECK_DIM_ARRAY( arr )						\
-  if ( PyArray_NDIM(arr) > 1 ) {					\
-    PyErr_SetString(PyExc_TypeError,					\
-		    "Number of dimensions in array must be zero or one"); \
-    goto final;							\
-  }
-#endif
-
-
 /// Check the dimension of two arrays, which must coincide and be no greater than one.
 #ifndef CHECK_DIM_ARRAYS
 #define CHECK_DIM_ARRAYS( arr_a, arr_b )				\
@@ -24,7 +13,22 @@
     goto final;								\
   }									\
 									\
-  CHECK_DIM_ARRAY(arr_a);						\
-  CHECK_DIM_ARRAY(arr_b);						\
+  if ( !PyArray_CompareLists(PyArray_SHAPE(arr_a),			\
+			     PyArray_SHAPE(arr_b),			\
+			     PyArray_NDIM(arr_a)) ) {			\
+    PyErr_SetString(PyExc_TypeError,					\
+		    "Shape of the arrays must coincide");		\
+    goto final;								\
+  }									\
+
+#endif
+
+
+#ifndef CHECK_INT_ARRAY
+#define CHECK_INT_ARRAY( arr )						\
+  if ( !PyArray_ISINTEGER(arr) ) {					\
+    PyErr_SetString(PyExc_TypeError, "Only integer numbers are allowed"); \
+    goto final;								\
+  }									\
 
 #endif

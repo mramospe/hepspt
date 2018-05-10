@@ -14,9 +14,6 @@
 // Local
 #include "definitions.h"
 
-static const char __author__[] = "Miguel Ramos Pernas";
-static const char __email__[]  = "miguel.ramos.pernas@cern.ch";
-
 
 /** Calculate the binary representation of a number.
  *
@@ -33,24 +30,21 @@ npy_int _ibinary_repr( const npy_int i ) {
 }
 
 
-/** Calculate the binary representation (as an integer) of the values in a numpy.ndarray instance.
+/** Calculate the binary representation (as an integer) of the values in an object.
  *
+ * The object is converted to an array if necessary.
  */
 static PyObject* ibinary_repr( PyObject *self, PyObject *args, PyObject *kwds ) {
 
-  PyArrayObject* arr = NULL;
+  PyObject *in;
 
   static char* kwlist[] = {"arr", NULL};
-  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "O!:ibinary_repr", kwlist,
-				    &PyArray_Type, &arr) )
+  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "O:ibinary_repr", kwlist, &in) )
     goto final;
 
-  if ( !PyArray_ISINTEGER(arr) ) {
-    PyErr_SetString(PyExc_ValueError, "Only integer numbers are allowed");
-    goto final;
-  }
+  PyArrayObject* arr = (PyArrayObject*) PyArray_FROM_O(in);
 
-  CHECK_DIM_ARRAY(arr);
+  CHECK_INT_ARRAY(arr);
 
   // Initialize the output array
   PyArray_Descr* descr = PyArray_DescrFromType(NPY_INT);
@@ -65,8 +59,8 @@ static PyObject* ibinary_repr( PyObject *self, PyObject *args, PyObject *kwds ) 
     return (PyObject*) ret;
   }
 
-  PyObject* ia = PyArray_IterNew((PyObject*)arr);
-  PyObject* ir = PyArray_IterNew((PyObject*)ret);
+  PyObject* ia = PyArray_IterNew((PyObject*) arr);
+  PyObject* ir = PyArray_IterNew((PyObject*) ret);
 
   while ( PyArray_ITER_NOTDONE(ia) ) {
 
@@ -108,24 +102,21 @@ npy_int _bit_length( const npy_int i ) {
 }
 
 
-/** Calculate the bit length of the values in a numpy.ndarray instance.
+/** Calculate the bit length of the values in an object.
  *
+ * The object is converted to an array if necessary.
  */
 static PyObject* bit_length( PyObject *self, PyObject *args, PyObject *kwds ) {
 
-  PyArrayObject* arr = NULL;
+  PyObject *in;
 
   static char* kwlist[] = {"arr", NULL};
-  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "O!:bit_length", kwlist,
-				    &PyArray_Type, &arr) )
+  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "O:bit_length", kwlist, &in) )
     goto final;
 
-  if ( !PyArray_ISINTEGER(arr) ) {
-    PyErr_SetString(PyExc_ValueError, "Only integer numbers are allowed");
-    goto final;
-  }
+  PyArrayObject* arr = (PyArrayObject*) PyArray_FROM_O(in);
 
-  CHECK_DIM_ARRAY(arr);
+  CHECK_INT_ARRAY(arr);
 
   // Initialize the output array
   PyArray_Descr* descr = PyArray_DescrFromType(NPY_INT);
@@ -140,8 +131,8 @@ static PyObject* bit_length( PyObject *self, PyObject *args, PyObject *kwds ) {
     return (PyObject*) ret;
   }
 
-  PyObject* ia = PyArray_IterNew((PyObject*)arr);
-  PyObject* ir = PyArray_IterNew((PyObject*)ret);
+  PyObject* ia = PyArray_IterNew((PyObject*) arr);
+  PyObject* ir = PyArray_IterNew((PyObject*) ret);
 
 
   while ( PyArray_ITER_NOTDONE(ia) ) {
@@ -191,20 +182,18 @@ npy_int _gcd( npy_int a, npy_int b ) {
  */
 static PyObject* gcd( PyObject *self, PyObject *args, PyObject *kwds ) {
 
-  PyArrayObject* a = NULL;
-  PyArrayObject* b = NULL;
+  PyObject* ina;
+  PyObject* inb;
 
   static char* kwlist[] = {"a", "b", NULL};
-  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "O!O:gcd", kwlist,
-				    &PyArray_Type, &a, &b) )
+  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "OO:gcd", kwlist, &ina, &inb) )
     goto final;
 
-  if ( !PyArray_ISINTEGER(a) || !PyArray_ISINTEGER(b) ) {
-    PyErr_SetString(PyExc_ValueError, "Only integer numbers are allowed");
-    goto final;
-  }
+  PyArrayObject* a = (PyArrayObject*) PyArray_FROM_O(ina);
+  PyArrayObject* b = (PyArrayObject*) PyArray_FROM_O(inb);
 
-  // Check the array dimensions
+  CHECK_INT_ARRAY(a);
+  CHECK_INT_ARRAY(b);
   CHECK_DIM_ARRAYS(a, b);
 
   // Initialize the output array
@@ -221,9 +210,9 @@ static PyObject* gcd( PyObject *self, PyObject *args, PyObject *kwds ) {
     return (PyObject*) ret;
   }
 
-  PyObject* ia = PyArray_IterNew((PyObject*)a);
-  PyObject* ib = PyArray_IterNew((PyObject*)b);
-  PyObject* ir = PyArray_IterNew((PyObject*)ret);
+  PyObject* ia = PyArray_IterNew((PyObject*) a);
+  PyObject* ib = PyArray_IterNew((PyObject*) b);
+  PyObject* ir = PyArray_IterNew((PyObject*) ret);
 
   while ( PyArray_ITER_NOTDONE(ia) ) {
 

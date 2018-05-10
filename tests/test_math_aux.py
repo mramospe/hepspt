@@ -8,6 +8,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Python
 import numpy as np
+import pytest
 
 # Local
 import hep_spt
@@ -35,6 +36,18 @@ def test_bit_length():
 
     assert np.all(hep_spt.bit_length(values) == std_python)
 
+    values = np.array([(0, 1), (2, 3)])
+    ref    = np.array([(0, 1), (2, 2)])
+
+    assert np.all(hep_spt.bit_length(values) == ref)
+
+    # Check the exceptions
+    with pytest.raises(TypeError):
+        hep_spt.bit_length(4.5)
+
+    with pytest.raises(TypeError):
+        hep_spt.bit_length(np.array([1.1, 3.2]))
+
 
 def test_gcd():
     '''
@@ -47,6 +60,22 @@ def test_gcd():
 
     # Test numpy.vectorize behaviour
     assert np.all(hep_spt.gcd([4, 3], [6, 9]) == [2, 3])
+
+    a_vals = np.array([(4, 3), (8, 5)])
+    b_vals = np.array([(6, 9), (4, 10)])
+    ref    = np.array([(2, 3), (4, 5)])
+
+    assert np.all(hep_spt.gcd(a_vals, b_vals) == ref)
+
+    # Check the exceptions
+    with pytest.raises(TypeError):
+        hep_spt.gcd(4.5, 3)
+
+    with pytest.raises(TypeError):
+        hep_spt.gcd(np.array([1, 3]), np.array([1]))
+
+    with pytest.raises(TypeError):
+        hep_spt.gcd(3, np.array([1, 3]))
 
 
 def test_ibinary_repr():
@@ -71,6 +100,18 @@ def test_ibinary_repr():
     std_numpy = tuple(map(np.binary_repr, values))
 
     assert np.all(hep_spt.ibinary_repr(values).astype(str) == std_numpy)
+
+    values = np.array([(0, 1), (2, 3)])
+    ref    = np.array([(0, 1), (10, 11)])
+
+    assert np.all(hep_spt.ibinary_repr(values) == ref)
+
+    # Check the exceptions
+    with pytest.raises(TypeError):
+        hep_spt.ibinary_repr(4.5)
+
+    with pytest.raises(TypeError):
+        hep_spt.ibinary_repr(np.array([1.1, 3.2]))
 
 
 def test_lcm():

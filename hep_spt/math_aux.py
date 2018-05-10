@@ -18,7 +18,6 @@ from functools import reduce
 __all__ = ['bit_length', 'gcd', 'ibinary_repr', 'is_power_2', 'lcm', 'next_power_2']
 
 
-@taking_ndarray
 def bit_length( arg ):
     '''
     Get the length of the binary representation of the given value(s).
@@ -29,11 +28,11 @@ def bit_length( arg ):
     :type arg: int or numpy.ndarray(int)
     :returns: length of the binary representation.
     :rtype: numpy.ndarray(int)
+    :raises TypeError: If the input does not contain integer values.
     '''
     return math_aux_cpy.bit_length(arg)
 
 
-@taking_ndarray
 def gcd( a, b, *args ):
     '''
     Calculate the greatest common divisor of a set of numbers.
@@ -46,6 +45,8 @@ def gcd( a, b, *args ):
     :type args: tuple(int or numpy.ndarray(int))
     :returns: Greatest common divisor of a set of numbers.
     :rtype: int or numpy.ndarray(int)
+    :raises TyperError: If the arrays do not contain integers or if \
+    the shapes do not coincide.
     '''
     if len(args) == 0:
         return math_aux_cpy.gcd(a, b)
@@ -53,7 +54,6 @@ def gcd( a, b, *args ):
         return reduce(math_aux_cpy.gcd, args + (a, b))
 
 
-@taking_ndarray
 def ibinary_repr( arg ):
     '''
     Get the binary representation of the given value(s).
@@ -62,8 +62,9 @@ def ibinary_repr( arg ):
 
     :param arg: array of values.
     :type arg: int or numpy.ndarray(int)
-    :returns: values in binary representation (as integers).
+    :returns: Values in binary representation (as integers).
     :rtype: numpy.ndarray(int)
+    :raises TypeError: If the input does not contain integer values.
     '''
     return math_aux_cpy.ibinary_repr(arg)
 
