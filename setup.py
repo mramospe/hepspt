@@ -90,6 +90,12 @@ def setup_package():
     '''
     Do the setup of the package, parsing the input arguments.
     '''
+
+    try:
+        import numpy:
+    except:
+        RuntimeError('Numpy not found. Please install it before setting up this package.')
+
     setup(
 
         name = 'hep_spt',
@@ -113,6 +119,8 @@ def setup_package():
 
         # C-API source
         ext_modules = cpython_module('hep_spt/cpython'),
+
+        include_dirs = [numpy.get_include()],
 
         # Requisites
         install_requires = install_requirements(),
