@@ -59,7 +59,7 @@
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Rectangle</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AdBin&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_as_rectangle&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_hist2d_rectangles&#39;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AdBin&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_hist2d_rectangles&#39;</span><span class="p">,</span>
            <span class="s1">&#39;adbin_hist1d&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_hist1d_edges&#39;</span><span class="p">,</span>
            <span class="s1">&#39;adbin_hist2d&#39;</span><span class="p">,</span> <span class="s1">&#39;adbin_histnd&#39;</span>
            <span class="p">]</span>
@@ -275,13 +275,13 @@
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">uncert</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="adbin_as_rectangle"><a class="viewcode-back" href="../../api/hep_spt.adbin_as_rectangle.html#hep_spt.adbin_as_rectangle">[docs]</a><span class="k">def</span> <span class="nf">adbin_as_rectangle</span><span class="p">(</span> <span class="n">adb</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<span class="k">def</span> <span class="nf">adbin_as_rectangle</span><span class="p">(</span> <span class="n">adb</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Extract the bounds of a :class:`AdBin` object so it can be processed by</span>
-<span class="sd">    a :class:`matplotlib.patches.Rectangle` and properly fill the area</span>
-<span class="sd">    inside it.</span>
+<span class="sd">    Extract the bounds of a 2-dimensional :class:`AdBin` object so it</span>
+<span class="sd">    can be processed by a :class:`matplotlib.patches.Rectangle` and properly</span>
+<span class="sd">    fill the area inside it.</span>
 
-<span class="sd">    :param adb: input adaptive bin.</span>
+<span class="sd">    :param adb: input adaptive bin. It must be 2-dimensional.</span>
 <span class="sd">    :type adb: AdBin</span>
 <span class="sd">    :param kwargs: extra arguments to :class:`matplotlib.patches.Rectangle`.</span>
 <span class="sd">    :type kwargs: dict</span>
@@ -294,7 +294,7 @@
     <span class="n">width</span>  <span class="o">=</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span>
     <span class="n">height</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
 
-    <span class="k">return</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="adbin_hist1d"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist1d.html#hep_spt.adbin_hist1d">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist1d</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
@@ -414,7 +414,7 @@
     <span class="k">return</span> <span class="n">adbin_histnd</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="adbin_hist2d_rectangles"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist2d_rectangles.html#hep_spt.adbin_hist2d_rectangles">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d_rectangles</span><span class="p">(</span> <span class="n">bins</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span>
+<div class="viewcode-block" id="adbin_hist2d_rectangles"><a class="viewcode-back" href="../../api/hep_spt.adbin_hist2d_rectangles.html#hep_spt.adbin_hist2d_rectangles">[docs]</a><span class="k">def</span> <span class="nf">adbin_hist2d_rectangles</span><span class="p">(</span> <span class="n">bins</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
                              <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                              <span class="n">cmap</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="s1">&#39;sw&#39;</span><span class="p">,</span>
                              <span class="n">color</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -439,7 +439,8 @@
 <span class="sd">    :type fill: str</span>
 <span class="sd">    :param color: whether the output rectangles are filled with a color or not.</span>
 <span class="sd">    :type color: bool</span>
-<span class="sd">    :param kwargs: any other argument to :func:`adbin_as_rectangle`.</span>
+<span class="sd">    :param kwargs: any other argument to the constructor of \</span>
+<span class="sd">    :class:`matplotlib.patches.Rectangle`.</span>
 <span class="sd">    :type kwargs: dict</span>
 <span class="sd">    :returns: Rectangles and contents.</span>
 <span class="sd">    :rtype: numpy.ndarray, numpy.ndarray</span>
@@ -448,7 +449,7 @@
 
     <span class="n">recs</span> <span class="o">=</span> <span class="p">[</span><span class="n">adbin_as_rectangle</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bins</span><span class="p">]</span>
 
-    <span class="n">arr</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_proc_hist_input</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="n">arr</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_proc_hist_input</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
     <span class="c1"># Get the contents associated to each bin</span>
     <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">AdBin</span><span class="p">,</span> <span class="n">fill</span><span class="p">)</span>

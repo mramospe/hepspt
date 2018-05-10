@@ -60,7 +60,7 @@
 
 <span class="c1"># Local</span>
 <span class="kn">from</span> <span class="nn">hep_spt</span> <span class="k">import</span> <span class="n">__project_path__</span>
-<span class="kn">from</span> <span class="nn">hep_spt.core</span> <span class="k">import</span> <span class="n">decorate</span>
+<span class="kn">from</span> <span class="nn">hep_spt.core</span> <span class="k">import</span> <span class="n">decorate</span><span class="p">,</span> <span class="n">taking_ndarray</span>
 
 <span class="c1"># Define confidence intervals.</span>
 <span class="n">__chi2_one_dof__</span> <span class="o">=</span> <span class="n">chi2</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -172,7 +172,7 @@
     <span class="k">return</span> <span class="n">_process_poisson_u</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cp_fu"><a class="viewcode-back" href="../../api/hep_spt.cp_fu.html#hep_spt.cp_fu">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
+<div class="viewcode-block" id="cp_fu"><a class="viewcode-back" href="../../api/hep_spt.cp_fu.html#hep_spt.cp_fu">[docs]</a><span class="nd">@taking_ndarray</span>
 <span class="k">def</span> <span class="nf">cp_fu</span><span class="p">(</span> <span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">__one_sigma__</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the frequentist Clopper-Pearson uncertainties of having</span>
@@ -187,21 +187,47 @@
 <span class="sd">    :returns: Lower and upper uncertainties on the efficiency.</span>
 <span class="sd">    :rtype: float or numpy.ndarray(float)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">N</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">/</span><span class="n">N</span>
 
     <span class="n">pcl</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">cl</span><span class="p">)</span>
 
-    <span class="c1"># Lower uncertainty</span>
-    <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">lw</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">pcl</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">lw</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lw</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">pcl</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lw</span> <span class="o">=</span> <span class="n">p</span>
 
-    <span class="c1"># Upper uncertainty</span>
-    <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">N</span><span class="p">:</span>
-        <span class="n">up</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">pcl</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">N</span><span class="p">:</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">pcl</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="n">p</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">up</span> <span class="o">=</span> <span class="n">p</span>
+
+        <span class="c1"># Solve for low uncertainty</span>
+        <span class="n">lw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">cd</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pcl</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lpcl</span> <span class="o">=</span> <span class="n">pcl</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lpcl</span> <span class="o">=</span> <span class="n">pcl</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">lk</span><span class="p">,</span> <span class="n">lN</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">cd</span><span class="p">],</span> <span class="n">N</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">lw</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">lk</span><span class="p">,</span> <span class="n">lN</span> <span class="o">-</span> <span class="n">lk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">lpcl</span><span class="p">)</span>
+
+        <span class="c1"># Solve for upper uncertainty</span>
+        <span class="n">up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">cd</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">!=</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pcl</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">upcl</span> <span class="o">=</span> <span class="n">pcl</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">upcl</span> <span class="o">=</span> <span class="n">pcl</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">uk</span><span class="p">,</span> <span class="n">uN</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">cd</span><span class="p">],</span> <span class="n">N</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">up</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">uk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">uN</span><span class="o">-</span> <span class="n">uk</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">upcl</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">p</span> <span class="o">-</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span> <span class="o">-</span> <span class="n">p</span></div>
 
@@ -364,7 +390,7 @@
 <span class="sd">    deviation of confidence level.</span>
 
 <span class="sd">    :param m: measured value(s).</span>
-<span class="sd">    :type m: float or numpy.ndarray(float)</span>
+<span class="sd">    :type m: int or numpy.ndarray(int)</span>
 <span class="sd">    :returns: Lower and upper frequentist uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray(float, float)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -393,13 +419,14 @@
 <span class="sd">    where :math:`\\alpha = 2\log P(n_\\text{obs}|n_\\text{obs})`.</span>
 
 <span class="sd">    :param m: measured value(s).</span>
-<span class="sd">    :type m: float or numpy.ndarray(float)</span>
+<span class="sd">    :type m: int or numpy.ndarray(int)</span>
 <span class="sd">    :returns: Lower and upper frequentist uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray(float, float)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">_poisson_u_from_db</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;poisson_llu.dat&#39;</span><span class="p">)</span></div>
 
 
+<span class="nd">@taking_ndarray</span>
 <span class="k">def</span> <span class="nf">_poisson_initials</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the boundaries to use as initial values in</span>
@@ -414,23 +441,27 @@
     <span class="n">sm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
     <span class="n">il</span> <span class="o">=</span> <span class="n">m</span> <span class="o">-</span> <span class="n">sm</span>
-    <span class="k">if</span> <span class="n">il</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="c1"># Needed by &quot;calc_poisson_llu&quot;</span>
-        <span class="n">il</span> <span class="o">=</span> <span class="mf">0.1</span>
     <span class="n">ir</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">sm</span>
+
+    <span class="c1"># Needed by &quot;calc_poisson_llu&quot;</span>
+    <span class="k">if</span> <span class="n">il</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">il</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">il</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">il</span><span class="p">[</span><span class="n">il</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
 
     <span class="k">return</span> <span class="n">il</span><span class="p">,</span> <span class="n">ir</span>
 
 
 <span class="k">def</span> <span class="nf">_poisson_u_from_db</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">database</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Decorator for functions to calculate poissonian uncertainties,</span>
+<span class="sd">    Used in functions to calculate poissonian uncertainties,</span>
 <span class="sd">    which are partially stored on databases. If &quot;m&quot; is above the</span>
 <span class="sd">    maximum number stored in the database, the gaussian approximation</span>
 <span class="sd">    is taken instead.</span>
 
 <span class="sd">    :param m: measured value(s).</span>
-<span class="sd">    :type m: float or numpy.ndarray(float)</span>
+<span class="sd">    :type m: int or numpy.ndarray(int)</span>
 <span class="sd">    :param database: name of the database.</span>
 <span class="sd">    :type database: str</span>
 <span class="sd">    :returns: Lower and upper frequentist uncertainties.</span>

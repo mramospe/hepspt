@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>calc_poisson_fu &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>bit_length &#8212; hep_spt 0.0.0.dev2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="calc_poisson_llu" href="hep_spt.calc_poisson_llu.html" />
-    <link rel="prev" title="set_style" href="hep_spt.set_style.html" />
+    <link rel="next" title="gcd" href="hep_spt.gcd.html" />
+    <link rel="prev" title="cls_ts" href="hep_spt.cls_ts.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,35 +41,28 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="calc-poisson-fu">
-<h1>calc_poisson_fu<a class="headerlink" href="#calc-poisson-fu" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="bit-length">
+<h1>bit_length<a class="headerlink" href="#bit-length" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="hep_spt.calc_poisson_fu">
-<code class="descclassname">hep_spt.</code><code class="descname">calc_poisson_fu</code><span class="sig-paren">(</span><em>m</em>, <em>cl=0.6826894921370859</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/stats.html#calc_poisson_fu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.calc_poisson_fu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the lower and upper frequentist uncertainties for
-a poisson distribution with mean “m”.</p>
+<dt id="hep_spt.bit_length">
+<code class="descclassname">hep_spt.</code><code class="descname">bit_length</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/math_aux.html#bit_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.bit_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the length of the binary representation of the given value(s).
+This function is equivalent to <code class="xref py py-func docutils literal"><span class="pre">int.bit_length()</span></code>, but can take arrays
+as an input.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><em>np.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em>) – mean of the Poisson distribution.</li>
-<li><strong>cl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><em>np.ndarray</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em>) – confidence level (between 0 and 1).</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>arg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>)</em>) – array of values.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Lower and upper uncertainties.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">length of the binary representation.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a>) or np.ndarray(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)">float</a>)</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – If the input does not contain integer values.</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This function might turn very time consuming. Consider using <a class="reference internal" href="hep_spt.poisson_fu.html#hep_spt.poisson_fu" title="hep_spt.poisson_fu"><code class="xref py py-func docutils literal"><span class="pre">poisson_fu()</span></code></a> instead.</p>
-</div>
 </dd></dl>
 
 </div>
@@ -105,8 +98,8 @@ a poisson distribution with mean “m”.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.set_style.html" title="previous chapter">set_style</a></li>
-      <li>Next: <a href="hep_spt.calc_poisson_llu.html" title="next chapter">calc_poisson_llu</a></li>
+      <li>Previous: <a href="hep_spt.cls_ts.html" title="previous chapter">cls_ts</a></li>
+      <li>Next: <a href="hep_spt.gcd.html" title="next chapter">gcd</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -133,7 +126,7 @@ a poisson distribution with mean “m”.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/api/hep_spt.calc_poisson_fu.rst.txt"
+      <a href="../_sources/api/hep_spt.bit_length.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

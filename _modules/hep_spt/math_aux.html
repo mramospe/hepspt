@@ -49,53 +49,83 @@
 
 
 <span class="c1"># Custom</span>
-<span class="kn">from</span> <span class="nn">hep_spt.core</span> <span class="k">import</span> <span class="n">decorate</span>
+<span class="kn">from</span> <span class="nn">hep_spt.core</span> <span class="k">import</span> <span class="n">taking_ndarray</span>
+<span class="kn">from</span> <span class="nn">hep_spt.cpython</span> <span class="k">import</span> <span class="n">math_aux_cpy</span>
 
 <span class="c1"># Python</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gcd&#39;</span><span class="p">,</span> <span class="s1">&#39;is_power_2&#39;</span><span class="p">,</span> <span class="s1">&#39;lcm&#39;</span><span class="p">,</span> <span class="s1">&#39;next_power_2&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bit_length&#39;</span><span class="p">,</span> <span class="s1">&#39;gcd&#39;</span><span class="p">,</span> <span class="s1">&#39;ibinary_repr&#39;</span><span class="p">,</span> <span class="s1">&#39;is_power_2&#39;</span><span class="p">,</span> <span class="s1">&#39;lcm&#39;</span><span class="p">,</span> <span class="s1">&#39;next_power_2&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="gcd"><a class="viewcode-back" href="../../api/hep_spt.gcd.html#hep_spt.gcd">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">gcd</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">):</span>
+<div class="viewcode-block" id="bit_length"><a class="viewcode-back" href="../../api/hep_spt.bit_length.html#hep_spt.bit_length">[docs]</a><span class="k">def</span> <span class="nf">bit_length</span><span class="p">(</span> <span class="n">arg</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the length of the binary representation of the given value(s).</span>
+<span class="sd">    This function is equivalent to :func:`int.bit_length`, but can take arrays</span>
+<span class="sd">    as an input.</span>
+
+<span class="sd">    :param arg: array of values.</span>
+<span class="sd">    :type arg: int or numpy.ndarray(int)</span>
+<span class="sd">    :returns: length of the binary representation.</span>
+<span class="sd">    :rtype: numpy.ndarray(int)</span>
+<span class="sd">    :raises TypeError: If the input does not contain integer values.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">math_aux_cpy</span><span class="o">.</span><span class="n">bit_length</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="gcd"><a class="viewcode-back" href="../../api/hep_spt.gcd.html#hep_spt.gcd">[docs]</a><span class="k">def</span> <span class="nf">gcd</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the greatest common divisor of a set of numbers.</span>
 
-<span class="sd">    :param a: first number.</span>
+<span class="sd">    :param a: first number(s).</span>
 <span class="sd">    :type a: int or numpy.ndarray(int)</span>
-<span class="sd">    :param b: second number.</span>
+<span class="sd">    :param b: second number(s).</span>
 <span class="sd">    :type b: int or numpy.ndarray(int)</span>
 <span class="sd">    :param args: any other numbers.</span>
 <span class="sd">    :type args: tuple(int or numpy.ndarray(int))</span>
 <span class="sd">    :returns: Greatest common divisor of a set of numbers.</span>
 <span class="sd">    :rtype: int or numpy.ndarray(int)</span>
+<span class="sd">    :raises TyperError: If the arrays do not contain integers or if \</span>
+<span class="sd">    the shapes do not coincide.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">while</span> <span class="n">b</span><span class="p">:</span>
-            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span>
-        <span class="k">return</span> <span class="n">a</span>
+        <span class="k">return</span> <span class="n">math_aux_cpy</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">gcd</span><span class="p">,</span> <span class="n">args</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">math_aux_cpy</span><span class="o">.</span><span class="n">gcd</span><span class="p">,</span> <span class="n">args</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="is_power_2"><a class="viewcode-back" href="../../api/hep_spt.is_power_2.html#hep_spt.is_power_2">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">is_power_2</span><span class="p">(</span> <span class="n">n</span> <span class="p">):</span>
+<div class="viewcode-block" id="ibinary_repr"><a class="viewcode-back" href="../../api/hep_spt.ibinary_repr.html#hep_spt.ibinary_repr">[docs]</a><span class="k">def</span> <span class="nf">ibinary_repr</span><span class="p">(</span> <span class="n">arg</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the binary representation of the given value(s).</span>
+<span class="sd">    This function is equivalent to :func:`numpy.binary_repr`, but the returned</span>
+<span class="sd">    value is an integer.</span>
+
+<span class="sd">    :param arg: array of values.</span>
+<span class="sd">    :type arg: int or numpy.ndarray(int)</span>
+<span class="sd">    :returns: Values in binary representation (as integers).</span>
+<span class="sd">    :rtype: numpy.ndarray(int)</span>
+<span class="sd">    :raises TypeError: If the input does not contain integer values.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">math_aux_cpy</span><span class="o">.</span><span class="n">ibinary_repr</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_power_2"><a class="viewcode-back" href="../../api/hep_spt.is_power_2.html#hep_spt.is_power_2">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">is_power_2</span><span class="p">(</span> <span class="n">arg</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Determine whether the input number(s) is a power of 2 or not. Only</span>
 <span class="sd">    works with positive numbers.</span>
 
-<span class="sd">    :param n: input number(s).</span>
-<span class="sd">    :type n: int or numpy.ndarray(int)</span>
+<span class="sd">    :param arg: input number(s).</span>
+<span class="sd">    :type arg: int or numpy.ndarray(int)</span>
 <span class="sd">    :returns: Whether the input number(s) is(are) a power of 2 or not.</span>
 <span class="sd">    :rtype: bool or numpy.ndarray(bool)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">((</span><span class="n">n</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">arg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">((</span><span class="n">arg</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">arg</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="lcm"><a class="viewcode-back" href="../../api/hep_spt.lcm.html#hep_spt.lcm">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
+<div class="viewcode-block" id="lcm"><a class="viewcode-back" href="../../api/hep_spt.lcm.html#hep_spt.lcm">[docs]</a><span class="nd">@taking_ndarray</span>
 <span class="k">def</span> <span class="nf">lcm</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the least common multiple of a set of numbers.</span>
@@ -115,20 +145,20 @@
         <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">lcm</span><span class="p">,</span> <span class="n">args</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="next_power_2"><a class="viewcode-back" href="../../api/hep_spt.next_power_2.html#hep_spt.next_power_2">[docs]</a><span class="nd">@decorate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">next_power_2</span><span class="p">(</span> <span class="n">n</span> <span class="p">):</span>
+<div class="viewcode-block" id="next_power_2"><a class="viewcode-back" href="../../api/hep_spt.next_power_2.html#hep_spt.next_power_2">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">next_power_2</span><span class="p">(</span> <span class="n">arg</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate the next number(s) greater than that(those) given and being a power(s) of 2.</span>
 
-<span class="sd">    :param n: input number(s).</span>
-<span class="sd">    :type n: int or numpy.ndarray(int)</span>
+<span class="sd">    :param arg: input number(s).</span>
+<span class="sd">    :type arg: int or numpy.ndarray(int)</span>
 <span class="sd">    :returns: Next power of 2 to the given number.</span>
 <span class="sd">    :rtype: int or numpy.ndarray(int)</span>
 
 <span class="sd">    .. note: If the input number is a power of two, it will return the \</span>
 <span class="sd">    same number.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">bit_length</span><span class="p">(</span><span class="n">arg</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

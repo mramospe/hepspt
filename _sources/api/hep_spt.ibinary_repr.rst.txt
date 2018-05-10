@@ -1,0 +1,6 @@
+ibinary_repr
+============
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: ibinary_repr

@@ -73,7 +73,6 @@
     <span class="s1">&#39;residual&#39;</span><span class="p">,</span>
     <span class="s1">&#39;samples_cycler&#39;</span><span class="p">,</span>
     <span class="s1">&#39;set_style&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;text_in_rectangles&#39;</span>
     <span class="p">]</span>
 
 <span class="c1"># Path to the directory containing the styles</span>
@@ -517,7 +516,7 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">sty_args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="text_in_rectangles"><a class="viewcode-back" href="../../api/hep_spt.text_in_rectangles.html#hep_spt.text_in_rectangles">[docs]</a><span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<span class="k">def</span> <span class="nf">text_in_rectangles</span><span class="p">(</span> <span class="n">recs</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">cax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Write text inside :class:`matplotlib.patches.Rectangle` instances.</span>
 
@@ -539,7 +538,7 @@
         <span class="n">cx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mf">2.</span>
         <span class="n">cy</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mf">2.</span>
 
-        <span class="n">cax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">cax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 
           </div>

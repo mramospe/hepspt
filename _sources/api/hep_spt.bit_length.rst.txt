@@ -1,0 +1,6 @@
+bit_length
+==========
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: bit_length

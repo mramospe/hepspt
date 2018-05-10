@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="adbin_hist1d" href="hep_spt.adbin_hist1d.html" />
-    <link rel="prev" title="adbin_as_rectangle" href="hep_spt.adbin_as_rectangle.html" />
+    <link rel="prev" title="Functions and classes" href="../main.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -45,7 +45,7 @@
 <h1>adbin_hist2d_rectangles<a class="headerlink" href="#adbin-hist2d-rectangles" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="hep_spt.adbin_hist2d_rectangles">
-<code class="descclassname">hep_spt.</code><code class="descname">adbin_hist2d_rectangles</code><span class="sig-paren">(</span><em>bins</em>, <em>arr</em>, <em>range=None</em>, <em>weights=None</em>, <em>cmap=None</em>, <em>fill='sw'</em>, <em>color=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d_rectangles" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.</code><code class="descname">adbin_hist2d_rectangles</code><span class="sig-paren">(</span><em>bins</em>, <em>x</em>, <em>y</em>, <em>range=None</em>, <em>weights=None</em>, <em>cmap=None</em>, <em>fill='sw'</em>, <em>color=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d_rectangles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a list of rectangles from a list of bins. It uses the input data
 in “arr” to calculate the associated quantity, which is specified in “fill”.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -60,7 +60,7 @@ in “arr” to calculate the associated quantity, which is specified in “fill
 <li><strong>cmap</strong> (<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Colormap.html#matplotlib.colors.Colormap" title="(in Matplotlib v2.2.2)"><em>matplotlib.colors.Colormap</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – optional color map. If “None”, the default from     matplotlib.pyplot is used.</li>
 <li><strong>fill</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – method to use for filling (‘sw’ or ‘dens’).</li>
 <li><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – whether the output rectangles are filled with a color or not.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – any other argument to <a class="reference internal" href="hep_spt.adbin_as_rectangle.html#hep_spt.adbin_as_rectangle" title="hep_spt.adbin_as_rectangle"><code class="xref py py-func docutils literal"><span class="pre">adbin_as_rectangle()</span></code></a>.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – any other argument to the constructor of     <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Rectangle.html#matplotlib.patches.Rectangle" title="(in Matplotlib v2.2.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.patches.Rectangle</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -107,7 +107,7 @@ in “arr” to calculate the associated quantity, which is specified in “fill
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.adbin_as_rectangle.html" title="previous chapter">adbin_as_rectangle</a></li>
+      <li>Previous: <a href="../main.html" title="previous chapter">Functions and classes</a></li>
       <li>Next: <a href="hep_spt.adbin_hist1d.html" title="next chapter">adbin_hist1d</a></li>
   </ul></li>
   </ul></li>

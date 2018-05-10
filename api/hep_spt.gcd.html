@@ -24,8 +24,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="is_power_2" href="hep_spt.is_power_2.html" />
-    <link rel="prev" title="cls_ts" href="hep_spt.cls_ts.html" />
+    <link rel="next" title="ibinary_repr" href="hep_spt.ibinary_repr.html" />
+    <link rel="prev" title="bit_length" href="hep_spt.bit_length.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -52,8 +52,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>a</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>)</em>) – first number.</li>
-<li><strong>b</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>)</em>) – second number.</li>
+<li><strong>a</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>)</em>) – first number(s).</li>
+<li><strong>b</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>)</em>) – second number(s).</li>
 <li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>)</em><em>)</em>) – any other numbers.</li>
 </ul>
 </td>
@@ -61,7 +61,10 @@
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Greatest common divisor of a set of numbers.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a> or <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a>)</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a> or <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)">numpy.ndarray</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a>)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>TyperError</strong> – If the arrays do not contain integers or if     the shapes do not coincide.</p>
 </td>
 </tr>
 </tbody>
@@ -101,8 +104,8 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.cls_ts.html" title="previous chapter">cls_ts</a></li>
-      <li>Next: <a href="hep_spt.is_power_2.html" title="next chapter">is_power_2</a></li>
+      <li>Previous: <a href="hep_spt.bit_length.html" title="previous chapter">bit_length</a></li>
+      <li>Next: <a href="hep_spt.ibinary_repr.html" title="next chapter">ibinary_repr</a></li>
   </ul></li>
   </ul></li>
 </ul>
