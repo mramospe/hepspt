@@ -92,7 +92,7 @@ def setup_package():
     '''
 
     try:
-        import numpy:
+        import numpy
     except:
         RuntimeError('Numpy not found. Please install it before setting up this package.')
 
