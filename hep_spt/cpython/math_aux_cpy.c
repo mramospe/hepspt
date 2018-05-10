@@ -255,15 +255,15 @@ static PyObject* gcd( PyObject *self, PyObject *args, PyObject *kwds ) {
 /** Definition of the functions to be exported.
  *
  */
-PyMethodDef Functions[] = {
+PyMethodDef Methods[] = {
 
-  {"bit_length", bit_length, METH_VARARGS|METH_KEYWORDS,
+  {"bit_length", (PyCFunction) bit_length, METH_VARARGS|METH_KEYWORDS,
    "Determine the bit length of the elements of an array."},
 
-  {"gcd", gcd, METH_VARARGS|METH_KEYWORDS,
+  {"gcd", (PyCFunction) gcd, METH_VARARGS|METH_KEYWORDS,
    "Greatest common divisor calculated element by element in two arrays."},
 
-  {"ibinary_repr", ibinary_repr, METH_VARARGS|METH_KEYWORDS,
+  {"ibinary_repr", (PyCFunction) ibinary_repr, METH_VARARGS|METH_KEYWORDS,
    "Calculate the binary representation of the numbers in an array."},
 
   {NULL, NULL, 0, NULL}
@@ -273,21 +273,46 @@ PyMethodDef Functions[] = {
 /** Definition of the module.
  *
  */
+#if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef math_aux_cpy = {
   PyModuleDef_HEAD_INIT,
   "math_aux_cpy",
   "CPython functions for the 'math_aux' module.",
   -1,
-  Functions
+  Methods
 };
+#endif
 
 
 /** Function to initialize the module.
  *
  */
-PyMODINIT_FUNC PyInit_math_aux_cpy(void) {
+#if PY_MAJOR_VERSION >= 3
+
+PyMODINIT_FUNC PyInit_math_aux_cpy( void ) {
+
+#define INITERROR return NULL
+
+#else
+
+void initmath_aux_cpy( void ) {
+
+#define INITERROR return
+
+#endif
 
   import_array();
 
-  return PyModule_Create(&math_aux_cpy);
+#if PY_MAJOR_VERSION >= 3
+  PyObject* module = PyModule_Create(&math_aux_cpy);
+#else
+  PyObject* module = Py_InitModule("math_aux_cpy", Methods);
+#endif
+
+  if ( module == NULL )
+    INITERROR;
+
+#if PY_MAJOR_VERSION >= 3
+  return module;
+#endif
 }

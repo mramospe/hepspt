@@ -91,7 +91,6 @@ def setup_package():
     '''
     Do the setup of the package, parsing the input arguments.
     '''
-
     try:
         import numpy
     except:
