@@ -190,7 +190,7 @@ def cp_fu( k, N, cl = __one_sigma__ ):
     return p - lw, up - p
 
 
-class FlatDistTransform:
+class FlatDistTransform(object):
     '''
     Instance to transform values following an unknown distribution :math:`f(x)`
     into a flat distribution. This class takes into account the inverse

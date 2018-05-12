@@ -24,7 +24,7 @@ __all__ = [
 CLsResult = namedtuple('CLsResult', ('CLs', 'CLb', 'CLsb'))
 
 
-class CLsTS:
+class CLsTS(object):
 
     def __init__( self, alt, null ):
         '''
@@ -244,7 +244,7 @@ def _call_wrap( meth ):
     return _wrapper
 
 
-class CLsHypo:
+class CLsHypo(object):
 
     def __init__( self, pdf ):
         '''

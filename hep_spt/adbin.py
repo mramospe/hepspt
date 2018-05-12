@@ -24,7 +24,7 @@ __all__ = ['AdBin', 'adbin_hist2d_rectangles',
            ]
 
 
-class AdBin:
+class AdBin(object):
 
     def __init__( self, arr, range = None, weights = None ):
         '''
