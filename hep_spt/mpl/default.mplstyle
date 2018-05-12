@@ -16,7 +16,6 @@ errorbar.capsize : 3
 
 # Font
 font.family : serif
-font.serif  : Times
 
 # Lines
 lines.linewidth  : 1.5
