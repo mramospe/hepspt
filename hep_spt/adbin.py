@@ -447,12 +447,15 @@ def adbin_hist2d_rectangles( bins, smp,
 def adbin_hist( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_memory = True ):
     '''
     Create an adaptive binned histogram in N dimensions.
+    The number of dimensions is determined by the shape of the input array.
+    An array with shape (n, 2), will create a 2-dimensional adaptive binned
+    histogram.
 
     :param arr: array of data with the variables as columns.
     :type arr: numpy.ndarray
-    :param range: range of the histogram in each dimension. As \
-    [(xmin, ymin), (xmax, ymax)].
-    :type range: numpy.ndarray(float, float) or None.
+    :param range: range of the histogram in each dimension. For example, \
+    [(xmin, ymin), (xmax, ymax)] in the 2-dimensional case.
+    :type range: numpy.ndarray((float, float, ...), (float, float, ...)) or None.
     :param nbins: number of bins. In this algorithm, divisions will be made \
     till the real number of bins is equal or greater than "nbins". If this \
     number is a power of "ndiv", then the real number of bins will match \
@@ -469,10 +472,10 @@ def adbin_hist( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_m
     :rtype: list(AdBin)
 
     .. note:: This function will automatically delete the arrays of data and
-       weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
-       set "free_memory" to False. In such case, the user is responsible of
-       deleting the data in each bin by calling the aforementioned function, if
-       necessary.
+       weights copied in the adaptive bins by calling `AdBin.free_memory`. To
+       prevent it set "free_memory" to False. In such case, the user is
+       responsible of deleting the data in each bin by calling the
+       aforementioned function, if necessary.
 
     .. seealso:: :func:`adbin_hist1d`, :meth:`AdBin.divide`,
        :meth:`AdBin.free_memory`
@@ -527,9 +530,9 @@ def _proc_hist_input( arr, range = None, weights = None ):
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param range: range of the histogram in each dimension. As \
-    [(xmin, ymin), (xmax, ymax)].
-    :type range: tuple(np.ndarray, np.ndarray) or None
+    :param range: range of the histogram in each dimension. For example, \
+    [(xmin, ymin), (xmax, ymax)] in the 2-dimensional case.
+    :type range: numpy.ndarray((float, float, ...), (float, float, ...)) or None.
     :param weights: optional array of weights.
     :type weights: numpy.ndarray or None
     :returns: Processed array of data, weights, and the minimum \
