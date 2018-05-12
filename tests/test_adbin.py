@@ -56,7 +56,15 @@ def test_adbin_hist1d():
     ref = np.append(arr, 10)
     assert np.allclose(e, ref)
 
-    # Case with weights
+    # Weighted case - 1
+    smp = np.array([0., 1., 0.])
+    wgts = np.array([1., 2., 1.])
+    v, e, _, _ = hep_spt.adbin_hist1d(smp, nbins=2, weights=wgts)
+
+    assert np.allclose(e, [0., 0.5, 1.])
+    assert np.allclose(v, [2., 2.])
+
+    # Weighted case - 2
     arr  = np.arange(10)
     wgts = 0.5*np.ones(10)
     _, e, _, _ = hep_spt.adbin_hist1d(arr + 0.5, 10, range=(0, 10), weights=wgts)
@@ -85,6 +93,10 @@ def test_adbin_hist1d_edges():
     ref = np.append(smp - 0.5, len(smp))
 
     assert np.allclose(edges, ref)
+
+    # Test exceptions
+    with pytest.raises(ValueError):
+        hep_spt.adbin_hist1d_edges(smp, len(smp) + 1)
 
 
 def test_adbin_hist2d():

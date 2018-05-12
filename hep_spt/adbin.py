@@ -85,7 +85,7 @@ class AdBin:
         :returns: Two new bins, supposed to contain half the sum of weights of \
         the parent.
         :rtype: AdBin, AdBin
-        :raises RuntimeError: if called after the data pointers have been freed.
+        :raises RuntimeError: If called after the data pointers have been freed.
 
         .. warning:: This method can not be called after
            :meth:`AdBin.free_memory`, since it destroys the arrays of data and
@@ -255,65 +255,86 @@ def adbin_as_rectangle( adb, **kwargs ):
     return Rectangle((xmin, ymin), width, height, **kwargs)
 
 
-def adbin_hist1d( arr, nbins = 100, range = None, weights = None, **kwargs ):
+def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = False, **kwargs ):
     '''
     Create an adaptive binned histogram in one dimension.
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param nbins: number of bins.
+    :param nbins: number of bins. Must be greater than the length of the \
+    input array.
     :type nbins: int
     :param range: range of the histogram.
     :type range: tuple(float, float) or None
     :param weights: optional array of weights.
     :type weights: numpy.ndarray or None
+    :param is_sorted: whether the input sample is already sorted or not.
+    :type is_sorted: bool
     :param kwargs: any other argument to be passed to \
     :func:`plotting.errorbar_hist`.
     :type kwargs: dict
-    :returns: Values, edges, the spacing between bins in X, the Y errors. \
-    In the non-weighted case, errors in Y are returned as two arrays, with the \
-    lower and upper uncertainties.
+    :returns: Values, edges, the distance between the center and the bounds \
+    of the bins in X and Y errors. The shape of the errors in Y depends on \
+    the uncertainty type passed to :func:`errorbar_hist` in "kwargs".
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
 
-    .. seealso:: :func:`adbin_hist2d`, :func:`adbin_histnd`
+    .. seealso:: :func:`adbin_hist1d_edges`, :func:`adbin_hist2d`, :func:`adbin_histnd`
     '''
-    arr, range, pws = _proc_hist_input_1d(arr, range, weights)
+    arr, range, weights = _proc_hist_input_1d(arr, range, weights)
 
     # Sort the data
-    srt = arr.argsort()
-    arr = arr[srt]
-    pws = pws[srt]
+    if not is_sorted:
+        srt     = arr.argsort()
+        arr     = arr[srt]
+        weights = weights[srt]
 
     # Solving the problem from the left and from the right reduces
     # the bias in the last edges
-    le = adbin_hist1d_edges(arr, nbins, range, pws)
-    re = adbin_hist1d_edges(arr[::-1], nbins, range, pws[::-1])[::-1]
+    le = adbin_hist1d_edges(arr, nbins, range, weights, is_sorted=True)
+    re = adbin_hist1d_edges(arr[::-1], nbins, range, weights[::-1], is_sorted=True)[::-1]
 
     edges = (re + le)/2.
 
-    vmin, vmax = range
-    edges[0]   = vmin
-    edges[-1]  = vmax
+    edges[0], edges[-1] = range
 
     return errorbar_hist(arr, edges, range, weights, **kwargs)
 
 
-def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None ):
+def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorted = False ):
     '''
     Create adaptive binned edges to make a histogram from the given data.
 
     :param arr: array of data.
     :type arr: numpy.ndarray
-    :param nbins: number of bins.
+    :param nbins: number of bins. Must be greater than the length of the \
+    input array.
     :type nbins: int
     :param range: range of the histogram.
     :type range: tuple(float, float) or None
     :param weights: optional array of weights.
     :type weights: numpy.ndarray or None
+    :param is_sorted: whether the input sample is already sorted or not.
+    :type is_sorted: bool
     :returns: Edges of the histogram, with size (nbins + 1).
     :rtype: numpy.ndarray
+    :raises ValueError: If the number of bins specified is greater than the \
+    length of the input array.
+
+    .. note:: The number of bins must be smaller than the length of the input array.
+
+    .. seealso:: :func:`adbin_hist1d`
     '''
+    if nbins > len(arr):
+        raise ValueError(
+            'Number of bins can not be greater than the length of the input array')
+
     arr, (vmin, vmax), weights = _proc_hist_input_1d(arr, range, weights)
+
+    # Sort the data
+    if not is_sorted:
+        srt     = arr.argsort()
+        arr     = arr[srt]
+        weights = weights[srt]
 
     edges = np.zeros(nbins + 1)
 
