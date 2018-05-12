@@ -31,6 +31,7 @@ __all__ = [
     'residual',
     'samples_cycler',
     'set_style',
+    'text_in_rectangles'
     ]
 
 # Path to the directory containing the styles
@@ -480,7 +481,7 @@ def text_in_rectangles( recs, txt, cax = None, **kwargs ):
 
     :param recs: set of rectangles to work with.
     :type recs: list(matplotlib.patches.Rectangle)
-    :param txt: text to fill with in each rectangle.
+    :param txt: text to fill in each rectangle.
     :type txt: list(str)
     :param cax: axes where the rectangles are being drawn. If None, then the \
     current axes are taken.

@@ -426,3 +426,21 @@ def test_set_style():
     '''
     for s in hep_spt.available_styles():
         hep_spt.set_style(s)
+
+
+def test_text_in_rectangles():
+    '''
+    Test the "text_in_rectangles" function.
+    '''
+    smp = np.array([
+        np.array([ 0., 0.,  1., 1.]),
+        np.array([ 0., 1.,  0., 1.])
+    ]).T
+    weights = np.array([ 2,  1,   2,  1])
+
+    nbins = 2
+    bins  = hep_spt.adbin_hist(smp, nbins)
+
+    recs, conts = hep_spt.adbin_hist2d_rectangles(bins, smp)
+
+    hep_spt.text_in_rectangles(recs, map(str, conts))

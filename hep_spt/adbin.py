@@ -14,12 +14,13 @@ from hep_spt.stats import poisson_fu
 import numpy as np
 import bisect, itertools
 import matplotlib.pyplot as plt
+import warnings
 from matplotlib.patches import Rectangle
 
 
 __all__ = ['AdBin', 'adbin_hist2d_rectangles',
            'adbin_hist1d', 'adbin_hist1d_edges',
-           'adbin_hist2d', 'adbin_histnd'
+           'adbin_hist'
            ]
 
 
@@ -115,18 +116,19 @@ class AdBin:
         mask_left  = (self.array < bounds)
         mask_right = (self.array >= bounds)
 
-        # These functions calculate the sizes of the bins generated
-        # with each cut.
-        size = lambda arr: arr.max() - arr.min()
-
         def _msz( arr, i ):
             '''
             Calculate the minimum size of the input array, for the
             given index and considering the two global masks
             "mask_left" and "mask_right".
             '''
+            size = lambda arr: arr.max() - arr.min()
+
             sarr = arr[:,i]
             sz   = float(size(sarr))
+
+            if sz == 0:
+                return np.infty
 
             sl = size(sarr[mask_left[:,i]])/sz
             sr = size(sarr[mask_right[:,i]])/sz
@@ -139,6 +141,14 @@ class AdBin:
         # smallest bin possible.
 
         min_dim = frags.argmin()
+
+        if min_dim == np.infty:
+            # This is a very special case. If we reach this point, some points
+            # have the same values in all dimensions, so the division is not
+            # possible.
+            warnings.warn('All possible divisions have size equal to zero; not dividing',
+                          RuntimeWarning)
+            return [self]
 
         il = mask_left[:,min_dim]
         ir = mask_right[:,min_dim]
@@ -278,7 +288,7 @@ def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = Fa
     the uncertainty type passed to :func:`errorbar_hist` in "kwargs".
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
 
-    .. seealso:: :func:`adbin_hist1d_edges`, :func:`adbin_hist2d`, :func:`adbin_histnd`
+    .. seealso:: :func:`adbin_hist1d_edges`, :func:`adbin_hist`
     '''
     arr, range, weights = _proc_hist_input_1d(arr, range, weights)
 
@@ -366,46 +376,20 @@ def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorte
     return edges
 
 
-def adbin_hist2d( x, y, *args, **kwargs ):
-    '''
-    Create a adaptive binned histogram in two dimensions.
-    This function calls the :func:`adbin_histnd` function.
-
-    :param arr: array of data with the variables as columns.
-    :type arr: numpy.ndarray
-    :param nbins: number of bins.
-    :type nbins: int
-    :param weights: optional array of weights.
-    :type weights: numpy.ndarray
-    :param kwargs: extra arguments to :func:`adbin_histnd`.
-    :type kwargs: dict
-    :returns: Adaptive bins of the histogram, with size (nbins + 1).
-    :rtype: list(AdBin)
-
-    .. note:: This function will automatically delete the arrays of data and
-       weights in the adaptive bins by calling `AdBin.free_memory`. To prevent it
-       set "free_memory" to False. In such case, the user is responsible of
-       deleting the data in each bin by calling the aforementioned function, if
-       necessary.
-
-    .. seealso:: :func:`adbin_hist1d`, :func:`adbin_histnd`
-    '''
-    return adbin_histnd(np.array([x, y]).T, *args, **kwargs)
-
-
-def adbin_hist2d_rectangles( bins, x, y,
+def adbin_hist2d_rectangles( bins, smp,
                              range = None, weights = None,
                              cmap = None, fill = 'sw',
                              color = True,
                              **kwargs ):
     '''
-    Create a list of rectangles from a list of bins. It uses the input data
-    in "arr" to calculate the associated quantity, which is specified in "fill".
+    Create a list of rectangles from a list of bins.
+    It uses the input data in "arr" to calculate the associated quantity,
+    which is specified in "fill".
 
     :param bins: input bins.
     :type bins: list(AdBin)
-    :param arr: input data.
-    :type arr: list(value-type)
+    :param smp: input sample. It must have shape (n, 2).
+    :type smp: numpy.ndarray
     :param range: range of the histogram in each dimension. As \
     [(xmin, ymin), (xmax, ymax)].
     :type range: tuple(np.ndarray, np.ndarray) or None
@@ -424,11 +408,13 @@ def adbin_hist2d_rectangles( bins, x, y,
     :returns: Rectangles and contents.
     :rtype: numpy.ndarray, numpy.ndarray
     '''
-    assert fill in ('sw', 'dens')
+    if fill not in ('sw', 'dens'):
+        raise ValueError('Unknown fill option "{}", choose '\
+                         'between ("sw", "dens")'.format(fill))
 
     recs = [adbin_as_rectangle(b, **kwargs) for b in bins]
 
-    arr, range, weights = _proc_hist_input(np.array([x, y]).T, range, weights)
+    arr, range, weights = _proc_hist_input(smp, range, weights)
 
     # Get the contents associated to each bin
     func = getattr(AdBin, fill)
@@ -458,7 +444,7 @@ def adbin_hist2d_rectangles( bins, x, y,
     return recs, contents
 
 
-def adbin_histnd( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_memory = True ):
+def adbin_hist( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_memory = True ):
     '''
     Create an adaptive binned histogram in N dimensions.
 
@@ -488,10 +474,12 @@ def adbin_histnd( arr, nbins = 100, range = None, weights = None, ndiv = 2, free
        deleting the data in each bin by calling the aforementioned function, if
        necessary.
 
-    .. seealso:: :func:`adbin_hist1d`, :func:`adbin_hist2d`,
-       :meth:`AdBin.divide`, :meth:`AdBin.free_memory`
+    .. seealso:: :func:`adbin_hist1d`, :meth:`AdBin.divide`,
+       :meth:`AdBin.free_memory`
     '''
-    assert len(arr) // nbins > 0
+    if nbins > len(arr):
+        raise ValueError(
+            'Number of bins can not be greater than the length of the input array')
 
     bins = [AdBin(arr, range, weights)]
     while len(bins) < nbins:
