@@ -182,7 +182,17 @@ def test_adbin_hist():
     '''
     Test for the "adbin_hist" function.
     '''
-    # Check the one-dimensional case
+    # Test the equivalence with the "adbin_hist1d" function.
+    sample = np.random.normal(0, 2, 1024)
+
+    smpc = np.array([sample]).T
+    bins = hep_spt.adbin_hist(smpc, nbins=16, ndiv=2)
+
+    v, e, ex, ey = hep_spt.adbin_hist1d(sample, nbins=16)
+
+    assert np.allclose(v, [b.sw(smpc) for b in bins])
+
+    # Checks on a large sample
     sample = np.array([
         np.random.uniform(0, 10, 100),
         np.random.uniform(0, 10, 100),
