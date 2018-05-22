@@ -15,9 +15,12 @@ The **High Energy Physics Statistics and Plotting Tools** package provides tools
 Main points
 ===========
 
+  * Functions needed on day-to-day work, like calculating errors, residuals, etc.
+  * Classes to create adaptive binned histograms, and some functions to represent them using `matplotlib <https://matplotlib.org/>`_.
   * Statistical functions to work with Bayesian/Frequentist approaches.
   * Utilities to handle poissonian and/or weighted histograms.
-  * Tools to handle `matplotlib <https://matplotlib.org/>`_ figures.
+  * Simple classes to work with the CLs method.
+  * A set of `matplotlib <https://matplotlib.org/>`_ styles.
 
 Considerations:
 ===============
@@ -29,7 +32,7 @@ Considerations:
 Installation:
 =============
 
-This package is available on `PyPi <https://pypi.org/>`_, so just type
+This package is available on `PyPi <https://pypi.org/>`_, so simply type
 
 .. code-block:: bash
 
