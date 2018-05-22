@@ -8,7 +8,6 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Local
 from hep_spt import __project_path__
-from hep_spt.math_aux import lcm
 from hep_spt.histograms import cfe
 
 # Python
