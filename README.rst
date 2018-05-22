@@ -24,12 +24,12 @@ Considerations:
 
   * Inputs passed to the functions and classes are usually preferred as `numpy.ndarray <https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ndarray.html>`_ objects.
   * Plotting functions and classes are designed to work with `matplotlib <https://matplotlib.org/>`_.
-  * Statistical tools are built on top of the standard `scipy <https://www.scipy.org/>`_ package.
+  * Statistical tools are built on top of the standard `scipy <https://scipy.org/>`_ package.
 
 Installation:
 =============
 
-This package is available on PyPi, so just type
+This package is available on `PyPi <https://pypi.org/>`_, so just type
 
 .. code-block:: bash
 

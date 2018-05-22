@@ -253,7 +253,7 @@ class FlatDistTransform(object):
         Return the value of the transformation of the given values.
 
         :param values: values to transform.
-        :type values: array-like
+        :type values: numpy.ndarray
         '''
         return self._trans(values)
 
@@ -268,6 +268,8 @@ def gauss_u( s, cl = __one_sigma__ ):
     :type cl: float
     :returns: Gaussian uncertainty.
     :rtype: float or numpy.ndarray(float)
+
+    .. seealso:: :func:`poisson_fu`, :func:`poisson_llu`, :func:`sw2_u`
     '''
     n = np.sqrt(__chi2_one_dof__.ppf(cl))
 
@@ -279,12 +281,12 @@ def _ks_2samp_values( arr, weights = None ):
     Calculate the values needed to perform the Kolmogorov-Smirnov test.
 
     :param arr: input sample.
-    :type arr: array-like
+    :type arr: numpy.ndarray
     :param weights: possible weights.
-    :type weights: array-like
+    :type weights: numpy.ndarray
     :returns: Sorted sample, stack with the cumulative distribution and
     sum of weights.
-    :rtype: array-like, array-like, float
+    :rtype: numpy.ndarray, numpy.ndarray, float
     '''
     weights = weights if weights is not None else np.ones(len(arr), dtype=float)
 
@@ -351,6 +353,8 @@ def poisson_fu( m ):
     :type m: int or numpy.ndarray(int)
     :returns: Lower and upper frequentist uncertainties.
     :rtype: numpy.ndarray(float, float)
+
+    .. seealso:: :func:`gauss_u`, :func:`poisson_llu`, :func:`sw2_u`
     '''
     return _poisson_u_from_db(m, 'poisson_fu.dat')
 
@@ -380,6 +384,8 @@ def poisson_llu( m ):
     :type m: int or numpy.ndarray(int)
     :returns: Lower and upper frequentist uncertainties.
     :rtype: numpy.ndarray(float, float)
+
+    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`sw2_u`
     '''
     return _poisson_u_from_db(m, 'poisson_llu.dat')
 
@@ -514,14 +520,14 @@ def rv_random_sample( func, size = 10000, **kwargs ):
 
 def sw2_u( arr, bins = 20, range = None, weights = None ):
     '''
-    Calculate the errors of a weighted sample. This uncertainty is
-    calculated as follows:
+    Calculate the errors using the sum of squares of weights.
+    The uncertainty is calculated as follows:
 
     .. math::
 
        \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}
 
-    where *i* refers to the i-th bin and :math:`j \in [0, n]` refers to
+    where *i* refers to the i-th bin and :math:`j \in [0, n)` refers to
     each entry in that bin with weight :math:`\omega_{i,j}`. If "weights" is
     None, then this coincides with the square root of the number of entries
     in each bin.
@@ -535,6 +541,8 @@ def sw2_u( arr, bins = 20, range = None, weights = None ):
     :type weights: numpy.ndarray(value-type)
     :returns: Symmetric uncertainty.
     :rtype: numpy.ndarray
+
+    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`poisson_llu`
     '''
     if weights is not None:
         values = np.histogram(arr, bins, range, weights = weights*weights)[0]

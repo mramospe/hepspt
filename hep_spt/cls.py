@@ -12,6 +12,7 @@ from scipy.stats import rv_discrete, rv_continuous
 from collections import namedtuple
 
 # Local
+from hep_spt.core import decorate
 from hep_spt.stats import rv_random_sample
 
 __all__ = [
@@ -36,6 +37,9 @@ class CLsTS(object):
         :param null: null hypothesis.
         :type null: CLsHypo
 
+        :ivar ah: alternative hypothesis.
+        :ivar nh: null hypothesis.
+
         .. seealso:: :class:`CLsTS_discrete`, :class:`CLsTS_continuous`
         '''
         self.ah = alt
@@ -50,7 +54,7 @@ class CLsTS(object):
         :param hyp: hypothesis.
         :type hyp: CLsHypo
         :param tv: value of the test-statistics.
-        :type tv: array-like
+        :type tv: numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
         :returns: Confidence level.
@@ -63,7 +67,7 @@ class CLsTS(object):
         Calculate the test-statistics associated to the given value.
 
         :param v: input value:
-        :type v: array-like
+        :type v: numpy.ndarray
         :returns: Value of the test-statistics.
         :rtype: float
         '''
@@ -84,7 +88,7 @@ class CLsTS(object):
         numpy.ndarray objects.
 
         :param v: input value
-        :type v: array-like
+        :type v: numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
         :returns: Tuple with the CLs, CLb and CLsb values.
@@ -114,6 +118,9 @@ class CLsTS_discrete(CLsTS):
         :param null: null hypothesis.
         :type null: CLsHypo
 
+        :ivar ah: alternative hypothesis.
+        :ivar nh: null hypothesis.
+
         .. seealso:: :class:`CLsTS`, :class:`CLsTS_continuous`
         '''
         CLsTS.__init__(self, alt, null)
@@ -127,7 +134,7 @@ class CLsTS_discrete(CLsTS):
         :param hyp: hypothesis.
         :type hyp: CLsHypo
         :param tv: value of the test-statistics.
-        :type tv: float or array-like
+        :type tv: float or numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
         '''
@@ -166,6 +173,9 @@ class CLsTS_continuous(CLsTS):
         :param null: null hypothesis.
         :type null: CLsHypo
 
+        :ivar ah: alternative hypothesis.
+        :ivar nh: null hypothesis.
+
         .. seealso:: :class:`CLsTS`, :class:`CLsTS_discrete`
         '''
         CLsTS.__init__(self, alt, null)
@@ -179,7 +189,7 @@ class CLsTS_continuous(CLsTS):
         :param hyp: hypothesis.
         :type hyp: CLsHypo
         :param tv: value of the test-statistics.
-        :type tv: array-like
+        :type tv: numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
         '''
@@ -203,6 +213,7 @@ class CLsTS_continuous(CLsTS):
         return cs[idx]
 
 
+@decorate
 def _call_wrap( meth ):
     '''
     Wrapper function for the __call__ method of classes inheriting from
@@ -246,17 +257,20 @@ def _call_wrap( meth ):
 
 class CLsHypo(object):
 
-    def __init__( self, pdf ):
+    def __init__( self, pf ):
         '''
         Represent an hypothesis to be used in the CLs method.
         The class is built from a given probability function.
 
-        :param pdf: probability function.
-        :type pdf: scipy.stats.rv_frozen
+        :param pf: probability density/mass function.
+        :type pf: scipy.stats.rv_frozen
+
+        :ivar func: probability density/mass function representing the \
+        hypothesis.
 
         .. seealso:: :class:`CLsHypo_discrete`, :class:`CLsHypo_continuous`
         '''
-        self.func = pdf
+        self.func = pf
 
     def __call__( self, v ):
         '''
@@ -281,7 +295,7 @@ class CLsHypo(object):
         0.011185197244103258
 
         :param v: input value(s).
-        :type v: array-like
+        :type v: numpy.ndarray
         :returns: Global probability.
         :rtype: float
         '''
@@ -293,7 +307,7 @@ class CLsHypo(object):
         hypothesis. This is equivalent to call CLsHypo.percentil(0.5).
 
         :returns: Median of the distribution.
-        :rtype: array-like
+        :rtype: numpy.ndarray
         '''
         return self.percentil(0.5)
 
@@ -304,24 +318,26 @@ class CLsHypo(object):
         :param prob: probability.
         :type prob: float
         :returns: Percentil.
-        :rtype: array-like
+        :rtype: numpy.ndarray
         '''
         return self.func.ppf(prob)
 
 
 class CLsHypo_discrete(CLsHypo):
 
-    def __init__( self, pdf ):
+    def __init__( self, pmf ):
         '''
         Represent an hypothesis which works on a discrete domain.
         The class is built from a given probability function.
 
-        :param pdf: probability function.
-        :type pdf: scipy.stats.rv_frozen
+        :param pmf: probability mass function.
+        :type pmf: scipy.stats.rv_frozen
+
+        :ivar func: probability mass function representing the hypothesis.
 
         .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_continuous`
         '''
-        CLsHypo.__init__(self, pdf)
+        CLsHypo.__init__(self, pmf)
 
     @_call_wrap
     def __call__( self, v ):
@@ -330,7 +346,7 @@ class CLsHypo_discrete(CLsHypo):
         :meth:`CLsHypo.__call__` for more details.
 
         :param v: input value(s).
-        :type v: array-like
+        :type v: numpy.ndarray
         :returns: Global probability.
         :rtype: float
         '''
@@ -344,8 +360,10 @@ class CLsHypo_continuous(CLsHypo):
         Represent an hypothesis which works on a continuous domain.
         The class is built from a given probability function.
 
-        :param pdf: probability function.
+        :param pdf: probability density function.
         :type pdf: scipy.stats.rv_frozen
+
+        :ivar func: probability density function representing the hypothesis.
 
         .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_discrete`
         '''
@@ -358,7 +376,7 @@ class CLsHypo_continuous(CLsHypo):
         :meth:`CLsHypo.__call__` for more details.
 
         :param v: input value(s).
-        :type v: array-like
+        :type v: numpy.ndarray
         :returns: Global probability.
         :rtype: float
         '''

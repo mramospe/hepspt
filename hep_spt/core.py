@@ -19,7 +19,7 @@ def decorate( deco ):
     docstring of the original function.
 
     :param deco: raw decorator which was meant to be used.
-    :type deco: function-like
+    :type deco: function
     :returns: Decorator which preserves the name and docstring of the \
     original function.
     :rtype: function

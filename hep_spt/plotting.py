@@ -313,19 +313,19 @@ def pull( vals, err, ref, ref_err = None ):
        (\sigma'^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2
 
     :param vals: values to compare with.
-    :type vals: array-like
+    :type vals: numpy.ndarray
     :param err: array of errors. Both symmetric and asymmetric errors \
     can be provided. In the latter case, they must be provided as a \
     (2, n) array.
-    :type err: array-like
+    :type err: numpy.ndarray
     :param ref: reference to follow.
-    :type ref: array-like
+    :type ref: numpy.ndarray
     :param ref_err: possible errors for the reference.
-    :type ref_err: array-like
+    :type ref_err: numpy.ndarray
     :returns: Pull of the values with respect to the reference and \
     associated errors. In case asymmetric errors have been provided, \
     the returning array has shape (2, n).
-    :rtype: array-like, array-like
+    :rtype: numpy.ndarray, numpy.ndarray
     :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).
 
     .. seealso:: :func:`residual`
@@ -371,19 +371,19 @@ def residual( vals, err, ref, ref_err = None ):
        (\sigma'^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2
 
     :param vals: values to compare with.
-    :type vals: array-like
+    :type vals: numpy.ndarray
     :param err: array of errors. Both symmetric and asymmetric errors \
     can be provided. In the latter case, they must be provided as a \
     (2, n) array.
-    :type err: array-like
+    :type err: numpy.ndarray
     :param ref: reference to follow.
-    :type ref: array-like
+    :type ref: numpy.ndarray
     :param ref_err: possible errors for the reference.
-    :type ref_err: array-like
+    :type ref_err: numpy.ndarray
     :returns: Residual of the values with respect to the reference and \
     associated errors. In case asymmetric errors have been provided, \
     the returning array has shape (2, n).
-    :rtype: array-like, array-like
+    :rtype: numpy.ndarray, numpy.ndarray
     :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).
 
     .. seealso:: :func:`pull`
