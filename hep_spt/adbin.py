@@ -7,7 +7,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Custom
-from hep_spt.plotting import errorbar_hist, process_range
+from hep_spt.histograms import errorbar_hist, process_range
 from hep_spt.stats import poisson_fu
 
 # Python
