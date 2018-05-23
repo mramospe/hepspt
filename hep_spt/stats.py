@@ -18,7 +18,7 @@ from scipy.stats import ks_2samp as scipy_ks_2samp
 
 # Local
 from hep_spt import __project_path__
-from hep_spt.core import decorate
+from hep_spt.core import decorate, taking_ndarray
 
 # Define confidence intervals.
 __chi2_one_dof__ = chi2(1)
@@ -48,7 +48,7 @@ def _access_db( name ):
 
     :param name: name of the file holding the data.
     :type name: str
-    :returns: array holding the data.
+    :returns: Array holding the data.
     :rtype: numpy.ndarray
     '''
     ifile = os.path.join(__project_path__, 'data', name)
@@ -65,11 +65,11 @@ def calc_poisson_fu( m, cl = __one_sigma__ ):
     a poisson distribution with mean "m".
 
     :param m: mean of the Poisson distribution.
-    :type m: float
+    :type m: float or np.ndarray(float)
     :param cl: confidence level (between 0 and 1).
-    :type cl: float
-    :returns: lower and upper uncertainties.
-    :rtype: float, float
+    :type cl: float or np.ndarray(float)
+    :returns: Lower and upper uncertainties.
+    :rtype: (float, float) or np.ndarray(float, float)
 
     .. note:: This function might turn very time consuming. Consider using :func:`poisson_fu` instead.
     '''
@@ -102,11 +102,11 @@ def calc_poisson_llu( m, cl = __one_sigma__ ):
     Calculate poisson uncertainties based on the logarithm of likelihood.
 
     :param m: mean of the Poisson distribution.
-    :type m: float
+    :type m: float or numpy.ndarray(float)
     :param cl: confidence level (between 0 and 1).
-    :type cl: float
-    :returns: lower and upper uncertainties.
-    :rtype: float, float
+    :type cl: float or numpy.ndarray(float)
+    :returns: Lower and upper uncertainties.
+    :rtype: (float, float) or numpy.ndarray(float, float)
 
     .. note:: This function might turn very time consuming. Consider using :func:`poisson_llu` instead.
     '''
@@ -130,41 +130,67 @@ def calc_poisson_llu( m, cl = __one_sigma__ ):
     return _process_poisson_u(m, lw, up)
 
 
-@decorate(np.vectorize)
+@taking_ndarray
 def cp_fu( k, N, cl = __one_sigma__ ):
     '''
     Return the frequentist Clopper-Pearson uncertainties of having
     "k" events in "N".
 
     :param k: passed events.
-    :type k: int
+    :type k: int or numpy.ndarray(int)
     :param N: total number of events.
-    :type N: int
+    :type N: int or numpy.ndarray(int)
     :param cl: confidence level.
-    :type cl: float
-    :returns: lower and upper uncertainties on the efficiency.
-    :rtype: float
+    :type cl: float or numpy.ndarray(float)
+    :returns: Lower and upper uncertainties on the efficiency.
+    :rtype: float or numpy.ndarray(float)
     '''
-    p = float(k)/N
+    p = k.astype(float)/N
 
     pcl = 0.5*(1. - cl)
 
-    # Lower uncertainty
-    if k != 0:
-        lw = beta(k, N - k + 1).ppf(pcl)
-    else:
-        lw = p
+    if k.ndim == 0:
+        if k != 0:
+            lw = beta(k, N - k + 1).ppf(pcl)
+        else:
+            lw = p
 
-    # Upper uncertainty
-    if k != N:
-        up = beta(k + 1, N - k).ppf(1. - pcl)
+        if k != N:
+            up = beta(k + 1, N - k).ppf(1. - pcl)
+        else:
+            up = p
     else:
-        up = p
+
+        # Solve for low uncertainty
+        lw = np.array(p)
+        cd = (k != 0)
+
+        if pcl.ndim == 0:
+            lpcl = pcl
+        else:
+            lpcl = pcl[cd]
+
+        lk, lN = k[cd], N[cd]
+
+        lw[cd] = beta(lk, lN - lk + 1).ppf(lpcl)
+
+        # Solve for upper uncertainty
+        up = np.array(p)
+        cd = (k != N)
+
+        if pcl.ndim == 0:
+            upcl = pcl
+        else:
+            upcl = pcl[cd]
+
+        uk, uN = k[cd], N[cd]
+
+        up[cd] = beta(uk + 1, uN- uk).ppf(1. - upcl)
 
     return p - lw, up - p
 
 
-class FlatDistTransform:
+class FlatDistTransform(object):
     '''
     Instance to transform values following an unknown distribution :math:`f(x)`
     into a flat distribution. This class takes into account the inverse
@@ -227,7 +253,7 @@ class FlatDistTransform:
         Return the value of the transformation of the given values.
 
         :param values: values to transform.
-        :type values: array-like
+        :type values: numpy.ndarray
         '''
         return self._trans(values)
 
@@ -237,11 +263,13 @@ def gauss_u( s, cl = __one_sigma__ ):
     Calculate the gaussian uncertainty for a given confidence level.
 
     :param s: standard deviation of the gaussian.
-    :type s: float or collection(float)
+    :type s: float or numpy.ndarray(float)
     :param cl: confidence level.
     :type cl: float
-    :returns: gaussian uncertainty.
-    :rtype: float or collection(float)
+    :returns: Gaussian uncertainty.
+    :rtype: float or numpy.ndarray(float)
+
+    .. seealso:: :func:`poisson_fu`, :func:`poisson_llu`, :func:`sw2_u`
     '''
     n = np.sqrt(__chi2_one_dof__.ppf(cl))
 
@@ -253,12 +281,12 @@ def _ks_2samp_values( arr, weights = None ):
     Calculate the values needed to perform the Kolmogorov-Smirnov test.
 
     :param arr: input sample.
-    :type arr: array-like
+    :type arr: numpy.ndarray
     :param weights: possible weights.
-    :type weights: array-like
-    :returns: sorted sample, stack with the cumulative distribution and
+    :type weights: numpy.ndarray
+    :returns: Sorted sample, stack with the cumulative distribution and
     sum of weights.
-    :rtype: array-like, array-like, float
+    :rtype: numpy.ndarray, numpy.ndarray, float
     '''
     weights = weights if weights is not None else np.ones(len(arr), dtype=float)
 
@@ -277,21 +305,21 @@ def _ks_2samp_values( arr, weights = None ):
 
 def ks_2samp( a, b, wa = None, wb = None ):
     '''
-    Compute the Kolmogorov-Smirnov statistic on 2 samples. This is a two-sided
-    test for the null hypothesis that 2 independent samples are drawn from the
-    same continuous distribution. Weights for each sample are accepted. If no
-    weights are provided, then the function scipy.stats.ks_2samp is called
-    instead.
+    Compute the Kolmogorov-Smirnov statistic on 2 samples.
+    This is a two-sided test for the null hypothesis that 2 independent
+    samples are drawn from the same continuous distribution.
+    Weights for each sample are accepted. If no weights are provided, then
+    the function :func:`scipy.stats.ks_2samp` is called instead.
 
     :param a: first sample.
-    :type a: array-like
+    :type a: numpy.ndarray
     :param b: second sample.
-    :type b: array-like
+    :type b: numpy.ndarray
     :param wa: set of weights for "a". Same length as "a".
-    :type wa: array-like or None.
+    :type wa: numpy.ndarray or None.
     :param wb: set of weights for "b". Same length as "b".
-    :type wb: array-like or None.
-    :returns: test statistic and two-tailed p-value.
+    :type wb: numpy.ndarray or None.
+    :returns: Test statistic and two-tailed p-value.
     :rtype: float, float
     '''
     if wa is None and wb is None:
@@ -322,11 +350,11 @@ def poisson_fu( m ):
     deviation of confidence level.
 
     :param m: measured value(s).
-    :type m: array-like
-    :returns: lower and upper frequentist uncertainties.
-    :rtype: array-like(float, float)
+    :type m: int or numpy.ndarray(int)
+    :returns: Lower and upper frequentist uncertainties.
+    :rtype: numpy.ndarray(float, float)
 
-    .. note:: The input array is recasted to integer type before doing the operation.
+    .. seealso:: :func:`gauss_u`, :func:`poisson_llu`, :func:`sw2_u`
     '''
     return _poisson_u_from_db(m, 'poisson_fu.dat')
 
@@ -353,15 +381,16 @@ def poisson_llu( m ):
     where :math:`\\alpha = 2\log P(n_\\text{obs}|n_\\text{obs})`.
 
     :param m: measured value(s).
-    :type m: array-like
-    :returns: lower and upper frequentist uncertainties.
-    :rtype: array-like(float, float)
+    :type m: int or numpy.ndarray(int)
+    :returns: Lower and upper frequentist uncertainties.
+    :rtype: numpy.ndarray(float, float)
 
-    .. note:: The input array is recasted to integer type before doing the operation.
+    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`sw2_u`
     '''
     return _poisson_u_from_db(m, 'poisson_llu.dat')
 
 
+@taking_ndarray
 def _poisson_initials( m ):
     '''
     Return the boundaries to use as initial values in
@@ -369,34 +398,46 @@ def _poisson_initials( m ):
     uncertainties.
 
     :param m: mean of the Poisson distribution.
-    :type m: float
-    :returns: upper and lower boundaries.
-    :rtype: float, float
+    :type m: float or numpy.ndarray(float)
+    :returns: Upper and lower boundaries.
+    :rtype: (float, float) or numpy.ndarray(float, float)
     '''
     sm = np.sqrt(m)
 
     il = m - sm
-    if il <= 0:
-        # Needed by "calc_poisson_llu"
-        il = 0.1
     ir = m + sm
+
+    # Needed by "calc_poisson_llu"
+    if il.ndim == 0:
+        if il <= 0:
+            il = 0.1
+    else:
+        il[il <= 0] = 0.1
 
     return il, ir
 
 
 def _poisson_u_from_db( m, database ):
     '''
-    Decorator for functions to calculate poissonian uncertainties,
+    Used in functions to calculate poissonian uncertainties,
     which are partially stored on databases. If "m" is above the
     maximum number stored in the database, the gaussian approximation
     is taken instead.
 
+    :param m: measured value(s).
+    :type m: int or numpy.ndarray(int)
     :param database: name of the database.
     :type database: str
-    :returns: lower and upper frequentist uncertainties.
-    :rtype: array-like(float, float)
+    :returns: Lower and upper frequentist uncertainties.
+    :rtype: (float, float) or numpy.ndarray(float, float)
+    :raises TypeError: if the input is a (has) non-integer value(s).
+    :raises ValueError: if the input value(s) is(are) not positive.
     '''
-    m = np.array(m, dtype = np.int32)
+    m = np.array(m)
+    if not np.issubdtype(m.dtype, np.integer):
+        raise TypeError('Calling function with a non-integer value')
+    if np.any(m < 0):
+        raise ValueError('Values must be positive')
 
     scalar_input = False
     if m.ndim == 0:
@@ -438,8 +479,8 @@ def _process_poisson_u( m, lw, up ):
     :type lw: float
     :param up: upper bound.
     :type up: float
-    :returns: lower and upper uncertainties.
-    :type: array-like(float, float)
+    :returns: Lower and upper uncertainties.
+    :type: numpy.ndarray(float, float)
     '''
     s_lw = m - lw
     s_up = up - m
@@ -454,18 +495,18 @@ def _process_poisson_u( m, lw, up ):
 
 def rv_random_sample( func, size = 10000, **kwargs ):
     '''
-    Create a random sample from the given rv_frozen object. This is typically
-    created after building a scipy.stats.rv_discrete or
-    scipy.stats.rv_continuous functions.
+    Create a random sample from the given rv_frozen object.
+    This is usually used after creating a :class:`scipy.stats.rv_discrete`
+    or :class:`scipy.stats.rv_continuous` class.
 
     :param func: function to use for the generation.
-    :type func: scipy.stats.rv_frozen
+    :type func: :class:`scipy.stats.rv_frozen`
     :param size: size of the sample.
     :type size: int
-    :param kwargs: any other argument to scipy.stats.rv_frozen.rvs.
+    :param kwargs: any other argument to :class:`scipy.stats.rv_frozen.rvs`.
     :type kwargs: dict
-    :returns: generated sample.
-    :rtype: array-like
+    :returns: Generated sample.
+    :rtype: numpy.ndarray
     '''
     args = np.array(func.args)
 
@@ -479,14 +520,14 @@ def rv_random_sample( func, size = 10000, **kwargs ):
 
 def sw2_u( arr, bins = 20, range = None, weights = None ):
     '''
-    Calculate the errors of a weighted sample. This uncertainty is
-    calculated as follows:
+    Calculate the errors using the sum of squares of weights.
+    The uncertainty is calculated as follows:
 
     .. math::
 
        \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}
 
-    where *i* refers to the i-th bin and :math:`j \in [0, n]` refers to
+    where *i* refers to the i-th bin and :math:`j \in [0, n)` refers to
     each entry in that bin with weight :math:`\omega_{i,j}`. If "weights" is
     None, then this coincides with the square root of the number of entries
     in each bin.
@@ -497,9 +538,11 @@ def sw2_u( arr, bins = 20, range = None, weights = None ):
     :param range: range to process in the input array.
     :type range: tuple(float, float)
     :param weights: possible weights for the histogram.
-    :type weights: collection(value-type)
-    :returns: symmetric uncertainty.
-    :rtype: array-like
+    :type weights: numpy.ndarray(value-type)
+    :returns: Symmetric uncertainty.
+    :rtype: numpy.ndarray
+
+    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`poisson_llu`
     '''
     if weights is not None:
         values = np.histogram(arr, bins, range, weights = weights*weights)[0]

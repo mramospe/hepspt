@@ -12,11 +12,12 @@ from scipy.stats import rv_discrete, rv_continuous
 from collections import namedtuple
 
 # Local
+from hep_spt.core import decorate
 from hep_spt.stats import rv_random_sample
 
 __all__ = [
-    'CLsTS_discrete', 'CLsTS_continuous',
-    'CLsHypo_discrete', 'CLsHypo_continuous',
+    'CLsTS', 'CLsTS_discrete', 'CLsTS_continuous',
+    'CLsHypo', 'CLsHypo_discrete', 'CLsHypo_continuous',
     'cls_hypo', 'cls_ts'
     ]
 
@@ -24,21 +25,22 @@ __all__ = [
 CLsResult = namedtuple('CLsResult', ('CLs', 'CLb', 'CLsb'))
 
 
-class CLsTS:
-    '''
-    Base class to represent the test-statistics function to work with the
-    CLs method.
+class CLsTS(object):
 
-    .. seealso:: CLsTS_discrete, CLsTS_continuous
-    '''
     def __init__( self, alt, null ):
         '''
-        Build the class using the alternative and null hypotheses.
+        Base class to represent the test-statistics function to work with the
+        CLs method. The class is built from the alternative and null hypotheses.
 
         :param alt: alternative hypothesis.
         :type alt: CLsHypo
         :param null: null hypothesis.
         :type null: CLsHypo
+
+        :ivar ah: alternative hypothesis.
+        :ivar nh: null hypothesis.
+
+        .. seealso:: :class:`CLsTS_discrete`, :class:`CLsTS_continuous`
         '''
         self.ah = alt
         self.nh = null
@@ -52,10 +54,10 @@ class CLsTS:
         :param hyp: hypothesis.
         :type hyp: CLsHypo
         :param tv: value of the test-statistics.
-        :type tv: array-like
+        :type tv: numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
-        :returns: confidence level.
+        :returns: Confidence level.
         :rtype: float
         '''
         raise NotImplementedError('Attempt to call abstract class method')
@@ -65,8 +67,8 @@ class CLsTS:
         Calculate the test-statistics associated to the given value.
 
         :param v: input value:
-        :type v: array-like
-        :returns: test-statistics value.
+        :type v: numpy.ndarray
+        :returns: Value of the test-statistics.
         :rtype: float
         '''
         num = self.ah(v)
@@ -86,10 +88,10 @@ class CLsTS:
         numpy.ndarray objects.
 
         :param v: input value
-        :type v: array-like
+        :type v: numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
-        :returns: tuple with the CLs, CLb and CLsb values.
+        :returns: Tuple with the CLs, CLb and CLsb values.
         :rtype: collections.namedtuple
         '''
         tv = self.test_stat(v)
@@ -104,20 +106,22 @@ class CLsTS:
 
 
 class CLsTS_discrete(CLsTS):
-    '''
-    Base class to represent the test-statistics function to work with the
-    CLs method using hypothesis working on a discrete domain.
 
-    .. seealso:: CLsTS, CLsTS_continuous
-    '''
     def __init__( self, alt, null ):
         '''
-        Build the class using the alternative and null hypotheses.
+        Base class to represent the test-statistics function to work with the
+        CLs method using hypothesis working on a discrete domain. The class is
+        built from the alternative and null hypotheses.
 
         :param alt: alternative hypothesis.
         :type alt: CLsHypo
         :param null: null hypothesis.
         :type null: CLsHypo
+
+        :ivar ah: alternative hypothesis.
+        :ivar nh: null hypothesis.
+
+        .. seealso:: :class:`CLsTS`, :class:`CLsTS_continuous`
         '''
         CLsTS.__init__(self, alt, null)
 
@@ -130,7 +134,7 @@ class CLsTS_discrete(CLsTS):
         :param hyp: hypothesis.
         :type hyp: CLsHypo
         :param tv: value of the test-statistics.
-        :type tv: float or array-like
+        :type tv: float or numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
         '''
@@ -157,20 +161,22 @@ class CLsTS_discrete(CLsTS):
 
 
 class CLsTS_continuous(CLsTS):
-    '''
-    Base class to represent the test-statistics function to work with the
-    CLs method using hypothesis working on a continuous domain.
 
-    .. seealso:: CLsTS, CLsTS_discrete
-    '''
     def __init__( self, alt, null ):
         '''
-        Build the class using the alternative and null hypotheses.
+        Base class to represent the test-statistics function to work with the
+        CLs method using hypothesis working on a continuous domain.
+        The class is built from the alternative and null hypotheses.
 
         :param alt: alternative hypothesis.
         :type alt: CLsHypo
         :param null: null hypothesis.
         :type null: CLsHypo
+
+        :ivar ah: alternative hypothesis.
+        :ivar nh: null hypothesis.
+
+        .. seealso:: :class:`CLsTS`, :class:`CLsTS_discrete`
         '''
         CLsTS.__init__(self, alt, null)
 
@@ -183,7 +189,7 @@ class CLsTS_continuous(CLsTS):
         :param hyp: hypothesis.
         :type hyp: CLsHypo
         :param tv: value of the test-statistics.
-        :type tv: array-like
+        :type tv: numpy.ndarray
         :param size: size of the sample to generate.
         :type size: int
         '''
@@ -207,13 +213,15 @@ class CLsTS_continuous(CLsTS):
         return cs[idx]
 
 
+@decorate
 def _call_wrap( meth ):
     '''
-    Wrapper function for the __call__ method of classes inheriting from CLsHypo.
+    Wrapper function for the __call__ method of classes inheriting from
+    :class:`CLsHypo`.
 
     :param meth: method to wrap.
     :type meth: method
-    :returns: wrapped function.
+    :returns: Wrapped function.
     :rtype: function
     '''
     def _wrapper( self, *args, **kwargs ):
@@ -247,20 +255,22 @@ def _call_wrap( meth ):
     return _wrapper
 
 
-class CLsHypo:
-    '''
-    Represent an hypothesis to be used in the CLs method.
+class CLsHypo(object):
 
-    .. seealso:: CLsHypo_discrete, CLsHypo_continuous
-    '''
-    def __init__( self, pdf ):
+    def __init__( self, pf ):
         '''
-        Build using a given probability function.
+        Represent an hypothesis to be used in the CLs method.
+        The class is built from a given probability function.
 
-        :param pdf: probability function.
-        :type pdf: scipy.stats.rv_frozen
+        :param pf: probability density/mass function.
+        :type pf: scipy.stats.rv_frozen
+
+        :ivar func: probability density/mass function representing the \
+        hypothesis.
+
+        .. seealso:: :class:`CLsHypo_discrete`, :class:`CLsHypo_continuous`
         '''
-        self.func = pdf
+        self.func = pf
 
     def __call__( self, v ):
         '''
@@ -285,8 +295,8 @@ class CLsHypo:
         0.011185197244103258
 
         :param v: input value(s).
-        :type v: array-like
-        :returns: global probability.
+        :type v: numpy.ndarray
+        :returns: Global probability.
         :rtype: float
         '''
         raise NotImplementedError('Attempt to call abstract class method')
@@ -296,8 +306,8 @@ class CLsHypo:
         Calculate the median of the distribution associated to this
         hypothesis. This is equivalent to call CLsHypo.percentil(0.5).
 
-        :returns: median of the distribution.
-        :rtype: array-like
+        :returns: Median of the distribution.
+        :rtype: numpy.ndarray
         '''
         return self.percentil(0.5)
 
@@ -307,26 +317,27 @@ class CLsHypo:
 
         :param prob: probability.
         :type prob: float
-        :returns: percentil.
-        :rtype: array-like
+        :returns: Percentil.
+        :rtype: numpy.ndarray
         '''
         return self.func.ppf(prob)
 
 
 class CLsHypo_discrete(CLsHypo):
-    '''
-    Represent an hypothesis which works on a discrete domain.
 
-    .. seealso:: CLsHypo, CLsHypo_continuous
-    '''
-    def __init__( self, pdf ):
+    def __init__( self, pmf ):
         '''
-        Build using a given probability function.
+        Represent an hypothesis which works on a discrete domain.
+        The class is built from a given probability function.
 
-        :param pdf: probability function.
-        :type pdf: scipy.stats.rv_frozen
+        :param pmf: probability mass function.
+        :type pmf: scipy.stats.rv_frozen
+
+        :ivar func: probability mass function representing the hypothesis.
+
+        .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_continuous`
         '''
-        CLsHypo.__init__(self, pdf)
+        CLsHypo.__init__(self, pmf)
 
     @_call_wrap
     def __call__( self, v ):
@@ -335,25 +346,26 @@ class CLsHypo_discrete(CLsHypo):
         :meth:`CLsHypo.__call__` for more details.
 
         :param v: input value(s).
-        :type v: array-like
-        :returns: global probability.
+        :type v: numpy.ndarray
+        :returns: Global probability.
         :rtype: float
         '''
         return self.func.pmf(v)
 
 
 class CLsHypo_continuous(CLsHypo):
-    '''
-    Represent an hypothesis which works on a continuous domain.
 
-    .. seealso:: CLsHypo, CLsHypo_discrete
-    '''
     def __init__( self, pdf ):
         '''
-        Build using a given probability function.
+        Represent an hypothesis which works on a continuous domain.
+        The class is built from a given probability function.
 
-        :param pdf: probability function.
+        :param pdf: probability density function.
         :type pdf: scipy.stats.rv_frozen
+
+        :ivar func: probability density function representing the hypothesis.
+
+        .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_discrete`
         '''
         CLsHypo.__init__(self, pdf)
 
@@ -364,8 +376,8 @@ class CLsHypo_continuous(CLsHypo):
         :meth:`CLsHypo.__call__` for more details.
 
         :param v: input value(s).
-        :type v: array-like
-        :returns: global probability.
+        :type v: numpy.ndarray
+        :returns: Global probability.
         :rtype: float
         '''
         return self.func.pdf(v)
@@ -373,9 +385,10 @@ class CLsHypo_continuous(CLsHypo):
 
 def cls_ts( alt, null ):
     '''
-    Create an instance of CLsTS without needing to worry about the type of
-    hypothesis (discrete or continuous). However, a check is done to see if
-    both types coincide.
+    Create an instance of :class:`CLsTS` from the alternative an null
+    hypotheses.
+    A check is done to see if both refere to the same type of probability
+    function (discrete or continuous).
 
     :param alt: alternative hypothesis.
     :type alt: CLsHypo
@@ -385,7 +398,7 @@ def cls_ts( alt, null ):
     :rtype: CLsTS
     :raises RuntimeError: if the type of both hypotheses is different.
 
-    .. seealso:: CLsTS_discrete, CLsTS_continuous
+    .. seealso:: :class:`CLsTS_discrete`, :class:`CLsTS_continuous`
     '''
     discrete = isinstance(alt, CLsHypo_discrete)
     if discrete != isinstance(null, CLsHypo_discrete):
@@ -399,8 +412,9 @@ def cls_ts( alt, null ):
 
 def cls_hypo( func, *args, **kwargs ):
     '''
-    Create an instance of CLsHypo without needing to worry if
-    the probability function is discrete or continuous.
+    Create an instance of CLsHypo given a probability density(mass) function,
+    as an object of type :class:`scipy.stats.rv_discrete` or
+    :class:`scipy.stats.rv_continuous`.
 
     :param func: probability function.
     :type func: scipy.stats.rv_discrete or scipy.stats.rv_continuous
@@ -409,7 +423,7 @@ def cls_hypo( func, *args, **kwargs ):
     :param kwargs: input arguments to "func".
     :type kwargs: dict
 
-    .. seealso:: CLsHypo_discrete, CLsHypo_continuous
+    .. seealso:: :class:`CLsHypo_discrete`, :class:`CLsHypo_continuous`
     '''
     if isinstance(func, rv_discrete):
         return CLsHypo_discrete(func(*args, **kwargs))

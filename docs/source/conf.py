@@ -147,6 +147,11 @@ html_sidebars = {
 }
 
 
+# -- Options for auto-documentation ---------------------------------------
+
+autoclass_content = 'init'
+
+
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
@@ -207,4 +212,9 @@ texinfo_documents = [
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {
+    'https://docs.python.org/'                   : None,
+    'http://docs.scipy.org/doc/numpy/'           : None,
+    'http://docs.scipy.org/doc/scipy/reference/' : None,
+    'http://matplotlib.sourceforge.net/'         : None
+}

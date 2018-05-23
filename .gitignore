@@ -59,3 +59,4 @@ hep_spt/version.py
 # Other files #
 ###############
 *.txt
+.pytest_cache

@@ -9,7 +9,8 @@ __email__  = 'miguel.ramos.pernas@cern.ch'
 
 # Python
 import os
-from setuptools import setup, find_packages
+import textwrap
+from setuptools import setup, find_packages, Extension
 
 #
 # Version of the package. Before a new release is made
@@ -17,7 +18,7 @@ from setuptools import setup, find_packages
 # for the fourth tag are "dev", "alpha", "beta",
 # "cand", "final" or "post".
 #
-version_info = (0, 0, 0, 'dev', 1)
+version_info = (0, 0, 0, 'dev', 2)
 
 tag = version_info[3]
 
@@ -37,48 +38,101 @@ if tag != 'final':
 
 version = frmt.format('.'.join(map(str, version_info[:3])), version_info[4])
 
-# Setup function
-setup(
 
-    name = 'hep_spt',
+def cpython_module( directory ):
+    '''
+    Determine the CPython modules available on the given directory
+    '''
+    extensions = []
+    for path, _, fnames in os.walk(directory):
+        for f in filter(lambda s: s.endswith('.c'), fnames):
 
-    version = version,
+            full_path = os.path.join(path, f)
 
-    description = 'Provides statistical and plotting tools using general '\
-    'python packages, focused to High Energy Physics.',
+            ext = Extension(full_path[:-2].replace('/', '.'), [full_path])
 
-    # Read the long description from the README
-    long_description = open('README.rst').read(),
+            extensions.append(ext)
 
-    # Keywords to search for the package
-    keywords = 'physics hep statistics plotting',
+    return extensions
 
-    # Find all the packages in this directory
-    packages = find_packages(),
 
-    # Data files
-    package_data = {'hep_spt': ['data/*', 'mpl/*']},
+def create_version_file():
+    '''
+    Create the file version.py given the version of the package.
+    '''
+    version_file = open('hep_spt/version.py', 'wt')
+    version_file.write(textwrap.dedent("""\
+    '''
+    Auto-generated module holding the version of the hep_spt package
+    '''
 
-    # Requisites
-    install_requires = ['matplotlib', 'numpy', 'pytest', 'scipy'],
+    __version__ = "{}"
+    __version_info__ = {}
 
-    # Test requirements
-    setup_requires = ['pytest-runner'],
+    __all__ = ['__version__', '__version_info__']
+    """.format(version, version_info)))
+    version_file.close()
 
-    tests_require = ['pytest'],
+
+def install_requirements():
+    '''
+    Get the installation requirements from the "requirements.txt" file.
+    '''
+    reqs = []
+    with open('requirements.txt') as f:
+        for line  in f:
+            li = line.strip()
+            if not li.startswith('#'):
+                reqs.append(li)
+    return reqs
+
+
+def setup_package():
+    '''
+    Do the setup of the package, parsing the input arguments.
+    '''
+    try:
+        import numpy
+    except:
+        RuntimeError('Numpy not found. Please install it before setting up this package.')
+
+    setup(
+
+        name = 'hep_spt',
+
+        version = version,
+
+        description = 'Provides statistical and plotting tools using general '\
+        'python packages, focused to High Energy Physics.',
+
+        # Read the long description from the README
+        long_description = open('README.rst').read(),
+
+        # Keywords to search for the package
+        keywords = 'physics hep statistics plotting',
+
+        # Find all the packages in this directory
+        packages = find_packages(),
+
+        # Data files
+        package_data = {'hep_spt': ['data/*', 'mpl/*']},
+
+        # C-API source
+        ext_modules = cpython_module('hep_spt/cpython'),
+
+        include_dirs = [numpy.get_include()],
+
+        # Requisites
+        install_requires = install_requirements(),
+
+        # Test requirements
+        setup_requires = ['pytest-runner'],
+
+        tests_require = ['pytest'],
     )
 
+    create_version_file()
 
-# Create a module with the versions
-version_file = open('hep_spt/version.py', 'wt')
-version_file.write("""\
-'''
-Auto-generated module holding the version of the hep_spt package
-'''
 
-__version__ = "{}"
-__version_info__ = {}
-
-__all__ = ['__version__', '__version_info__']
-""".format(version, version_info))
-version_file.close()
+if __name__ == '__main__':
+    setup_package()
