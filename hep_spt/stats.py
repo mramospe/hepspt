@@ -360,22 +360,22 @@ def stat_values( arr, axis = None, weights = None ):
     - Mean:
 
     .. math::
-       \\bar{x} = \\sum_{i=0}^n{\\frac{x_i}{n}}
+       \\bar{x} = \\sum_{i=0}^{n - 1}{\\frac{x_i}{n}}
 
     - Weighted mean:
 
     .. math::
-       \\bar{x}^w = \\frac{\\sum_{i=0}^n{\omega_i x_i}}{\\sum_{i=0}^n{\omega_i}}
+       \\bar{x}^w = \\frac{\\sum_{i=0}^{n - 1}{\omega_i x_i}}{\\sum_{i=0}^{n - 1}{\omega_i}}
 
     - Variance of the sample:
 
     .. math::
-       \sigma_s = \sum_{i=0}^n{\\frac{(x_i - \\bar{x})^2}{n - 1}}
+       \sigma_s = \sum_{i=0}^{n - 1}{\\frac{(x_i - \\bar{x})^2}{n - 1}}
 
     - Weighted variance of the sample:
 
     .. math::
-       \sigma^w_s = \\frac{N'}{(N' - 1)}\\frac{\sum_{i=0}^n{\omega_i(x_i - \\bar{x}^w)^2}}{\sum_{i=0}^n{\omega_i}}
+       \sigma^w_s = \\frac{N'}{(N' - 1)}\\frac{\sum_{i=0}^{n - 1}{\omega_i(x_i - \\bar{x}^w)^2}}{\sum_{i=0}^{n - 1}{\omega_i}}
 
     where :math:`\omega_i` refers to the weights associated with the value
     :math:`x_i`, and in the last equation N' refers to the number of non-zero
@@ -618,7 +618,7 @@ def sw2_u( arr, bins = 20, range = None, weights = None ):
 
     .. math::
 
-       \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}
+       \sigma_i = \sqrt{\sum_{j = 0}^{n - 1} \omega_{i,j}^2}
 
     where *i* refers to the i-th bin and :math:`j \in [0, n)` refers to
     each entry in that bin with weight :math:`\omega_{i,j}`. If "weights" is
