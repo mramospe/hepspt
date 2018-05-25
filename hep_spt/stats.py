@@ -403,7 +403,7 @@ def stat_values( arr, axis = None, weights = None ):
     '''
     keepdims = (axis is not None)
 
-    asum = lambda a: np.sum(a, axis=axis, keepdims=keepdims)
+    asum = lambda a: np.sum(a, axis=axis, keepdims=keepdims, dtype=float)
 
     if weights is None:
 
