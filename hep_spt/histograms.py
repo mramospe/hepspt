@@ -6,7 +6,7 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Local
-from hep_spt.stats import poisson_fu, poisson_llu, sw2_u
+from hep_spt.stats import stat_values, poisson_fu, poisson_llu, sw2_u
 
 # Python
 import numpy as np
@@ -41,9 +41,9 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, n
     :param bins: see :func:`numpy.histogram`.
     :type bins: int or sequence of scalars or str
     :param range: range to process in the input array.
-    :type range: tuple(float, float)
+    :type range: None or tuple(float, float)
     :param weights: possible weights for the histogram.
-    :type weights: numpy.ndarray(value-type)
+    :type weights: None or numpy.ndarray(value-type)
     :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
@@ -126,7 +126,7 @@ def process_range( arr, range = None ):
     :param range: range of the histogram. It must contain tuple(min, max), \
     where "min" and "max" can be either floats (1D case) or collections \
     (ND case).
-    :type range: tuple or None
+    :type range: None or tuple
     :returns: Minimum and maximum values.
     :rtype: float, float
     '''
@@ -140,7 +140,7 @@ def process_range( arr, range = None ):
     return vmin, vmax
 
 
-def profile( x, y, bins = 20, range = None ):
+def profile( x, y, bins = 20, range = None, weights = None ):
     '''
     Calculate the profile from a 2D data sample.
     It corresponds to the mean of the values in "y" for each bin in "x".
@@ -152,9 +152,12 @@ def profile( x, y, bins = 20, range = None ):
     :param bins: see :func:`numpy.histogram`.
     :type bins: int or sequence of scalars or str
     :param range: range to process in the input array.
-    :type range: tuple(float, float)
-    :returns: Profile in "y".
-    :rtype: numpy.ndarray
+    :type range: None or tuple(float, float)
+    :param weights: possible array of weights for the profile.
+    :type weights: None or numpy.ndarray(value-type)
+    :returns: Profile in "y" and standard deviation. To see the definition of \
+    the mean and standard deviation see :func:`stat_values`.
+    :rtype: numpy.ndarray, numpy.ndarray
     '''
     vmin, vmax = process_range(x, range)
 
@@ -162,11 +165,22 @@ def profile( x, y, bins = 20, range = None ):
 
     dig = np.digitize(x, edges)
 
-    prof = np.array([
-        y[dig == i].mean() for i in np.arange(1, len(edges))
-    ])
+    ln = len(edges)
 
-    return prof
+    prof, std = np.empty((ln - 1,)), np.empty((ln - 1,))
+    for i in np.arange(1, ln):
+
+        cond = (dig == i)
+
+        if weights is not None:
+            vals = stat_values(y[cond], weights[cond])
+        else:
+            vals = stat_values(y[cond])
+
+        prof[i - 1] = vals.mean
+        std[i - 1]  = vals.std
+
+    return prof, std
 
 
 def pull( vals, err, ref, ref_err = None ):

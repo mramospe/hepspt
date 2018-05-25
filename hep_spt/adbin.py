@@ -36,9 +36,9 @@ class AdBin(object):
         :type arr: numpy.ndarray
         :param range: range of the histogram in each dimension. As \
         [(xmin, ymin), (xmax, ymax)].
-        :type range: numpy.ndarray(float, float) or None.
+        :type range: None or numpy.ndarray(float, float).
         :param weights: possible weights.
-        :type weights: numpy.ndarray or None
+        :type weights: numpy.ndarray
         '''
         arr, (vmin, vmax), weights = _proc_hist_input(arr, range, weights)
 
@@ -67,7 +67,7 @@ class AdBin(object):
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
-        :type weights: numpy.ndarray or None
+        :type weights: numpy.ndarray
         :returns: Density of this bin.
         :rtype: float
         '''
@@ -205,7 +205,7 @@ class AdBin(object):
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
-        :type weights: numpy.ndarray or None
+        :type weights: numpy.ndarray
         :returns: Sum of weights for this bin.
         :rtype: float
         '''
@@ -225,7 +225,7 @@ class AdBin(object):
         :param arr: array of data to process.
         :type arr: numpy.ndarray
         :param weights: possible weights.
-        :type weights: numpy.ndarray or None
+        :type weights: numpy.ndarray
         :returns: Uncertainty of the sum of weights in the bin. If "weights" is \
         provided, this magnitude is equal to the square root of the sum of \
         weights in the bin. Otherwise poissonian errors are considered.
@@ -275,9 +275,9 @@ def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = Fa
     input array.
     :type nbins: int
     :param range: range of the histogram.
-    :type range: tuple(float, float) or None
+    :type range: None or tuple(float, float)
     :param weights: optional array of weights.
-    :type weights: numpy.ndarray or None
+    :type weights: numpy.ndarray
     :param is_sorted: whether the input sample is already sorted or not.
     :type is_sorted: bool
     :param kwargs: any other argument to be passed to \
@@ -320,9 +320,9 @@ def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorte
     input array.
     :type nbins: int
     :param range: range of the histogram.
-    :type range: tuple(float, float) or None
+    :type range: None or tuple(float, float)
     :param weights: optional array of weights.
-    :type weights: numpy.ndarray or None
+    :type weights: numpy.ndarray
     :param is_sorted: whether the input sample is already sorted or not.
     :type is_sorted: bool
     :returns: Edges of the histogram, with size (nbins + 1).
@@ -392,12 +392,12 @@ def adbin_hist2d_rectangles( bins, smp,
     :type smp: numpy.ndarray
     :param range: range of the histogram in each dimension. As \
     [(xmin, ymin), (xmax, ymax)].
-    :type range: tuple(np.ndarray, np.ndarray) or None
+    :type range: None or tuple(np.ndarray, np.ndarray)
     :param weights: input weights.
     :type weights: list(value-type)
     :param cmap: optional color map. If "None", the default from \
     matplotlib.pyplot is used.
-    :type cmap: matplotlib.colors.Colormap or None
+    :type cmap: matplotlib.colors.Colormap
     :param fill: method to use for filling ('sw' or 'dens').
     :type fill: str
     :param color: whether the output rectangles are filled with a color or not.
@@ -455,14 +455,14 @@ def adbin_hist( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_m
     :type arr: numpy.ndarray
     :param range: range of the histogram in each dimension. For example, \
     [(xmin, ymin), (xmax, ymax)] in the 2-dimensional case.
-    :type range: numpy.ndarray((float, float, ...), (float, float, ...)) or None.
+    :type range: None or numpy.ndarray((float, float, ...), (float, float, ...)).
     :param nbins: number of bins. In this algorithm, divisions will be made \
     till the real number of bins is equal or greater than "nbins". If this \
     number is a power of "ndiv", then the real number of bins will match \
     "nbins".
     :type nbins: int
     :param weights: optional array of weights.
-    :type weights: numpy.ndarray or None
+    :type weights: numpy.ndarray
     :param ndiv: see :meth:`AdBin.divide`.
     :type ndiv: int
     :param free_memory: whether to free the pointers pointing to the arrays of \
@@ -502,9 +502,9 @@ def _proc_hist_input_1d( arr, range = None, weights = None ):
     :param arr: array of data.
     :type arr: numpy.ndarray
     :param range: range of the histogram.
-    :type range: tuple(float, float) or None
+    :type range: None or tuple(float, float)
     :param weights: optional array of weights.
-    :type weights: numpy.ndarray or None
+    :type weights: numpy.ndarray
     :returns: Processed array of data, weights, and the minimum \
     and maximum values.
     :rtype: numpy.ndarray, tuple(float, float), numpy.ndarray
@@ -532,9 +532,9 @@ def _proc_hist_input( arr, range = None, weights = None ):
     :type arr: numpy.ndarray
     :param range: range of the histogram in each dimension. For example, \
     [(xmin, ymin), (xmax, ymax)] in the 2-dimensional case.
-    :type range: numpy.ndarray((float, float, ...), (float, float, ...)) or None.
+    :type range: None or numpy.ndarray((float, float, ...), (float, float, ...)).
     :param weights: optional array of weights.
-    :type weights: numpy.ndarray or None
+    :type weights: numpy.ndarray
     :returns: Processed array of data, weights, and the minimum \
     and maximum values for each dimension.
     :rtype: numpy.ndarray, tuple(np.ndarray, np.ndarray), numpy.ndarray

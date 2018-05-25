@@ -9,6 +9,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Python
 import os, warnings
 import numpy as np
+from collections import namedtuple
 from math import exp, log, sqrt
 from scipy.interpolate import interp1d
 from scipy.optimize import fsolve
@@ -38,6 +39,7 @@ __all__ = ['calc_poisson_fu',
            'poisson_fu',
            'poisson_llu',
            'rv_random_sample',
+           'stat_values',
            'sw2_u'
           ]
 
@@ -283,7 +285,7 @@ def _ks_2samp_values( arr, weights = None ):
     :param arr: input sample.
     :type arr: numpy.ndarray
     :param weights: possible weights.
-    :type weights: numpy.ndarray
+    :type weights: None or numpy.ndarray
     :returns: Sorted sample, stack with the cumulative distribution and
     sum of weights.
     :rtype: numpy.ndarray, numpy.ndarray, float
@@ -342,6 +344,53 @@ def ks_2samp( a, b, wa = None, wb = None ):
         prob = 1.
 
     return d, prob
+
+
+# Tuple to hold the return values of the function "stat_values"
+StatValues = namedtuple('StatValues', ('mean', 'var', 'std'))
+
+
+def stat_values( arr, axis = None, weights = None ):
+    '''
+    Calculate the mean and the unbiased standard deviation of the given array.
+
+    :param arr: input array of data.
+    :type arr: numpy.ndarray
+    :param axis: axis or axes along which to calculate the values for "arr".
+    :type axis: None or int or tuple(int)
+    :param weights: array of weights associated to the values in "arr".
+    :type weights: None or numpy.ndarray
+    :returns: mean and unbiased standard deviation.
+    :rtype: numpy.ndarray, numpy.ndarray
+    '''
+    keepdims = (axis is not None)
+
+    asum = lambda a: np.sum(a, axis=axis, keepdims=keepdims)
+
+    if weights is None:
+
+        mean = np.mean(arr, axis=axis, keepdims=keepdims)
+
+        if keepdims:
+            lgth = arr.shape[axis]
+        else:
+            lgth = arr.size
+
+        var = asum((arr - mean)**2)/(lgth - 1.)
+
+    else:
+        sw = asum(weights)
+
+        # We can not use "count_nonzero" ince it does not keep
+        # the dimensions through "keepdims"
+        nzw = asum(weights != 0)
+
+        mean = asum(weights*arr)/sw
+        var  = asum(weights*(arr - mean)**2)*nzw/(sw*(nzw - 1.))
+
+    std = np.sqrt(var)
+
+    return StatValues(mean, var, std)
 
 
 def poisson_fu( m ):
@@ -536,9 +585,9 @@ def sw2_u( arr, bins = 20, range = None, weights = None ):
     :param bins: see :func:`numpy.histogram`.
     :type bins: int, sequence of scalars or str
     :param range: range to process in the input array.
-    :type range: tuple(float, float)
+    :type range: None or tuple(float, float)
     :param weights: possible weights for the histogram.
-    :type weights: numpy.ndarray(value-type)
+    :type weights: None or numpy.ndarray(value-type)
     :returns: Symmetric uncertainty.
     :rtype: numpy.ndarray
 
