@@ -44,9 +44,26 @@ def test_errorbar_hist():
 
     assert ey.shape == (20,)
 
+    # Check the values returned in the normalization
+    arr  = np.array([-1, -1, +0.5, +0.5, +1, +1, +2, +2, +3, +3])
+    wgts = np.array([0.5, 0.5, 2, 1, 1, 1, 1, 1, 1, 1])
+
+    values, edges, _, _ = hep_spt.errorbar_hist(arr, bins=4, range=(0, 4), norm=True, norm_type='range')
+    assert np.allclose(values.sum(), 1)
+
+    values, edges, _, _ = hep_spt.errorbar_hist(arr, bins=4, range=(0, 4), norm=True, norm_type='all')
+    assert np.allclose(values.sum(), 0.8)
+
+    values, edges, _, _ = hep_spt.errorbar_hist(arr, bins=4, range=(0, 4), weights=wgts, norm=True, norm_type='all')
+    assert np.allclose(values.sum(), 0.9)
+
     # If the uncertainty type is unknown, raise an error
     with pytest.raises(ValueError):
         hep_spt.errorbar_hist(arr, bins=20, weights=wgts, uncert='none')
+
+    # If the normalization type is unknown, raise an error
+    with pytest.raises(ValueError):
+        hep_spt.errorbar_hist(arr, norm=True, norm_type='none')
 
     # Normalizing with empty values in the bins will raise a RuntimeWarning
     with pytest.warns(RuntimeWarning):

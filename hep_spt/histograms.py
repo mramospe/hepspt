@@ -32,7 +32,7 @@ def cfe( edges ):
     return (edges[1:] + edges[:-1])/2.
 
 
-def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, uncert = None ):
+def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, norm_type = 'range', uncert = None ):
     '''
     Calculate the values needed to create an error bar histogram.
     Different errors can be considered (see below).
@@ -47,6 +47,11 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
     :param norm: if True, normalize the histogram. If it is set to a number, \
     the histogram is normalized and multiplied by that number.
     :type norm: bool, int or float
+    :param norm_type: the normalization type to apply. To be chosen between \
+    'range' and 'all'. In the first case (default), only the points lying \
+    inside the histogram range are considered in the normalization. In the \
+    later, all the points are considered. In this case, the sum of the \
+    values returned by this function will not sum the value provided in "norm".
     :param uncert: type of uncertainty to consider. If None, the square root \
     of the sum of squared weights is considered. The possibilities \
     are: \
@@ -61,6 +66,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
     lower and upper uncertainties.
     :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
     :raises ValueError: if the uncertainty type is not among the possibilities.
+    :raises ValueError: if the normalization type is neither 'range' nor 'all'.
     :raises TypeError: if the uncertainty is "freq" or "dll" and "weights" is \
     not of integer type.
 
@@ -88,7 +94,21 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, u
 
     if norm:
 
-        s = float(values.sum())/norm
+        if norm_type == 'range':
+
+            # Normalizing in the visible region
+            s = float(values.sum())/norm
+
+        elif norm_type == 'all':
+
+            # Normalizing to all the points
+            if weights is None:
+                s = float(len(arr))/norm
+            else:
+                s = float(weights.sum())/norm
+
+        else:
+            raise ValueError('Unknown normalization type "{}"'.format(norm_type))
 
         values = values/s
         ey = ey/s
