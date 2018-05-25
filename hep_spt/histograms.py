@@ -52,6 +52,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, n
     inside the histogram range are considered in the normalization. In the \
     later, all the points are considered. In this case, the sum of the \
     values returned by this function will not sum the value provided in "norm".
+    :type norm_type: str
     :param uncert: type of uncertainty to consider. If None, the square root \
     of the sum of squared weights is considered. The possibilities \
     are: \
@@ -140,7 +141,7 @@ def process_range( arr, range = None ):
     return vmin, vmax
 
 
-def profile( x, y, bins = 20, range = None, weights = None ):
+def profile( x, y, bins = 20, range = None, weights = None, std_type = 'mean' ):
     '''
     Calculate the profile from a 2D data sample.
     It corresponds to the mean of the values in "y" for each bin in "x".
@@ -155,9 +156,14 @@ def profile( x, y, bins = 20, range = None, weights = None ):
     :type range: None or tuple(float, float)
     :param weights: possible array of weights for the profile.
     :type weights: None or numpy.ndarray(value-type)
-    :returns: Profile in "y" and standard deviation. To see the definition of \
-    the mean and standard deviation see :func:`stat_values`.
+    :param std_type: type of standard deviation to be returned. The default \
+    ('mean') makes this function return the standard deviation of the mean. \
+    If set to 'sample', it will return the standard deviation of the sample \
+    instead. The definitions can be seen in :func:`stat_values`.
+    :type std_type: str
+    :returns: Profile in "y" and standard deviation.
     :rtype: numpy.ndarray, numpy.ndarray
+    :raises ValueError: If an unknown standard deviation type is provided.
     '''
     vmin, vmax = process_range(x, range)
 
@@ -178,7 +184,13 @@ def profile( x, y, bins = 20, range = None, weights = None ):
             vals = stat_values(y[cond])
 
         prof[i - 1] = vals.mean
-        std[i - 1]  = vals.std
+
+        if std_type == 'mean':
+            std[i - 1] = vals.std_mean
+        elif std_type == 'sample':
+            std[i - 1] = vals.std
+        else:
+            raise ValueError('Unknown standard deviation type "{}"'.format(std_type))
 
     return prof, std
 

@@ -127,6 +127,10 @@ def test_profile():
     assert np.allclose(prof, np.arange(1, 6))
     assert np.allclose(std, 0)
 
+    # Raise ValueError if an unkown standard deviation type is given
+    with pytest.raises(ValueError):
+        hep_spt.profile(x, y, bins=5, std_type='none')
+
 
 def test_pull_sym():
     '''

@@ -347,12 +347,49 @@ def ks_2samp( a, b, wa = None, wb = None ):
 
 
 # Tuple to hold the return values of the function "stat_values"
-StatValues = namedtuple('StatValues', ('mean', 'var', 'std'))
+StatValues = namedtuple('StatValues', ('mean', 'var', 'std', 'var_mean', 'std_mean'))
 
 
 def stat_values( arr, axis = None, weights = None ):
     '''
-    Calculate the mean and the unbiased standard deviation of the given array.
+    Calculate mean and variance and standard deviations of the sample and the
+    mean from the given array.
+    Weights are allowed.
+    The definition of the aforementioned quantities are:
+
+    - Mean:
+
+    .. math::
+       \\bar{x} = \\sum_{i=0}^n{\\frac{x_i}{n}}
+
+    - Weighted mean:
+
+    .. math::
+       \\bar{x}^w = \\frac{\\sum_{i=0}^n{\omega_i x_i}}{\\sum_{i=0}^n{\omega_i}}
+
+    - Variance of the sample:
+
+    .. math::
+       \sigma_s = \sum_{i=0}^n{\\frac{(x_i - \\bar{x})^2}{n - 1}}
+
+    - Weighted variance of the sample:
+
+    .. math::
+       \sigma^w_s = \\frac{N'}{(N' - 1)}\\frac{\sum_{i=0}^n{\omega_i(x_i - \\bar{x}^w)^2}}{\sum_{i=0}^n{\omega_i}}
+
+    where :math:`\omega_i` refers to the weights associated with the value
+    :math:`x_i`, and in the last equation N' refers to the number of non-zero
+    weights. The variance and standard deviations of the mean are then given by:
+
+    - Standard deviation of the mean:
+
+    .. math::
+       s_\\bar{x} = \\sqrt{\\frac{\sigma_s}{n}}
+
+    - Weighted standard deviation of the mean:
+
+    .. math::
+       s^w_\\bar{x} = \\sqrt{\\frac{\sigma^w_s}{N'}}
 
     :param arr: input array of data.
     :type arr: numpy.ndarray
@@ -360,8 +397,9 @@ def stat_values( arr, axis = None, weights = None ):
     :type axis: None or int or tuple(int)
     :param weights: array of weights associated to the values in "arr".
     :type weights: None or numpy.ndarray
-    :returns: mean and unbiased standard deviation.
-    :rtype: numpy.ndarray, numpy.ndarray
+    :returns: Mean, variance, standard deviation, variance of the mean and \
+    standard deviation of the mean.
+    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
     '''
     keepdims = (axis is not None)
 
@@ -378,6 +416,8 @@ def stat_values( arr, axis = None, weights = None ):
 
         var = asum((arr - mean)**2)/(lgth - 1.)
 
+        var_mean = var/lgth
+
     else:
         sw = asum(weights)
 
@@ -388,9 +428,13 @@ def stat_values( arr, axis = None, weights = None ):
         mean = asum(weights*arr)/sw
         var  = asum(weights*(arr - mean)**2)*nzw/(sw*(nzw - 1.))
 
+        var_mean = var/nzw
+
     std = np.sqrt(var)
 
-    return StatValues(mean, var, std)
+    std_mean = np.sqrt(var_mean)
+
+    return StatValues(mean, var, std, var_mean, std_mean)
 
 
 def poisson_fu( m ):
