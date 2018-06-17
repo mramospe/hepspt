@@ -1,5 +1,8 @@
 /** Definition of some macros to use together with the Python and Numpy C-API.
  *
+ * @author: Miguel Ramos Pernas
+ * @email:  miguel.ramos.pernas@cern.ch
+ *
  */
 
 
