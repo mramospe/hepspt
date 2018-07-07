@@ -9,6 +9,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 # Python
 import os, warnings
 import numpy as np
+from collections import namedtuple
 from math import exp, log, sqrt
 from scipy.interpolate import interp1d
 from scipy.optimize import fsolve
@@ -38,6 +39,7 @@ __all__ = ['calc_poisson_fu',
            'poisson_fu',
            'poisson_llu',
            'rv_random_sample',
+           'stat_values',
            'sw2_u'
           ]
 
@@ -253,7 +255,7 @@ class FlatDistTransform(object):
         Return the value of the transformation of the given values.
 
         :param values: values to transform.
-        :type values: array-like
+        :type values: numpy.ndarray
         '''
         return self._trans(values)
 
@@ -268,6 +270,8 @@ def gauss_u( s, cl = __one_sigma__ ):
     :type cl: float
     :returns: Gaussian uncertainty.
     :rtype: float or numpy.ndarray(float)
+
+    .. seealso:: :func:`poisson_fu`, :func:`poisson_llu`, :func:`sw2_u`
     '''
     n = np.sqrt(__chi2_one_dof__.ppf(cl))
 
@@ -279,12 +283,12 @@ def _ks_2samp_values( arr, weights = None ):
     Calculate the values needed to perform the Kolmogorov-Smirnov test.
 
     :param arr: input sample.
-    :type arr: array-like
+    :type arr: numpy.ndarray
     :param weights: possible weights.
-    :type weights: array-like
+    :type weights: None or numpy.ndarray
     :returns: Sorted sample, stack with the cumulative distribution and
     sum of weights.
-    :rtype: array-like, array-like, float
+    :rtype: numpy.ndarray, numpy.ndarray, float
     '''
     weights = weights if weights is not None else np.ones(len(arr), dtype=float)
 
@@ -342,6 +346,97 @@ def ks_2samp( a, b, wa = None, wb = None ):
     return d, prob
 
 
+# Tuple to hold the return values of the function "stat_values"
+StatValues = namedtuple('StatValues', ('mean', 'var', 'std', 'var_mean', 'std_mean'))
+
+
+def stat_values( arr, axis = None, weights = None ):
+    '''
+    Calculate mean and variance and standard deviations of the sample and the
+    mean from the given array.
+    Weights are allowed.
+    The definition of the aforementioned quantities are:
+
+    - Mean:
+
+    .. math::
+       \\bar{x} = \\sum_{i=0}^{n - 1}{\\frac{x_i}{n}}
+
+    - Weighted mean:
+
+    .. math::
+       \\bar{x}^w = \\frac{\\sum_{i=0}^{n - 1}{\omega_i x_i}}{\\sum_{i=0}^{n - 1}{\omega_i}}
+
+    - Variance of the sample:
+
+    .. math::
+       \sigma_s = \sum_{i=0}^{n - 1}{\\frac{(x_i - \\bar{x})^2}{n - 1}}
+
+    - Weighted variance of the sample:
+
+    .. math::
+       \sigma^w_s = \\frac{N'}{(N' - 1)}\\frac{\sum_{i=0}^{n - 1}{\omega_i(x_i - \\bar{x}^w)^2}}{\sum_{i=0}^{n - 1}{\omega_i}}
+
+    where :math:`\omega_i` refers to the weights associated with the value
+    :math:`x_i`, and in the last equation N' refers to the number of non-zero
+    weights. The variance and standard deviations of the mean are then given by:
+
+    - Standard deviation of the mean:
+
+    .. math::
+       s_\\bar{x} = \\sqrt{\\frac{\sigma_s}{n}}
+
+    - Weighted standard deviation of the mean:
+
+    .. math::
+       s^w_\\bar{x} = \\sqrt{\\frac{\sigma^w_s}{N'}}
+
+    :param arr: input array of data.
+    :type arr: numpy.ndarray
+    :param axis: axis or axes along which to calculate the values for "arr".
+    :type axis: None or int or tuple(int)
+    :param weights: array of weights associated to the values in "arr".
+    :type weights: None or numpy.ndarray
+    :returns: Mean, variance, standard deviation, variance of the mean and \
+    standard deviation of the mean.
+    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray
+    '''
+    keepdims = (axis is not None)
+
+    asum = lambda a: np.sum(a, axis=axis, keepdims=keepdims, dtype=float)
+
+    if weights is None:
+
+        mean = np.mean(arr, axis=axis, keepdims=keepdims)
+
+        if keepdims:
+            lgth = arr.shape[axis]
+        else:
+            lgth = arr.size
+
+        var = asum((arr - mean)**2)/(lgth - 1.)
+
+        var_mean = var/lgth
+
+    else:
+        sw = asum(weights)
+
+        # We can not use "count_nonzero" ince it does not keep
+        # the dimensions through "keepdims"
+        nzw = asum(weights != 0)
+
+        mean = asum(weights*arr)/sw
+        var  = asum(weights*(arr - mean)**2)*nzw/(sw*(nzw - 1.))
+
+        var_mean = var/nzw
+
+    std = np.sqrt(var)
+
+    std_mean = np.sqrt(var_mean)
+
+    return StatValues(mean, var, std, var_mean, std_mean)
+
+
 def poisson_fu( m ):
     '''
     Return the poisson frequentist uncertainty at one standard
@@ -351,6 +446,8 @@ def poisson_fu( m ):
     :type m: int or numpy.ndarray(int)
     :returns: Lower and upper frequentist uncertainties.
     :rtype: numpy.ndarray(float, float)
+
+    .. seealso:: :func:`gauss_u`, :func:`poisson_llu`, :func:`sw2_u`
     '''
     return _poisson_u_from_db(m, 'poisson_fu.dat')
 
@@ -380,6 +477,8 @@ def poisson_llu( m ):
     :type m: int or numpy.ndarray(int)
     :returns: Lower and upper frequentist uncertainties.
     :rtype: numpy.ndarray(float, float)
+
+    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`sw2_u`
     '''
     return _poisson_u_from_db(m, 'poisson_llu.dat')
 
@@ -514,14 +613,14 @@ def rv_random_sample( func, size = 10000, **kwargs ):
 
 def sw2_u( arr, bins = 20, range = None, weights = None ):
     '''
-    Calculate the errors of a weighted sample. This uncertainty is
-    calculated as follows:
+    Calculate the errors using the sum of squares of weights.
+    The uncertainty is calculated as follows:
 
     .. math::
 
-       \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}
+       \sigma_i = \sqrt{\sum_{j = 0}^{n - 1} \omega_{i,j}^2}
 
-    where *i* refers to the i-th bin and :math:`j \in [0, n]` refers to
+    where *i* refers to the i-th bin and :math:`j \in [0, n)` refers to
     each entry in that bin with weight :math:`\omega_{i,j}`. If "weights" is
     None, then this coincides with the square root of the number of entries
     in each bin.
@@ -530,11 +629,13 @@ def sw2_u( arr, bins = 20, range = None, weights = None ):
     :param bins: see :func:`numpy.histogram`.
     :type bins: int, sequence of scalars or str
     :param range: range to process in the input array.
-    :type range: tuple(float, float)
+    :type range: None or tuple(float, float)
     :param weights: possible weights for the histogram.
-    :type weights: numpy.ndarray(value-type)
+    :type weights: None or numpy.ndarray(value-type)
     :returns: Symmetric uncertainty.
     :rtype: numpy.ndarray
+
+    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`poisson_llu`
     '''
     if weights is not None:
         values = np.histogram(arr, bins, range, weights = weights*weights)[0]

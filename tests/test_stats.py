@@ -116,7 +116,7 @@ def test_gauss_u():
 
 def test_ks_2samp():
     '''
-    Test the Kolmogorov-Smirnov function.
+    Test the "ks_2samp" function.
     '''
     na = 200
     nb = 300
@@ -138,6 +138,71 @@ def test_ks_2samp():
     hep_spt_res = hep_spt.ks_2samp(a, b, wa, wb)
 
     assert scipy_res == hep_spt_res
+
+
+def test_stat_values():
+    '''
+    Test the "stat_values" function.
+    '''
+    # Non-weighted
+    arr = np.array([1, 2, 2, 1, 3, 3])
+    vals = hep_spt.stat_values(arr)
+
+    assert np.allclose(vals.mean, 2)
+    assert np.allclose(vals.var, 0.8)
+
+    # Weighted
+    wgts = np.array([2, 4, 4, 2, 6, 6])
+    vals = hep_spt.stat_values(arr, weights=wgts)
+
+    assert np.allclose(vals.mean, 7./3)
+    assert np.allclose(vals.var, 2./3)
+
+    # Test with arrays (non-weighted)
+    arr = np.array([
+        [1, 2, 2, 1, 3, 3],
+        [2, 4, 4, 2, 6, 6]
+    ])
+
+    vals = hep_spt.stat_values(arr)
+
+    assert np.allclose(vals.mean, 3.)
+    assert np.allclose(vals.var, 32./11)
+
+    # Test with arrays (weighted)
+    wgts = np.array([
+        [2, 4, 4, 2, 6, 6],
+        [2, 4, 4, 2, 6, 6],
+    ])
+
+    vals = hep_spt.stat_values(arr, weights=wgts)
+
+    assert np.allclose(vals.mean, 3.5)
+    assert np.allclose(vals.var, 3)
+
+    # Test with arrays for a given axis (non-weighted)
+    vals = hep_spt.stat_values(arr, axis=0)
+
+    assert np.allclose(vals.mean, [1.5, 3., 3., 1.5, 4.5, 4.5])
+    assert np.allclose(vals.var, [0.5, 2, 2, 0.5, 4.5, 4.5])
+
+    vals = hep_spt.stat_values(arr, axis=1)
+
+    assert np.allclose(vals.mean, [[2], [4]])
+    assert np.allclose(vals.var, [[0.8], [3.2]])
+    assert np.allclose(vals.var_mean, [[0.8/6], [3.2/6]])
+
+    # Test with arrays for a given axis (weighted)
+    vals = hep_spt.stat_values(arr, weights=wgts, axis=0)
+
+    assert np.allclose(vals.mean, [1.5, 3, 3, 1.5, 4.5, 4.5])
+    assert np.allclose(vals.var, [0.5, 2, 2, 0.5, 4.5, 4.5])
+
+    vals = hep_spt.stat_values(arr, weights=wgts, axis=1)
+
+    assert np.allclose(vals.mean, [[7./3], [14./3]])
+    assert np.allclose(vals.var, [[2./3], [8./3]])
+    assert np.allclose(vals.var_mean, [[2./18], [8./18]])
 
 
 def test_poisson_fu():
