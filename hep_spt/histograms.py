@@ -161,7 +161,7 @@ def profile( x, y, bins = 20, range = None, weights = None, std_type = 'mean' ):
     If set to 'sample', it will return the standard deviation of the sample \
     instead. The definitions can be seen in :func:`stat_values`.
     :type std_type: str
-    :returns: Profile in "y" and standard deviation.
+    :returns: edges, profile in "y" and standard deviation.
     :rtype: numpy.ndarray, numpy.ndarray
     :raises ValueError: If an unknown standard deviation type is provided.
     '''
@@ -192,7 +192,7 @@ def profile( x, y, bins = 20, range = None, weights = None, std_type = 'mean' ):
         else:
             raise ValueError('Unknown standard deviation type "{}"'.format(std_type))
 
-    return prof, std
+    return edges, prof, std
 
 
 def pull( vals, err, ref, ref_err = None ):

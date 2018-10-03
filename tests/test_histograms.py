@@ -115,14 +115,14 @@ def test_profile():
     with pytest.warns(RuntimeWarning):
         # The warning is actually raised by "stat_values" when calculating
         # the stantard deviation
-        prof, _ = hep_spt.profile(x, y, bins=10)
+        _, prof, _ = hep_spt.profile(x, y, bins=10)
 
     assert np.all(prof == 1)
 
     # Test also the standard deviation
     y = np.array([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
 
-    prof, std = hep_spt.profile(x, y, bins=5)
+    _, prof, std = hep_spt.profile(x, y, bins=5)
 
     assert np.allclose(prof, np.arange(1, 6))
     assert np.allclose(std, 0)
