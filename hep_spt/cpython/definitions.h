@@ -35,3 +35,12 @@
   }									\
 
 #endif
+
+#ifndef CHECK_ARRAY_1D
+#define CHECK_ARRAY_1D( arr )						\
+  if ( PyArray_NDIM(arr) != 1 ) {					\
+    PyErr_SetString(PyExc_TypeError, "Expected 1-dimensional array");	\
+      goto final;							\
+  }									\
+
+#endif
