@@ -265,7 +265,7 @@ def adbin_as_rectangle( adb, **kwargs ):
     return Rectangle((xmin, ymin), width, height, **kwargs)
 
 
-def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = False, **kwargs ):
+def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = False, reduce_bias = False, **kwargs ):
     '''
     Create an adaptive binned histogram in one dimension.
 
@@ -280,6 +280,10 @@ def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = Fa
     :type weights: numpy.ndarray
     :param is_sorted: whether the input sample is already sorted or not.
     :type is_sorted: bool
+    :param reduce_bias: if set to True, the array will be processed twice \
+    (backward and forward) to reduce any kind of bias produced. \
+    See :func:`adbin_hist1d_edges` for more details.
+    :type reduce_bias: bool
     :param kwargs: any other argument to be passed to \
     :func:`plotting.errorbar_hist`.
     :type kwargs: dict
@@ -292,25 +296,12 @@ def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = Fa
     '''
     arr, range, weights = _proc_hist_input_1d(arr, range, weights)
 
-    # Sort the data
-    if not is_sorted:
-        srt     = arr.argsort()
-        arr     = arr[srt]
-        weights = weights[srt]
-
-    # Solving the problem from the left and from the right reduces
-    # the bias in the last edges
-    le = adbin_hist1d_edges(arr, nbins, range, weights, is_sorted=True)
-    re = adbin_hist1d_edges(arr[::-1], nbins, range, weights[::-1], is_sorted=True)[::-1]
-
-    edges = (re + le)/2.
-
-    edges[0], edges[-1] = range
+    edges = adbin_hist1d_edges(arr, nbins, range, weights, is_sorted=is_sorted, reduce_bias=reduce_bias)
 
     return errorbar_hist(arr, edges, range, weights, **kwargs)
 
 
-def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorted = False ):
+def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorted = False, reduce_bias = False ):
     '''
     Create adaptive binned edges to make a histogram from the given data.
 
@@ -325,6 +316,10 @@ def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorte
     :type weights: numpy.ndarray
     :param is_sorted: whether the input sample is already sorted or not.
     :type is_sorted: bool
+    :param reduce_bias: if set to True, the array will be processed twice \
+    (backward and forward) to reduce any kind of bias produced. \
+    If no weights are provided, this is unnecessary, since the process is \
+    deterministic.
     :returns: Edges of the histogram, with size (nbins + 1).
     :rtype: numpy.ndarray
     :raises ValueError: If the number of bins specified is greater than the \
@@ -338,13 +333,25 @@ def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorte
         raise ValueError(
             'Number of bins can not be greater than the length of the input array')
 
-    arr, (vmin, vmax), weights = _proc_hist_input_1d(arr, range, weights)
+    arr, range, weights = _proc_hist_input_1d(arr, range, weights)
 
-    # Sort the data
     if not is_sorted:
+        # Sort the data
         srt     = arr.argsort()
         arr     = arr[srt]
         weights = weights[srt]
+
+    if reduce_bias:
+        # Solving the problem from the left and from the right reduces
+        # the bias in the last edges
+        le = adbin_hist1d_edges(arr, nbins, range, weights, is_sorted=True)
+        re = adbin_hist1d_edges(arr[::-1], nbins, range, weights[::-1], is_sorted=True)[::-1]
+
+        edges = (re + le)/2.
+
+        edges[0], edges[-1] = range
+
+        return edges
 
     edges = np.zeros(nbins + 1)
 
@@ -370,8 +377,7 @@ def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorte
         arr = arr[p + 1:]
         weights = weights[p + 1:]
 
-    edges[0]  = vmin
-    edges[-1] = vmax
+    edges[0], edges[-1] = range
 
     return edges
 
