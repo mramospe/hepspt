@@ -99,16 +99,7 @@ def configuration( parent_package = '', top_path = '' ):
         tests_require = ['pytest'],
     )
 
-    from numpy.distutils.misc_util import get_info
-    cpython_h = glob.glob(os.path.join('hep_spt/cpython/*.h'))
-
-    math_aux_cpy_src = ['hep_spt/cpython/math_aux_cpy.c']
-    config.add_extension('cpython/math_aux_cpy',
-                         sources=math_aux_cpy_src,
-                         depends=cpython_h + math_aux_cpy_src,
-                         extra_info=get_info('npymath'),
-    )
-
+    config.add_subpackage('hep_spt')
 
     return config
 

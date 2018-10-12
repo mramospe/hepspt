@@ -21,10 +21,10 @@ def configuration( parent_package = '', top_path = '' ):
     # Add CPYTHON extension
     from numpy.distutils.misc_util import get_info
 
-    math_aux_cpy_src = ['cpython/math_aux_cpy.c']
+    math_aux_cpy_src = ['math_aux_cpy.c']
     config.add_extension('math_aux_cpy',
                          sources=math_aux_cpy_src,
-                         depends=cpython_h + math_aux_cpy_src,
+                         depends=headers + math_aux_cpy_src,
                          extra_info=get_info('npymath'),
     )
 
