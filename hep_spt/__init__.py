@@ -12,6 +12,9 @@ __project_path__ = os.path.dirname(os.path.abspath(__file__))
 __all__ = []
 for loader, module_name, ispkg in pkgutil.walk_packages(__path__):
 
+    if module_name == 'setup':
+        continue
+
     __all__.append(module_name)
 
     if not ispkg:

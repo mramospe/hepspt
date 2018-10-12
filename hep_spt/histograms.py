@@ -7,7 +7,6 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Local
 from hep_spt.stats import stat_values, poisson_fu, poisson_llu, sw2_u
-from hep_spt.cpython import histograms_cpy
 
 # Python
 import numpy as np
@@ -18,7 +17,6 @@ __all__ = [
     'profile',
     'pull',
     'residual',
-    'weights_by_edges',
 ]
 
 
@@ -117,26 +115,6 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, n
         ey = ey/s
 
     return values, edges, ex, ey
-
-
-def weights_by_edges( values, edges, weights ):
-    '''
-    Assign a weight to the values in an input array using a set of edges.
-    It will return a new array of length equal to that of "values" assigning
-    a weight from "weights" depending on the bin they belong to.
-
-    :param values: values to process.
-    :type values: numpy.ndarray
-    :param edges: edges of the bins to consider.
-    :type edges: numpy.ndarray
-    :param weights: weights associated to each bin defined by "edges".
-    :type weights:
-    :returns: weights associated to the input values.
-    :rtype: numpy.ndarray
-    :raises TypeError: if the dimensions of the array do not match.
-    :raises ValueError: if values are found outside the edges.
-    '''
-    return histograms_cpy.weights_by_edges(values, edges, weights)
 
 
 def process_range( arr, range = None ):

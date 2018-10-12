@@ -28,7 +28,6 @@ def bit_length( arg ):
     :type arg: int or numpy.ndarray(int)
     :returns: length of the binary representation.
     :rtype: numpy.ndarray(int)
-    :raises TypeError: If the input does not contain integer values.
     '''
     return math_aux_cpy.bit_length(arg)
 
@@ -63,8 +62,13 @@ def ibinary_repr( arg ):
     :param arg: array of values.
     :type arg: int or numpy.ndarray(int)
     :returns: Values in binary representation (as integers).
-    :rtype: numpy.ndarray(int)
-    :raises TypeError: If the input does not contain integer values.
+    :rtype: numpy.ndarray(numpy.int64)
+
+    .. warning::
+       Note that the binary representation of any number turn very large. For \
+       example, for a number like 10000, the binary representation is \
+       10011100010000. No error/warning will be raised if the maximum value \
+       for a :class:`numpy.int64` is reached.
     '''
     return math_aux_cpy.ibinary_repr(arg)
 
