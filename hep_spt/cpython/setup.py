@@ -16,6 +16,8 @@ def configuration( parent_package = '', top_path = '' ):
     from numpy.distutils.misc_util import Configuration
     config = Configuration('cpython', parent_package, top_path)
 
+    numpy_nodepr_api = [('NPY_NO_DEPRECATED_API', 'NPY_1_9_API_VERSION')]
+
     headers = glob.glob('*.h')
 
     # Add CPYTHON extension
@@ -26,6 +28,7 @@ def configuration( parent_package = '', top_path = '' ):
                          sources=math_aux_cpy_src,
                          depends=headers + math_aux_cpy_src,
                          extra_info=get_info('npymath'),
+                         define_macros=numpy_nodepr_api,
     )
 
     return config
