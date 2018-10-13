@@ -12,12 +12,13 @@ __project_path__ = os.path.dirname(os.path.abspath(__file__))
 __all__ = []
 for loader, module_name, ispkg in pkgutil.walk_packages(__path__):
 
-    if module_name == 'setup':
+    if module_name.endswith('setup'):
         continue
 
     __all__.append(module_name)
 
     if not ispkg:
+
         # Import all classes and functions
         mod = importlib.import_module('hep_spt.' + module_name)
 

@@ -231,7 +231,14 @@ PyMODINIT_FUNC PyInit_math_aux_cpy( void ) {
     PyDict_SetItemString(dict, "ibinary_repr", ibinary_repr);
     Py_DECREF(ibinary_repr);
 
+    // Set the value of "__all__" to an empty list
+    PyObject* l = PyList_New(0);
+    PyDict_SetItemString(dict, "__all__", l);
+    Py_DECREF(l);
+
 #if PY_MAJOR_VERSION >= 3
+
     return module;
+
 #endif
   }
