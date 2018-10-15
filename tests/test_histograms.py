@@ -397,3 +397,54 @@ def test_residual_asym_sym():
     assert np.allclose(res, values - ref)
     assert np.allclose(perr[0][0] , 5)
     assert np.allclose(perr[1][1:], [10, 13])
+
+
+def test_weights_by_edges():
+    '''
+    Test the "weights_by_edges" function.
+    '''
+    # Simply call the function
+    v = np.random.uniform(0, 1, 10000)
+    n = 5
+    e = np.linspace(0, 1, n)
+    w = np.random.normal(0, 5, n - 1)
+
+    wgts = hep_spt.weights_by_edges(v, e, w)
+
+    assert wgts.shape == v.shape
+
+    # Do an exact calculation
+    v = np.arange(18, dtype=float)
+    e = np.arange(20, step=2, dtype=float)
+    w = np.ones(9, dtype=float)
+
+    wgts = hep_spt.weights_by_edges(v, e, w)
+
+    assert np.allclose(wgts, np.full(18, 1))
+
+    # Calculation when two values are at the limits of the edges
+    v = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)
+    w = np.array([0.1, 0.2, 0.3, 0.4], dtype=float)
+    e = np.array([0, 4, 7, 9, 10], dtype=float)
+
+    wgts = hep_spt.weights_by_edges(v, e, w)
+
+    assert np.allclose(wgts, np.array([0.1, 0.1, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4], dtype=float))
+
+    # Raise if the arrays have incorrect dimensions
+    with pytest.raises(TypeError):
+        hep_spt.weights_by_edges(np.array([v, v]), e, w)
+
+    with pytest.raises(TypeError):
+        hep_spt.weights_by_edges(v, np.concatenate([e, e]), w)
+
+    # Raise if the data lies outside the edges
+    v = np.arange(30, dtype=float)
+
+    with pytest.raises(ValueError):
+        hep_spt.weights_by_edges(v, e, w)
+
+    v = np.arange(-1, 20, dtype=float)
+
+    with pytest.raises(ValueError):
+        hep_spt.weights_by_edges(v, e, w)

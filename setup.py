@@ -8,9 +8,9 @@ __email__  = 'miguel.ramos.pernas@cern.ch'
 
 
 # Python
+import glob
 import os
 import textwrap
-from setuptools import setup, find_packages, Extension
 
 #
 # Version of the package. Before a new release is made
@@ -37,23 +37,6 @@ if tag != 'final':
         raise ValueError('Unable to parse version information')
 
 version = frmt.format('.'.join(map(str, version_info[:3])), version_info[4])
-
-
-def cpython_module( directory ):
-    '''
-    Determine the CPython modules available on the given directory
-    '''
-    extensions = []
-    for path, _, fnames in os.walk(directory):
-        for f in filter(lambda s: s.endswith('.c'), fnames):
-
-            full_path = os.path.join(path, f)
-
-            ext = Extension(full_path[:-2].replace('/', '.'), [full_path])
-
-            extensions.append(ext)
-
-    return extensions
 
 
 def create_version_file():
@@ -87,16 +70,12 @@ def install_requirements():
     return reqs
 
 
-def setup_package():
+def configuration( parent_package = '', top_path = '' ):
     '''
-    Do the setup of the package, parsing the input arguments.
+    Function to do the configuration.
     '''
-    try:
-        import numpy
-    except:
-        RuntimeError('Numpy not found. Please install it before setting up this package.')
-
-    setup(
+    from numpy.distutils.misc_util import Configuration
+    config = Configuration(
 
         name = 'hep_spt',
 
@@ -111,17 +90,6 @@ def setup_package():
         # Keywords to search for the package
         keywords = 'physics hep statistics plotting',
 
-        # Find all the packages in this directory
-        packages = find_packages(),
-
-        # Data files
-        package_data = {'hep_spt': ['data/*', 'mpl/*']},
-
-        # C-API source
-        ext_modules = cpython_module('hep_spt/cpython'),
-
-        include_dirs = [numpy.get_include()],
-
         # Requisites
         install_requires = install_requirements(),
 
@@ -131,8 +99,19 @@ def setup_package():
         tests_require = ['pytest'],
     )
 
-    create_version_file()
+    config.add_subpackage('hep_spt')
+
+    return config
 
 
 if __name__ == '__main__':
-    setup_package()
+
+    try:
+        import numpy
+    except:
+        RuntimeError('Numpy not found. Please install it before setting up this package.')
+
+    from numpy.distutils.core import setup
+    setup(configuration=configuration)
+
+    create_version_file()

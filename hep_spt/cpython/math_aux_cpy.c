@@ -9,7 +9,8 @@
 
 // C-API
 #include <Python.h>
-#include "numpy/arrayobject.h"
+#include "numpy/ndarraytypes.h"
+#include "numpy/ufuncobject.h"
 
 // STD
 #include <math.h>
@@ -18,246 +19,144 @@
 #include "definitions.h"
 
 
-/** Calculate the binary representation of a number.
- *
- */
-npy_int _ibinary_repr( const npy_int i ) {
-
-  npy_int c = i / 2;
-  npy_int r = i % 2;
-
-  if ( c != 0 )
-    r += 10*_ibinary_repr(c);
-
-  return r;
-}
-
-
-/** Calculate the binary representation (as an integer) of the values in an object.
- *
- * The object is converted to an array if necessary.
- */
-static PyObject* ibinary_repr( PyObject *self, PyObject *args, PyObject *kwds ) {
-
-  PyObject *in;
-
-  static char* kwlist[] = {"arr", NULL};
-  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "O:ibinary_repr", kwlist, &in) )
-    goto final;
-
-  PyArrayObject* arr = (PyArrayObject*) PyArray_FROM_O(in);
-
-  CHECK_INT_ARRAY(arr);
-
-  // Initialize the output array
-  PyArray_Descr* descr = PyArray_DescrFromType(NPY_INT);
-  PyArrayObject* ret = (PyArrayObject*) PyArray_NewLikeArray(arr, NPY_ANYORDER, descr, 1);
-
-  if ( PyArray_NDIM(arr) == 0 ) {
-
-    const npy_int ae = *((npy_int*) arr->data);
-
-    *((npy_int*) ret->data) = _ibinary_repr(ae);
-
-    return (PyObject*) ret;
-  }
-
-  PyObject* ia = PyArray_IterNew((PyObject*) arr);
-  PyObject* ir = PyArray_IterNew((PyObject*) ret);
-
-  while ( PyArray_ITER_NOTDONE(ia) ) {
-
-    npy_int* a_dt = (npy_int*) PyArray_ITER_DATA(ia);
-    npy_int* r_dt = (npy_int*) PyArray_ITER_DATA(ir);
-
-    // Calculate the greatest common divisor for this element
-    *r_dt = _ibinary_repr(*a_dt);
-
-    PyArray_ITER_NEXT(ia);
-    PyArray_ITER_NEXT(ir);
-  }
-
-  Py_DECREF(ia);
-  Py_DECREF(ir);
-
-  return (PyObject*) ret;
-
- final:
-  Py_XDECREF(arr);
-  return NULL;
-}
-
-
-/** Function to calculate the bit length of a number.
+/** Calculate the bit length of the values in an object.
  *
  * It is equivalent to the number of bits necessary to represent a number.
  */
-npy_int _bit_length( const npy_int i ) {
+#define BIT_LENGTH( type )						\
+									\
+  type _##type##_bit_length( const type i ) {				\
+									\
+    type c = i / 2;							\
+    type r = i % 2;							\
+    type l = (c != 0 || r != 0);					\
+									\
+    if ( c != 0 )							\
+      l += _##type##_bit_length(c);					\
+									\
+    return l;								\
+  }									\
+  UFUNC_ARRAY_1(type, type##_bit_length, _##type##_bit_length);	\
 
-  npy_int c = i / 2;
-  npy_int r = i % 2;
-  npy_int l = (c != 0 || r != 0);
+DECLARE_FOR_INT_TYPES(BIT_LENGTH)
+DECLARE_FOR_UINT_TYPES(BIT_LENGTH)
 
-  if ( c != 0 )
-    l += _bit_length(c);
+PyUFuncGenericFunction bit_length_funcs[9] = {&npy_bool_bit_length,
+					      &npy_int8_bit_length,
+					      &npy_int16_bit_length,
+					      &npy_int32_bit_length,
+					      &npy_int64_bit_length,
+					      &npy_uint8_bit_length,
+					      &npy_uint16_bit_length,
+					      &npy_uint32_bit_length,
+					      &npy_uint64_bit_length};
 
-  return l;
-}
+static void* bit_length_data[9] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+
+static char bit_length_types[18] = {NPY_BOOL, NPY_BOOL,
+				    NPY_INT8, NPY_INT8,
+				    NPY_INT16, NPY_INT16,
+				    NPY_INT32, NPY_INT32,
+				    NPY_INT64, NPY_INT64,
+				    NPY_UINT8, NPY_UINT8,
+				    NPY_UINT16, NPY_UINT16,
+				    NPY_UINT32, NPY_UINT32,
+				    NPY_UINT64, NPY_UINT64};
 
 
-/** Calculate the bit length of the values in an object.
+
+/** Calculate the greatest common divisor of two numbers.
+ *
+ *  This function always returns positive numbers, although
+ *  "a" and "b" can be positive or negative.
+ */
+#define GCD( type )					\
+  type _##type##_gcd( type a, type b ) {		\
+							\
+    while ( b ) {					\
+							\
+      const type r = a % b;				\
+							\
+      a = b;						\
+      b = r;						\
+    }							\
+							\
+    return abs(a);					\
+  }							\
+  UFUNC_ARRAY_2(type, type##_gcd, _##type##_gcd);	\
+
+DECLARE_FOR_INT_TYPES(GCD)
+DECLARE_FOR_UINT_TYPES(GCD)
+
+PyUFuncGenericFunction gcd_funcs[9] = {&npy_bool_gcd,
+				       &npy_int8_gcd,
+				       &npy_int16_gcd,
+				       &npy_int32_gcd,
+				       &npy_int64_gcd,
+				       &npy_uint8_gcd,
+				       &npy_uint16_gcd,
+				       &npy_uint32_gcd,
+				       &npy_uint64_gcd};
+
+static void* gcd_data[9] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+
+static char gcd_types[27] = {NPY_BOOL, NPY_BOOL, NPY_BOOL,
+			     NPY_INT8, NPY_INT8, NPY_INT8,
+			     NPY_INT16, NPY_INT16, NPY_INT16,
+			     NPY_INT32, NPY_INT32, NPY_INT32,
+			     NPY_INT64, NPY_INT64, NPY_INT64,
+			     NPY_UINT8, NPY_UINT8, NPY_UINT8,
+			     NPY_UINT16, NPY_UINT16, NPY_UINT16,
+			     NPY_UINT32, NPY_UINT32, NPY_UINT32,
+			     NPY_UINT64, NPY_UINT64, NPY_UINT64};
+
+
+/** Calculate the binary representation (as an integer) of the values in an array.
  *
  * The object is converted to an array if necessary.
  */
-static PyObject* bit_length( PyObject *self, PyObject *args, PyObject *kwds ) {
+#define IBINARY_REPR( type )								\
+											\
+  npy_int64 _##type##_ibinary_repr( const type i ) {					\
+											\
+    type      c = i / 2;								\
+    npy_int64 r = i % 2;								\
+											\
+    if ( c != 0 )									\
+      r += 10*_##type##_ibinary_repr(c);						\
+											\
+    return r;										\
+  }											\
+  UFUNC_ARRAY_1_CRT(npy_int64, type, type##_ibinary_repr, _##type##_ibinary_repr); 	\
 
-  PyObject *in;
+DECLARE_FOR_INT_TYPES(IBINARY_REPR)
+DECLARE_FOR_UINT_TYPES(IBINARY_REPR)
 
-  static char* kwlist[] = {"arr", NULL};
-  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "O:bit_length", kwlist, &in) )
-    goto final;
+PyUFuncGenericFunction ibinary_repr_funcs[9] = {&npy_bool_ibinary_repr,
+						&npy_int8_ibinary_repr,
+						&npy_int16_ibinary_repr,
+						&npy_int32_ibinary_repr,
+						&npy_int64_ibinary_repr,
+						&npy_uint8_ibinary_repr,
+						&npy_uint16_ibinary_repr,
+						&npy_uint32_ibinary_repr,
+						&npy_uint64_ibinary_repr};
 
-  PyArrayObject* arr = (PyArrayObject*) PyArray_FROM_O(in);
+static void* ibinary_repr_data[9] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
-  CHECK_INT_ARRAY(arr);
-
-  // Initialize the output array
-  PyArray_Descr* descr = PyArray_DescrFromType(NPY_INT);
-  PyArrayObject* ret = (PyArrayObject*) PyArray_NewLikeArray(arr, NPY_ANYORDER, descr, 1);
-
-  if ( PyArray_NDIM(arr) == 0 ) {
-
-    const npy_int ae = *((npy_int*) PyArray_DATA(arr));
-
-    *((npy_int*) PyArray_DATA(ret)) = _bit_length(ae);
-
-    return (PyObject*) ret;
-  }
-
-  PyObject* ia = PyArray_IterNew((PyObject*) arr);
-  PyObject* ir = PyArray_IterNew((PyObject*) ret);
-
-
-  while ( PyArray_ITER_NOTDONE(ia) ) {
-
-    npy_int* a_dt = (npy_int*) PyArray_ITER_DATA(ia);
-    npy_int* r_dt = (npy_int*) PyArray_ITER_DATA(ir);
-
-    // Calculate the greatest common divisor for this element
-    *r_dt = _bit_length(*a_dt);
-
-    PyArray_ITER_NEXT(ia);
-    PyArray_ITER_NEXT(ir);
-  }
-
-  Py_DECREF(ia);
-  Py_DECREF(ir);
-
-  return (PyObject*) ret;
-
- final:
-  Py_XDECREF(arr);
-  return NULL;
-}
+static char ibinary_repr_types[18] = {NPY_BOOL, NPY_INT64,
+				      NPY_INT8, NPY_INT64,
+				      NPY_INT16, NPY_INT64,
+				      NPY_INT32, NPY_INT64,
+				      NPY_INT64, NPY_INT64,
+				      NPY_UINT8, NPY_INT64,
+				      NPY_UINT16, NPY_INT64,
+				      NPY_UINT32, NPY_INT64,
+				      NPY_UINT64, NPY_INT64};
 
 
-/** Function to calculate the greatest common divisor of two numbers.
- *
- *  This function always returns a positive numbers, although
- *  "a" and "b" can be positive or negative.
- */
-npy_int _gcd( npy_int a, npy_int b ) {
-
-  while ( b ) {
-
-    const npy_int r = a % b;
-
-    a = b;
-    b = r;
-  }
-
-  return abs(a);
-}
-
-
-/** Calculate the greatest common divisor function given two numpy.ndarray instances.
- *
- */
-static PyObject* gcd( PyObject *self, PyObject *args, PyObject *kwds ) {
-
-  PyObject* ina;
-  PyObject* inb;
-
-  static char* kwlist[] = {"a", "b", NULL};
-  if ( !PyArg_ParseTupleAndKeywords(args, kwds, "OO:gcd", kwlist, &ina, &inb) )
-    goto final;
-
-  PyArrayObject* a = (PyArrayObject*) PyArray_FROM_O(ina);
-  PyArrayObject* b = (PyArrayObject*) PyArray_FROM_O(inb);
-
-  CHECK_INT_ARRAY(a);
-  CHECK_INT_ARRAY(b);
-  CHECK_DIM_ARRAYS(a, b);
-
-  // Initialize the output array
-  PyArray_Descr* descr = PyArray_DescrFromType(NPY_INT);
-  PyArrayObject* ret = (PyArrayObject*) PyArray_NewLikeArray(a, NPY_ANYORDER, descr, 1);
-
-  if ( PyArray_NDIM(a) == 0 && PyArray_NDIM(b) == 0 ) {
-
-    const npy_int ae = *((npy_int*) a->data);
-    const npy_int be = *((npy_int*) b->data);
-
-    *((npy_int*) ret->data) = _gcd(ae, be);
-
-    return (PyObject*) ret;
-  }
-
-  PyObject* ia = PyArray_IterNew((PyObject*) a);
-  PyObject* ib = PyArray_IterNew((PyObject*) b);
-  PyObject* ir = PyArray_IterNew((PyObject*) ret);
-
-  while ( PyArray_ITER_NOTDONE(ia) ) {
-
-    npy_int* a_dt = (npy_int*) PyArray_ITER_DATA(ia);
-    npy_int* b_dt = (npy_int*) PyArray_ITER_DATA(ib);
-    npy_int* r_dt = (npy_int*) PyArray_ITER_DATA(ir);
-
-    // Calculate the greatest common divisor for this element
-    *r_dt = _gcd(*a_dt, *b_dt);
-
-    PyArray_ITER_NEXT(ia);
-    PyArray_ITER_NEXT(ib);
-    PyArray_ITER_NEXT(ir);
-  }
-
-  Py_DECREF(ia);
-  Py_DECREF(ib);
-  Py_DECREF(ir);
-
-  return (PyObject*) ret;
-
- final:
-  Py_XDECREF(a);
-  Py_XDECREF(b);
-  return NULL;
-}
-
-
-/** Definition of the functions to be exported.
- *
- */
-PyMethodDef Methods[] = {
-
-  {"bit_length", (PyCFunction) bit_length, METH_VARARGS|METH_KEYWORDS,
-   "Determine the bit length of the elements of an array."},
-
-  {"gcd", (PyCFunction) gcd, METH_VARARGS|METH_KEYWORDS,
-   "Greatest common divisor calculated element by element in two arrays."},
-
-  {"ibinary_repr", (PyCFunction) ibinary_repr, METH_VARARGS|METH_KEYWORDS,
-   "Calculate the binary representation of the numbers in an array."},
-
+// No methods are exported, since NumPy handles the "ufunc" objects.
+static PyMethodDef Methods[] = {
   {NULL, NULL, 0, NULL}
 };
 
@@ -271,7 +170,11 @@ static struct PyModuleDef math_aux_cpy = {
   "math_aux_cpy",
   "CPython functions for the 'math_aux' module.",
   -1,
-  Methods
+  Methods,
+  NULL,
+  NULL,
+  NULL,
+  NULL
 };
 #endif
 
@@ -287,24 +190,55 @@ PyMODINIT_FUNC PyInit_math_aux_cpy( void ) {
 
 #else
 
-void initmath_aux_cpy( void ) {
+  void initmath_aux_cpy( void ) {
 
 #define INITERROR return
 
 #endif
 
-  import_array();
-
 #if PY_MAJOR_VERSION >= 3
-  PyObject* module = PyModule_Create(&math_aux_cpy);
+    PyObject* module = PyModule_Create(&math_aux_cpy);
 #else
-  PyObject* module = Py_InitModule("math_aux_cpy", Methods);
+    PyObject* module = Py_InitModule("math_aux_cpy", Methods);
 #endif
 
-  if ( module == NULL )
-    INITERROR;
+    if ( module == NULL )
+      INITERROR;
+
+    import_array();
+    import_umath();
+
+    PyObject* dict = PyModule_GetDict(module);
+
+    PyObject* bit_length = PyUFunc_FromFuncAndData(bit_length_funcs, bit_length_data, bit_length_types, 9, 1, 1,
+						   PyUFunc_None, "bit_length",
+						   "Calculate the greatest common divisor of two numbers.",
+						   0);
+    PyDict_SetItemString(dict, "bit_length", bit_length);
+    Py_DECREF(bit_length);
+
+    PyObject* gcd = PyUFunc_FromFuncAndData(gcd_funcs, gcd_data, gcd_types, 9, 2, 1,
+					    PyUFunc_None, "gcd",
+					    "Calculate the bit length of the values in an object.",
+					    0);
+    PyDict_SetItemString(dict, "gcd", gcd);
+    Py_DECREF(gcd);
+
+    PyObject* ibinary_repr = PyUFunc_FromFuncAndData(ibinary_repr_funcs, ibinary_repr_data, ibinary_repr_types, 9, 1, 1,
+						     PyUFunc_None, "ibinary_repr",
+						     "Calculate the binary representation (as an integer) of the values in an array.",
+						     0);
+    PyDict_SetItemString(dict, "ibinary_repr", ibinary_repr);
+    Py_DECREF(ibinary_repr);
+
+    // Set the value of "__all__" to an empty list
+    PyObject* l = PyList_New(0);
+    PyDict_SetItemString(dict, "__all__", l);
+    Py_DECREF(l);
 
 #if PY_MAJOR_VERSION >= 3
-  return module;
+
+    return module;
+
 #endif
-}
+  }

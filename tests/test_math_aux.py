@@ -67,15 +67,13 @@ def test_gcd():
 
     assert np.all(hep_spt.gcd(a_vals, b_vals) == ref)
 
+    # It behaves as an "ufunc"
+    assert np.all(hep_spt.gcd(np.array([1, 3]), np.array([1])) == 1)
+    assert np.all(hep_spt.gcd(1, np.array([1, 3])) == 1)
+
     # Check the exceptions
     with pytest.raises(TypeError):
         hep_spt.gcd(4.5, 3)
-
-    with pytest.raises(TypeError):
-        hep_spt.gcd(np.array([1, 3]), np.array([1]))
-
-    with pytest.raises(TypeError):
-        hep_spt.gcd(3, np.array([1, 3]))
 
 
 def test_ibinary_repr():
