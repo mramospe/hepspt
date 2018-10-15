@@ -17,6 +17,7 @@ __all__ = [
     'profile',
     'pull',
     'residual',
+    'weights_by_edges',
 ]
 
 
@@ -317,3 +318,44 @@ def residual( vals, err, ref, ref_err = None ):
         err = np.sqrt(ref_err*ref_err + err*err)
 
     return res, err
+
+
+def weights_by_edges( values, edges, weights ):
+    '''
+    Assign a weight to the values in an input array using a set of edges.
+    It will return a new array of length equal to that of "values" assigning
+    a weight from "weights" depending on the bin they belong to.
+    Values can coincide with the left(right)-most edge so
+    "edges[0] <= x <= edges[-1]".
+
+    :param values: values to process.
+    :type values: numpy.ndarray
+    :param edges: edges of the bins to consider.
+    :type edges: numpy.ndarray
+    :param weights: weights associated to each bin defined by "edges".
+    :type weights:
+    :returns: weights associated to the input values.
+    :rtype: numpy.ndarray
+    :raises TypeError: if the dimensions of the array do not match.
+    :raises ValueError: if values are found outside the edges.
+    '''
+    if edges[0] < edges[-1]:
+        l, r = edges[0], edges[-1]
+    else:
+        r, l = edges[0], edges[-1]
+
+    if np.min(values) < l or np.max(values) > r:
+        raise ValueError('Detected values outside bounds')
+
+    if any(a.ndim != 1 for a in (values, edges, weights)):
+        raise TypeError('Input arrays must have dimension one')
+
+    if len(edges) != len(weights) + 1:
+        raise TypeError('Length of edges must be the same as that of weights plus one')
+
+    idx = np.digitize(values, edges)
+
+    idx[values == edges[0]]  = 0
+    idx[values == edges[-1]] = len(edges) - 1
+
+    return weights[idx - 1]

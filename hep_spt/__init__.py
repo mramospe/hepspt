@@ -15,8 +15,6 @@ for loader, module_name, ispkg in pkgutil.walk_packages(__path__):
     if module_name.endswith('setup'):
         continue
 
-    __all__.append(module_name)
-
     if not ispkg:
 
         # Import all classes and functions
