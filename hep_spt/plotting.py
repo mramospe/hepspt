@@ -1,4 +1,4 @@
-'''
+r'''
 Provide some useful functions to plot with matplotlib.
 '''
 
@@ -34,7 +34,7 @@ __path_to_styles__ = os.path.join(__project_path__, 'mpl')
 
 
 def available_styles():
-    '''
+    r'''
     Get a list with the names of the available styles.
 
     :returns: List with the names of the available styles within this package.
@@ -46,7 +46,7 @@ def available_styles():
 
 
 def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax = None ):
-    '''
+    r'''
     Plot a correlation matrix in the given axes.
 
     :param matrix: correlation matrix.
@@ -111,7 +111,7 @@ def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax 
 
 
 def opt_fig_div( naxes ):
-    '''
+    r'''
     Get the optimal figure division for a given number of axes, where
     all the axes have the same dimensions.
     For non-perfect square numbers, this algorithm preferes to increase
@@ -137,7 +137,7 @@ def opt_fig_div( naxes ):
 
 
 def path_to_styles():
-    '''
+    r'''
     Retrieve the path to the directory containing the styles.
 
     :returns: Path to the directory containing the styles.
@@ -147,7 +147,7 @@ def path_to_styles():
 
 
 def samples_cycler( smps, *args, **kwargs ):
-    '''
+    r'''
     Generate a :class:`cycler.Cycler` object were the labels are defined by
     "smps", and the other parameters are left to the user.
     This function is useful when one wants to plot several samples with
@@ -186,7 +186,7 @@ def samples_cycler( smps, *args, **kwargs ):
 
 
 def set_style( *args ):
-    '''
+    r'''
     Set the style for matplotlib to one within this project. Available styles
     are:
 
@@ -219,7 +219,7 @@ def set_style( *args ):
 
 
 def text_in_rectangles( recs, txt, cax = None, **kwargs ):
-    '''
+    r'''
     Write text inside :class:`matplotlib.patches.Rectangle` instances.
 
     :param recs: set of rectangles to work with.

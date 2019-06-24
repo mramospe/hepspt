@@ -1,4 +1,4 @@
-'''
+r'''
 Auxiliar mathematical functions.
 '''
 
@@ -19,7 +19,7 @@ __all__ = ['bit_length', 'gcd', 'ibinary_repr', 'is_power_2', 'lcm', 'next_power
 
 
 def bit_length( arg ):
-    '''
+    r'''
     Get the length of the binary representation of the given value(s).
     This function is equivalent to :func:`int.bit_length`, but can take arrays
     as an input.
@@ -33,7 +33,7 @@ def bit_length( arg ):
 
 
 def gcd( a, b, *args ):
-    '''
+    r'''
     Calculate the greatest common divisor of a set of numbers.
 
     :param a: first number(s).
@@ -54,7 +54,7 @@ def gcd( a, b, *args ):
 
 
 def ibinary_repr( arg ):
-    '''
+    r'''
     Get the binary representation of the given value(s).
     This function is equivalent to :func:`numpy.binary_repr`, but the returned
     value is an integer.
@@ -75,7 +75,7 @@ def ibinary_repr( arg ):
 
 @taking_ndarray
 def is_power_2( arg ):
-    '''
+    r'''
     Determine whether the input number(s) is a power of 2 or not. Only
     works with positive numbers.
 
@@ -89,7 +89,7 @@ def is_power_2( arg ):
 
 @taking_ndarray
 def lcm( a, b, *args ):
-    '''
+    r'''
     Calculate the least common multiple of a set of numbers.
 
     :param a: first number(s).
@@ -109,7 +109,7 @@ def lcm( a, b, *args ):
 
 @taking_ndarray
 def next_power_2( arg ):
-    '''
+    r'''
     Calculate the next number(s) greater than that(those) given and being a power(s) of 2.
 
     :param arg: input number(s).

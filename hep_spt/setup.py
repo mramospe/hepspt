@@ -1,4 +1,4 @@
-'''
+r'''
 Configuration file for the modules in the "hep_spt" package.
 '''
 
@@ -7,7 +7,7 @@ __email__  = 'miguel.ramos.pernas@cern.ch'
 
 
 def configuration( parent_package = '', top_path = '' ):
-    '''
+    r'''
     Function to do the configuration.
     '''
     from numpy.distutils.misc_util import Configuration
