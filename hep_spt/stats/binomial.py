@@ -16,6 +16,7 @@ from hep_spt.stats.core import one_sigma
 
 __all__ = ['clopper_pearson_int', 'clopper_pearson_unc',
            'wald_int', 'wald_unc',
+           'wald_weighted_int', 'wald_weighted_unc',
            'wilson_int', 'wilson_unc']
 
 
@@ -137,6 +138,57 @@ def wald_unc( k, N, cl = one_sigma ):
     z = norm.isf((1. - cl)/2.)
     p = k*1./N
     return z*np.sqrt(p*(1. - p)/N)
+
+
+@taking_ndarray
+def wald_weighted_int( k, N, cl = one_sigma ):
+    r'''
+    Calculate the symmetric Wald interval for a weighted sample,
+    where "k" is the array of weights in the survival sample
+    and "N" in the main sample.
+
+    :param k: passed weights.
+    :type k: numpy.ndarray(float)
+    :param N: total weights.
+    :type N: numpy.ndarray(float)
+    :param cl: confidence level.
+    :type cl: float or numpy.ndarray(float)
+    :returns: Lower and upper bounds for the probability.
+    :rtype: float or numpy.ndarray(float)
+    '''
+    sw_k = np.sum(k, axis=None)
+    sw_N = np.sum(N, axis=None)
+    p = sw_k*1./sw_N
+    s = wald_weighted_unc(k, N, cl)
+    return p - s, p + s
+
+
+@taking_ndarray
+def wald_weighted_unc( k, N, cl = one_sigma ):
+    r'''
+    Calculate the symmetric Wald uncertainty for a weighted sample,
+    where "k" is the array of weights in the survival sample
+    and "N" in the main sample.
+
+    :param k: passed weights.
+    :type k: numpy.ndarray(float)
+    :param N: total weights.
+    :type N: numpy.ndarray(float)
+    :param cl: confidence level.
+    :type cl: float or numpy.ndarray(float)
+    :returns: symmetric uncertainty.
+    :rtype: float or numpy.ndarray(float)
+    '''
+    z = norm.isf((1. - cl)/2.)
+
+    sN = np.sum(N, axis=None)
+    W1 = np.sum(k, axis=None)
+    W2 = sN - W1
+
+    vw1 = np.sum(k*k, axis=None)
+    vw2 = np.sum(N*N, axis=None) - vw1
+
+    return z*np.sqrt((W1**2*vw2 + W2**2*vw1)/sN**4)
 
 
 @taking_ndarray

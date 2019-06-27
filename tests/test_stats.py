@@ -328,6 +328,34 @@ def test_wald_unc():
     assert s == 0.
 
 
+def test_wald_weighted_int():
+    '''
+    Test for the weighted Wald interval function.
+    '''
+    p_l, p_u = hep_spt.wald_weighted_int(np.zeros(3), np.ones(3))
+    assert p_l == 0.
+
+    p_l, p_u = hep_spt.wald_weighted_int(np.ones(3), np.ones(3))
+    assert p_u == 1.
+
+    p_l, p_u = hep_spt.wald_weighted_int(np.ones(2), np.ones(4))
+    assert np.allclose([p_l, p_u], hep_spt.wald_int(2, 4))
+
+
+def test_wald_weighted_unc():
+    '''
+    Test for the weighted Wald uncertainty function.
+    '''
+    s = hep_spt.wald_weighted_unc(np.zeros(3), np.ones(3))
+    assert s == 0.
+
+    s = hep_spt.wald_weighted_unc(np.ones(3), np.ones(3))
+    assert s == 0.
+
+    s = hep_spt.wald_weighted_unc(np.ones(2), np.ones(4))
+    assert np.isclose(s, hep_spt.wald_unc(2, 4))
+
+
 def test_wilson_int():
     '''
     Test for the Wilson interval function.
