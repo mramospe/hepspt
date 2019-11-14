@@ -14,20 +14,31 @@ axes.spines.top       : False
 # Error bar
 errorbar.capsize : 3
 
+# Figure
+figure.figsize : 10, 8
+
 # Font
 font.family : serif
+font.size   : 30
+
+# Legend
+legend.fontsize : 20
+legend.frameon  : True
 
 # Lines
-lines.linewidth  : 1.5
+lines.linewidth  : 2
 lines.marker     : o
-lines.markersize : 6
+lines.markersize : 8
+
+# Patches
+patch.linewidth : 2
 
 # Scatter
 scatter.marker : o
 
 # Text
 text.latex.preamble : \usepackage{amsmath}
-text.latex.unicode  : True
+text.latex.preview  : True
 text.usetex         : True
 
 # Ticks
@@ -35,3 +46,7 @@ xtick.major.width : 1.5
 ytick.major.width : 1.5
 xtick.minor.width : 1.0
 ytick.minor.width : 1.0
+xtick.major.size  : 10
+ytick.major.size  : 10
+xtick.minor.size  : 5
+ytick.minor.size  : 5

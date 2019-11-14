@@ -1,4 +1,4 @@
-'''
+r'''
 Classes and functions to work with the CLs method.
 '''
 
@@ -13,7 +13,7 @@ from collections import namedtuple
 
 # Local
 from hep_spt.core import decorate
-from hep_spt.stats import rv_random_sample
+from hep_spt.stats.core import rv_random_sample
 
 __all__ = [
     'CLsTS', 'CLsTS_discrete', 'CLsTS_continuous',
@@ -28,7 +28,7 @@ CLsResult = namedtuple('CLsResult', ('CLs', 'CLb', 'CLsb'))
 class CLsTS(object):
 
     def __init__( self, alt, null ):
-        '''
+        r'''
         Base class to represent the test-statistics function to work with the
         CLs method. The class is built from the alternative and null hypotheses.
 
@@ -46,7 +46,7 @@ class CLsTS(object):
         self.nh = null
 
     def _cl( self, hyp, tv, size ):
-        '''
+        r'''
         Method to get the confidence level for a given hypothesis and value for
         the test statistics. The size determines the precision of the output
         value.
@@ -63,7 +63,7 @@ class CLsTS(object):
         raise NotImplementedError('Attempt to call abstract class method')
 
     def test_stat( self, v ):
-        '''
+        r'''
         Calculate the test-statistics associated to the given value.
 
         :param v: input value:
@@ -77,7 +77,7 @@ class CLsTS(object):
         return np.log(num/den)
 
     def evaluate( self, v, size = 100000 ):
-        '''
+        r'''
         Calculate the CLs, CLb and CLsb for the given value. In order to boost
         any script using this function, and to prevent misbehaviours due
         to the use of different generated samples, it is recommended to call it
@@ -108,7 +108,7 @@ class CLsTS(object):
 class CLsTS_discrete(CLsTS):
 
     def __init__( self, alt, null ):
-        '''
+        r'''
         Base class to represent the test-statistics function to work with the
         CLs method using hypothesis working on a discrete domain. The class is
         built from the alternative and null hypotheses.
@@ -126,7 +126,7 @@ class CLsTS_discrete(CLsTS):
         CLsTS.__init__(self, alt, null)
 
     def _cl( self, hyp, tv, size ):
-        '''
+        r'''
         Method to get the confidence level for a given hypothesis and value for
         the test statistics. The size determines the precision of the output
         value.
@@ -163,7 +163,7 @@ class CLsTS_discrete(CLsTS):
 class CLsTS_continuous(CLsTS):
 
     def __init__( self, alt, null ):
-        '''
+        r'''
         Base class to represent the test-statistics function to work with the
         CLs method using hypothesis working on a continuous domain.
         The class is built from the alternative and null hypotheses.
@@ -181,7 +181,7 @@ class CLsTS_continuous(CLsTS):
         CLsTS.__init__(self, alt, null)
 
     def _cl( self, hyp, tv, size ):
-        '''
+        r'''
         Method to get the confidence level for a given hypothesis and value for
         the test statistics. The size determines the precision of the output
         value.
@@ -215,7 +215,7 @@ class CLsTS_continuous(CLsTS):
 
 @decorate
 def _call_wrap( meth ):
-    '''
+    r'''
     Wrapper function for the __call__ method of classes inheriting from
     :class:`CLsHypo`.
 
@@ -225,7 +225,7 @@ def _call_wrap( meth ):
     :rtype: function
     '''
     def _wrapper( self, *args, **kwargs ):
-        '''
+        r'''
         Wrapper function which calls the method multiplying the probabilities
         if necessary.
         '''
@@ -258,7 +258,7 @@ def _call_wrap( meth ):
 class CLsHypo(object):
 
     def __init__( self, pf ):
-        '''
+        r'''
         Represent an hypothesis to be used in the CLs method.
         The class is built from a given probability function.
 
@@ -273,7 +273,7 @@ class CLsHypo(object):
         self.func = pf
 
     def __call__( self, v ):
-        '''
+        r'''
         Calculate the global probability for the given input value(s). If the
         arguments of the probability function are arrays, then it is assumed
         that "v" is either an array of length equal to the number of values
@@ -302,7 +302,7 @@ class CLsHypo(object):
         raise NotImplementedError('Attempt to call abstract class method')
 
     def median( self ):
-        '''
+        r'''
         Calculate the median of the distribution associated to this
         hypothesis. This is equivalent to call CLsHypo.percentil(0.5).
 
@@ -312,7 +312,7 @@ class CLsHypo(object):
         return self.percentil(0.5)
 
     def percentil( self, prob ):
-        '''
+        r'''
         Calculate the percentil associated to the given probability.
 
         :param prob: probability.
@@ -326,7 +326,7 @@ class CLsHypo(object):
 class CLsHypo_discrete(CLsHypo):
 
     def __init__( self, pmf ):
-        '''
+        r'''
         Represent an hypothesis which works on a discrete domain.
         The class is built from a given probability function.
 
@@ -341,7 +341,7 @@ class CLsHypo_discrete(CLsHypo):
 
     @_call_wrap
     def __call__( self, v ):
-        '''
+        r'''
         Calculate the global probability for the given input value(s). See
         :meth:`CLsHypo.__call__` for more details.
 
@@ -356,7 +356,7 @@ class CLsHypo_discrete(CLsHypo):
 class CLsHypo_continuous(CLsHypo):
 
     def __init__( self, pdf ):
-        '''
+        r'''
         Represent an hypothesis which works on a continuous domain.
         The class is built from a given probability function.
 
@@ -371,7 +371,7 @@ class CLsHypo_continuous(CLsHypo):
 
     @_call_wrap
     def __call__( self, v ):
-        '''
+        r'''
         Calculate the global probability for the given input value(s). See
         :meth:`CLsHypo.__call__` for more details.
 
@@ -384,7 +384,7 @@ class CLsHypo_continuous(CLsHypo):
 
 
 def cls_ts( alt, null ):
-    '''
+    r'''
     Create an instance of :class:`CLsTS` from the alternative an null
     hypotheses.
     A check is done to see if both refere to the same type of probability
@@ -411,7 +411,7 @@ def cls_ts( alt, null ):
 
 
 def cls_hypo( func, *args, **kwargs ):
-    '''
+    r'''
     Create an instance of CLsHypo given a probability density(mass) function,
     as an object of type :class:`scipy.stats.rv_discrete` or
     :class:`scipy.stats.rv_continuous`.

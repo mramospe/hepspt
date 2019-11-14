@@ -1,4 +1,4 @@
-'''
+r'''
 Functions to work with histograms.
 '''
 
@@ -6,7 +6,8 @@ __author__ = ['Miguel Ramos Pernas']
 __email__  = ['miguel.ramos.pernas@cern.ch']
 
 # Local
-from hep_spt.stats import stat_values, poisson_fu, poisson_llu, sw2_u
+from hep_spt.stats.core import stat_values
+from hep_spt.stats.poisson import poisson_fu, poisson_llu, sw2_unc
 
 # Python
 import numpy as np
@@ -17,11 +18,12 @@ __all__ = [
     'profile',
     'pull',
     'residual',
+    'weights_by_edges',
 ]
 
 
 def cfe( edges ):
-    '''
+    r'''
     Calculate the centers of a set of bins given their edges.
 
     :param edges: edges of a histogram.
@@ -33,7 +35,7 @@ def cfe( edges ):
 
 
 def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, norm_type = 'range', uncert = None ):
-    '''
+    r'''
     Calculate the values needed to create an error bar histogram.
     Different errors can be considered (see below).
 
@@ -86,7 +88,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, n
     elif uncert == 'dll':
         ey = poisson_llu(values)
     else:
-        ey = sw2_u(arr, bins, range, weights)
+        ey = sw2_unc(arr, bins, range, weights)
 
     # For compatibility with matplotlib.pyplot.errorbar
     ey = ey.T
@@ -118,7 +120,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, n
 
 
 def process_range( arr, range = None ):
-    '''
+    r'''
     Process the given range, determining the minimum and maximum
     values for a 1D histogram.
 
@@ -142,7 +144,7 @@ def process_range( arr, range = None ):
 
 
 def profile( x, y, bins = 20, range = None, weights = None, std_type = 'mean' ):
-    '''
+    r'''
     Calculate the profile from a 2D data sample.
     It corresponds to the mean of the values in "y" for each bin in "x".
 
@@ -196,7 +198,7 @@ def profile( x, y, bins = 20, range = None, weights = None, std_type = 'mean' ):
 
 
 def pull( vals, err, ref, ref_err = None ):
-    '''
+    r'''
     Get the pull with the associated errors for a given set of values and a
     reference. Considering, :math:`v` as the experimental value and :math:`r`
     as the rerference, the definition of this quantity is :math:`(v - r)/\sigma`
@@ -273,7 +275,7 @@ def pull( vals, err, ref, ref_err = None ):
 
 
 def residual( vals, err, ref, ref_err = None ):
-    '''
+    r'''
     Calculate the residual with its errors, for a set of values with
     respect to a reference.
     If uncertainties are also provided for the reference, then the
@@ -317,3 +319,44 @@ def residual( vals, err, ref, ref_err = None ):
         err = np.sqrt(ref_err*ref_err + err*err)
 
     return res, err
+
+
+def weights_by_edges( values, edges, weights ):
+    r'''
+    Assign a weight to the values in an input array using a set of edges.
+    It will return a new array of length equal to that of "values" assigning
+    a weight from "weights" depending on the bin they belong to.
+    Values can coincide with the left(right)-most edge so
+    "edges[0] <= x <= edges[-1]".
+
+    :param values: values to process.
+    :type values: numpy.ndarray
+    :param edges: edges of the bins to consider.
+    :type edges: numpy.ndarray
+    :param weights: weights associated to each bin defined by "edges".
+    :type weights:
+    :returns: weights associated to the input values.
+    :rtype: numpy.ndarray
+    :raises TypeError: if the dimensions of the array do not match.
+    :raises ValueError: if values are found outside the edges.
+    '''
+    if edges[0] < edges[-1]:
+        l, r = edges[0], edges[-1]
+    else:
+        r, l = edges[0], edges[-1]
+
+    if np.min(values) < l or np.max(values) > r:
+        raise ValueError('Detected values outside bounds')
+
+    if any(a.ndim != 1 for a in (values, edges, weights)):
+        raise TypeError('Input arrays must have dimension one')
+
+    if len(edges) != len(weights) + 1:
+        raise TypeError('Length of edges must be the same as that of weights plus one')
+
+    idx = np.digitize(values, edges)
+
+    idx[values == edges[0]]  = 0
+    idx[values == edges[-1]] = len(edges) - 1
+
+    return weights[idx - 1]

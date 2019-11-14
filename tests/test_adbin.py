@@ -88,6 +88,11 @@ def test_adbin_hist1d_edges():
 
     assert np.allclose(edges, ref)
 
+    # Without weights, the result must not depend on the value of "reduce_weights"
+    erb = hep_spt.adbin_hist1d_edges(smp, nbins=len(smp), range=(0, n), reduce_bias=True)
+
+    assert np.allclose(erb, edges)
+
     # Weighted case
     edges = hep_spt.adbin_hist1d_edges(smp, nbins=len(smp), range=(0, n), weights=weights)
 

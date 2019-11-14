@@ -53,6 +53,7 @@ Thumbs.db
 # PIP installation files #
 ##########################
 .eggs/
+build/
 hep_spt.egg-info/
 hep_spt/version.py
 

@@ -14,6 +14,7 @@ from scipy.stats import ks_2samp as scipy_ks_2samp
 
 # Local
 import hep_spt
+from hep_spt.stats.poisson import __poisson_to_gauss__
 
 
 def _integral_transformer_aux( points, comp, values=None ):
@@ -61,23 +62,43 @@ def test_calc_poisson_llu():
     assert np.allclose(hep_spt.calc_poisson_llu([10, 20]), hep_spt.poisson_llu([10, 20]).T)
 
 
-def test_cp_fu():
+def test_clopper_pearson_int():
     '''
-    Test the function to calculate frequentist uncertainties on
-    efficiencies.
+    Test the function to calculate frequentist intervals on
+    binomial probabilities.
     '''
     # Test single value behaviour
-    sl, sr = hep_spt.cp_fu(0, 1)
+    sl, sr = hep_spt.clopper_pearson_int(0, 1)
     assert sl == 0.
 
-    sl, sr = hep_spt.cp_fu(1, 1)
+    sl, sr = hep_spt.clopper_pearson_int(1, 1)
+    assert sr == 1.
+
+    sl, sr = hep_spt.clopper_pearson_int(1, 2)
+    assert np.isclose(sr, 1. - sl)
+
+    # Test numpy.vectorize behaviour
+    sl, sr = hep_spt.clopper_pearson_int([0, 1, 1], [1, 1, 2])
+    assert sl[0] == 0. and sr[1] == 1. and np.isclose(sr[2], 1. - sl[2])
+
+
+def test_clopper_pearson_unc():
+    '''
+    Test the function to calculate frequentist uncertainties on
+    binomial probabilities.
+    '''
+    # Test single value behaviour
+    sl, sr = hep_spt.clopper_pearson_unc(0, 1)
+    assert sl == 0.
+
+    sl, sr = hep_spt.clopper_pearson_unc(1, 1)
     assert sr == 0.
 
-    sl, sr = hep_spt.cp_fu(1, 2)
+    sl, sr = hep_spt.clopper_pearson_unc(1, 2)
     assert np.isclose(sl, sr)
 
     # Test numpy.vectorize behaviour
-    sl, sr = hep_spt.cp_fu([0, 1, 1], [1, 1, 2])
+    sl, sr = hep_spt.clopper_pearson_unc([0, 1, 1], [1, 1, 2])
     assert sl[0] == 0. and sr[1] == 0. and np.isclose(sl[2], sr[2])
 
 
@@ -102,13 +123,13 @@ def test_flatdisttransform():
     assert chi2_ndof < 1.
 
 
-def test_gauss_u():
+def test_gauss_unc():
     '''
-    Test for the "gauss_u" function.
+    Test for the "gauss_unc" function.
     '''
     r  = np.array([1, 1])
-    s1 = hep_spt.gauss_u(1)
-    s2 = hep_spt.gauss_u(r)
+    s1 = hep_spt.gauss_unc(1)
+    s2 = hep_spt.gauss_unc(r)
 
     assert np.allclose(s1, 1)
     assert np.allclose(s2, r)
@@ -128,7 +149,7 @@ def test_ks_2samp():
     scipy_res   = scipy_ks_2samp(a, b)
     hep_spt_res = hep_spt.ks_2samp(a, b)
 
-    assert scipy_res == hep_spt_res
+    assert np.allclose(scipy_res, hep_spt_res)
 
     # With weights equal to one for each entry, the result must be the
     # same as in scipy.
@@ -137,7 +158,7 @@ def test_ks_2samp():
 
     hep_spt_res = hep_spt.ks_2samp(a, b, wa, wb)
 
-    assert scipy_res == hep_spt_res
+    assert np.allclose(scipy_res, hep_spt_res)
 
 
 def test_stat_values():
@@ -214,7 +235,7 @@ def test_poisson_fu():
     sl, sr = hep_spt.calc_poisson_fu(0)
     assert sl == 0
 
-    sl, sr = hep_spt.poisson_fu(2*hep_spt.stats.__poisson_to_gauss__)
+    sl, sr = hep_spt.poisson_fu(2*__poisson_to_gauss__)
 
     # Test numpy.vectorize behaviour
     sl, sr = hep_spt.calc_poisson_fu([0, 1])
@@ -243,7 +264,7 @@ def test_poisson_llu():
     sl, sr = hep_spt.calc_poisson_llu(0)
     assert sl == 0
 
-    sl, sr = hep_spt.poisson_llu(2*hep_spt.stats.__poisson_to_gauss__)
+    sl, sr = hep_spt.poisson_llu(2*__poisson_to_gauss__)
 
     # Test numpy.vectorize behaviour
     sl, sr = hep_spt.calc_poisson_llu([0, 1])
@@ -276,10 +297,97 @@ def test_rv_random_sample():
     assert smp.shape == (100,2)
 
 
-def test_sw2_u():
+def test_sw2_unc():
     '''
-    Test for the "sw2_u" function.
+    Test for the "sw2_unc" function.
     '''
     arr = np.array([1, 2, 3])
-    assert np.allclose(hep_spt.sw2_u(arr, bins=3), np.ones(3))
-    assert np.allclose(hep_spt.sw2_u(arr, bins=3, weights=arr), arr)
+    assert np.allclose(hep_spt.sw2_unc(arr, bins=3), np.ones(3))
+    assert np.allclose(hep_spt.sw2_unc(arr, bins=3, weights=arr), arr)
+
+
+def test_wald_int():
+    '''
+    Test for the Wald interval function.
+    '''
+    p_l, p_u = hep_spt.wald_int(0, 1)
+    assert p_l == 0.
+
+    p_l, p_u = hep_spt.wald_int(1, 1)
+    assert p_u == 1.
+
+
+def test_wald_unc():
+    '''
+    Test for the Wald uncertainty function.
+    '''
+    s = hep_spt.wald_unc(0, 1)
+    assert s == 0.
+
+    s = hep_spt.wald_unc(1, 1)
+    assert s == 0.
+
+
+def test_wald_weighted_int():
+    '''
+    Test for the weighted Wald interval function.
+    '''
+    p_l, p_u = hep_spt.wald_weighted_int(np.zeros(3), np.ones(3))
+    assert p_l == 0.
+
+    p_l, p_u = hep_spt.wald_weighted_int(np.ones(3), np.ones(3))
+    assert p_u == 1.
+
+    p_l, p_u = hep_spt.wald_weighted_int(np.ones(2), np.ones(4))
+    assert np.allclose([p_l, p_u], hep_spt.wald_int(2, 4))
+
+
+def test_wald_weighted_unc():
+    '''
+    Test for the weighted Wald uncertainty function.
+    '''
+    s = hep_spt.wald_weighted_unc(np.zeros(3), np.ones(3))
+    assert s == 0.
+
+    s = hep_spt.wald_weighted_unc(np.ones(3), np.ones(3))
+    assert s == 0.
+
+    s = hep_spt.wald_weighted_unc(np.ones(2), np.ones(4))
+    assert np.isclose(s, hep_spt.wald_unc(2, 4))
+
+
+def test_wilson_int():
+    '''
+    Test for the Wilson interval function.
+    '''
+    # Test single value behaviour
+    pl, pr = hep_spt.wilson_int(0, 1)
+    assert pl == 0.
+
+    pl, pr = hep_spt.wilson_int(1, 1)
+    assert pr == 1.
+
+    pl, pr = hep_spt.wilson_int(1, 2)
+    assert np.isclose(pr, 1. - pl)
+
+    # Test numpy.vectorize behaviour
+    pl, pr = hep_spt.wilson_int([0, 1, 1], [1, 1, 2])
+    assert pl[0] == 0. and pr[1] == 1. and np.isclose(pr[2], 1. - pl[2])
+
+
+def test_wilson_unc():
+    '''
+    Test for the Wilson uncertainty function.
+    '''
+    sl, sr = hep_spt.wilson_unc(0, 1)
+    assert sl == 0.
+
+    sl, sr = hep_spt.wilson_unc(1, 1)
+    assert sr == 0.
+
+    sl, sr = hep_spt.wilson_unc(1, 2)
+    assert np.isclose(sl, sr)
+
+    # Test numpy.vectorize behaviour
+    sl, sr = hep_spt.wilson_unc([0, 1, 1], [1, 1, 2])
+    assert sl[0] == 0. and sr[1] == 0. and np.isclose(sl[2], sr[2])
