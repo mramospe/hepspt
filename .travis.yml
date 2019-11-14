@@ -7,7 +7,7 @@ env:
 # Command to install dependencies
 install:
   - pip install -r requirements.txt
-  - pip install -e .
+  - pip install .
 # Command to run tests
 script:
   - pytest -v tests
