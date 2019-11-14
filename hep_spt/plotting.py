@@ -11,6 +11,8 @@ from hep_spt import __project_path__
 from hep_spt.histograms import cfe
 
 # Python
+import contextlib
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -22,6 +24,7 @@ from cycler import cycler
 __all__ = [
     'available_styles',
     'corr_hist2d',
+    'modified_format',
     'opt_fig_div',
     'path_to_styles',
     'samples_cycler',
@@ -108,6 +111,24 @@ def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax 
 
     # Draw the grid
     cax.grid()
+
+
+@contextlib.contextmanager
+def modified_format(kwargs):
+    '''
+    Modify the matplotlib format in this context.
+    On exit the previous format is restored.
+
+    :param kwargs: dictionary with the format to be applied to \
+    :any:`matplotlib.rcParams`.
+    :type kwargs: dict
+    '''
+    old = dict(matplotlib.rcParams)
+    try:
+        matplotlib.rcParams.update(kwargs)
+        yield
+    finally:
+        matplotlib.rcParams.update(old)
 
 
 def opt_fig_div( naxes ):

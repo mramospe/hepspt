@@ -4,16 +4,8 @@
 # https://github.com/matplotlib/matplotlib/blob/master/matplotlibrc.template
 #
 
-# Axes
-axes.labelsize : 12
-axes.titlesize : 14
-
 # Figure
-figure.figsize : 12, 14
+figure.figsize : 14, 14
 
 # Font
-font.size : 12
-
-# Ticks
-xtick.labelsize : 12
-ytick.labelsize : 12
+font.size : 15

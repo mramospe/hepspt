@@ -7,6 +7,7 @@ __email__  = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
+import matplotlib
 import numpy as np
 import os
 import pytest
@@ -31,6 +32,16 @@ def test_corr_hist2d():
                        [0., 1., 0.],
                        [0., 0., 1.]])
     hep_spt.corr_hist2d(matrix, ['a', 'b', 'c'])
+
+
+def test_modified_format():
+    '''
+    Test for the "modified_format" function.
+    '''
+    prev = matplotlib.rcParams['font.size']
+    with hep_spt.modified_format({'font.size': 10}):
+        assert matplotlib.rcParams['font.size'] == 10
+    assert matplotlib.rcParams['font.size'] == prev
 
 
 def test_opt_fig_div():
