@@ -115,7 +115,7 @@ def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax 
 
 @contextlib.contextmanager
 def modified_format(kwargs):
-    '''
+    r'''
     Modify the matplotlib format in this context.
     On exit the previous format is restored.
 

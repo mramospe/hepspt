@@ -212,14 +212,14 @@ PyMODINIT_FUNC PyInit_math_aux_cpy( void ) {
 
     PyObject* bit_length = PyUFunc_FromFuncAndData(bit_length_funcs, bit_length_data, bit_length_types, 9, 1, 1,
 						   PyUFunc_None, "bit_length",
-						   "Calculate the greatest common divisor of two numbers.",
+						   "Calculate the bit length of the values in an object.",
 						   0);
     PyDict_SetItemString(dict, "bit_length", bit_length);
     Py_DECREF(bit_length);
 
     PyObject* gcd = PyUFunc_FromFuncAndData(gcd_funcs, gcd_data, gcd_types, 9, 2, 1,
 					    PyUFunc_None, "gcd",
-					    "Calculate the bit length of the values in an object.",
+					    "Calculate the greatest common divisor of two numbers.",
 					    0);
     PyDict_SetItemString(dict, "gcd", gcd);
     Py_DECREF(gcd);
