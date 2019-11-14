@@ -15,11 +15,16 @@ for loader, module_name, ispkg in pkgutil.walk_packages(__path__):
     if module_name.endswith('setup'):
         continue
 
-    # Import all classes and functions
-    mod = importlib.import_module('hep_spt.' + module_name)
+    # We are loading whatever is exported by the modules
+    if not ispkg:
 
-    __all__ += mod.__all__
+        # Import all classes and functions
+        mod = loader.find_module(module_name).load_module(module_name)
 
-    for n, c in inspect.getmembers(mod):
-        if n in mod.__all__:
-            globals()[n] = c
+        __all__ += mod.__all__
+
+        for n, c in inspect.getmembers(mod):
+            if n in mod.__all__:
+                globals()[n] = c
+
+__all__ = list(sorted(__all__))

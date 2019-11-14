@@ -1,5 +1,5 @@
 r'''
-Configuration file for the modules in the "hep_spt" package.
+Configuration file for the modules in the "stats" subpackage.
 '''
 
 __author__ = 'Miguel Ramos Pernas'
@@ -12,15 +12,7 @@ def configuration( parent_package = '', top_path = '' ):
     '''
     from numpy.distutils.misc_util import Configuration
 
-    config = Configuration(None, parent_package, top_path)
-
-    # Add data packages
-    config.add_data_dir('data')
-    config.add_data_dir('mpl')
-
-    # Add subpackages
-    config.add_subpackage('cpython')
-    config.add_subpackage('stats')
+    config = Configuration('stats', parent_package, top_path)
 
     return config
 
