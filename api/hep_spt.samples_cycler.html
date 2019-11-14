@@ -4,41 +4,35 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>samples_cycler &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>samples_cycler &#8212; hep_spt 0.0.0.dev3 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.0.dev2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="set_style" href="hep_spt.set_style.html" />
-    <link rel="prev" title="residual" href="hep_spt.residual.html" />
+    <link rel="prev" title="path_to_styles" href="hep_spt.path_to_styles.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="samples-cycler">
@@ -46,11 +40,11 @@
 <dl class="function">
 <dt id="hep_spt.samples_cycler">
 <code class="descclassname">hep_spt.</code><code class="descname">samples_cycler</code><span class="sig-paren">(</span><em>smps</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#samples_cycler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.samples_cycler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a <code class="xref py py-class docutils literal"><span class="pre">cycler.Cycler</span></code> object were the labels are defined by
+<dd><p>Generate a <code class="xref py py-class docutils literal notranslate"><span class="pre">cycler.Cycler</span></code> object were the labels are defined by
 “smps”, and the other parameters are left to the user.
 This function is useful when one wants to plot several samples with
 different matplotlib styles.
-This function allows to create a <code class="xref py py-class docutils literal"><span class="pre">cycler.Cycler</span></code> object
+This function allows to create a <code class="xref py py-class docutils literal notranslate"><span class="pre">cycler.Cycler</span></code> object
 to loop over the given samples and associated formats, where the “label”
 key is filled with the values from “smps”.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -58,16 +52,16 @@ key is filled with the values from “smps”.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>smps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>)</em>) – list of names for the samples.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – position argument to <code class="xref py py-func docutils literal"><span class="pre">cycler.cycler()</span></code>.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – keyword arguments to <code class="xref py py-func docutils literal"><span class="pre">cycler.cycler()</span></code>.</li>
+<li><strong>smps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>)</em>) – list of names for the samples.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – position argument to <code class="xref py py-func docutils literal notranslate"><span class="pre">cycler.cycler()</span></code>.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – keyword arguments to <code class="xref py py-func docutils literal notranslate"><span class="pre">cycler.cycler()</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Object with the styles for each sample and a defined “label” key.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">cycler.Cycler</span></code></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">cycler.Cycler</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -78,6 +72,7 @@ key is filled with the values from “smps”.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -107,7 +102,7 @@ key is filled with the values from “smps”.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.residual.html" title="previous chapter">residual</a></li>
+      <li>Previous: <a href="hep_spt.path_to_styles.html" title="previous chapter">path_to_styles</a></li>
       <li>Next: <a href="hep_spt.set_style.html" title="next chapter">set_style</a></li>
   </ul></li>
   </ul></li>
@@ -115,14 +110,24 @@ key is filled with the values from “smps”.</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -131,8 +136,8 @@ key is filled with the values from “smps”.</p>
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/api/hep_spt.samples_cycler.rst.txt"

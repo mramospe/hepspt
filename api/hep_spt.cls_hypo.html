@@ -4,41 +4,35 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>cls_hypo &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>cls_hypo &#8212; hep_spt 0.0.0.dev3 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.0.dev2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="cls_ts" href="hep_spt.cls_ts.html" />
-    <link rel="prev" title="adbin_histnd" href="hep_spt.adbin_histnd.html" />
+    <link rel="prev" title="adbin_hist" href="hep_spt.adbin_hist.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="cls-hypo">
@@ -47,16 +41,16 @@
 <dt id="hep_spt.cls_hypo">
 <code class="descclassname">hep_spt.</code><code class="descname">cls_hypo</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#cls_hypo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.cls_hypo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an instance of CLsHypo given a probability density(mass) function,
-as an object of type <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_discrete.html#scipy.stats.rv_discrete" title="(in SciPy v1.1.0)"><code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_discrete</span></code></a> or
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html#scipy.stats.rv_continuous" title="(in SciPy v1.1.0)"><code class="xref py py-class docutils literal"><span class="pre">scipy.stats.rv_continuous</span></code></a>.</p>
+as an object of type <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_discrete.html#scipy.stats.rv_discrete" title="(in SciPy v1.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.stats.rv_discrete</span></code></a> or
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html#scipy.stats.rv_continuous" title="(in SciPy v1.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.stats.rv_continuous</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>func</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_discrete.html#scipy.stats.rv_discrete" title="(in SciPy v1.1.0)"><em>scipy.stats.rv_discrete</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html#scipy.stats.rv_continuous" title="(in SciPy v1.1.0)"><em>scipy.stats.rv_continuous</em></a>) – probability function.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – input arguments to “func”.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – input arguments to “func”.</li>
+<li><strong>func</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_discrete.html#scipy.stats.rv_discrete" title="(in SciPy v1.3.2)"><em>scipy.stats.rv_discrete</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html#scipy.stats.rv_continuous" title="(in SciPy v1.3.2)"><em>scipy.stats.rv_continuous</em></a>) – probability function.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – input arguments to “func”.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – input arguments to “func”.</li>
 </ul>
 </td>
 </tr>
@@ -64,7 +58,7 @@ as an object of type <a class="reference external" href="https://docs.scipy.org/
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete" title="hep_spt.CLsHypo_discrete"><code class="xref py py-class docutils literal"><span class="pre">CLsHypo_discrete</span></code></a>, <a class="reference internal" href="hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" title="hep_spt.CLsHypo_continuous"><code class="xref py py-class docutils literal"><span class="pre">CLsHypo_continuous</span></code></a></p>
+<p class="last"><a class="reference internal" href="hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete" title="hep_spt.CLsHypo_discrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">CLsHypo_discrete</span></code></a>, <a class="reference internal" href="hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" title="hep_spt.CLsHypo_continuous"><code class="xref py py-class docutils literal notranslate"><span class="pre">CLsHypo_continuous</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -72,6 +66,7 @@ as an object of type <a class="reference external" href="https://docs.scipy.org/
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -101,7 +96,7 @@ as an object of type <a class="reference external" href="https://docs.scipy.org/
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="hep_spt.adbin_histnd.html" title="previous chapter">adbin_histnd</a></li>
+      <li>Previous: <a href="hep_spt.adbin_hist.html" title="previous chapter">adbin_hist</a></li>
       <li>Next: <a href="hep_spt.cls_ts.html" title="next chapter">cls_ts</a></li>
   </ul></li>
   </ul></li>
@@ -109,14 +104,24 @@ as an object of type <a class="reference external" href="https://docs.scipy.org/
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -125,8 +130,8 @@ as an object of type <a class="reference external" href="https://docs.scipy.org/
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/api/hep_spt.cls_hypo.rst.txt"

@@ -4,24 +4,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>CLsHypo_discrete &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>CLsHypo_discrete &#8212; hep_spt 0.0.0.dev3 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.0.dev2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="CLsHypo_continuous" href="hep_spt.CLsHypo_continuous.html" />
@@ -32,34 +25,37 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="clshypo-discrete">
 <h1>CLsHypo_discrete<a class="headerlink" href="#clshypo-discrete" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="hep_spt.CLsHypo_discrete">
-<em class="property">class </em><code class="descclassname">hep_spt.</code><code class="descname">CLsHypo_discrete</code><span class="sig-paren">(</span><em>pdf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo_discrete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo_discrete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">hep_spt.cls.CLsHypo</span></code></p>
+<em class="property">class </em><code class="descclassname">hep_spt.</code><code class="descname">CLsHypo_discrete</code><span class="sig-paren">(</span><em>pmf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo_discrete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo_discrete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">hep_spt.cls.CLsHypo</span></code></p>
 <p>Represent an hypothesis which works on a discrete domain.
 The class is built from a given probability function.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdf</strong> (<em>scipy.stats.rv_frozen</em>) – probability function.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pmf</strong> (<em>scipy.stats.rv_frozen</em>) – probability mass function.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><strong>func</strong> – probability mass function representing the hypothesis.</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="hep_spt.CLsHypo.html#hep_spt.CLsHypo" title="hep_spt.CLsHypo"><code class="xref py py-class docutils literal"><span class="pre">CLsHypo</span></code></a>, <a class="reference internal" href="hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" title="hep_spt.CLsHypo_continuous"><code class="xref py py-class docutils literal"><span class="pre">CLsHypo_continuous</span></code></a></p>
+<p class="last"><a class="reference internal" href="hep_spt.CLsHypo.html#hep_spt.CLsHypo" title="hep_spt.CLsHypo"><code class="xref py py-class docutils literal notranslate"><span class="pre">CLsHypo</span></code></a>, <a class="reference internal" href="hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" title="hep_spt.CLsHypo_continuous"><code class="xref py py-class docutils literal notranslate"><span class="pre">CLsHypo_continuous</span></code></a></p>
 </div>
 <p class="rubric">Methods Summary</p>
 <table border="1" class="longtable docutils">
@@ -68,17 +64,29 @@ The class is built from a given probability function.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#hep_spt.CLsHypo_discrete.__call__" title="hep_spt.CLsHypo_discrete.__call__"><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Wrapper function which calls the method multiplying the probabilities if necessary.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#hep_spt.CLsHypo_discrete.__call__" title="hep_spt.CLsHypo_discrete.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(v)</td>
+<td>Calculate the global probability for the given input value(s).</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="hep_spt.CLsHypo_discrete.__call__">
-<code class="descname">__call__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo_discrete.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo_discrete.__call__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper function which calls the method multiplying the probabilities
-if necessary.</p>
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/cls.html#CLsHypo_discrete.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.CLsHypo_discrete.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the global probability for the given input value(s). See
+<a class="reference internal" href="hep_spt.CLsHypo.html#hep_spt.CLsHypo.__call__" title="hep_spt.CLsHypo.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CLsHypo.__call__()</span></code></a> for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><em>numpy.ndarray</em></a>) – input value(s).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Global probability.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -87,6 +95,7 @@ if necessary.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -124,14 +133,24 @@ if necessary.</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -140,8 +159,8 @@ if necessary.</p>
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/api/hep_spt.CLsHypo_discrete.rst.txt"

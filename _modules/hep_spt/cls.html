@@ -4,24 +4,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>hep_spt.cls &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>hep_spt.cls &#8212; hep_spt 0.0.0.dev3 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.0.0.dev2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
@@ -30,13 +23,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for hep_spt.cls</h1><div class="highlight"><pre>
@@ -54,6 +48,7 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 
 <span class="c1"># Local</span>
+<span class="kn">from</span> <span class="nn">hep_spt.core</span> <span class="k">import</span> <span class="n">decorate</span>
 <span class="kn">from</span> <span class="nn">hep_spt.stats</span> <span class="k">import</span> <span class="n">rv_random_sample</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -66,7 +61,7 @@
 <span class="n">CLsResult</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;CLsResult&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;CLs&#39;</span><span class="p">,</span> <span class="s1">&#39;CLb&#39;</span><span class="p">,</span> <span class="s1">&#39;CLsb&#39;</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="CLsTS"><a class="viewcode-back" href="../../api/hep_spt.CLsTS.html#hep_spt.CLsTS">[docs]</a><span class="k">class</span> <span class="nc">CLsTS</span><span class="p">:</span>
+<div class="viewcode-block" id="CLsTS"><a class="viewcode-back" href="../../api/hep_spt.CLsTS.html#hep_spt.CLsTS">[docs]</a><span class="k">class</span> <span class="nc">CLsTS</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -77,6 +72,9 @@
 <span class="sd">        :type alt: CLsHypo</span>
 <span class="sd">        :param null: null hypothesis.</span>
 <span class="sd">        :type null: CLsHypo</span>
+
+<span class="sd">        :ivar ah: alternative hypothesis.</span>
+<span class="sd">        :ivar nh: null hypothesis.</span>
 
 <span class="sd">        .. seealso:: :class:`CLsTS_discrete`, :class:`CLsTS_continuous`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -92,7 +90,7 @@
 <span class="sd">        :param hyp: hypothesis.</span>
 <span class="sd">        :type hyp: CLsHypo</span>
 <span class="sd">        :param tv: value of the test-statistics.</span>
-<span class="sd">        :type tv: array-like</span>
+<span class="sd">        :type tv: numpy.ndarray</span>
 <span class="sd">        :param size: size of the sample to generate.</span>
 <span class="sd">        :type size: int</span>
 <span class="sd">        :returns: Confidence level.</span>
@@ -105,7 +103,7 @@
 <span class="sd">        Calculate the test-statistics associated to the given value.</span>
 
 <span class="sd">        :param v: input value:</span>
-<span class="sd">        :type v: array-like</span>
+<span class="sd">        :type v: numpy.ndarray</span>
 <span class="sd">        :returns: Value of the test-statistics.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -126,7 +124,7 @@
 <span class="sd">        numpy.ndarray objects.</span>
 
 <span class="sd">        :param v: input value</span>
-<span class="sd">        :type v: array-like</span>
+<span class="sd">        :type v: numpy.ndarray</span>
 <span class="sd">        :param size: size of the sample to generate.</span>
 <span class="sd">        :type size: int</span>
 <span class="sd">        :returns: Tuple with the CLs, CLb and CLsb values.</span>
@@ -156,6 +154,9 @@
 <span class="sd">        :param null: null hypothesis.</span>
 <span class="sd">        :type null: CLsHypo</span>
 
+<span class="sd">        :ivar ah: alternative hypothesis.</span>
+<span class="sd">        :ivar nh: null hypothesis.</span>
+
 <span class="sd">        .. seealso:: :class:`CLsTS`, :class:`CLsTS_continuous`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">CLsTS</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span>
@@ -169,7 +170,7 @@
 <span class="sd">        :param hyp: hypothesis.</span>
 <span class="sd">        :type hyp: CLsHypo</span>
 <span class="sd">        :param tv: value of the test-statistics.</span>
-<span class="sd">        :type tv: float or array-like</span>
+<span class="sd">        :type tv: float or numpy.ndarray</span>
 <span class="sd">        :param size: size of the sample to generate.</span>
 <span class="sd">        :type size: int</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -208,6 +209,9 @@
 <span class="sd">        :param null: null hypothesis.</span>
 <span class="sd">        :type null: CLsHypo</span>
 
+<span class="sd">        :ivar ah: alternative hypothesis.</span>
+<span class="sd">        :ivar nh: null hypothesis.</span>
+
 <span class="sd">        .. seealso:: :class:`CLsTS`, :class:`CLsTS_discrete`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">CLsTS</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span>
@@ -221,7 +225,7 @@
 <span class="sd">        :param hyp: hypothesis.</span>
 <span class="sd">        :type hyp: CLsHypo</span>
 <span class="sd">        :param tv: value of the test-statistics.</span>
-<span class="sd">        :type tv: array-like</span>
+<span class="sd">        :type tv: numpy.ndarray</span>
 <span class="sd">        :param size: size of the sample to generate.</span>
 <span class="sd">        :type size: int</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -245,6 +249,7 @@
         <span class="k">return</span> <span class="n">cs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
 
 
+<span class="nd">@decorate</span>
 <span class="k">def</span> <span class="nf">_call_wrap</span><span class="p">(</span> <span class="n">meth</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Wrapper function for the __call__ method of classes inheriting from</span>
@@ -286,19 +291,22 @@
     <span class="k">return</span> <span class="n">_wrapper</span>
 
 
-<div class="viewcode-block" id="CLsHypo"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo.html#hep_spt.CLsHypo">[docs]</a><span class="k">class</span> <span class="nc">CLsHypo</span><span class="p">:</span>
+<div class="viewcode-block" id="CLsHypo"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo.html#hep_spt.CLsHypo">[docs]</a><span class="k">class</span> <span class="nc">CLsHypo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pf</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Represent an hypothesis to be used in the CLs method.</span>
 <span class="sd">        The class is built from a given probability function.</span>
 
-<span class="sd">        :param pdf: probability function.</span>
-<span class="sd">        :type pdf: scipy.stats.rv_frozen</span>
+<span class="sd">        :param pf: probability density/mass function.</span>
+<span class="sd">        :type pf: scipy.stats.rv_frozen</span>
+
+<span class="sd">        :ivar func: probability density/mass function representing the \</span>
+<span class="sd">        hypothesis.</span>
 
 <span class="sd">        .. seealso:: :class:`CLsHypo_discrete`, :class:`CLsHypo_continuous`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">pdf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">pf</span>
 
 <div class="viewcode-block" id="CLsHypo.__call__"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo.html#hep_spt.CLsHypo.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">v</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -323,7 +331,7 @@
 <span class="sd">        0.011185197244103258</span>
 
 <span class="sd">        :param v: input value(s).</span>
-<span class="sd">        :type v: array-like</span>
+<span class="sd">        :type v: numpy.ndarray</span>
 <span class="sd">        :returns: Global probability.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -335,7 +343,7 @@
 <span class="sd">        hypothesis. This is equivalent to call CLsHypo.percentil(0.5).</span>
 
 <span class="sd">        :returns: Median of the distribution.</span>
-<span class="sd">        :rtype: array-like</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">percentil</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
 
@@ -346,24 +354,26 @@
 <span class="sd">        :param prob: probability.</span>
 <span class="sd">        :type prob: float</span>
 <span class="sd">        :returns: Percentil.</span>
-<span class="sd">        :rtype: array-like</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="CLsHypo_discrete"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete">[docs]</a><span class="k">class</span> <span class="nc">CLsHypo_discrete</span><span class="p">(</span><span class="n">CLsHypo</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pmf</span> <span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Represent an hypothesis which works on a discrete domain.</span>
 <span class="sd">        The class is built from a given probability function.</span>
 
-<span class="sd">        :param pdf: probability function.</span>
-<span class="sd">        :type pdf: scipy.stats.rv_frozen</span>
+<span class="sd">        :param pmf: probability mass function.</span>
+<span class="sd">        :type pmf: scipy.stats.rv_frozen</span>
+
+<span class="sd">        :ivar func: probability mass function representing the hypothesis.</span>
 
 <span class="sd">        .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_continuous`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">CLsHypo</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdf</span><span class="p">)</span>
+        <span class="n">CLsHypo</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmf</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CLsHypo_discrete.__call__"><a class="viewcode-back" href="../../api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete.__call__">[docs]</a>    <span class="nd">@_call_wrap</span>
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">v</span> <span class="p">):</span>
@@ -372,7 +382,7 @@
 <span class="sd">        :meth:`CLsHypo.__call__` for more details.</span>
 
 <span class="sd">        :param v: input value(s).</span>
-<span class="sd">        :type v: array-like</span>
+<span class="sd">        :type v: numpy.ndarray</span>
 <span class="sd">        :returns: Global probability.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -386,8 +396,10 @@
 <span class="sd">        Represent an hypothesis which works on a continuous domain.</span>
 <span class="sd">        The class is built from a given probability function.</span>
 
-<span class="sd">        :param pdf: probability function.</span>
+<span class="sd">        :param pdf: probability density function.</span>
 <span class="sd">        :type pdf: scipy.stats.rv_frozen</span>
+
+<span class="sd">        :ivar func: probability density function representing the hypothesis.</span>
 
 <span class="sd">        .. seealso:: :class:`CLsHypo`, :class:`CLsHypo_discrete`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -400,7 +412,7 @@
 <span class="sd">        :meth:`CLsHypo.__call__` for more details.</span>
 
 <span class="sd">        :param v: input value(s).</span>
-<span class="sd">        :type v: array-like</span>
+<span class="sd">        :type v: numpy.ndarray</span>
 <span class="sd">        :returns: Global probability.</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -456,6 +468,7 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -486,14 +499,24 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -502,8 +525,8 @@
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

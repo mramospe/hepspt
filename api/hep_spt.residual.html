@@ -4,27 +4,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>residual &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>residual &#8212; hep_spt 0.0.0.dev3 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.0.dev2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="samples_cycler" href="hep_spt.samples_cycler.html" />
+    <link rel="next" title="bit_length" href="hep_spt.bit_length.html" />
     <link rel="prev" title="pull" href="hep_spt.pull.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -32,54 +25,55 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="residual">
 <h1>residual<a class="headerlink" href="#residual" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="hep_spt.residual">
-<code class="descclassname">hep_spt.</code><code class="descname">residual</code><span class="sig-paren">(</span><em>vals</em>, <em>err</em>, <em>ref</em>, <em>ref_err=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/plotting.html#residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.residual" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hep_spt.</code><code class="descname">residual</code><span class="sig-paren">(</span><em>vals</em>, <em>err</em>, <em>ref</em>, <em>ref_err=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/histograms.html#residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.residual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the residual with its errors, for a set of values with
 respect to a reference.
 If uncertainties are also provided for the reference, then the
 definition is the same but considering the sum of squares rule:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[(\sigma'^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2\]</div>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[(\sigma'^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>vals</strong> (<em>array-like</em>) – values to compare with.</li>
-<li><strong>err</strong> (<em>array-like</em>) – array of errors. Both symmetric and asymmetric errors     can be provided. In the latter case, they must be provided as a     (2, n) array.</li>
-<li><strong>ref</strong> (<em>array-like</em>) – reference to follow.</li>
-<li><strong>ref_err</strong> (<em>array-like</em>) – possible errors for the reference.</li>
+<li><strong>vals</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><em>numpy.ndarray</em></a>) – values to compare with.</li>
+<li><strong>err</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><em>numpy.ndarray</em></a>) – array of errors. Both symmetric and asymmetric errors     can be provided. In the latter case, they must be provided as a     (2, n) array.</li>
+<li><strong>ref</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><em>numpy.ndarray</em></a>) – reference to follow.</li>
+<li><strong>ref_err</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><em>numpy.ndarray</em></a>) – possible errors for the reference.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Residual of the values with respect to the reference and     associated errors. In case asymmetric errors have been provided,     the returning array has shape (2, n).</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array-like, array-like</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)">numpy.ndarray</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)">numpy.ndarray</a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if any of the error arrays does not have shape (2, n) or (n,).</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.8)"><strong>TypeError</strong></a> – if any of the error arrays does not have shape (2, n) or (n,).</p>
 </td>
 </tr>
 </tbody>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-func docutils literal"><span class="pre">pull()</span></code></a></p>
+<p class="last"><a class="reference internal" href="hep_spt.pull.html#hep_spt.pull" title="hep_spt.pull"><code class="xref py py-func docutils literal notranslate"><span class="pre">pull()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -87,6 +81,7 @@ definition is the same but considering the sum of squares rule:</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -117,21 +112,31 @@ definition is the same but considering the sum of squares rule:</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
       <li>Previous: <a href="hep_spt.pull.html" title="previous chapter">pull</a></li>
-      <li>Next: <a href="hep_spt.samples_cycler.html" title="next chapter">samples_cycler</a></li>
+      <li>Next: <a href="hep_spt.bit_length.html" title="next chapter">bit_length</a></li>
   </ul></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -140,8 +145,8 @@ definition is the same but considering the sum of squares rule:</p>
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/api/hep_spt.residual.rst.txt"

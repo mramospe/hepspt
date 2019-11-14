@@ -1,0 +1,6 @@
+modified_format
+===============
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: modified_format

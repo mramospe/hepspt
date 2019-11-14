@@ -1,0 +1,6 @@
+adbin_hist
+==========
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: adbin_hist

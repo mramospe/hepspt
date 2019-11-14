@@ -4,24 +4,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>hep_spt.stats &#8212; hep_spt 0.0.0.dev2 documentation</title>
+    <title>hep_spt.stats &#8212; hep_spt 0.0.0.dev3 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.0.0.dev2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
@@ -30,13 +23,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for hep_spt.stats</h1><div class="highlight"><pre>
@@ -51,6 +45,7 @@
 <span class="c1"># Python</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">interp1d</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">fsolve</span>
@@ -80,6 +75,7 @@
            <span class="s1">&#39;poisson_fu&#39;</span><span class="p">,</span>
            <span class="s1">&#39;poisson_llu&#39;</span><span class="p">,</span>
            <span class="s1">&#39;rv_random_sample&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;stat_values&#39;</span><span class="p">,</span>
            <span class="s1">&#39;sw2_u&#39;</span>
           <span class="p">]</span>
 
@@ -232,7 +228,7 @@
     <span class="k">return</span> <span class="n">p</span> <span class="o">-</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span> <span class="o">-</span> <span class="n">p</span></div>
 
 
-<div class="viewcode-block" id="FlatDistTransform"><a class="viewcode-back" href="../../api/hep_spt.FlatDistTransform.html#hep_spt.FlatDistTransform">[docs]</a><span class="k">class</span> <span class="nc">FlatDistTransform</span><span class="p">:</span>
+<div class="viewcode-block" id="FlatDistTransform"><a class="viewcode-back" href="../../api/hep_spt.FlatDistTransform.html#hep_spt.FlatDistTransform">[docs]</a><span class="k">class</span> <span class="nc">FlatDistTransform</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Instance to transform values following an unknown distribution :math:`f(x)`</span>
 <span class="sd">    into a flat distribution. This class takes into account the inverse</span>
@@ -295,7 +291,7 @@
 <span class="sd">        Return the value of the transformation of the given values.</span>
 
 <span class="sd">        :param values: values to transform.</span>
-<span class="sd">        :type values: array-like</span>
+<span class="sd">        :type values: numpy.ndarray</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trans</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div></div>
 
@@ -310,6 +306,8 @@
 <span class="sd">    :type cl: float</span>
 <span class="sd">    :returns: Gaussian uncertainty.</span>
 <span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+
+<span class="sd">    .. seealso:: :func:`poisson_fu`, :func:`poisson_llu`, :func:`sw2_u`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">__chi2_one_dof__</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">cl</span><span class="p">))</span>
 
@@ -321,12 +319,12 @@
 <span class="sd">    Calculate the values needed to perform the Kolmogorov-Smirnov test.</span>
 
 <span class="sd">    :param arr: input sample.</span>
-<span class="sd">    :type arr: array-like</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
 <span class="sd">    :param weights: possible weights.</span>
-<span class="sd">    :type weights: array-like</span>
+<span class="sd">    :type weights: None or numpy.ndarray</span>
 <span class="sd">    :returns: Sorted sample, stack with the cumulative distribution and</span>
 <span class="sd">    sum of weights.</span>
-<span class="sd">    :rtype: array-like, array-like, float</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, float</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
@@ -384,6 +382,97 @@
     <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">prob</span></div>
 
 
+<span class="c1"># Tuple to hold the return values of the function &quot;stat_values&quot;</span>
+<span class="n">StatValues</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;StatValues&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">,</span> <span class="s1">&#39;var_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std_mean&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="stat_values"><a class="viewcode-back" href="../../api/hep_spt.stat_values.html#hep_spt.stat_values">[docs]</a><span class="k">def</span> <span class="nf">stat_values</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate mean and variance and standard deviations of the sample and the</span>
+<span class="sd">    mean from the given array.</span>
+<span class="sd">    Weights are allowed.</span>
+<span class="sd">    The definition of the aforementioned quantities are:</span>
+
+<span class="sd">    - Mean:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \\bar{x} = \\sum_{i=0}^{n - 1}{\\frac{x_i}{n}}</span>
+
+<span class="sd">    - Weighted mean:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \\bar{x}^w = \\frac{\\sum_{i=0}^{n - 1}{\omega_i x_i}}{\\sum_{i=0}^{n - 1}{\omega_i}}</span>
+
+<span class="sd">    - Variance of the sample:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \sigma_s = \sum_{i=0}^{n - 1}{\\frac{(x_i - \\bar{x})^2}{n - 1}}</span>
+
+<span class="sd">    - Weighted variance of the sample:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \sigma^w_s = \\frac{N&#39;}{(N&#39; - 1)}\\frac{\sum_{i=0}^{n - 1}{\omega_i(x_i - \\bar{x}^w)^2}}{\sum_{i=0}^{n - 1}{\omega_i}}</span>
+
+<span class="sd">    where :math:`\omega_i` refers to the weights associated with the value</span>
+<span class="sd">    :math:`x_i`, and in the last equation N&#39; refers to the number of non-zero</span>
+<span class="sd">    weights. The variance and standard deviations of the mean are then given by:</span>
+
+<span class="sd">    - Standard deviation of the mean:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       s_\\bar{x} = \\sqrt{\\frac{\sigma_s}{n}}</span>
+
+<span class="sd">    - Weighted standard deviation of the mean:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       s^w_\\bar{x} = \\sqrt{\\frac{\sigma^w_s}{N&#39;}}</span>
+
+<span class="sd">    :param arr: input array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param axis: axis or axes along which to calculate the values for &quot;arr&quot;.</span>
+<span class="sd">    :type axis: None or int or tuple(int)</span>
+<span class="sd">    :param weights: array of weights associated to the values in &quot;arr&quot;.</span>
+<span class="sd">    :type weights: None or numpy.ndarray</span>
+<span class="sd">    :returns: Mean, variance, standard deviation, variance of the mean and \</span>
+<span class="sd">    standard deviation of the mean.</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">keepdims</span> <span class="o">=</span> <span class="p">(</span><span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">asum</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keepdims</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keepdims</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">keepdims</span><span class="p">:</span>
+            <span class="n">lgth</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lgth</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="n">var</span> <span class="o">=</span> <span class="n">asum</span><span class="p">((</span><span class="n">arr</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">lgth</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)</span>
+
+        <span class="n">var_mean</span> <span class="o">=</span> <span class="n">var</span><span class="o">/</span><span class="n">lgth</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sw</span> <span class="o">=</span> <span class="n">asum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+        <span class="c1"># We can not use &quot;count_nonzero&quot; ince it does not keep</span>
+        <span class="c1"># the dimensions through &quot;keepdims&quot;</span>
+        <span class="n">nzw</span> <span class="o">=</span> <span class="n">asum</span><span class="p">(</span><span class="n">weights</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">asum</span><span class="p">(</span><span class="n">weights</span><span class="o">*</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="n">sw</span>
+        <span class="n">var</span>  <span class="o">=</span> <span class="n">asum</span><span class="p">(</span><span class="n">weights</span><span class="o">*</span><span class="p">(</span><span class="n">arr</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">nzw</span><span class="o">/</span><span class="p">(</span><span class="n">sw</span><span class="o">*</span><span class="p">(</span><span class="n">nzw</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">))</span>
+
+        <span class="n">var_mean</span> <span class="o">=</span> <span class="n">var</span><span class="o">/</span><span class="n">nzw</span>
+
+    <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+    <span class="n">std_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_mean</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">StatValues</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">var_mean</span><span class="p">,</span> <span class="n">std_mean</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="poisson_fu"><a class="viewcode-back" href="../../api/hep_spt.poisson_fu.html#hep_spt.poisson_fu">[docs]</a><span class="k">def</span> <span class="nf">poisson_fu</span><span class="p">(</span> <span class="n">m</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the poisson frequentist uncertainty at one standard</span>
@@ -393,6 +482,8 @@
 <span class="sd">    :type m: int or numpy.ndarray(int)</span>
 <span class="sd">    :returns: Lower and upper frequentist uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray(float, float)</span>
+
+<span class="sd">    .. seealso:: :func:`gauss_u`, :func:`poisson_llu`, :func:`sw2_u`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">_poisson_u_from_db</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;poisson_fu.dat&#39;</span><span class="p">)</span></div>
 
@@ -422,6 +513,8 @@
 <span class="sd">    :type m: int or numpy.ndarray(int)</span>
 <span class="sd">    :returns: Lower and upper frequentist uncertainties.</span>
 <span class="sd">    :rtype: numpy.ndarray(float, float)</span>
+
+<span class="sd">    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`sw2_u`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">_poisson_u_from_db</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;poisson_llu.dat&#39;</span><span class="p">)</span></div>
 
@@ -556,14 +649,14 @@
 
 <div class="viewcode-block" id="sw2_u"><a class="viewcode-back" href="../../api/hep_spt.sw2_u.html#hep_spt.sw2_u">[docs]</a><span class="k">def</span> <span class="nf">sw2_u</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Calculate the errors of a weighted sample. This uncertainty is</span>
-<span class="sd">    calculated as follows:</span>
+<span class="sd">    Calculate the errors using the sum of squares of weights.</span>
+<span class="sd">    The uncertainty is calculated as follows:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">       \sigma_i = \sqrt{\sum_{j = 0}^n \omega_{i,j}^2}</span>
+<span class="sd">       \sigma_i = \sqrt{\sum_{j = 0}^{n - 1} \omega_{i,j}^2}</span>
 
-<span class="sd">    where *i* refers to the i-th bin and :math:`j \in [0, n]` refers to</span>
+<span class="sd">    where *i* refers to the i-th bin and :math:`j \in [0, n)` refers to</span>
 <span class="sd">    each entry in that bin with weight :math:`\omega_{i,j}`. If &quot;weights&quot; is</span>
 <span class="sd">    None, then this coincides with the square root of the number of entries</span>
 <span class="sd">    in each bin.</span>
@@ -572,11 +665,13 @@
 <span class="sd">    :param bins: see :func:`numpy.histogram`.</span>
 <span class="sd">    :type bins: int, sequence of scalars or str</span>
 <span class="sd">    :param range: range to process in the input array.</span>
-<span class="sd">    :type range: tuple(float, float)</span>
+<span class="sd">    :type range: None or tuple(float, float)</span>
 <span class="sd">    :param weights: possible weights for the histogram.</span>
-<span class="sd">    :type weights: numpy.ndarray(value-type)</span>
+<span class="sd">    :type weights: None or numpy.ndarray(value-type)</span>
 <span class="sd">    :returns: Symmetric uncertainty.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    .. seealso:: :func:`gauss_u`, :func:`poisson_fu`, :func:`poisson_llu`</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">*</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -608,6 +703,7 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -638,14 +734,24 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -654,8 +760,8 @@
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
