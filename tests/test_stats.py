@@ -149,7 +149,7 @@ def test_ks_2samp():
     scipy_res   = scipy_ks_2samp(a, b)
     hep_spt_res = hep_spt.ks_2samp(a, b)
 
-    assert scipy_res == hep_spt_res
+    assert np.allclose(scipy_res, hep_spt_res)
 
     # With weights equal to one for each entry, the result must be the
     # same as in scipy.
@@ -158,7 +158,7 @@ def test_ks_2samp():
 
     hep_spt_res = hep_spt.ks_2samp(a, b, wa, wb)
 
-    assert scipy_res == hep_spt_res
+    assert np.allclose(scipy_res, hep_spt_res)
 
 
 def test_stat_values():
