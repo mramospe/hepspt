@@ -23,6 +23,6 @@ jobs:
       python: 3.6
       install: pip install autopep8
       script:
-        - python setup.py check_format --directory docs --file-type python
-        - python setup.py check_format --directory hep_rfm --file-type python
-        - python setup.py check_format --directory tests --file-type python
+        - python setup.py check_format --directory ../docs --file-type python
+        - python setup.py check_format --directory ../hep_rfm --file-type python
+        - python setup.py check_format --directory ../tests --file-type python
