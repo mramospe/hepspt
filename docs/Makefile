@@ -2,12 +2,18 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    =
-SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = hep_spt
-SOURCEDIR     = source
-BUILDDIR      = ../../hep_spt-docs
-GITCOMMANDS   = cd $(BUILDDIR)/html; git add . ; git commit -m 'Rebuilt docs' ; git push origin gh-pages
+SPHINXOPTS            =
+SPHINXBUILD           = python -msphinx
+SPHINXPROJ            = hep_spt
+SOURCEDIR             = source
+BUILDDIR             := $(if $(BUILDDIR),$(BUILDDIR),../../hep_spt-docs)
+INPUT_NOTEBOOKS_DIR   = notebooks
+OUTPUT_NOTEBOOKS_DIR  = source/$(INPUT_NOTEBOOKS_DIR)
+GITCOMMANDS           = cd $(BUILDDIR)/html; git add . ; git commit -m 'Rebuilt docs' ; git push origin gh-pages
+PROJECT_SOURCES       = $(shell find ../hep_spt -type f)
+
+ALLNOTEBOOKS      = $(wildcard $(INPUT_NOTEBOOKS_DIR)/*.ipynb)
+ALLNOTEBOOKS_OUT = $(patsubst $(INPUT_NOTEBOOKS_DIR)/%.ipynb, $(OUTPUT_NOTEBOOKS_DIR)/%.ipynb, $(ALLNOTEBOOKS))
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -22,16 +28,17 @@ help:
 gh-pages: html
 	$(GITCOMMANDS)
 
-# Target to update the notebooks
-notebooks: source/notebooks/*.ipynb
-	jupyter nbconvert --execute --inplace $^
+# Create the directory to contain the notebooks
+$(OUTPUT_NOTEBOOKS_DIR):
+	mkdir -p $@
 
-# Necessary so "make" does not try to build the ".ipynb" files (by calling Sphinx)
-%.ipynb:
+# Target to update the notebooks
+$(OUTPUT_NOTEBOOKS_DIR)/%.ipynb: $(INPUT_NOTEBOOKS_DIR)/%.ipynb $(OUTPUT_NOTEBOOKS_DIR) $(PROJECT_SOURCES)
+	jupyter nbconvert --execute --to notebook --output $(subst $(OUTPUT_NOTEBOOKS_DIR)/,,$@) --output-dir $(OUTPUT_NOTEBOOKS_DIR) $<
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
+html: Makefile $(ALLNOTEBOOKS_OUT) $(PROJECT_SOURCES)
 	@if [ -d $(BUILDDIR)/doctrees ]; then rm -r $(BUILDDIR)/doctrees; fi
 	@if [ -d source/api ]; then rm -r source/api; fi
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

@@ -1,4 +1,4 @@
-r'''
+'''
 Some functions shared among modules.
 '''
 
@@ -14,7 +14,7 @@ __all__ = []
 
 
 def decorate( deco ):
-    r'''
+    '''
     Function to wrap a decorator so it preserves the name and
     docstring of the original function.
 
@@ -25,14 +25,14 @@ def decorate( deco ):
     :rtype: function
     '''
     def _deco_wrapper( func ):
-        r'''
+        '''
         This is the wrapper over the decorator.
         '''
         decorated_function = deco(func)
 
         @wraps(func)
         def _wrapper( *args, **kwargs ):
-            r'''
+            '''
             Wrap the original function.
             '''
             return decorated_function(*args, **kwargs)
@@ -43,7 +43,7 @@ def decorate( deco ):
 
 
 def decorate_method( deco ):
-    r'''
+    '''
     Function to wrap a decorator over a method so it preserves the name and
     docstring of the original function.
 
@@ -54,16 +54,16 @@ def decorate_method( deco ):
     :rtype: function
     '''
     def _deco_wrapper( meth ):
-        r'''
+        '''
         This is the wrapper over the decorator.
         '''
         @wraps(meth)
         def _wrapper( self, *args, **kwargs ):
-            r'''
+            '''
             Wrap the original method.
             '''
             def __wrapper( *args, **kwargs ):
-                r'''
+                '''
                 Define a wrapper which excludes the "self" argument.
                 '''
                 return meth(self, *args, **kwargs)
@@ -76,14 +76,14 @@ def decorate_method( deco ):
 
 
 def taking_ndarray( func ):
-    r'''
+    '''
     Decorator for functions which take :class:`numpy.ndarray` instances
     as arguments.
     The array is not copied in the process.
     '''
     @wraps(func)
     def _wrapper( *args, **kwargs ):
-        r'''
+        '''
         Wrap the original function.
         '''
         args = tuple(np.array(x, copy=False) for x in args)

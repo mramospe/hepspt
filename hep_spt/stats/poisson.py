@@ -1,4 +1,4 @@
-r'''
+'''
 Function and classes representing statistical tools.
 '''
 
@@ -13,7 +13,7 @@ from scipy.optimize import fsolve
 from scipy.stats import poisson
 
 # Local
-from hep_spt import __project_path__
+from hep_spt import PACKAGE_PATH
 from hep_spt.core import decorate, taking_ndarray
 from hep_spt.stats.core import chi2_one_dof, one_sigma
 
@@ -32,7 +32,7 @@ __all__ = ['calc_poisson_fu',
 
 
 def _access_db( name ):
-    r'''
+    '''
     Access a database table under 'data/'.
 
     :param name: name of the file holding the data.
@@ -40,7 +40,7 @@ def _access_db( name ):
     :returns: Array holding the data.
     :rtype: numpy.ndarray
     '''
-    ifile = os.path.join(__project_path__, 'data', name)
+    ifile = os.path.join(PACKAGE_PATH, 'data', name)
 
     table = np.loadtxt(ifile)
 
@@ -49,7 +49,7 @@ def _access_db( name ):
 
 @decorate(np.vectorize)
 def calc_poisson_fu( m, cl = one_sigma ):
-    r'''
+    '''
     Return the lower and upper frequentist uncertainties for
     a poisson distribution with mean "m".
 
@@ -87,7 +87,7 @@ def calc_poisson_fu( m, cl = one_sigma ):
 
 @decorate(np.vectorize)
 def calc_poisson_llu( m, cl = one_sigma ):
-    r'''
+    '''
     Calculate poisson uncertainties based on the logarithm of likelihood.
 
     :param m: mean of the Poisson distribution.
@@ -120,7 +120,7 @@ def calc_poisson_llu( m, cl = one_sigma ):
 
 
 def gauss_unc( s, cl = one_sigma ):
-    r'''
+    '''
     Calculate the gaussian uncertainty for a given confidence level.
 
     :param s: standard deviation of the gaussian.
@@ -138,7 +138,7 @@ def gauss_unc( s, cl = one_sigma ):
 
 
 def poisson_fu( m ):
-    r'''
+    '''
     Return the poisson frequentist uncertainty at one standard
     deviation of confidence level.
 
@@ -153,7 +153,7 @@ def poisson_fu( m ):
 
 
 def poisson_llu( m ):
-    r'''
+    '''
     Return the poisson uncertainty at one standard deviation of
     confidence level. The lower and upper uncertainties are defined
     by those two points with a variation of one in the value of the
@@ -185,7 +185,7 @@ def poisson_llu( m ):
 
 @taking_ndarray
 def _poisson_initials( m ):
-    r'''
+    '''
     Return the boundaries to use as initial values in
     scipy.optimize.fsolve when calculating poissonian
     uncertainties.
@@ -211,7 +211,7 @@ def _poisson_initials( m ):
 
 
 def _poisson_unc_from_db( m, database ):
-    r'''
+    '''
     Used in functions to calculate poissonian uncertainties,
     which are partially stored on databases. If "m" is above the
     maximum number stored in the database, the gaussian approximation
@@ -262,7 +262,7 @@ def _poisson_unc_from_db( m, database ):
 
 
 def _process_poisson_unc( m, lw, up ):
-    r'''
+    '''
     Calculate the uncertainties and display an error if they
     have been incorrectly calculated.
 
@@ -287,7 +287,7 @@ def _process_poisson_unc( m, lw, up ):
 
 
 def sw2_unc( arr, bins = 20, range = None, weights = None ):
-    r'''
+    '''
     Calculate the errors using the sum of squares of weights.
     The uncertainty is calculated as follows:
 
@@ -321,7 +321,7 @@ def sw2_unc( arr, bins = 20, range = None, weights = None ):
 
 
 if __name__ == '__main__':
-    r'''
+    '''
     Generate the tables to store the pre-calculated values of
     some uncertainties.
     '''

@@ -1,4 +1,4 @@
-r'''
+'''
 Core of function and classes for statistical calculations.
 '''
 
@@ -23,7 +23,7 @@ __all__ = ['FlatDistTransform',
 
 
 class FlatDistTransform(object):
-    r'''
+    '''
     Instance to transform values following an unknown distribution :math:`f(x)`
     into a flat distribution. This class takes into account the inverse
     transform sampling theorem, which states that, given a distribution
@@ -49,7 +49,7 @@ class FlatDistTransform(object):
     :func:`scipy.interpolate.interp1d` is used for this purpose.
     '''
     def __init__( self, points, values=None, kind='cubic' ):
-        r'''
+        '''
         Build the class from a given set of values following a certain
         distribution (the use of weights is allowed), or x and y values of
         a PDF. This last method is not recommended, since the precision
@@ -81,7 +81,7 @@ class FlatDistTransform(object):
         )
 
     def transform( self, values ):
-        r'''
+        '''
         Return the value of the transformation of the given values.
 
         :param values: values to transform.
@@ -91,7 +91,7 @@ class FlatDistTransform(object):
 
 
 def _ks_2samp_values( arr, weights = None ):
-    r'''
+    '''
     Calculate the values needed to perform the Kolmogorov-Smirnov test.
 
     :param arr: input sample.
@@ -118,7 +118,7 @@ def _ks_2samp_values( arr, weights = None ):
 
 
 def ks_2samp( a, b, wa = None, wb = None ):
-    r'''
+    '''
     Compute the Kolmogorov-Smirnov statistic on 2 samples.
     This is a two-sided test for the null hypothesis that 2 independent
     samples are drawn from the same continuous distribution.
@@ -159,7 +159,7 @@ def ks_2samp( a, b, wa = None, wb = None ):
 
 
 def rv_random_sample( func, size = 10000, **kwargs ):
-    r'''
+    '''
     Create a random sample from the given rv_frozen object.
     This is usually used after creating a :class:`scipy.stats.rv_discrete`
     or :class:`scipy.stats.rv_continuous` class.
@@ -188,7 +188,7 @@ StatValues = namedtuple('StatValues', ('mean', 'var', 'std', 'var_mean', 'std_me
 
 
 def stat_values( arr, axis = None, weights = None ):
-    r'''
+    '''
     Calculate mean and variance and standard deviations of the sample and the
     mean from the given array.
     Weights are allowed.

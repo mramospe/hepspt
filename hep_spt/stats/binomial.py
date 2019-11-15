@@ -1,4 +1,4 @@
-r'''
+'''
 Function involving the binomial distribution.
 '''
 
@@ -22,7 +22,7 @@ __all__ = ['clopper_pearson_int', 'clopper_pearson_unc',
 
 @taking_ndarray
 def clopper_pearson_int( k, N, cl = one_sigma ):
-    r'''
+    '''
     Return the frequentist Clopper-Pearson interval of having
     "k" events in "N".
 
@@ -82,7 +82,7 @@ def clopper_pearson_int( k, N, cl = one_sigma ):
 
 @taking_ndarray
 def clopper_pearson_unc( k, N, cl = one_sigma ):
-    r'''
+    '''
     Return the frequentist Clopper-Pearson uncertainties of having
     "k" events in "N".
 
@@ -102,7 +102,7 @@ def clopper_pearson_unc( k, N, cl = one_sigma ):
 
 @taking_ndarray
 def wald_int( k, N, cl = one_sigma ):
-    r'''
+    '''
     Calculate the symmetric Wald interval of having "k" elements
     in "N".
 
@@ -122,7 +122,7 @@ def wald_int( k, N, cl = one_sigma ):
 
 @taking_ndarray
 def wald_unc( k, N, cl = one_sigma ):
-    r'''
+    '''
     Calculate the symmetric Wald uncertainty of having "k" elements
     in "N".
 
@@ -142,7 +142,7 @@ def wald_unc( k, N, cl = one_sigma ):
 
 @taking_ndarray
 def wald_weighted_int( k, N, cl = one_sigma ):
-    r'''
+    '''
     Calculate the symmetric Wald interval for a weighted sample,
     where "k" is the array of weights in the survival sample
     and "N" in the main sample.
@@ -165,7 +165,7 @@ def wald_weighted_int( k, N, cl = one_sigma ):
 
 @taking_ndarray
 def wald_weighted_unc( k, N, cl = one_sigma ):
-    r'''
+    '''
     Calculate the symmetric Wald uncertainty for a weighted sample,
     where "k" is the array of weights in the survival sample
     and "N" in the main sample.
@@ -193,7 +193,7 @@ def wald_weighted_unc( k, N, cl = one_sigma ):
 
 @taking_ndarray
 def wilson_int( k, N, cl = one_sigma ):
-    r'''
+    '''
     Calculate the Wilson interval of having "k" elements in "N".
 
     :param k: passed events.
@@ -235,7 +235,7 @@ def wilson_int( k, N, cl = one_sigma ):
 
 @taking_ndarray
 def wilson_unc( k, N, cl = one_sigma ):
-    r'''
+    '''
     Calculate the Wilson uncertainties of having "k" elements in "N".
 
     :param k: passed events.

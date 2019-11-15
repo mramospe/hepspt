@@ -12,7 +12,8 @@ def configuration( parent_package = '', top_path = '' ):
     '''
     from numpy.distutils.misc_util import Configuration
 
-    config = Configuration(None, parent_package, top_path)
+    config = Configuration('hep_spt', parent_package, top_path)
+    config.set_options(quiet=True)
 
     # Add data packages
     config.add_data_dir('data')
@@ -26,6 +27,5 @@ def configuration( parent_package = '', top_path = '' ):
 
 
 if __name__ == '__main__':
-
     from numpy.distutils.core import setup
-    setup(configuration=configuration)
+    setup(**configuration().todict())

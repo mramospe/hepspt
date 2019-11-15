@@ -1,4 +1,4 @@
-r'''
+'''
 Module to manage special histograms, like adaptive binned 1D and 2D histograms.
 '''
 
@@ -27,7 +27,7 @@ __all__ = ['AdBin', 'adbin_hist2d_rectangles',
 class AdBin(object):
 
     def __init__( self, arr, range = None, weights = None ):
-        r'''
+        '''
         Represent a n-dimensional adaptive bin. This class is meant so serve
         as interface between the user and matplotlib to plot adaptive
         binned histograms.
@@ -48,7 +48,7 @@ class AdBin(object):
         self.vmax    = np.array(vmax, dtype = float)
 
     def contains( self, arr ):
-        r'''
+        '''
         Return whether the values in the input array are inside this bin or \
         not.
 
@@ -61,7 +61,7 @@ class AdBin(object):
         return np.logical_and(arr >= self.vmin, arr < self.vmax).all(axis = 1)
 
     def dens( self, arr, weights = None ):
-        r'''
+        '''
         Return the density of this bin.
 
         :param arr: array of data to process.
@@ -74,7 +74,7 @@ class AdBin(object):
         return self.sw(arr, weights)/float(self.size())
 
     def divide( self, ndiv = 2 ):
-        r'''
+        '''
         Divide this bin in two, using the median in each dimension. The
         dimension used to make the division is taken as that which generates
         the smallest bin.
@@ -117,7 +117,7 @@ class AdBin(object):
         mask_right = (self.array >= bounds)
 
         def _msz( arr, i ):
-            r'''
+            '''
             Calculate the minimum size of the input array, for the
             given index and considering the two global masks
             "mask_left" and "mask_right".
@@ -179,7 +179,7 @@ class AdBin(object):
         return all_bins
 
     def free_memory( self ):
-        r'''
+        '''
         Remove the pointers to the arrays of data and weights.
 
         .. warning:: The method :meth:`AdBin.divide` will become unavailable
@@ -189,7 +189,7 @@ class AdBin(object):
         self.weights = None
 
     def size( self ):
-        r'''
+        '''
         Return the size of the bin.
 
         :returns: Size of this bin calculated as the product of \
@@ -199,7 +199,7 @@ class AdBin(object):
         return float(np.prod(self.vmax - self.vmin))
 
     def sw( self, arr, weights = None ):
-        r'''
+        '''
         Compute and return the sum of weights.
 
         :param arr: array of data to process.
@@ -219,7 +219,7 @@ class AdBin(object):
         return float(sw)
 
     def sw_unc( self, arr, weights = None ):
-        r'''
+        '''
         Calculate and return the uncertainty on the sum of weights.
 
         :param arr: array of data to process.
@@ -244,7 +244,7 @@ class AdBin(object):
 
 
 def adbin_as_rectangle( adb, **kwargs ):
-    r'''
+    '''
     Extract the bounds of a 2-dimensional :class:`AdBin` object so it
     can be processed by a :class:`matplotlib.patches.Rectangle` and properly
     fill the area inside it.
@@ -266,7 +266,7 @@ def adbin_as_rectangle( adb, **kwargs ):
 
 
 def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = False, reduce_bias = False, **kwargs ):
-    r'''
+    '''
     Create an adaptive binned histogram in one dimension.
 
     :param arr: array of data.
@@ -302,7 +302,7 @@ def adbin_hist1d( arr, nbins = 100, range = None, weights = None, is_sorted = Fa
 
 
 def adbin_hist1d_edges( arr, nbins = 100, range = None, weights = None, is_sorted = False, reduce_bias = False ):
-    r'''
+    '''
     Create adaptive binned edges to make a histogram from the given data.
 
     :param arr: array of data.
@@ -387,7 +387,7 @@ def adbin_hist2d_rectangles( bins, smp,
                              cmap = None, fill = 'sw',
                              color = True,
                              **kwargs ):
-    r'''
+    '''
     Create a list of rectangles from a list of bins.
     It uses the input data in "arr" to calculate the associated quantity,
     which is specified in "fill".
@@ -451,7 +451,7 @@ def adbin_hist2d_rectangles( bins, smp,
 
 
 def adbin_hist( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_memory = True ):
-    r'''
+    '''
     Create an adaptive binned histogram in N dimensions.
     The number of dimensions is determined by the shape of the input array.
     An array with shape (n, 2), will create a 2-dimensional adaptive binned
@@ -501,7 +501,7 @@ def adbin_hist( arr, nbins = 100, range = None, weights = None, ndiv = 2, free_m
 
 
 def _proc_hist_input_1d( arr, range = None, weights = None ):
-    r'''
+    '''
     Process some of the input arguments of the functions to
     manage 1D histograms.
 
@@ -530,7 +530,7 @@ def _proc_hist_input_1d( arr, range = None, weights = None ):
 
 
 def _proc_hist_input( arr, range = None, weights = None ):
-    r'''
+    '''
     Process some of the input arguments of the functions to
     manage ND histograms.
 

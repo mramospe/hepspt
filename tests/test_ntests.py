@@ -73,7 +73,9 @@ def test_all_members_have_tests():
                            'with the same name: {}'.format(diff_funcs))
 
     # Get all the members of "hep_spt"
-    fltr = lambda s: not s.startswith('_') and not inspect.ismodule(getattr(hep_spt, s))
+    exclude = ['VERSION', 'VERSION_INFO', 'PACKAGE_PATH']
+
+    fltr = lambda s: not s.startswith('_') and not inspect.ismodule(getattr(hep_spt, s)) and s not in exclude
     members = tuple(filter(fltr, hep_spt.__all__))
 
     # Check that all the members have a test function defined
