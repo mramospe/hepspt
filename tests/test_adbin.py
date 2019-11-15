@@ -3,18 +3,18 @@ Test functions for the "adbin" module.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
+
+# Local
+
+# Set the random seed for reproducibility
 import numpy as np
 import matplotlib.pyplot as plt
 import pytest
-
-# Local
 import hep_spt
-
-# Set the random seed for reproducibility
 np.random.seed(8563)
 
 
@@ -66,9 +66,10 @@ def test_adbin_hist1d():
     assert np.allclose(v, [2., 2.])
 
     # Weighted case - 2
-    arr  = np.arange(10)
+    arr = np.arange(10)
     wgts = 0.5*np.ones(10)
-    _, e, _, _ = hep_spt.adbin_hist1d(arr + 0.5, 10, range=(0, 10), weights=wgts)
+    _, e, _, _ = hep_spt.adbin_hist1d(
+        arr + 0.5, 10, range=(0, 10), weights=wgts)
     ref = np.append(arr, 10)
     assert np.allclose(e, ref)
 
@@ -77,7 +78,7 @@ def test_adbin_hist1d_edges():
     '''
     Test for the "adbin_hist1d_edges" function.
     '''
-    n   = 10
+    n = 10
     smp = np.arange(n) + 0.5
     weights = 0.5*np.ones(n)
 
@@ -89,12 +90,14 @@ def test_adbin_hist1d_edges():
     assert np.allclose(edges, ref)
 
     # Without weights, the result must not depend on the value of "reduce_weights"
-    erb = hep_spt.adbin_hist1d_edges(smp, nbins=len(smp), range=(0, n), reduce_bias=True)
+    erb = hep_spt.adbin_hist1d_edges(
+        smp, nbins=len(smp), range=(0, n), reduce_bias=True)
 
     assert np.allclose(erb, edges)
 
     # Weighted case
-    edges = hep_spt.adbin_hist1d_edges(smp, nbins=len(smp), range=(0, n), weights=weights)
+    edges = hep_spt.adbin_hist1d_edges(
+        smp, nbins=len(smp), range=(0, n), weights=weights)
 
     ref = np.append(smp - 0.5, len(smp))
 
@@ -114,13 +117,13 @@ def test_adbin_hist_2d():
     smp = np.array([
         np.random.normal(0., 2, size),
         np.random.normal(0., 2, size)
-        ]).T
+    ]).T
     weights = np.random.uniform(0, 1, size)
 
     # Number of bins is a power of "ndiv". The requested and actual
     # number of bins are identical.
     nbins = 16
-    bins  = hep_spt.adbin_hist(smp, nbins, ndiv=2, free_memory=False)
+    bins = hep_spt.adbin_hist(smp, nbins, ndiv=2, free_memory=False)
     assert nbins == len(bins)
 
     exp = float(size)/nbins
@@ -130,7 +133,7 @@ def test_adbin_hist_2d():
     # Number of bins is not a power of "ndiv". Requested and actual
     # number of bins are different.
     nbins = 11
-    bins  = hep_spt.adbin_hist(smp, nbins, ndiv=3, free_memory=False)
+    bins = hep_spt.adbin_hist(smp, nbins, ndiv=3, free_memory=False)
     assert nbins != len(bins)
 
     exp = float(size)/27
@@ -139,7 +142,7 @@ def test_adbin_hist_2d():
 
     # Weighted case
     nbins = 8
-    bins  = hep_spt.adbin_hist(smp, nbins, weights=weights, free_memory=False)
+    bins = hep_spt.adbin_hist(smp, nbins, weights=weights, free_memory=False)
 
     exp = float(weights.sum())/nbins
 
@@ -161,14 +164,14 @@ def test_adbin_hist2d_rectangles():
     Test for the "adbin_hist2d_rectangles" function.
     '''
     smp = np.array([
-        np.array([ 0., 0.,  1., 1.]),
-        np.array([ 0., 1.,  0., 1.])
+        np.array([0., 0.,  1., 1.]),
+        np.array([0., 1.,  0., 1.])
     ]).T
-    weights = np.array([ 2,  1,   2,  1])
+    weights = np.array([2,  1,   2,  1])
 
     # Non-weighted case
     nbins = 2
-    bins  = hep_spt.adbin_hist(smp, nbins)
+    bins = hep_spt.adbin_hist(smp, nbins)
 
     recs, conts = hep_spt.adbin_hist2d_rectangles(bins, smp)
 
@@ -176,7 +179,7 @@ def test_adbin_hist2d_rectangles():
 
     # Weighted case
     nbins = 2
-    bins  = hep_spt.adbin_hist(smp, nbins)
+    bins = hep_spt.adbin_hist(smp, nbins)
 
     recs, conts = hep_spt.adbin_hist2d_rectangles(bins, smp, weights=weights)
 
@@ -212,7 +215,7 @@ def test_adbin_hist():
     bins = hep_spt.adbin_hist(sample, 10, weights=weights)
 
 
-def _within_expectations( bins, vmin, vmax ):
+def _within_expectations(bins, vmin, vmax):
     '''
     Check whether the values in the input array are inside the expectations.
     '''

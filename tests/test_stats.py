@@ -3,21 +3,23 @@ Test functions for the "adbin" module.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
+
+# Local
+
+
 import numpy as np
 import pytest
 from scipy.stats import norm
 from scipy.stats import ks_2samp as scipy_ks_2samp
-
-# Local
 import hep_spt
 from hep_spt.stats.poisson import __poisson_to_gauss__
 
 
-def _integral_transformer_aux( points, comp, values=None ):
+def _integral_transformer_aux(points, comp, values=None):
     '''
     Auxiliar function to perform check of the FlatDistTransform class.
     '''
@@ -50,7 +52,8 @@ def test_calc_poisson_fu():
     '''
     assert np.allclose(hep_spt.calc_poisson_fu(0), hep_spt.poisson_fu(0))
     assert np.allclose(hep_spt.calc_poisson_fu(10), hep_spt.poisson_fu(10))
-    assert np.allclose(hep_spt.calc_poisson_fu([10, 20]), hep_spt.poisson_fu([10, 20]).T)
+    assert np.allclose(hep_spt.calc_poisson_fu(
+        [10, 20]), hep_spt.poisson_fu([10, 20]).T)
 
 
 def test_calc_poisson_llu():
@@ -59,7 +62,8 @@ def test_calc_poisson_llu():
     '''
     assert np.allclose(hep_spt.calc_poisson_llu(0), hep_spt.poisson_llu(0))
     assert np.allclose(hep_spt.calc_poisson_llu(10), hep_spt.poisson_llu(10))
-    assert np.allclose(hep_spt.calc_poisson_llu([10, 20]), hep_spt.poisson_llu([10, 20]).T)
+    assert np.allclose(hep_spt.calc_poisson_llu(
+        [10, 20]), hep_spt.poisson_llu([10, 20]).T)
 
 
 def test_clopper_pearson_int():
@@ -127,7 +131,7 @@ def test_gauss_unc():
     '''
     Test for the "gauss_unc" function.
     '''
-    r  = np.array([1, 1])
+    r = np.array([1, 1])
     s1 = hep_spt.gauss_unc(1)
     s2 = hep_spt.gauss_unc(r)
 
@@ -142,11 +146,11 @@ def test_ks_2samp():
     na = 200
     nb = 300
 
-    a  = norm.rvs(size=na, loc=0., scale=1.)
-    b  = norm.rvs(size=nb, loc=0.5, scale=1.5)
+    a = norm.rvs(size=na, loc=0., scale=1.)
+    b = norm.rvs(size=nb, loc=0.5, scale=1.5)
 
     # The results without weights must be the same as those from scipy
-    scipy_res   = scipy_ks_2samp(a, b)
+    scipy_res = scipy_ks_2samp(a, b)
     hep_spt_res = hep_spt.ks_2samp(a, b)
 
     assert np.allclose(scipy_res, hep_spt_res)
@@ -294,7 +298,7 @@ def test_rv_random_sample():
 
     pdf = norm([0, 1], [2, 4])
     smp = hep_spt.rv_random_sample(pdf, size=100)
-    assert smp.shape == (100,2)
+    assert smp.shape == (100, 2)
 
 
 def test_sw2_unc():

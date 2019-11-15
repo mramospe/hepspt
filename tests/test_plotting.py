@@ -3,16 +3,18 @@ Test functions for the "plotting" module.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
+
+# Local
+
+
 import matplotlib
 import numpy as np
 import os
 import pytest
-
-# Local
 import hep_spt
 
 
@@ -92,7 +94,7 @@ def test_samples_cycler():
 
     with pytest.warns(RuntimeWarning):
 
-        ls  = list(sorted(cfg.values())[:5])
+        ls = list(sorted(cfg.values())[:5])
         cyc = hep_spt.samples_cycler(cfg.keys(), ls=ls)
 
         assert len(cyc) == len(cfg)
@@ -103,7 +105,7 @@ def test_samples_cycler():
 
     with pytest.warns(RuntimeWarning):
 
-        ls  = list(sorted(cfg.values())[:4])
+        ls = list(sorted(cfg.values())[:4])
         cyc = hep_spt.samples_cycler(cfg.keys(), ls=ls)
 
         assert len(cyc) == len(cfg)
@@ -126,13 +128,13 @@ def test_text_in_rectangles():
     Test the "text_in_rectangles" function.
     '''
     smp = np.array([
-        np.array([ 0., 0.,  1., 1.]),
-        np.array([ 0., 1.,  0., 1.])
+        np.array([0., 0.,  1., 1.]),
+        np.array([0., 1.,  0., 1.])
     ]).T
-    weights = np.array([ 2,  1,   2,  1])
+    weights = np.array([2,  1,   2,  1])
 
     nbins = 2
-    bins  = hep_spt.adbin_hist(smp, nbins)
+    bins = hep_spt.adbin_hist(smp, nbins)
 
     recs, conts = hep_spt.adbin_hist2d_rectangles(bins, smp)
 

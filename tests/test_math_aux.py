@@ -3,14 +3,16 @@ Test functions for the "math_aux" module.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
-import numpy as np
-import pytest
 
 # Local
+
+
+import numpy as np
+import pytest
 import hep_spt
 
 
@@ -37,7 +39,7 @@ def test_bit_length():
     assert np.all(hep_spt.bit_length(values) == std_python)
 
     values = np.array([(0, 1), (2, 3)])
-    ref    = np.array([(0, 1), (2, 2)])
+    ref = np.array([(0, 1), (2, 2)])
 
     assert np.all(hep_spt.bit_length(values) == ref)
 
@@ -63,7 +65,7 @@ def test_gcd():
 
     a_vals = np.array([(4, 3), (8, 5)])
     b_vals = np.array([(6, 9), (4, 10)])
-    ref    = np.array([(2, 3), (4, 5)])
+    ref = np.array([(2, 3), (4, 5)])
 
     assert np.all(hep_spt.gcd(a_vals, b_vals) == ref)
 
@@ -100,7 +102,7 @@ def test_ibinary_repr():
     assert np.all(hep_spt.ibinary_repr(values).astype(str) == std_numpy)
 
     values = np.array([(0, 1), (2, 3)])
-    ref    = np.array([(0, 1), (10, 11)])
+    ref = np.array([(0, 1), (10, 11)])
 
     assert np.all(hep_spt.ibinary_repr(values) == ref)
 

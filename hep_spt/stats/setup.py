@@ -3,10 +3,10 @@ Configuration file for the modules in the "stats" subpackage.
 '''
 
 __author__ = 'Miguel Ramos Pernas'
-__email__  = 'miguel.ramos.pernas@cern.ch'
+__email__ = 'miguel.ramos.pernas@cern.ch'
 
 
-def configuration( parent_package = '', top_path = '' ):
+def configuration(parent_package='', top_path=''):
     r'''
     Function to do the configuration.
     '''

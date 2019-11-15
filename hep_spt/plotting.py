@@ -3,25 +3,25 @@ Provide some useful functions to plot with matplotlib.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 
 # Local
-from hep_spt import PACKAGE_PATH
-from hep_spt.histograms import cfe
 
 # Python
-import contextlib
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
-import numpy as np
-import math
-import os
-import warnings
-from cycler import cycler
 
 __all__ = [
+    from hep_spt import PACKAGE_PATH
+    from hep_spt.histograms import cfe
+    import contextlib
+    import matplotlib
+    import matplotlib.pyplot as plt
+    import matplotlib.ticker as ticker
+    import numpy as np
+    import math
+    import os
+    import warnings
+    from cycler import cycler
     'available_styles',
     'corr_hist2d',
     'modified_format',
@@ -30,7 +30,7 @@ __all__ = [
     'samples_cycler',
     'set_style',
     'text_in_rectangles'
-    ]
+]
 
 # Path to the directory containing the styles
 PATH_TO_STYLES = os.path.join(PACKAGE_PATH, 'mpl')
@@ -48,7 +48,7 @@ def available_styles():
     return available_styles
 
 
-def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax = None ):
+def corr_hist2d(matrix, titles, frmt='{:.2f}', vmin=None, vmax=None, cax=None):
     '''
     Plot a correlation matrix in the given axes.
 
@@ -107,7 +107,8 @@ def corr_hist2d( matrix, titles, frmt = '{:.2f}', vmin = None, vmax = None, cax 
     # Annotate the value of the correlation
     if frmt is not None:
         for ix, iy, ic in zip(x, y, c):
-            cax.annotate(frmt.format(ic), xy=(ix, iy), ha='center', va='center')
+            cax.annotate(frmt.format(ic), xy=(
+                ix, iy), ha='center', va='center')
 
     # Draw the grid
     cax.grid()
@@ -131,7 +132,7 @@ def modified_format(kwargs):
         matplotlib.rcParams.update(old)
 
 
-def opt_fig_div( naxes ):
+def opt_fig_div(naxes):
     '''
     Get the optimal figure division for a given number of axes, where
     all the axes have the same dimensions.
@@ -167,7 +168,7 @@ def path_to_styles():
     return PATH_TO_STYLES
 
 
-def samples_cycler( smps, *args, **kwargs ):
+def samples_cycler(smps, *args, **kwargs):
     '''
     Generate a :class:`cycler.Cycler` object were the labels are defined by
     "smps", and the other parameters are left to the user.
@@ -193,7 +194,7 @@ def samples_cycler( smps, *args, **kwargs ):
 
     if ns > nc:
 
-        warnings.warn('Not enough plotting styles in cycler, '\
+        warnings.warn('Not enough plotting styles in cycler, '
                       'some samples might have the same style.',
                       RuntimeWarning)
 
@@ -206,7 +207,7 @@ def samples_cycler( smps, *args, **kwargs ):
     return re_cyc + cycler(label=smps)
 
 
-def set_style( *args ):
+def set_style(*args):
     '''
     Set the style for matplotlib to one within this project. Available styles
     are:
@@ -232,14 +233,16 @@ def set_style( *args ):
     sty_args = []
     for s in args:
         if s not in avsty:
-            warnings.warn('Unknown style "{}", will not be loaded'.format(style))
+            warnings.warn(
+                'Unknown style "{}", will not be loaded'.format(style))
         else:
-            sty_args.append(os.path.join(PATH_TO_STYLES, '{}.mplstyle'.format(s)))
+            sty_args.append(os.path.join(
+                PATH_TO_STYLES, '{}.mplstyle'.format(s)))
 
     plt.style.use(sty_args)
 
 
-def text_in_rectangles( recs, txt, cax = None, **kwargs ):
+def text_in_rectangles(recs, txt, cax=None, **kwargs):
     '''
     Write text inside :class:`matplotlib.patches.Rectangle` instances.
 

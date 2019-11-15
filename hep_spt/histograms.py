@@ -3,16 +3,16 @@ Functions to work with histograms.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 # Local
-from hep_spt.stats.core import stat_values
-from hep_spt.stats.poisson import poisson_fu, poisson_llu, sw2_unc
 
 # Python
-import numpy as np
 
 __all__ = [
+    from hep_spt.stats.core import stat_values
+    from hep_spt.stats.poisson import poisson_fu, poisson_llu, sw2_unc
+    import numpy as np
     'cfe',
     'errorbar_hist',
     'profile',
@@ -22,7 +22,7 @@ __all__ = [
 ]
 
 
-def cfe( edges ):
+def cfe(edges):
     '''
     Calculate the centers of a set of bins given their edges.
 
@@ -34,7 +34,7 @@ def cfe( edges ):
     return (edges[1:] + edges[:-1])/2.
 
 
-def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, norm_type = 'range', uncert = None ):
+def errorbar_hist(arr, bins=20, range=None, weights=None, norm=False, norm_type='range', uncert=None):
     '''
     Calculate the values needed to create an error bar histogram.
     Different errors can be considered (see below).
@@ -111,7 +111,8 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, n
                 s = float(weights.sum())/norm
 
         else:
-            raise ValueError('Unknown normalization type "{}"'.format(norm_type))
+            raise ValueError(
+                'Unknown normalization type "{}"'.format(norm_type))
 
         values = values/s
         ey = ey/s
@@ -119,7 +120,7 @@ def errorbar_hist( arr, bins = 20, range = None, weights = None, norm = False, n
     return values, edges, ex, ey
 
 
-def process_range( arr, range = None ):
+def process_range(arr, range=None):
     '''
     Process the given range, determining the minimum and maximum
     values for a 1D histogram.
@@ -143,7 +144,7 @@ def process_range( arr, range = None ):
     return vmin, vmax
 
 
-def profile( x, y, bins = 20, range = None, weights = None, std_type = 'mean' ):
+def profile(x, y, bins=20, range=None, weights=None, std_type='mean'):
     '''
     Calculate the profile from a 2D data sample.
     It corresponds to the mean of the values in "y" for each bin in "x".
@@ -192,12 +193,13 @@ def profile( x, y, bins = 20, range = None, weights = None, std_type = 'mean' ):
         elif std_type == 'sample':
             std[i - 1] = vals.std
         else:
-            raise ValueError('Unknown standard deviation type "{}"'.format(std_type))
+            raise ValueError(
+                'Unknown standard deviation type "{}"'.format(std_type))
 
     return prof, edges, std
 
 
-def pull( vals, err, ref, ref_err = None ):
+def pull(vals, err, ref, ref_err=None):
     '''
     Get the pull with the associated errors for a given set of values and a
     reference. Considering, :math:`v` as the experimental value and :math:`r`
@@ -274,7 +276,7 @@ def pull( vals, err, ref, ref_err = None ):
     return pull, perr
 
 
-def residual( vals, err, ref, ref_err = None ):
+def residual(vals, err, ref, ref_err=None):
     '''
     Calculate the residual with its errors, for a set of values with
     respect to a reference.
@@ -321,7 +323,7 @@ def residual( vals, err, ref, ref_err = None ):
     return res, err
 
 
-def weights_by_edges( values, edges, weights ):
+def weights_by_edges(values, edges, weights):
     '''
     Assign a weight to the values in an input array using a set of edges.
     It will return a new array of length equal to that of "values" assigning
@@ -352,11 +354,12 @@ def weights_by_edges( values, edges, weights ):
         raise TypeError('Input arrays must have dimension one')
 
     if len(edges) != len(weights) + 1:
-        raise TypeError('Length of edges must be the same as that of weights plus one')
+        raise TypeError(
+            'Length of edges must be the same as that of weights plus one')
 
     idx = np.digitize(values, edges)
 
-    idx[values == edges[0]]  = 0
+    idx[values == edges[0]] = 0
     idx[values == edges[-1]] = len(edges) - 1
 
     return weights[idx - 1]

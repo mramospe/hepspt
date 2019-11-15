@@ -19,9 +19,13 @@
 #
 # See: https://github.com/sphinx-doc/sphinx/issues/1711
 #
+import sys
+import os
+import hep_spt
 import functools
 
-def no_op_wraps( func ):
+
+def no_op_wraps(func):
     '''
     Replaces functools.wraps in order to undo wrapping when generating
     Sphinx documentation. This must be done before "hep_spt" is imported.
@@ -37,6 +41,7 @@ def no_op_wraps( func ):
 
     return wrapper
 
+
 functools.orig_wraps = functools.wraps
 functools.wraps = no_op_wraps
 
@@ -44,9 +49,6 @@ functools.wraps = no_op_wraps
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import hep_spt
-import os
-import sys
 sys.path.insert(0, os.path.abspath(hep_spt.PACKAGE_PATH))
 
 
@@ -212,12 +214,10 @@ texinfo_documents = [
 ]
 
 
-
-
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'https://docs.python.org/'                   : None,
-    'http://docs.scipy.org/doc/numpy/'           : None,
-    'http://docs.scipy.org/doc/scipy/reference/' : None,
-    'http://matplotlib.sourceforge.net/'         : None
+    'https://docs.python.org/': None,
+    'http://docs.scipy.org/doc/numpy/': None,
+    'http://docs.scipy.org/doc/scipy/reference/': None,
+    'http://matplotlib.sourceforge.net/': None
 }

@@ -3,13 +3,15 @@ Configuration file for the C-API extension.
 '''
 
 __author__ = 'Miguel Ramos Pernas'
-__email__  = 'miguel.ramos.pernas@cern.ch'
+__email__ = 'miguel.ramos.pernas@cern.ch'
 
 # Python
+
+
 import glob
 
 
-def configuration( parent_package = '', top_path = '' ):
+def configuration(parent_package='', top_path=''):
     '''
     Function to do the configuration.
     '''
@@ -30,7 +32,7 @@ def configuration( parent_package = '', top_path = '' ):
                          depends=headers + math_aux_cpy_src,
                          extra_info=get_info('npymath'),
                          define_macros=numpy_nodepr_api,
-    )
+                         )
 
     return config
 

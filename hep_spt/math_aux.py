@@ -3,22 +3,25 @@ Auxiliar mathematical functions.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 
 # Custom
-from hep_spt.core import taking_ndarray
-from hep_spt.cpython import math_aux_cpy
 
 # Python
+
+
+__all__ = ['bit_length', 'gcd', 'ibinary_repr',
+           'is_power_2', 'lcm', 'next_power_2']
+
+
+from hep_spt.core import taking_ndarray
+from hep_spt.cpython import math_aux_cpy
 import numpy as np
 from functools import reduce
 
 
-__all__ = ['bit_length', 'gcd', 'ibinary_repr', 'is_power_2', 'lcm', 'next_power_2']
-
-
-def bit_length( arg ):
+def bit_length(arg):
     '''
     Get the length of the binary representation of the given value(s).
     This function is equivalent to :func:`int.bit_length`, but can take arrays
@@ -32,7 +35,7 @@ def bit_length( arg ):
     return math_aux_cpy.bit_length(arg)
 
 
-def gcd( a, b, *args ):
+def gcd(a, b, *args):
     '''
     Calculate the greatest common divisor of a set of numbers.
 
@@ -53,7 +56,7 @@ def gcd( a, b, *args ):
         return reduce(math_aux_cpy.gcd, args + (a, b))
 
 
-def ibinary_repr( arg ):
+def ibinary_repr(arg):
     '''
     Get the binary representation of the given value(s).
     This function is equivalent to :func:`numpy.binary_repr`, but the returned
@@ -74,7 +77,7 @@ def ibinary_repr( arg ):
 
 
 @taking_ndarray
-def is_power_2( arg ):
+def is_power_2(arg):
     '''
     Determine whether the input number(s) is a power of 2 or not. Only
     works with positive numbers.
@@ -88,7 +91,7 @@ def is_power_2( arg ):
 
 
 @taking_ndarray
-def lcm( a, b, *args ):
+def lcm(a, b, *args):
     '''
     Calculate the least common multiple of a set of numbers.
 
@@ -108,7 +111,7 @@ def lcm( a, b, *args ):
 
 
 @taking_ndarray
-def next_power_2( arg ):
+def next_power_2(arg):
     '''
     Calculate the next number(s) greater than that(those) given and being a power(s) of 2.
 

@@ -4,10 +4,12 @@ Setup script for the hep_spt package
 '''
 
 __author__ = 'Miguel Ramos Pernas'
-__email__  = 'miguel.ramos.pernas@cern.ch'
+__email__ = 'miguel.ramos.pernas@cern.ch'
 
 
 # Python
+
+
 import glob
 import os
 import setuptools
@@ -75,6 +77,7 @@ class CheckFormatCommand(setuptools.Command):
             raise RuntimeError(
                 'Found differences for files in directory "{}" with file type "{}"'.format(self.directory, self.file_type))
 
+
 #
 # Version of the package. Before a new release is made
 # just the "version_info" must be changed. The options
@@ -126,14 +129,14 @@ def install_requirements():
     '''
     reqs = []
     with open('requirements.txt') as f:
-        for line  in f:
+        for line in f:
             li = line.strip()
             if not li.startswith('#'):
                 reqs.append(li)
     return reqs
 
 
-def configuration( parent_package = '', top_path = '' ):
+def configuration(parent_package='', top_path=''):
     '''
     Function to do the configuration.
     '''
@@ -154,18 +157,19 @@ def setup_package():
     try:
         import numpy
     except:
-        RuntimeError('Numpy not found. Please install it before setting up this package.')
+        RuntimeError(
+            'Numpy not found. Please install it before setting up this package.')
 
     metadata = dict(
-        name = 'hep_spt',
-        version = version,
-        configuration = configuration,
+        name='hep_spt',
+        version=version,
+        configuration=configuration,
         cmdclass={'check_format': CheckFormatCommand},
-        description = 'Provides statistical and plotting tools using general '\
+        description='Provides statistical and plotting tools using general '
         'python packages, focused to High Energy Physics.',
-        long_description = open('README.rst').read(),
-        keywords = 'physics hep statistics plotting',
-        install_requires = install_requirements(),
+        long_description=open('README.rst').read(),
+        keywords='physics hep statistics plotting',
+        install_requires=install_requirements(),
     )
 
     create_version_file()

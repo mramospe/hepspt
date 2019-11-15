@@ -3,19 +3,20 @@ Function and classes representing statistical tools.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 
 # Python
-import os, warnings
-import numpy as np
-from scipy.optimize import fsolve
+from hep_spt.stats.core import chi2_one_dof, one_sigma
+from hep_spt.core import decorate, taking_ndarray
+from hep_spt import PACKAGE_PATH
 from scipy.stats import poisson
+from scipy.optimize import fsolve
+import numpy as np
+import os
+import warnings
 
 # Local
-from hep_spt import PACKAGE_PATH
-from hep_spt.core import decorate, taking_ndarray
-from hep_spt.stats.core import chi2_one_dof, one_sigma
 
 # Number after which the poisson uncertainty is considered to
 # be the same as that of a gaussian with "std = sqrt(lambda)".
@@ -28,10 +29,10 @@ __all__ = ['calc_poisson_fu',
            'poisson_fu',
            'poisson_llu',
            'sw2_unc'
-          ]
+           ]
 
 
-def _access_db( name ):
+def _access_db(name):
     '''
     Access a database table under 'data/'.
 
@@ -48,7 +49,7 @@ def _access_db( name ):
 
 
 @decorate(np.vectorize)
-def calc_poisson_fu( m, cl = one_sigma ):
+def calc_poisson_fu(m, cl=one_sigma):
     '''
     Return the lower and upper frequentist uncertainties for
     a poisson distribution with mean "m".
@@ -74,11 +75,12 @@ def calc_poisson_fu( m, cl = one_sigma ):
         lw = m
         alpha *= 2.
     else:
-        fleft = lambda l: 1. - (poisson.cdf(m, l) - poisson.pmf(m, l)) - alpha
+        def fleft(l): return 1. - \
+            (poisson.cdf(m, l) - poisson.pmf(m, l)) - alpha
 
         lw = fsolve(fleft, il)[0]
 
-    fright = lambda l: poisson.cdf(m, l) - alpha
+    def fright(l): return poisson.cdf(m, l) - alpha
 
     up = fsolve(fright, ir)[0]
 
@@ -86,7 +88,7 @@ def calc_poisson_fu( m, cl = one_sigma ):
 
 
 @decorate(np.vectorize)
-def calc_poisson_llu( m, cl = one_sigma ):
+def calc_poisson_llu(m, cl=one_sigma):
     '''
     Calculate poisson uncertainties based on the logarithm of likelihood.
 
@@ -101,11 +103,11 @@ def calc_poisson_llu( m, cl = one_sigma ):
     '''
     ns = np.sqrt(chi2_one_dof.ppf(cl))
 
-    nll = lambda x: -2.*np.log(poisson.pmf(m, x))
+    def nll(x): return -2.*np.log(poisson.pmf(m, x))
 
     ref = nll(m)
 
-    func = lambda x: nll(x) - ref - ns
+    def func(x): return nll(x) - ref - ns
 
     il, ir = _poisson_initials(m)
 
@@ -119,7 +121,7 @@ def calc_poisson_llu( m, cl = one_sigma ):
     return _process_poisson_unc(m, lw, up)
 
 
-def gauss_unc( s, cl = one_sigma ):
+def gauss_unc(s, cl=one_sigma):
     '''
     Calculate the gaussian uncertainty for a given confidence level.
 
@@ -137,7 +139,7 @@ def gauss_unc( s, cl = one_sigma ):
     return n*s
 
 
-def poisson_fu( m ):
+def poisson_fu(m):
     '''
     Return the poisson frequentist uncertainty at one standard
     deviation of confidence level.
@@ -152,7 +154,7 @@ def poisson_fu( m ):
     return _poisson_unc_from_db(m, 'poisson_fu.dat')
 
 
-def poisson_llu( m ):
+def poisson_llu(m):
     '''
     Return the poisson uncertainty at one standard deviation of
     confidence level. The lower and upper uncertainties are defined
@@ -184,7 +186,7 @@ def poisson_llu( m ):
 
 
 @taking_ndarray
-def _poisson_initials( m ):
+def _poisson_initials(m):
     '''
     Return the boundaries to use as initial values in
     scipy.optimize.fsolve when calculating poissonian
@@ -210,7 +212,7 @@ def _poisson_initials( m ):
     return il, ir
 
 
-def _poisson_unc_from_db( m, database ):
+def _poisson_unc_from_db(m, database):
     '''
     Used in functions to calculate poissonian uncertainties,
     which are partially stored on databases. If "m" is above the
@@ -246,7 +248,7 @@ def _poisson_unc_from_db( m, database ):
         # Non-approximated uncertainties
         table = _access_db(database)
 
-        out = np.zeros((len(m), 2), dtype = np.float64)
+        out = np.zeros((len(m), 2), dtype=np.float64)
 
         out[no_app] = table[m[no_app]]
 
@@ -261,7 +263,7 @@ def _poisson_unc_from_db( m, database ):
     return out
 
 
-def _process_poisson_unc( m, lw, up ):
+def _process_poisson_unc(m, lw, up):
     '''
     Calculate the uncertainties and display an error if they
     have been incorrectly calculated.
@@ -279,14 +281,14 @@ def _process_poisson_unc( m, lw, up ):
     s_up = up - m
 
     if any(s < 0 for s in (s_lw, s_up)):
-        warnings.warn('Poisson uncertainties have been '\
+        warnings.warn('Poisson uncertainties have been '
                       'incorrectly calculated')
 
     # numpy.vectorize needs to know the exact type of the output
     return float(s_lw), float(s_up)
 
 
-def sw2_unc( arr, bins = 20, range = None, weights = None ):
+def sw2_unc(arr, bins=20, range=None, weights=None):
     '''
     Calculate the errors using the sum of squares of weights.
     The uncertainty is calculated as follows:
@@ -313,7 +315,7 @@ def sw2_unc( arr, bins = 20, range = None, weights = None ):
     .. seealso:: :func:`gauss_unc`, :func:`poisson_fu`, :func:`poisson_llu`
     '''
     if weights is not None:
-        values = np.histogram(arr, bins, range, weights = weights*weights)[0]
+        values = np.histogram(arr, bins, range, weights=weights*weights)[0]
     else:
         values = np.histogram(arr, bins, range)[0]
 

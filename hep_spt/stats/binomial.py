@@ -3,25 +3,25 @@ Function involving the binomial distribution.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 # Python
-import numpy as np
-from scipy.stats import beta, norm
 
 # Local
-from hep_spt.core import decorate, taking_ndarray
-from hep_spt.stats.core import one_sigma
 
 
 __all__ = ['clopper_pearson_int', 'clopper_pearson_unc',
+           import numpy as np
+           from scipy.stats import beta, norm
+           from hep_spt.core import decorate, taking_ndarray
+           from hep_spt.stats.core import one_sigma
            'wald_int', 'wald_unc',
            'wald_weighted_int', 'wald_weighted_unc',
            'wilson_int', 'wilson_unc']
 
 
 @taking_ndarray
-def clopper_pearson_int( k, N, cl = one_sigma ):
+def clopper_pearson_int(k, N, cl=one_sigma):
     '''
     Return the frequentist Clopper-Pearson interval of having
     "k" events in "N".
@@ -75,13 +75,13 @@ def clopper_pearson_int( k, N, cl = one_sigma ):
 
         uk, uN = k[cd], N[cd]
 
-        up[cd] = beta(uk + 1, uN- uk).ppf(1. - upcl)
+        up[cd] = beta(uk + 1, uN - uk).ppf(1. - upcl)
 
     return lw, up
 
 
 @taking_ndarray
-def clopper_pearson_unc( k, N, cl = one_sigma ):
+def clopper_pearson_unc(k, N, cl=one_sigma):
     '''
     Return the frequentist Clopper-Pearson uncertainties of having
     "k" events in "N".
@@ -101,7 +101,7 @@ def clopper_pearson_unc( k, N, cl = one_sigma ):
 
 
 @taking_ndarray
-def wald_int( k, N, cl = one_sigma ):
+def wald_int(k, N, cl=one_sigma):
     '''
     Calculate the symmetric Wald interval of having "k" elements
     in "N".
@@ -121,7 +121,7 @@ def wald_int( k, N, cl = one_sigma ):
 
 
 @taking_ndarray
-def wald_unc( k, N, cl = one_sigma ):
+def wald_unc(k, N, cl=one_sigma):
     '''
     Calculate the symmetric Wald uncertainty of having "k" elements
     in "N".
@@ -141,7 +141,7 @@ def wald_unc( k, N, cl = one_sigma ):
 
 
 @taking_ndarray
-def wald_weighted_int( k, N, cl = one_sigma ):
+def wald_weighted_int(k, N, cl=one_sigma):
     '''
     Calculate the symmetric Wald interval for a weighted sample,
     where "k" is the array of weights in the survival sample
@@ -164,7 +164,7 @@ def wald_weighted_int( k, N, cl = one_sigma ):
 
 
 @taking_ndarray
-def wald_weighted_unc( k, N, cl = one_sigma ):
+def wald_weighted_unc(k, N, cl=one_sigma):
     '''
     Calculate the symmetric Wald uncertainty for a weighted sample,
     where "k" is the array of weights in the survival sample
@@ -192,7 +192,7 @@ def wald_weighted_unc( k, N, cl = one_sigma ):
 
 
 @taking_ndarray
-def wilson_int( k, N, cl = one_sigma ):
+def wilson_int(k, N, cl=one_sigma):
     '''
     Calculate the Wilson interval of having "k" elements in "N".
 
@@ -206,19 +206,19 @@ def wilson_int( k, N, cl = one_sigma ):
     :rtype: float or numpy.ndarray(float)
     '''
     iN = 1./N
-    p  = k*iN
-    z  = norm.isf((1. - cl)/2.)
+    p = k*iN
+    z = norm.isf((1. - cl)/2.)
     z2 = z*z
 
-    c  = p + z2*0.5*iN
-    s  = z*iN*np.sqrt(p*(1. - p)*N + 0.25*z2)
-    d  = 1. + z2*iN
+    c = p + z2*0.5*iN
+    s = z*iN*np.sqrt(p*(1. - p)*N + 0.25*z2)
+    d = 1. + z2*iN
 
     p_l = (c - s)/d
     p_u = (c + s)/d
 
     zero = np.isclose(p, 0.)
-    one  = np.isclose(p, 1.)
+    one = np.isclose(p, 1.)
 
     if p_l.ndim != 0:
         p_l[zero] = 0.
@@ -234,7 +234,7 @@ def wilson_int( k, N, cl = one_sigma ):
 
 
 @taking_ndarray
-def wilson_unc( k, N, cl = one_sigma ):
+def wilson_unc(k, N, cl=one_sigma):
     '''
     Calculate the Wilson uncertainties of having "k" elements in "N".
 

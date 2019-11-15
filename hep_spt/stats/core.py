@@ -3,18 +3,18 @@ Core of function and classes for statistical calculations.
 '''
 
 __author__ = ['Miguel Ramos Pernas']
-__email__  = ['miguel.ramos.pernas@cern.ch']
+__email__ = ['miguel.ramos.pernas@cern.ch']
 
 # Python
+
+# Define confidence intervals.
 import numpy as np
 from collections import namedtuple
 from scipy.interpolate import interp1d
 from scipy.stats import chi2, kstwobign
 from scipy.stats import ks_2samp as scipy_ks_2samp
-
-# Define confidence intervals.
 chi2_one_dof = chi2(1)
-one_sigma    = chi2_one_dof.cdf(1)
+one_sigma = chi2_one_dof.cdf(1)
 
 __all__ = ['FlatDistTransform',
            'ks_2samp',
@@ -48,7 +48,8 @@ class FlatDistTransform(object):
     an array holding the cumulative of the distribution. The function
     :func:`scipy.interpolate.interp1d` is used for this purpose.
     '''
-    def __init__( self, points, values=None, kind='cubic' ):
+
+    def __init__(self, points, values=None, kind='cubic'):
         '''
         Build the class from a given set of values following a certain
         distribution (the use of weights is allowed), or x and y values of
@@ -70,7 +71,7 @@ class FlatDistTransform(object):
         if values is None:
             c = np.linspace(1./len(points), 1., len(points))
         else:
-            c  = np.cumsum(values[srt])
+            c = np.cumsum(values[srt])
             c *= 1./c[-1]
 
         self._trans = interp1d(points, c,
@@ -78,9 +79,9 @@ class FlatDistTransform(object):
                                kind=kind,
                                bounds_error=False,
                                fill_value=(0, 1)
-        )
+                               )
 
-    def transform( self, values ):
+    def transform(self, values):
         '''
         Return the value of the transformation of the given values.
 
@@ -90,7 +91,7 @@ class FlatDistTransform(object):
         return self._trans(values)
 
 
-def _ks_2samp_values( arr, weights = None ):
+def _ks_2samp_values(arr, weights=None):
     '''
     Calculate the values needed to perform the Kolmogorov-Smirnov test.
 
@@ -102,9 +103,10 @@ def _ks_2samp_values( arr, weights = None ):
     sum of weights.
     :rtype: numpy.ndarray, numpy.ndarray, float
     '''
-    weights = weights if weights is not None else np.ones(len(arr), dtype=float)
+    weights = weights if weights is not None else np.ones(
+        len(arr), dtype=float)
 
-    ix  = np.argsort(arr)
+    ix = np.argsort(arr)
     arr = arr[ix]
     weights = weights[ix]
 
@@ -117,7 +119,7 @@ def _ks_2samp_values( arr, weights = None ):
     return arr, hs, sw
 
 
-def ks_2samp( a, b, wa = None, wb = None ):
+def ks_2samp(a, b, wa=None, wb=None):
     '''
     Compute the Kolmogorov-Smirnov statistic on 2 samples.
     This is a two-sided test for the null hypothesis that 2 independent
@@ -158,7 +160,7 @@ def ks_2samp( a, b, wa = None, wb = None ):
     return d, prob
 
 
-def rv_random_sample( func, size = 10000, **kwargs ):
+def rv_random_sample(func, size=10000, **kwargs):
     '''
     Create a random sample from the given rv_frozen object.
     This is usually used after creating a :class:`scipy.stats.rv_discrete`
@@ -184,10 +186,11 @@ def rv_random_sample( func, size = 10000, **kwargs ):
 
 
 # Tuple to hold the return values of the function "stat_values"
-StatValues = namedtuple('StatValues', ('mean', 'var', 'std', 'var_mean', 'std_mean'))
+StatValues = namedtuple(
+    'StatValues', ('mean', 'var', 'std', 'var_mean', 'std_mean'))
 
 
-def stat_values( arr, axis = None, weights = None ):
+def stat_values(arr, axis=None, weights=None):
     '''
     Calculate mean and variance and standard deviations of the sample and the
     mean from the given array.
@@ -240,7 +243,7 @@ def stat_values( arr, axis = None, weights = None ):
     '''
     keepdims = (axis is not None)
 
-    asum = lambda a: np.sum(a, axis=axis, keepdims=keepdims, dtype=float)
+    def asum(a): return np.sum(a, axis=axis, keepdims=keepdims, dtype=float)
 
     if weights is None:
 
@@ -263,7 +266,7 @@ def stat_values( arr, axis = None, weights = None ):
         nzw = asum(weights != 0)
 
         mean = asum(weights*arr)/sw
-        var  = asum(weights*(arr - mean)**2)*nzw/(sw*(nzw - 1.))
+        var = asum(weights*(arr - mean)**2)*nzw/(sw*(nzw - 1.))
 
         var_mean = var/nzw
 
