@@ -5,20 +5,14 @@ Auxiliar mathematical functions.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-
-# Custom
-
-# Python
+from functools import reduce
+from hep_spt.core import taking_ndarray
+from hep_spt.cpython import math_aux_cpy
+import numpy as np
 
 
 __all__ = ['bit_length', 'gcd', 'ibinary_repr',
            'is_power_2', 'lcm', 'next_power_2']
-
-
-from hep_spt.core import taking_ndarray
-from hep_spt.cpython import math_aux_cpy
-import numpy as np
-from functools import reduce
 
 
 def bit_length(arg):

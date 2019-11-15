@@ -5,21 +5,20 @@ Core of function and classes for statistical calculations.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-# Python
-
-# Define confidence intervals.
-import numpy as np
 from collections import namedtuple
+import numpy as np
 from scipy.interpolate import interp1d
 from scipy.stats import chi2, kstwobign
 from scipy.stats import ks_2samp as scipy_ks_2samp
-chi2_one_dof = chi2(1)
-one_sigma = chi2_one_dof.cdf(1)
 
 __all__ = ['FlatDistTransform',
            'ks_2samp',
            'rv_random_sample',
            'stat_values']
+
+# Define confidence intervals.
+chi2_one_dof = chi2(1)
+one_sigma = chi2_one_dof.cdf(1)
 
 
 class FlatDistTransform(object):
@@ -31,7 +30,7 @@ class FlatDistTransform(object):
     following a flat distribution *r*,
 
     .. math::
-       F(x) - F(x_0) = \int_{x_0}^x f(x) dx = \int_0^r r dr = r
+       F(x) - F(x_0) = \\int_{x_0}^x f(x) dx = \\int_0^r r dr = r
 
     where :math:`F(x)` is the primitive of :math:`f(x)`. This allows us to
     generate values following the distribution :math:`f(x)` given values from
@@ -205,31 +204,31 @@ def stat_values(arr, axis=None, weights=None):
     - Weighted mean:
 
     .. math::
-       \\bar{x}^w = \\frac{\\sum_{i=0}^{n - 1}{\omega_i x_i}}{\\sum_{i=0}^{n - 1}{\omega_i}}
+       \\bar{x}^w = \\frac{\\sum_{i=0}^{n - 1}{\\omega_i x_i}}{\\sum_{i=0}^{n - 1}{\\omega_i}}
 
     - Variance of the sample:
 
     .. math::
-       \sigma_s = \sum_{i=0}^{n - 1}{\\frac{(x_i - \\bar{x})^2}{n - 1}}
+       \\sigma_s = \\sum_{i=0}^{n - 1}{\\frac{(x_i - \\bar{x})^2}{n - 1}}
 
     - Weighted variance of the sample:
 
     .. math::
-       \sigma^w_s = \\frac{N'}{(N' - 1)}\\frac{\sum_{i=0}^{n - 1}{\omega_i(x_i - \\bar{x}^w)^2}}{\sum_{i=0}^{n - 1}{\omega_i}}
+       \\sigma^w_s = \\frac{N'}{(N' - 1)}\\frac{\\sum_{i=0}^{n - 1}{\\omega_i(x_i - \\bar{x}^w)^2}}{\\sum_{i=0}^{n - 1}{\\omega_i}}
 
-    where :math:`\omega_i` refers to the weights associated with the value
+    where :math:`\\omega_i` refers to the weights associated with the value
     :math:`x_i`, and in the last equation N' refers to the number of non-zero
     weights. The variance and standard deviations of the mean are then given by:
 
     - Standard deviation of the mean:
 
     .. math::
-       s_\\bar{x} = \\sqrt{\\frac{\sigma_s}{n}}
+       s_\\bar{x} = \\sqrt{\\frac{\\sigma_s}{n}}
 
     - Weighted standard deviation of the mean:
 
     .. math::
-       s^w_\\bar{x} = \\sqrt{\\frac{\sigma^w_s}{N'}}
+       s^w_\\bar{x} = \\sqrt{\\frac{\\sigma^w_s}{N'}}
 
     :param arr: input array of data.
     :type arr: numpy.ndarray

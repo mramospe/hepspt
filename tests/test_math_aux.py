@@ -6,14 +6,9 @@ __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
 
-# Python
-
-# Local
-
-
+import hep_spt
 import numpy as np
 import pytest
-import hep_spt
 
 
 def test_bit_length():

@@ -5,16 +5,12 @@ Function involving the binomial distribution.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-# Python
-
-# Local
-
+from hep_spt.core import decorate, taking_ndarray
+from hep_spt.stats.core import one_sigma
+import numpy as np
+from scipy.stats import beta, norm
 
 __all__ = ['clopper_pearson_int', 'clopper_pearson_unc',
-           import numpy as np
-           from scipy.stats import beta, norm
-           from hep_spt.core import decorate, taking_ndarray
-           from hep_spt.stats.core import one_sigma
            'wald_int', 'wald_unc',
            'wald_weighted_int', 'wald_weighted_unc',
            'wilson_int', 'wilson_unc']

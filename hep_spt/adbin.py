@@ -6,19 +6,17 @@ __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
 
-# Custom
-
-# Python
+import bisect
+from hep_spt.histograms import errorbar_hist, process_range
+from hep_spt.stats.poisson import poisson_fu
+import itertools
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+import warnings
 
 
 __all__ = ['AdBin', 'adbin_hist2d_rectangles',
-           from hep_spt.histograms import errorbar_hist, process_range
-           from hep_spt.stats.poisson import poisson_fu
-           import numpy as np
-           import bisect, itertools
-           import matplotlib.pyplot as plt
-           import warnings
-           from matplotlib.patches import Rectangle
            'adbin_hist1d', 'adbin_hist1d_edges',
            'adbin_hist'
            ]

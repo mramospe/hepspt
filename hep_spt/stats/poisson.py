@@ -5,23 +5,14 @@ Function and classes representing statistical tools.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-
-# Python
 from hep_spt.stats.core import chi2_one_dof, one_sigma
 from hep_spt.core import decorate, taking_ndarray
 from hep_spt import PACKAGE_PATH
-from scipy.stats import poisson
-from scipy.optimize import fsolve
 import numpy as np
 import os
+from scipy.stats import poisson
+from scipy.optimize import fsolve
 import warnings
-
-# Local
-
-# Number after which the poisson uncertainty is considered to
-# be the same as that of a gaussian with "std = sqrt(lambda)".
-__poisson_to_gauss__ = 200
-
 
 __all__ = ['calc_poisson_fu',
            'calc_poisson_llu',
@@ -30,6 +21,10 @@ __all__ = ['calc_poisson_fu',
            'poisson_llu',
            'sw2_unc'
            ]
+
+# Number after which the poisson uncertainty is considered to
+# be the same as that of a gaussian with "std = sqrt(lambda)".
+__poisson_to_gauss__ = 200
 
 
 def _access_db(name):
@@ -162,18 +157,18 @@ def poisson_llu(m):
     negative logarithm of the likelihood multiplied by two:
 
     .. math::
-       \sigma_\\text{low} = n_\\text{obs} - \lambda_\\text{low}
+       \\sigma_\\text{low} = n_\\text{obs} - \\lambda_\\text{low}
 
     .. math::
-       \\alpha - 2\log P(n_\\text{obs}|\lambda_\\text{low}) = 1
+       \\alpha - 2\\log P(n_\\text{obs}|\\lambda_\\text{low}) = 1
 
     .. math::
-       \sigma_\\text{up} = \lambda_\\text{up} - n_\\text{obs}
+       \\sigma_\\text{up} = \\lambda_\\text{up} - n_\\text{obs}
 
     .. math::
-       \\alpha - 2\log P(n_\\text{obs}|\lambda_\\text{up}) = 1
+       \\alpha - 2\\log P(n_\\text{obs}|\\lambda_\\text{up}) = 1
 
-    where :math:`\\alpha = 2\log P(n_\\text{obs}|n_\\text{obs})`.
+    where :math:`\\alpha = 2\\log P(n_\\text{obs}|n_\\text{obs})`.
 
     :param m: measured value(s).
     :type m: int or numpy.ndarray(int)
@@ -295,10 +290,10 @@ def sw2_unc(arr, bins=20, range=None, weights=None):
 
     .. math::
 
-       \sigma_i = \sqrt{\sum_{j = 0}^{n - 1} \omega_{i,j}^2}
+       \\sigma_i = \\sqrt{\\sum_{j = 0}^{n - 1} \\omega_{i,j}^2}
 
-    where *i* refers to the i-th bin and :math:`j \in [0, n)` refers to
-    each entry in that bin with weight :math:`\omega_{i,j}`. If "weights" is
+    where *i* refers to the i-th bin and :math:`j \\in [0, n)` refers to
+    each entry in that bin with weight :math:`\\omega_{i,j}`. If "weights" is
     None, then this coincides with the square root of the number of entries
     in each bin.
 

@@ -5,14 +5,12 @@ Functions to work with histograms.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-# Local
+from hep_spt.stats.core import stat_values
+from hep_spt.stats.poisson import poisson_fu, poisson_llu, sw2_unc
+import numpy as np
 
-# Python
 
 __all__ = [
-    from hep_spt.stats.core import stat_values
-    from hep_spt.stats.poisson import poisson_fu, poisson_llu, sw2_unc
-    import numpy as np
     'cfe',
     'errorbar_hist',
     'profile',

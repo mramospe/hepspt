@@ -6,17 +6,13 @@ least one test function.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-
-# Python
-
-# Local
-
-# Modules to exclude from having tests
 import ast
 import importlib
 import inspect
 import os
 import hep_spt
+
+# Modules to exclude from having tests
 EXCLUDE_MODULES = {'core', 'cpython', 'version'}
 
 

@@ -6,17 +6,12 @@ __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
 
-# Python
-
-# Local
-
-
+import hep_spt
+from hep_spt.stats.poisson import __poisson_to_gauss__
 import numpy as np
 import pytest
 from scipy.stats import norm
 from scipy.stats import ks_2samp as scipy_ks_2samp
-import hep_spt
-from hep_spt.stats.poisson import __poisson_to_gauss__
 
 
 def _integral_transformer_aux(points, comp, values=None):

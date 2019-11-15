@@ -5,17 +5,14 @@ Classes and functions to work with the CLs method.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
+from collections import namedtuple
+from hep_spt.core import decorate
+from hep_spt.stats.core import rv_random_sample
+import numpy as np
+from scipy.stats import rv_discrete, rv_continuous
 
-# Python
-
-# Local
 
 __all__ = [
-    import numpy as np
-    from scipy.stats import rv_discrete, rv_continuous
-    from collections import namedtuple
-    from hep_spt.core import decorate
-    from hep_spt.stats.core import rv_random_sample
     'CLsTS', 'CLsTS_discrete', 'CLsTS_continuous',
     'CLsHypo', 'CLsHypo_discrete', 'CLsHypo_continuous',
     'cls_hypo', 'cls_ts'

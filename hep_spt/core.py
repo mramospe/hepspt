@@ -5,14 +5,10 @@ Some functions shared among modules.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-
-# Python
+from functools import wraps
+import numpy as np
 
 __all__ = []
-
-
-import numpy as np
-from functools import wraps
 
 
 def decorate(deco):

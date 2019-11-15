@@ -5,23 +5,19 @@ Provide some useful functions to plot with matplotlib.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-
-# Local
-
-# Python
+import contextlib
+from cycler import cycler
+from hep_spt import PACKAGE_PATH
+from hep_spt.histograms import cfe
+import math
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import numpy as np
+import os
+import warnings
 
 __all__ = [
-    from hep_spt import PACKAGE_PATH
-    from hep_spt.histograms import cfe
-    import contextlib
-    import matplotlib
-    import matplotlib.pyplot as plt
-    import matplotlib.ticker as ticker
-    import numpy as np
-    import math
-    import os
-    import warnings
-    from cycler import cycler
     'available_styles',
     'corr_hist2d',
     'modified_format',

@@ -5,16 +5,12 @@ Test functions for the "adbin" module.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-
-# Python
-
-# Local
+import hep_spt
+import matplotlib.pyplot as plt
+import numpy as np
+import pytest
 
 # Set the random seed for reproducibility
-import numpy as np
-import matplotlib.pyplot as plt
-import pytest
-import hep_spt
 np.random.seed(8563)
 
 

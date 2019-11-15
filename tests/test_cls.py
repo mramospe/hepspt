@@ -5,16 +5,10 @@ Test functions for the "cls" module.
 __author__ = ['Miguel Ramos Pernas']
 __email__ = ['miguel.ramos.pernas@cern.ch']
 
-
-# Python
-
-# Local
-
-
-import numpy as np
-from scipy.stats import poisson, norm
-import pytest
 import hep_spt
+import numpy as np
+import pytest
+from scipy.stats import poisson, norm
 
 
 def test_cls_hypo():
