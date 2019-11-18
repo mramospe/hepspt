@@ -84,7 +84,7 @@ class CheckFormatCommand(setuptools.Command):
 # for the fourth tag are "dev", "alpha", "beta",
 # "cand", "final" or "post".
 #
-version_info = (0, 0, 0, 'dev', 4)
+version_info = (0, 0, 0, 'dev', 5)
 
 tag = version_info[3]
 
