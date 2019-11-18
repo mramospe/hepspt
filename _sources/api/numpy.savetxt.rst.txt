@@ -1,0 +1,6 @@
+savetxt
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: savetxt

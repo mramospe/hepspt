@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>chararray &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MachAr" href="numpy.MachAr.html" />
+    <link rel="prev" title="format_parser" href="numpy.format_parser.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="chararray">
+<h1>chararray<a class="headerlink" href="#chararray" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.chararray">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">chararray</code><a class="headerlink" href="#numpy.chararray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+<dl class="simple">
+<dt>chararray(shape, itemsize=1, unicode=False, buffer=None, offset=0,</dt><dd><p>strides=None, order=None)</p>
+</dd>
+</dl>
+<p>Provides a convenient view on arrays of string and unicode values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <cite>chararray</cite> class exists for backwards compatibility with
+Numarray, it is not recommended for new development. Starting from numpy
+1.4, if one needs arrays of strings, it is recommended to use arrays of
+<cite>dtype</cite> <cite>object_</cite>, <cite>string_</cite> or <cite>unicode_</cite>, and use the free functions
+in the <cite>numpy.char</cite> module for fast vectorized string operations.</p>
+</div>
+<p>Versus a regular NumPy array of type <cite>str</cite> or <cite>unicode</cite>, this
+class adds the following functionality:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>values automatically have whitespace removed from the end
+when indexed</p></li>
+<li><p>comparison operators automatically remove whitespace from the
+end when comparing values</p></li>
+<li><p>vectorized string operations are provided as methods
+(e.g. <cite>.endswith</cite>) and infix operators (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;,</span> <span class="pre">&quot;*&quot;,</span> <span class="pre">&quot;%&quot;</span></code>)</p></li>
+</ol>
+</div></blockquote>
+<p>chararrays should be created using <cite>numpy.char.array</cite> or
+<cite>numpy.char.asarray</cite>, rather than this constructor directly.</p>
+<p>This constructor creates the array, using <cite>buffer</cite> (with <cite>offset</cite>
+and <cite>strides</cite>) if it is not <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <cite>buffer</cite> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then
+constructs a new array with <cite>strides</cite> in “C order”, unless both
+<code class="docutils literal notranslate"><span class="pre">len(shape)</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">order='Fortran'</span></code>, in which case <cite>strides</cite>
+is in “Fortran order”.</p>
+<p>astype
+argsort
+copy
+count
+decode
+dump
+dumps
+encode
+endswith
+expandtabs
+fill
+find
+flatten
+getfield
+index
+isalnum
+isalpha
+isdecimal
+isdigit
+islower
+isnumeric
+isspace
+istitle
+isupper
+item
+join
+ljust
+lower
+lstrip
+nonzero
+put
+ravel
+repeat
+replace
+reshape
+resize
+rfind
+rindex
+rjust
+rsplit
+rstrip
+searchsorted
+setfield
+setflags
+sort
+split
+splitlines
+squeeze
+startswith
+strip
+swapaxes
+swapcase
+take
+title
+tofile
+tolist
+tostring
+translate
+transpose
+upper
+view
+zfill</p>
+<dl class="simple">
+<dt>shape<span class="classifier">tuple</span></dt><dd><p>Shape of the array.</p>
+</dd>
+<dt>itemsize<span class="classifier">int, optional</span></dt><dd><p>Length of each array element, in number of characters. Default is 1.</p>
+</dd>
+<dt>unicode<span class="classifier">bool, optional</span></dt><dd><p>Are the array elements of type unicode (True) or string (False).
+Default is False.</p>
+</dd>
+<dt>buffer<span class="classifier">int, optional</span></dt><dd><p>Memory address of the start of the array data.  Default is None,
+in which case a new array is created.</p>
+</dd>
+<dt>offset<span class="classifier">int, optional</span></dt><dd><p>Fixed stride displacement from the beginning of an axis?
+Default is 0. Needs to be &gt;=0.</p>
+</dd>
+<dt>strides<span class="classifier">array_like of ints, optional</span></dt><dd><p>Strides for the array (see <cite>ndarray.strides</cite> for full description).
+Default is None.</p>
+</dd>
+<dt>order<span class="classifier">{‘C’, ‘F’}, optional</span></dt><dd><p>The order in which the array data is stored in memory: ‘C’ -&gt;
+“row major” order (the default), ‘F’ -&gt; “column major”
+(Fortran) order.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">charar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">chararray</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">charar</span><span class="p">[:]</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">charar</span>
+<span class="go">chararray([[b&#39;a&#39;, b&#39;a&#39;, b&#39;a&#39;],</span>
+<span class="go">           [b&#39;a&#39;, b&#39;a&#39;, b&#39;a&#39;],</span>
+<span class="go">           [b&#39;a&#39;, b&#39;a&#39;, b&#39;a&#39;]], dtype=&#39;|S1&#39;)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">charar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">chararray</span><span class="p">(</span><span class="n">charar</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">itemsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">charar</span><span class="p">[:]</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">charar</span>
+<span class="go">chararray([[b&#39;abc&#39;, b&#39;abc&#39;, b&#39;abc&#39;],</span>
+<span class="go">           [b&#39;abc&#39;, b&#39;abc&#39;, b&#39;abc&#39;],</span>
+<span class="go">           [b&#39;abc&#39;, b&#39;abc&#39;, b&#39;abc&#39;]], dtype=&#39;|S5&#39;)</span>
+</pre></div>
+</div>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.argsort" title="numpy.chararray.argsort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argsort</span></code></a>([axis, kind, order])</p></td>
+<td><p>Returns the indices that would sort this array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.capitalize" title="numpy.chararray.capitalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capitalize</span></code></a>()</p></td>
+<td><p>Return a copy of <cite>self</cite> with only the first character of each element capitalized.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.center" title="numpy.chararray.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a>(width[, fillchar])</p></td>
+<td><p>Return a copy of <cite>self</cite> with its elements centered in a string of length <cite>width</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.count" title="numpy.chararray.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(sub[, start, end])</p></td>
+<td><p>Returns an array with the number of non-overlapping occurrences of substring <cite>sub</cite> in the range [<cite>start</cite>, <cite>end</cite>].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.decode" title="numpy.chararray.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>([encoding, errors])</p></td>
+<td><p>Calls <cite>str.decode</cite> element-wise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.encode" title="numpy.chararray.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>([encoding, errors])</p></td>
+<td><p>Calls <cite>str.encode</cite> element-wise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.endswith" title="numpy.chararray.endswith"><code class="xref py py-obj docutils literal notranslate"><span class="pre">endswith</span></code></a>(suffix[, start, end])</p></td>
+<td><p>Returns a boolean array which is <cite>True</cite> where the string element in <cite>self</cite> ends with <cite>suffix</cite>, otherwise <cite>False</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.expandtabs" title="numpy.chararray.expandtabs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandtabs</span></code></a>([tabsize])</p></td>
+<td><p>Return a copy of each string element where all tab characters are replaced by one or more spaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.find" title="numpy.chararray.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(sub[, start, end])</p></td>
+<td><p>For each element, return the lowest index in the string where substring <cite>sub</cite> is found.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.index" title="numpy.chararray.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(sub[, start, end])</p></td>
+<td><p>Like <cite>find</cite>, but raises <cite>ValueError</cite> when the substring is not found.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.isalnum" title="numpy.chararray.isalnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isalnum</span></code></a>()</p></td>
+<td><p>Returns true for each element if all characters in the string are alphanumeric and there is at least one character, false otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.isalpha" title="numpy.chararray.isalpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isalpha</span></code></a>()</p></td>
+<td><p>Returns true for each element if all characters in the string are alphabetic and there is at least one character, false otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.isdecimal" title="numpy.chararray.isdecimal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdecimal</span></code></a>()</p></td>
+<td><p>For each element in <cite>self</cite>, return True if there are only decimal characters in the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.isdigit" title="numpy.chararray.isdigit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdigit</span></code></a>()</p></td>
+<td><p>Returns true for each element if all characters in the string are digits and there is at least one character, false otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.islower" title="numpy.chararray.islower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">islower</span></code></a>()</p></td>
+<td><p>Returns true for each element if all cased characters in the string are lowercase and there is at least one cased character, false otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.isnumeric" title="numpy.chararray.isnumeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isnumeric</span></code></a>()</p></td>
+<td><p>For each element in <cite>self</cite>, return True if there are only numeric characters in the element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.isspace" title="numpy.chararray.isspace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isspace</span></code></a>()</p></td>
+<td><p>Returns true for each element if there are only whitespace characters in the string and there is at least one character, false otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.istitle" title="numpy.chararray.istitle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">istitle</span></code></a>()</p></td>
+<td><p>Returns true for each element if the element is a titlecased string and there is at least one character, false otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.isupper" title="numpy.chararray.isupper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isupper</span></code></a>()</p></td>
+<td><p>Returns true for each element if all cased characters in the string are uppercase and there is at least one character, false otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.join" title="numpy.chararray.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(seq)</p></td>
+<td><p>Return a string which is the concatenation of the strings in the sequence <cite>seq</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.ljust" title="numpy.chararray.ljust"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ljust</span></code></a>(width[, fillchar])</p></td>
+<td><p>Return an array with the elements of <cite>self</cite> left-justified in a string of length <cite>width</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.lower" title="numpy.chararray.lower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower</span></code></a>()</p></td>
+<td><p>Return an array with the elements of <cite>self</cite> converted to lowercase.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.lstrip" title="numpy.chararray.lstrip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lstrip</span></code></a>([chars])</p></td>
+<td><p>For each element in <cite>self</cite>, return a copy with the leading characters removed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.partition" title="numpy.chararray.partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition</span></code></a>(sep)</p></td>
+<td><p>Partition each element in <cite>self</cite> around <cite>sep</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.replace" title="numpy.chararray.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(old, new[, count])</p></td>
+<td><p>For each element in <cite>self</cite>, return a copy of the string with all occurrences of substring <cite>old</cite> replaced by <cite>new</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.rfind" title="numpy.chararray.rfind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rfind</span></code></a>(sub[, start, end])</p></td>
+<td><p>For each element in <cite>self</cite>, return the highest index in the string where substring <cite>sub</cite> is found, such that <cite>sub</cite> is contained within [<cite>start</cite>, <cite>end</cite>].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.rindex" title="numpy.chararray.rindex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rindex</span></code></a>(sub[, start, end])</p></td>
+<td><p>Like <cite>rfind</cite>, but raises <cite>ValueError</cite> when the substring <cite>sub</cite> is not found.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.rjust" title="numpy.chararray.rjust"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rjust</span></code></a>(width[, fillchar])</p></td>
+<td><p>Return an array with the elements of <cite>self</cite> right-justified in a string of length <cite>width</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.rpartition" title="numpy.chararray.rpartition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rpartition</span></code></a>(sep)</p></td>
+<td><p>Partition each element in <cite>self</cite> around <cite>sep</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.rsplit" title="numpy.chararray.rsplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rsplit</span></code></a>([sep, maxsplit])</p></td>
+<td><p>For each element in <cite>self</cite>, return a list of the words in the string, using <cite>sep</cite> as the delimiter string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.rstrip" title="numpy.chararray.rstrip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rstrip</span></code></a>([chars])</p></td>
+<td><p>For each element in <cite>self</cite>, return a copy with the trailing characters removed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.split" title="numpy.chararray.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>([sep, maxsplit])</p></td>
+<td><p>For each element in <cite>self</cite>, return a list of the words in the string, using <cite>sep</cite> as the delimiter string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.splitlines" title="numpy.chararray.splitlines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">splitlines</span></code></a>([keepends])</p></td>
+<td><p>For each element in <cite>self</cite>, return a list of the lines in the element, breaking at line boundaries.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.startswith" title="numpy.chararray.startswith"><code class="xref py py-obj docutils literal notranslate"><span class="pre">startswith</span></code></a>(prefix[, start, end])</p></td>
+<td><p>Returns a boolean array which is <cite>True</cite> where the string element in <cite>self</cite> starts with <cite>prefix</cite>, otherwise <cite>False</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.strip" title="numpy.chararray.strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strip</span></code></a>([chars])</p></td>
+<td><p>For each element in <cite>self</cite>, return a copy with the leading and trailing characters removed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.swapcase" title="numpy.chararray.swapcase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapcase</span></code></a>()</p></td>
+<td><p>For each element in <cite>self</cite>, return a copy of the string with uppercase characters converted to lowercase and vice versa.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.title" title="numpy.chararray.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a>()</p></td>
+<td><p>For each element in <cite>self</cite>, return a titlecased version of the string: words start with uppercase characters, all remaining cased characters are lowercase.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.translate" title="numpy.chararray.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(table[, deletechars])</p></td>
+<td><p>For each element in <cite>self</cite>, return a copy of the string where all characters occurring in the optional argument <cite>deletechars</cite> are removed, and the remaining characters have been mapped through the given translation table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.chararray.upper" title="numpy.chararray.upper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upper</span></code></a>()</p></td>
+<td><p>Return an array with the elements of <cite>self</cite> converted to uppercase.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.chararray.zfill" title="numpy.chararray.zfill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zfill</span></code></a>(width)</p></td>
+<td><p>Return the numeric string left-filled with zeros in a string of length <cite>width</cite>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.chararray.argsort">
+<code class="sig-name descname">argsort</code><span class="sig-paren">(</span><em class="sig-param">axis=-1</em>, <em class="sig-param">kind=None</em>, <em class="sig-param">order=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.argsort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.argsort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices that would sort this array.</p>
+<p>Refer to <cite>numpy.argsort</cite> for full documentation.</p>
+<p>numpy.argsort : equivalent function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.capitalize">
+<code class="sig-name descname">capitalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.capitalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.capitalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of <cite>self</cite> with only the first character of each element
+capitalized.</p>
+<p>char.capitalize</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.center">
+<code class="sig-name descname">center</code><span class="sig-paren">(</span><em class="sig-param">width</em>, <em class="sig-param">fillchar=' '</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of <cite>self</cite> with its elements centered in a
+string of length <cite>width</cite>.</p>
+<p>center</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param">sub</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an array with the number of non-overlapping occurrences of
+substring <cite>sub</cite> in the range [<cite>start</cite>, <cite>end</cite>].</p>
+<p>char.count</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.decode">
+<code class="sig-name descname">decode</code><span class="sig-paren">(</span><em class="sig-param">encoding=None</em>, <em class="sig-param">errors=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <cite>str.decode</cite> element-wise.</p>
+<p>char.decode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.encode">
+<code class="sig-name descname">encode</code><span class="sig-paren">(</span><em class="sig-param">encoding=None</em>, <em class="sig-param">errors=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <cite>str.encode</cite> element-wise.</p>
+<p>char.encode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.endswith">
+<code class="sig-name descname">endswith</code><span class="sig-paren">(</span><em class="sig-param">suffix</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.endswith"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.endswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean array which is <cite>True</cite> where the string element
+in <cite>self</cite> ends with <cite>suffix</cite>, otherwise <cite>False</cite>.</p>
+<p>char.endswith</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.expandtabs">
+<code class="sig-name descname">expandtabs</code><span class="sig-paren">(</span><em class="sig-param">tabsize=8</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.expandtabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.expandtabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of each string element where all tab characters are
+replaced by one or more spaces.</p>
+<p>char.expandtabs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">sub</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element, return the lowest index in the string where
+substring <cite>sub</cite> is found.</p>
+<p>char.find</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">sub</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like <cite>find</cite>, but raises <cite>ValueError</cite> when the substring is not found.</p>
+<p>char.index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.isalnum">
+<code class="sig-name descname">isalnum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.isalnum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.isalnum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true for each element if all characters in the string
+are alphanumeric and there is at least one character, false
+otherwise.</p>
+<p>char.isalnum</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.isalpha">
+<code class="sig-name descname">isalpha</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.isalpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.isalpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true for each element if all characters in the string
+are alphabetic and there is at least one character, false
+otherwise.</p>
+<p>char.isalpha</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.isdecimal">
+<code class="sig-name descname">isdecimal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.isdecimal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.isdecimal" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return True if there are only
+decimal characters in the element.</p>
+<p>char.isdecimal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.isdigit">
+<code class="sig-name descname">isdigit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.isdigit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.isdigit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true for each element if all characters in the string are
+digits and there is at least one character, false otherwise.</p>
+<p>char.isdigit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.islower">
+<code class="sig-name descname">islower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.islower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.islower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true for each element if all cased characters in the
+string are lowercase and there is at least one cased character,
+false otherwise.</p>
+<p>char.islower</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.isnumeric">
+<code class="sig-name descname">isnumeric</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.isnumeric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.isnumeric" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return True if there are only
+numeric characters in the element.</p>
+<p>char.isnumeric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.isspace">
+<code class="sig-name descname">isspace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.isspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.isspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true for each element if there are only whitespace
+characters in the string and there is at least one character,
+false otherwise.</p>
+<p>char.isspace</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.istitle">
+<code class="sig-name descname">istitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.istitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.istitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true for each element if the element is a titlecased
+string and there is at least one character, false otherwise.</p>
+<p>char.istitle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.isupper">
+<code class="sig-name descname">isupper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.isupper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.isupper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true for each element if all cased characters in the
+string are uppercase and there is at least one character, false
+otherwise.</p>
+<p>char.isupper</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.join">
+<code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param">seq</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string which is the concatenation of the strings in the
+sequence <cite>seq</cite>.</p>
+<p>char.join</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.ljust">
+<code class="sig-name descname">ljust</code><span class="sig-paren">(</span><em class="sig-param">width</em>, <em class="sig-param">fillchar=' '</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.ljust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.ljust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array with the elements of <cite>self</cite> left-justified in a
+string of length <cite>width</cite>.</p>
+<p>char.ljust</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.lower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array with the elements of <cite>self</cite> converted to
+lowercase.</p>
+<p>char.lower</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.lstrip">
+<code class="sig-name descname">lstrip</code><span class="sig-paren">(</span><em class="sig-param">chars=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.lstrip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.lstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a copy with the leading characters
+removed.</p>
+<p>char.lstrip</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.partition">
+<code class="sig-name descname">partition</code><span class="sig-paren">(</span><em class="sig-param">sep</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.partition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partition each element in <cite>self</cite> around <cite>sep</cite>.</p>
+<p>partition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.replace">
+<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param">old</em>, <em class="sig-param">new</em>, <em class="sig-param">count=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a copy of the string with all
+occurrences of substring <cite>old</cite> replaced by <cite>new</cite>.</p>
+<p>char.replace</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.rfind">
+<code class="sig-name descname">rfind</code><span class="sig-paren">(</span><em class="sig-param">sub</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.rfind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.rfind" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return the highest index in the string
+where substring <cite>sub</cite> is found, such that <cite>sub</cite> is contained
+within [<cite>start</cite>, <cite>end</cite>].</p>
+<p>char.rfind</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.rindex">
+<code class="sig-name descname">rindex</code><span class="sig-paren">(</span><em class="sig-param">sub</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.rindex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.rindex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like <cite>rfind</cite>, but raises <cite>ValueError</cite> when the substring <cite>sub</cite> is
+not found.</p>
+<p>char.rindex</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.rjust">
+<code class="sig-name descname">rjust</code><span class="sig-paren">(</span><em class="sig-param">width</em>, <em class="sig-param">fillchar=' '</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.rjust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.rjust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array with the elements of <cite>self</cite>
+right-justified in a string of length <cite>width</cite>.</p>
+<p>char.rjust</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.rpartition">
+<code class="sig-name descname">rpartition</code><span class="sig-paren">(</span><em class="sig-param">sep</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.rpartition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.rpartition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partition each element in <cite>self</cite> around <cite>sep</cite>.</p>
+<p>rpartition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.rsplit">
+<code class="sig-name descname">rsplit</code><span class="sig-paren">(</span><em class="sig-param">sep=None</em>, <em class="sig-param">maxsplit=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.rsplit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.rsplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a list of the words in
+the string, using <cite>sep</cite> as the delimiter string.</p>
+<p>char.rsplit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.rstrip">
+<code class="sig-name descname">rstrip</code><span class="sig-paren">(</span><em class="sig-param">chars=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.rstrip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.rstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a copy with the trailing
+characters removed.</p>
+<p>char.rstrip</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.split">
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">sep=None</em>, <em class="sig-param">maxsplit=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a list of the words in the
+string, using <cite>sep</cite> as the delimiter string.</p>
+<p>char.split</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.splitlines">
+<code class="sig-name descname">splitlines</code><span class="sig-paren">(</span><em class="sig-param">keepends=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.splitlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.splitlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a list of the lines in the
+element, breaking at line boundaries.</p>
+<p>char.splitlines</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.startswith">
+<code class="sig-name descname">startswith</code><span class="sig-paren">(</span><em class="sig-param">prefix</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.startswith"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.startswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean array which is <cite>True</cite> where the string element
+in <cite>self</cite> starts with <cite>prefix</cite>, otherwise <cite>False</cite>.</p>
+<p>char.startswith</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.strip">
+<code class="sig-name descname">strip</code><span class="sig-paren">(</span><em class="sig-param">chars=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.strip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.strip" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a copy with the leading and
+trailing characters removed.</p>
+<p>char.strip</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.swapcase">
+<code class="sig-name descname">swapcase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.swapcase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.swapcase" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a copy of the string with
+uppercase characters converted to lowercase and vice versa.</p>
+<p>char.swapcase</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.title">
+<code class="sig-name descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a titlecased version of the
+string: words start with uppercase characters, all remaining cased
+characters are lowercase.</p>
+<p>char.title</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.translate">
+<code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">deletechars=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each element in <cite>self</cite>, return a copy of the string where
+all characters occurring in the optional argument
+<cite>deletechars</cite> are removed, and the remaining characters have
+been mapped through the given translation table.</p>
+<p>char.translate</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.upper">
+<code class="sig-name descname">upper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.upper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array with the elements of <cite>self</cite> converted to
+uppercase.</p>
+<p>char.upper</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.chararray.zfill">
+<code class="sig-name descname">zfill</code><span class="sig-paren">(</span><em class="sig-param">width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/defchararray.html#chararray.zfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.chararray.zfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the numeric string left-filled with zeros in a string of
+length <cite>width</cite>.</p>
+<p>char.zfill</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.format_parser.html" title="previous chapter">format_parser</a></li>
+      <li>Next: <a href="numpy.MachAr.html" title="next chapter">MachAr</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.chararray.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,6 @@
+size
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: size

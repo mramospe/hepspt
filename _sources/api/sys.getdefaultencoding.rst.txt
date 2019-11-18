@@ -1,0 +1,6 @@
+getdefaultencoding
+==================
+
+.. currentmodule:: sys
+
+.. autofunction:: getdefaultencoding

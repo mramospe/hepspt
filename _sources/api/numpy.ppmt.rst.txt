@@ -1,0 +1,6 @@
+ppmt
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: ppmt

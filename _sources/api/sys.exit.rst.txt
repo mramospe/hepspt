@@ -1,0 +1,6 @@
+exit
+====
+
+.. currentmodule:: sys
+
+.. autofunction:: exit

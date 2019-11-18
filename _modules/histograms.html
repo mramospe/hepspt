@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>histograms &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for histograms</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Functions to work with histograms.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Miguel Ramos Pernas&#39;</span><span class="p">]</span>
+<span class="n">__email__</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;miguel.ramos.pernas@cern.ch&#39;</span><span class="p">]</span>
+
+<span class="c1"># Local</span>
+<span class="kn">from</span> <span class="nn">hep_spt.stats.core</span> <span class="k">import</span> <span class="n">stat_values</span>
+<span class="kn">from</span> <span class="nn">hep_spt.stats.poisson</span> <span class="k">import</span> <span class="n">poisson_fu</span><span class="p">,</span> <span class="n">poisson_llu</span><span class="p">,</span> <span class="n">sw2_unc</span>
+
+<span class="c1"># Python</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;cfe&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;errorbar_hist&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;profile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pull&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;residual&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;weights_by_edges&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="cfe"><a class="viewcode-back" href="../main.html#hep_spt.cfe">[docs]</a><span class="k">def</span> <span class="nf">cfe</span><span class="p">(</span> <span class="n">edges</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the centers of a set of bins given their edges.</span>
+
+<span class="sd">    :param edges: edges of a histogram.</span>
+<span class="sd">    :type edges: numpy.ndarray</span>
+<span class="sd">    :returns: Centers of the histogram.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span></div>
+
+
+<div class="viewcode-block" id="errorbar_hist"><a class="viewcode-back" href="../main.html#hep_spt.errorbar_hist">[docs]</a><span class="k">def</span> <span class="nf">errorbar_hist</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">norm_type</span> <span class="o">=</span> <span class="s1">&#39;range&#39;</span><span class="p">,</span> <span class="n">uncert</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the values needed to create an error bar histogram.</span>
+<span class="sd">    Different errors can be considered (see below).</span>
+
+<span class="sd">    :param arr: input array of data to process.</span>
+<span class="sd">    :param bins: see :func:`numpy.histogram`.</span>
+<span class="sd">    :type bins: int or sequence of scalars or str</span>
+<span class="sd">    :param range: range to process in the input array.</span>
+<span class="sd">    :type range: None or tuple(float, float)</span>
+<span class="sd">    :param weights: possible weights for the histogram.</span>
+<span class="sd">    :type weights: None or numpy.ndarray(value-type)</span>
+<span class="sd">    :param norm: if True, normalize the histogram. If it is set to a number, \</span>
+<span class="sd">    the histogram is normalized and multiplied by that number.</span>
+<span class="sd">    :type norm: bool, int or float</span>
+<span class="sd">    :param norm_type: the normalization type to apply. To be chosen between \</span>
+<span class="sd">    &#39;range&#39; and &#39;all&#39;. In the first case (default), only the points lying \</span>
+<span class="sd">    inside the histogram range are considered in the normalization. In the \</span>
+<span class="sd">    later, all the points are considered. In this case, the sum of the \</span>
+<span class="sd">    values returned by this function will not sum the value provided in &quot;norm&quot;.</span>
+<span class="sd">    :type norm_type: str</span>
+<span class="sd">    :param uncert: type of uncertainty to consider. If None, the square root \</span>
+<span class="sd">    of the sum of squared weights is considered. The possibilities \</span>
+<span class="sd">    are: \</span>
+<span class="sd">    - &quot;freq&quot;: frequentist uncertainties. \</span>
+<span class="sd">    - &quot;dll&quot;: uncertainty based on the difference on the logarithm of \</span>
+<span class="sd">    likelihood. \</span>
+<span class="sd">    - &quot;sw2&quot;: sum of square of weights. In case of non-weighted data, the \</span>
+<span class="sd">    uncertainties will be equal to the square root of the entries in the bin.</span>
+<span class="sd">    :type uncert: str or None</span>
+<span class="sd">    :returns: Values, edges, the spacing between bins in X the Y errors. \</span>
+<span class="sd">    In the non-weighted case, errors in Y are returned as two arrays, with the \</span>
+<span class="sd">    lower and upper uncertainties.</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray</span>
+<span class="sd">    :raises ValueError: if the uncertainty type is not among the possibilities.</span>
+<span class="sd">    :raises ValueError: if the normalization type is neither &#39;range&#39; nor &#39;all&#39;.</span>
+<span class="sd">    :raises TypeError: if the uncertainty is &quot;freq&quot; or &quot;dll&quot; and &quot;weights&quot; is \</span>
+<span class="sd">    not of integer type.</span>
+
+<span class="sd">    .. seealso:: :func:`hep_spt.stats.poisson_fu`, :func:`hep_spt.stats.poisson_llu`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">uncert</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;dll&#39;</span><span class="p">,</span> <span class="s1">&#39;sw2&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown uncertainty type &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uncert</span><span class="p">))</span>
+
+    <span class="c1"># By default use square root of the sum of squared weights</span>
+    <span class="n">uncert</span> <span class="o">=</span> <span class="n">uncert</span> <span class="ow">or</span> <span class="s1">&#39;sw2&#39;</span>
+
+    <span class="n">values</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">uncert</span> <span class="o">==</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_fu</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">uncert</span> <span class="o">==</span> <span class="s1">&#39;dll&#39;</span><span class="p">:</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="n">poisson_llu</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="n">sw2_unc</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="c1"># For compatibility with matplotlib.pyplot.errorbar</span>
+    <span class="n">ey</span> <span class="o">=</span> <span class="n">ey</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">ex</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+
+    <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">norm_type</span> <span class="o">==</span> <span class="s1">&#39;range&#39;</span><span class="p">:</span>
+
+            <span class="c1"># Normalizing in the visible region</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">/</span><span class="n">norm</span>
+
+        <span class="k">elif</span> <span class="n">norm_type</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+
+            <span class="c1"># Normalizing to all the points</span>
+            <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span><span class="o">/</span><span class="n">norm</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">/</span><span class="n">norm</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown normalization type &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_type</span><span class="p">))</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">/</span><span class="n">s</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="n">ey</span><span class="o">/</span><span class="n">s</span>
+
+    <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span></div>
+
+
+<span class="k">def</span> <span class="nf">process_range</span><span class="p">(</span> <span class="n">arr</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Process the given range, determining the minimum and maximum</span>
+<span class="sd">    values for a 1D histogram.</span>
+
+<span class="sd">    :param arr: array of data.</span>
+<span class="sd">    :type arr: numpy.ndarray</span>
+<span class="sd">    :param range: range of the histogram. It must contain tuple(min, max), \</span>
+<span class="sd">    where &quot;min&quot; and &quot;max&quot; can be either floats (1D case) or collections \</span>
+<span class="sd">    (ND case).</span>
+<span class="sd">    :type range: None or tuple</span>
+<span class="sd">    :returns: Minimum and maximum values.</span>
+<span class="sd">    :rtype: float, float</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">amax</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nextafter</span><span class="p">(</span><span class="n">amax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="nb">range</span>
+
+    <span class="k">return</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span>
+
+
+<div class="viewcode-block" id="profile"><a class="viewcode-back" href="../main.html#hep_spt.profile">[docs]</a><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">std_type</span> <span class="o">=</span> <span class="s1">&#39;mean&#39;</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the profile from a 2D data sample.</span>
+<span class="sd">    It corresponds to the mean of the values in &quot;y&quot; for each bin in &quot;x&quot;.</span>
+
+<span class="sd">    :param x: values to consider for the binning.</span>
+<span class="sd">    :type x: numpy.ndarray(value-type)</span>
+<span class="sd">    :param y: values to calculate the mean with.</span>
+<span class="sd">    :type y: numpy.ndarray(value-type)</span>
+<span class="sd">    :param bins: see :func:`numpy.histogram`.</span>
+<span class="sd">    :type bins: int or sequence of scalars or str</span>
+<span class="sd">    :param range: range to process in the input array.</span>
+<span class="sd">    :type range: None or tuple(float, float)</span>
+<span class="sd">    :param weights: possible array of weights for the profile.</span>
+<span class="sd">    :type weights: None or numpy.ndarray(value-type)</span>
+<span class="sd">    :param std_type: type of standard deviation to be returned. The default \</span>
+<span class="sd">    (&#39;mean&#39;) makes this function return the standard deviation of the mean. \</span>
+<span class="sd">    If set to &#39;sample&#39;, it will return the standard deviation of the sample \</span>
+<span class="sd">    instead. The definitions can be seen in :func:`stat_values`.</span>
+<span class="sd">    :type std_type: str</span>
+<span class="sd">    :returns: profile in &quot;y&quot;, edges and standard deviation.</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray</span>
+<span class="sd">    :raises ValueError: If an unknown standard deviation type is provided.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">process_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">range</span><span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">))</span>
+
+    <span class="n">dig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
+
+    <span class="n">ln</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+
+    <span class="n">prof</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">ln</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,)),</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">ln</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ln</span><span class="p">):</span>
+
+        <span class="n">cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">dig</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">stat_values</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">cond</span><span class="p">],</span> <span class="n">weights</span><span class="p">[</span><span class="n">cond</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">stat_values</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">cond</span><span class="p">])</span>
+
+        <span class="n">prof</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">mean</span>
+
+        <span class="k">if</span> <span class="n">std_type</span> <span class="o">==</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+            <span class="n">std</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">std_mean</span>
+        <span class="k">elif</span> <span class="n">std_type</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">:</span>
+            <span class="n">std</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">std</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown standard deviation type &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">std_type</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">prof</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">std</span></div>
+
+
+<div class="viewcode-block" id="pull"><a class="viewcode-back" href="../main.html#hep_spt.pull">[docs]</a><span class="k">def</span> <span class="nf">pull</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_err</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the pull with the associated errors for a given set of values and a</span>
+<span class="sd">    reference. Considering, :math:`v` as the experimental value and :math:`r`</span>
+<span class="sd">    as the rerference, the definition of this quantity is :math:`(v - r)/\sigma`</span>
+<span class="sd">    in case symmetric errors are provided. In the case of asymmetric errors the</span>
+<span class="sd">    definition is:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \\text{pull}</span>
+<span class="sd">       =</span>
+<span class="sd">       \Biggl \lbrace</span>
+<span class="sd">       {</span>
+<span class="sd">       \\frac{v - r}{\sigma_{low}} \\text{ if } v - r \geq 0</span>
+<span class="sd">       \\atop</span>
+<span class="sd">       \\frac{v - r}{\sigma_{up}}  \\text{ otherwise }</span>
+<span class="sd">       }</span>
+
+<span class="sd">    In the latter case, the errors are computed in such a way that the closer to</span>
+<span class="sd">    the reference is equal to 1 and the other is scaled accordingly, so if</span>
+<span class="sd">    :math:`v - r &gt; 0`, then :math:`\sigma^{pull}_{low} = 1` and</span>
+<span class="sd">    :math:`\sigma^{pull}_{up} = \sigma_{up}/\sigma_{low}`.</span>
+
+<span class="sd">    If uncertainties are also provided for the reference, then the</span>
+<span class="sd">    definition is the same but considering the sum of squares rule:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2</span>
+
+<span class="sd">    :param vals: values to compare with.</span>
+<span class="sd">    :type vals: numpy.ndarray</span>
+<span class="sd">    :param err: array of errors. Both symmetric and asymmetric errors \</span>
+<span class="sd">    can be provided. In the latter case, they must be provided as a \</span>
+<span class="sd">    (2, n) array.</span>
+<span class="sd">    :type err: numpy.ndarray</span>
+<span class="sd">    :param ref: reference to follow.</span>
+<span class="sd">    :type ref: numpy.ndarray</span>
+<span class="sd">    :param ref_err: possible errors for the reference.</span>
+<span class="sd">    :type ref_err: numpy.ndarray</span>
+<span class="sd">    :returns: Pull of the values with respect to the reference and \</span>
+<span class="sd">    associated errors. In case asymmetric errors have been provided, \</span>
+<span class="sd">    the returning array has shape (2, n).</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray</span>
+<span class="sd">    :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).</span>
+
+<span class="sd">    .. seealso:: :func:`residual`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pull</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">residual</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_err</span><span class="p">)</span>
+
+    <span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Symmetric errors</span>
+        <span class="n">pull</span> <span class="o">/=</span> <span class="n">err</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Asymmetric errors</span>
+
+        <span class="n">up</span> <span class="o">=</span> <span class="p">(</span><span class="n">pull</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">lw</span> <span class="o">=</span> <span class="p">(</span><span class="n">pull</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">el</span><span class="p">,</span> <span class="n">eu</span> <span class="o">=</span> <span class="n">err</span>
+
+        <span class="n">pull</span><span class="p">[</span><span class="n">up</span><span class="p">]</span> <span class="o">/=</span> <span class="n">el</span><span class="p">[</span><span class="n">up</span><span class="p">]</span>
+        <span class="n">pull</span><span class="p">[</span><span class="n">lw</span><span class="p">]</span> <span class="o">/=</span> <span class="n">eu</span><span class="p">[</span><span class="n">lw</span><span class="p">]</span>
+
+        <span class="n">perr_l</span><span class="p">,</span> <span class="n">perr_u</span> <span class="o">=</span> <span class="n">perr</span>
+
+        <span class="n">perr_l</span><span class="p">[</span><span class="n">lw</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="n">lw</span><span class="p">]</span><span class="o">/</span><span class="n">eu</span><span class="p">[</span><span class="n">lw</span><span class="p">])</span>
+        <span class="n">perr_u</span><span class="p">[</span><span class="n">up</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">eu</span><span class="p">[</span><span class="n">up</span><span class="p">]</span><span class="o">/</span><span class="n">el</span><span class="p">[</span><span class="n">up</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">pull</span><span class="p">,</span> <span class="n">perr</span></div>
+
+
+<div class="viewcode-block" id="residual"><a class="viewcode-back" href="../main.html#hep_spt.residual">[docs]</a><span class="k">def</span> <span class="nf">residual</span><span class="p">(</span> <span class="n">vals</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_err</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the residual with its errors, for a set of values with</span>
+<span class="sd">    respect to a reference.</span>
+<span class="sd">    If uncertainties are also provided for the reference, then the</span>
+<span class="sd">    definition is the same but considering the sum of squares rule:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{low})^2 = (\sigma^{v}_{low})^2 + (\sigma^{r}_{up})^2</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       (\sigma&#39;^{v}_{up})^2 = (\sigma^{v}_{up})^2 + (\sigma^{r}_{low})^2</span>
+
+<span class="sd">    :param vals: values to compare with.</span>
+<span class="sd">    :type vals: numpy.ndarray</span>
+<span class="sd">    :param err: array of errors. Both symmetric and asymmetric errors \</span>
+<span class="sd">    can be provided. In the latter case, they must be provided as a \</span>
+<span class="sd">    (2, n) array.</span>
+<span class="sd">    :type err: numpy.ndarray</span>
+<span class="sd">    :param ref: reference to follow.</span>
+<span class="sd">    :type ref: numpy.ndarray</span>
+<span class="sd">    :param ref_err: possible errors for the reference.</span>
+<span class="sd">    :type ref_err: numpy.ndarray</span>
+<span class="sd">    :returns: Residual of the values with respect to the reference and \</span>
+<span class="sd">    associated errors. In case asymmetric errors have been provided, \</span>
+<span class="sd">    the returning array has shape (2, n).</span>
+<span class="sd">    :rtype: numpy.ndarray, numpy.ndarray</span>
+<span class="sd">    :raises TypeError: if any of the error arrays does not have shape (2, n) or (n,).</span>
+
+<span class="sd">    .. seealso:: :func:`pull`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vals</span> <span class="o">-</span> <span class="n">ref</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">ref_err</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The error arrays must have shape (2, n) or (n,)&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ref_err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Recalculate the error using the sum of squares rule</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_err</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">ref_err</span> <span class="o">=</span> <span class="n">ref_err</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ref_err</span><span class="o">*</span><span class="n">ref_err</span> <span class="o">+</span> <span class="n">err</span><span class="o">*</span><span class="n">err</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span></div>
+
+
+<div class="viewcode-block" id="weights_by_edges"><a class="viewcode-back" href="../main.html#hep_spt.weights_by_edges">[docs]</a><span class="k">def</span> <span class="nf">weights_by_edges</span><span class="p">(</span> <span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">weights</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Assign a weight to the values in an input array using a set of edges.</span>
+<span class="sd">    It will return a new array of length equal to that of &quot;values&quot; assigning</span>
+<span class="sd">    a weight from &quot;weights&quot; depending on the bin they belong to.</span>
+<span class="sd">    Values can coincide with the left(right)-most edge so</span>
+<span class="sd">    &quot;edges[0] &lt;= x &lt;= edges[-1]&quot;.</span>
+
+<span class="sd">    :param values: values to process.</span>
+<span class="sd">    :type values: numpy.ndarray</span>
+<span class="sd">    :param edges: edges of the bins to consider.</span>
+<span class="sd">    :type edges: numpy.ndarray</span>
+<span class="sd">    :param weights: weights associated to each bin defined by &quot;edges&quot;.</span>
+<span class="sd">    :type weights:</span>
+<span class="sd">    :returns: weights associated to the input values.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    :raises TypeError: if the dimensions of the array do not match.</span>
+<span class="sd">    :raises ValueError: if values are found outside the edges.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">l</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Detected values outside bounds&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">weights</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input arrays must have dimension one&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Length of edges must be the same as that of weights plus one&#39;</span><span class="p">)</span>
+
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
+
+    <span class="n">idx</span><span class="p">[</span><span class="n">values</span> <span class="o">==</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>  <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">idx</span><span class="p">[</span><span class="n">values</span> <span class="o">==</span> <span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">weights</span><span class="p">[</span><span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../main.html">Functions and classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

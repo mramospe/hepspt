@@ -1,0 +1,6 @@
+eye
+===
+
+.. currentmodule:: numpy
+
+.. autofunction:: eye

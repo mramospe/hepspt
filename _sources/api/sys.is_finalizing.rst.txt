@@ -1,0 +1,6 @@
+is_finalizing
+=============
+
+.. currentmodule:: sys
+
+.. autofunction:: is_finalizing

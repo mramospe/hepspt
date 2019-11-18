@@ -1,0 +1,6 @@
+indices
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: indices

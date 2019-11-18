@@ -1,0 +1,17 @@
+object0
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: object0
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~object0.__call__
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: __call__

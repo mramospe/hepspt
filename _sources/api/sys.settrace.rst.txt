@@ -1,0 +1,6 @@
+settrace
+========
+
+.. currentmodule:: sys
+
+.. autofunction:: settrace

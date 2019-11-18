@@ -1,0 +1,7 @@
+ubyte
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: ubyte
+   :show-inheritance:

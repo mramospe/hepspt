@@ -1,0 +1,6 @@
+VisibleDeprecationWarning
+=========================
+
+.. currentmodule:: numpy
+
+.. autoexception:: VisibleDeprecationWarning

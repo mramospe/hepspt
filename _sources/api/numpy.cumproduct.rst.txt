@@ -1,0 +1,6 @@
+cumproduct
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: cumproduct

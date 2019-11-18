@@ -1,0 +1,7 @@
+datetime64
+==========
+
+.. currentmodule:: numpy
+
+.. autoclass:: datetime64
+   :show-inheritance:

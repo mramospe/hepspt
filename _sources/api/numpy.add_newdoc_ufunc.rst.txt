@@ -1,0 +1,6 @@
+add_newdoc_ufunc
+================
+
+.. currentmodule:: numpy
+
+.. autofunction:: add_newdoc_ufunc

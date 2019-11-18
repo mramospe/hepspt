@@ -1,0 +1,974 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>generic &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="number" href="numpy.number.html" />
+    <link rel="prev" title="void" href="numpy.void.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="generic">
+<h1>generic<a class="headerlink" href="#generic" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.generic">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">generic</code><a class="headerlink" href="#numpy.generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for numpy scalar types.</p>
+<p>Class from which most (all?) numpy scalar types are derived.  For
+consistency, exposes the same API as <cite>ndarray</cite>, despite many
+consequent attributes being either “get-only,” or completely irrelevant.
+This is the class from which it is strongly suggested users should derive
+custom scalar types.</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.T" title="numpy.generic.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
+<td><p>transpose</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.base" title="numpy.generic.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p></td>
+<td><p>base object</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.data" title="numpy.generic.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<td><p>pointer to start of data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.dtype" title="numpy.generic.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<td><p>get array data-descriptor</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.flags" title="numpy.generic.flags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flags</span></code></a></p></td>
+<td><p>integer value of flags</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.flat" title="numpy.generic.flat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flat</span></code></a></p></td>
+<td><p>a 1-d view of scalar</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.imag" title="numpy.generic.imag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag</span></code></a></p></td>
+<td><p>imaginary part of scalar</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.itemsize" title="numpy.generic.itemsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itemsize</span></code></a></p></td>
+<td><p>length of one element in bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.nbytes" title="numpy.generic.nbytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbytes</span></code></a></p></td>
+<td><p>length of item in bytes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.ndim" title="numpy.generic.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></p></td>
+<td><p>number of array dimensions</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.real" title="numpy.generic.real"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code></a></p></td>
+<td><p>real part of scalar</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.shape" title="numpy.generic.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<td><p>tuple of array dimensions</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.size" title="numpy.generic.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<td><p>number of elements in the gentype</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.strides" title="numpy.generic.strides"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strides</span></code></a></p></td>
+<td><p>tuple of bytes steps in each dimension</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.all" title="numpy.generic.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.any" title="numpy.generic.any"><code class="xref py py-obj docutils literal notranslate"><span class="pre">any</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.argmax" title="numpy.generic.argmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmax</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.argmin" title="numpy.generic.argmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmin</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.argsort" title="numpy.generic.argsort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argsort</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.astype" title="numpy.generic.astype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">astype</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.byteswap" title="numpy.generic.byteswap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">byteswap</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.choose" title="numpy.generic.choose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.clip" title="numpy.generic.clip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.compress" title="numpy.generic.compress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compress</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.conj" title="numpy.generic.conj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conj</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.conjugate" title="numpy.generic.conjugate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugate</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.copy" title="numpy.generic.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.cumprod" title="numpy.generic.cumprod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumprod</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.cumsum" title="numpy.generic.cumsum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumsum</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.diagonal" title="numpy.generic.diagonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonal</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.dump" title="numpy.generic.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.dumps" title="numpy.generic.dumps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dumps</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.fill" title="numpy.generic.fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.flatten" title="numpy.generic.flatten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.getfield" title="numpy.generic.getfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getfield</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.item" title="numpy.generic.item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">item</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.itemset" title="numpy.generic.itemset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itemset</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.max" title="numpy.generic.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.mean" title="numpy.generic.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.min" title="numpy.generic.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.newbyteorder" title="numpy.generic.newbyteorder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newbyteorder</span></code></a>([new_order])</p></td>
+<td><p>Return a new <cite>dtype</cite> with a different byte order.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.nonzero" title="numpy.generic.nonzero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nonzero</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.prod" title="numpy.generic.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.ptp" title="numpy.generic.ptp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ptp</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.put" title="numpy.generic.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.ravel" title="numpy.generic.ravel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ravel</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.repeat" title="numpy.generic.repeat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repeat</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.reshape" title="numpy.generic.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.resize" title="numpy.generic.resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.round" title="numpy.generic.round"><code class="xref py py-obj docutils literal notranslate"><span class="pre">round</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.searchsorted" title="numpy.generic.searchsorted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searchsorted</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.setfield" title="numpy.generic.setfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setfield</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.setflags" title="numpy.generic.setflags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setflags</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.sort" title="numpy.generic.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.squeeze" title="numpy.generic.squeeze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.std" title="numpy.generic.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">std</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.sum" title="numpy.generic.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.swapaxes" title="numpy.generic.swapaxes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.take" title="numpy.generic.take"><code class="xref py py-obj docutils literal notranslate"><span class="pre">take</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.tobytes" title="numpy.generic.tobytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tobytes</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.tofile" title="numpy.generic.tofile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tofile</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.tolist" title="numpy.generic.tolist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolist</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.tostring" title="numpy.generic.tostring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tostring</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.trace" title="numpy.generic.trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trace</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.transpose" title="numpy.generic.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.generic.var" title="numpy.generic.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.generic.view" title="numpy.generic.view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code></a></p></td>
+<td><p>Not implemented (virtual attribute)</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="numpy.generic.T">
+<code class="sig-name descname">T</code><a class="headerlink" href="#numpy.generic.T" title="Permalink to this definition">¶</a></dt>
+<dd><p>transpose</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.base">
+<code class="sig-name descname">base</code><a class="headerlink" href="#numpy.generic.base" title="Permalink to this definition">¶</a></dt>
+<dd><p>base object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.data">
+<code class="sig-name descname">data</code><a class="headerlink" href="#numpy.generic.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>pointer to start of data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.dtype">
+<code class="sig-name descname">dtype</code><a class="headerlink" href="#numpy.generic.dtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>get array data-descriptor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.flags">
+<code class="sig-name descname">flags</code><a class="headerlink" href="#numpy.generic.flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>integer value of flags</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.flat">
+<code class="sig-name descname">flat</code><a class="headerlink" href="#numpy.generic.flat" title="Permalink to this definition">¶</a></dt>
+<dd><p>a 1-d view of scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.imag">
+<code class="sig-name descname">imag</code><a class="headerlink" href="#numpy.generic.imag" title="Permalink to this definition">¶</a></dt>
+<dd><p>imaginary part of scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.itemsize">
+<code class="sig-name descname">itemsize</code><a class="headerlink" href="#numpy.generic.itemsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>length of one element in bytes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.nbytes">
+<code class="sig-name descname">nbytes</code><a class="headerlink" href="#numpy.generic.nbytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>length of item in bytes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.ndim">
+<code class="sig-name descname">ndim</code><a class="headerlink" href="#numpy.generic.ndim" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of array dimensions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.real">
+<code class="sig-name descname">real</code><a class="headerlink" href="#numpy.generic.real" title="Permalink to this definition">¶</a></dt>
+<dd><p>real part of scalar</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.shape">
+<code class="sig-name descname">shape</code><a class="headerlink" href="#numpy.generic.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>tuple of array dimensions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.size">
+<code class="sig-name descname">size</code><a class="headerlink" href="#numpy.generic.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of elements in the gentype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.generic.strides">
+<code class="sig-name descname">strides</code><a class="headerlink" href="#numpy.generic.strides" title="Permalink to this definition">¶</a></dt>
+<dd><p>tuple of bytes steps in each dimension</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.generic.all">
+<code class="sig-name descname">all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.any">
+<code class="sig-name descname">any</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.any" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.argmax">
+<code class="sig-name descname">argmax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.argmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.argmin">
+<code class="sig-name descname">argmin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.argmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.argsort">
+<code class="sig-name descname">argsort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.argsort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.astype">
+<code class="sig-name descname">astype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.astype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.byteswap">
+<code class="sig-name descname">byteswap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.byteswap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class so as to
+provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.choose">
+<code class="sig-name descname">choose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.choose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.clip">
+<code class="sig-name descname">clip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.clip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.compress">
+<code class="sig-name descname">compress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.compress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.conj">
+<code class="sig-name descname">conj</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.conj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.conjugate">
+<code class="sig-name descname">conjugate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.conjugate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.cumprod">
+<code class="sig-name descname">cumprod</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.cumprod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.cumsum">
+<code class="sig-name descname">cumsum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.cumsum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.diagonal">
+<code class="sig-name descname">diagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.diagonal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.dump">
+<code class="sig-name descname">dump</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.dumps">
+<code class="sig-name descname">dumps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.fill">
+<code class="sig-name descname">fill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.fill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.flatten">
+<code class="sig-name descname">flatten</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.getfield">
+<code class="sig-name descname">getfield</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.getfield" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.item">
+<code class="sig-name descname">item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.itemset">
+<code class="sig-name descname">itemset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.itemset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.max">
+<code class="sig-name descname">max</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.mean">
+<code class="sig-name descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.min">
+<code class="sig-name descname">min</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.newbyteorder">
+<code class="sig-name descname">newbyteorder</code><span class="sig-paren">(</span><em class="sig-param">new_order='S'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.newbyteorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new <cite>dtype</cite> with a different byte order.</p>
+<p>Changes are also made in all fields and sub-arrays of the data type.</p>
+<p>The <cite>new_order</cite> code can be any from the following:</p>
+<ul class="simple">
+<li><p>‘S’ - swap dtype from current to opposite endian</p></li>
+<li><p>{‘&lt;’, ‘L’} - little endian</p></li>
+<li><p>{‘&gt;’, ‘B’} - big endian</p></li>
+<li><p>{‘=’, ‘N’} - native order</p></li>
+<li><p>{‘|’, ‘I’} - ignore (no change to byte order)</p></li>
+</ul>
+<dl class="simple">
+<dt>new_order<span class="classifier">str, optional</span></dt><dd><p>Byte order to force; a value from the byte order specifications
+above.  The default value (‘S’) results in swapping the current
+byte order. The code does a case-insensitive check on the first
+letter of <cite>new_order</cite> for the alternatives above.  For example,
+any of ‘B’ or ‘b’ or ‘biggish’ are valid to specify big-endian.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>new_dtype<span class="classifier">dtype</span></dt><dd><p>New <cite>dtype</cite> object with the given change to the byte order.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.nonzero">
+<code class="sig-name descname">nonzero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.nonzero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.prod">
+<code class="sig-name descname">prod</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.prod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.ptp">
+<code class="sig-name descname">ptp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.ptp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.put">
+<code class="sig-name descname">put</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.ravel">
+<code class="sig-name descname">ravel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.ravel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.repeat">
+<code class="sig-name descname">repeat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.reshape">
+<code class="sig-name descname">reshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.reshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.round">
+<code class="sig-name descname">round</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.searchsorted">
+<code class="sig-name descname">searchsorted</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.searchsorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.setfield">
+<code class="sig-name descname">setfield</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.setfield" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.setflags">
+<code class="sig-name descname">setflags</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.setflags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class so as to
+provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.sort">
+<code class="sig-name descname">sort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.squeeze">
+<code class="sig-name descname">squeeze</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.squeeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.std">
+<code class="sig-name descname">std</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.sum">
+<code class="sig-name descname">sum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.swapaxes">
+<code class="sig-name descname">swapaxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.swapaxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.take">
+<code class="sig-name descname">take</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.take" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.tobytes">
+<code class="sig-name descname">tobytes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.tobytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.tofile">
+<code class="sig-name descname">tofile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.tofile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.tolist">
+<code class="sig-name descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.tolist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.tostring">
+<code class="sig-name descname">tostring</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.tostring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.trace">
+<code class="sig-name descname">trace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.transpose">
+<code class="sig-name descname">transpose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.var">
+<code class="sig-name descname">var</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.generic.view">
+<code class="sig-name descname">view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.generic.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not implemented (virtual attribute)</p>
+<p>Class generic exists solely to derive numpy scalars from, and possesses,
+albeit unimplemented, all the attributes of the ndarray class
+so as to provide a uniform API.</p>
+<p>See also the corresponding attribute of the derived class of interest.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.void.html" title="previous chapter">void</a></li>
+      <li>Next: <a href="numpy.number.html" title="next chapter">number</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.generic.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

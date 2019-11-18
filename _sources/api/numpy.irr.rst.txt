@@ -1,0 +1,6 @@
+irr
+===
+
+.. currentmodule:: numpy
+
+.. autofunction:: irr

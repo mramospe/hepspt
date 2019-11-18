@@ -1,0 +1,7 @@
+flexible
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: flexible
+   :show-inheritance:

@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>savetxt &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="loadtxt" href="numpy.loadtxt.html" />
+    <link rel="prev" title="isin" href="numpy.isin.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="savetxt">
+<h1>savetxt<a class="headerlink" href="#savetxt" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.savetxt">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">savetxt</code><span class="sig-paren">(</span><em class="sig-param">fname</em>, <em class="sig-param">X</em>, <em class="sig-param">fmt='%.18e'</em>, <em class="sig-param">delimiter=' '</em>, <em class="sig-param">newline='\n'</em>, <em class="sig-param">header=''</em>, <em class="sig-param">footer=''</em>, <em class="sig-param">comments='# '</em>, <em class="sig-param">encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.savetxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save an array to a text file.</p>
+<dl>
+<dt>fname<span class="classifier">filename or file handle</span></dt><dd><p>If the filename ends in <code class="docutils literal notranslate"><span class="pre">.gz</span></code>, the file is automatically saved in
+compressed gzip format.  <cite>loadtxt</cite> understands gzipped files
+transparently.</p>
+</dd>
+<dt>X<span class="classifier">1D or 2D array_like</span></dt><dd><p>Data to be saved to a text file.</p>
+</dd>
+<dt>fmt<span class="classifier">str or sequence of strs, optional</span></dt><dd><p>A single format (%10.5f), a sequence of formats, or a
+multi-format string, e.g. ‘Iteration %d – %10.5f’, in which
+case <cite>delimiter</cite> is ignored. For complex <cite>X</cite>, the legal options
+for <cite>fmt</cite> are:</p>
+<ul class="simple">
+<li><p>a single specifier, <cite>fmt=’%.4e’</cite>, resulting in numbers formatted
+like <cite>‘ (%s+%sj)’ % (fmt, fmt)</cite></p></li>
+<li><p>a full string specifying every real and imaginary part, e.g.
+<cite>‘ %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej’</cite> for 3 columns</p></li>
+<li><p>a list of specifiers, one per column - in this case, the real
+and imaginary part must have separate specifiers,
+e.g. <cite>[‘%.3e + %.3ej’, ‘(%.15e%+.15ej)’]</cite> for 2 columns</p></li>
+</ul>
+</dd>
+<dt>delimiter<span class="classifier">str, optional</span></dt><dd><p>String or character separating columns.</p>
+</dd>
+<dt>newline<span class="classifier">str, optional</span></dt><dd><p>String or character separating lines.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.5.0.</span></p>
+</div>
+</dd>
+<dt>header<span class="classifier">str, optional</span></dt><dd><p>String that will be written at the beginning of the file.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+</dd>
+<dt>footer<span class="classifier">str, optional</span></dt><dd><p>String that will be written at the end of the file.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+</dd>
+<dt>comments<span class="classifier">str, optional</span></dt><dd><p>String that will be prepended to the <code class="docutils literal notranslate"><span class="pre">header</span></code> and <code class="docutils literal notranslate"><span class="pre">footer</span></code> strings,
+to mark them as comments. Default: ‘# ‘,  as expected by e.g.
+<code class="docutils literal notranslate"><span class="pre">numpy.loadtxt</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+</dd>
+<dt>encoding<span class="classifier">{None, str}, optional</span></dt><dd><p>Encoding used to encode the outputfile. Does not apply to output
+streams. If the encoding is something other than ‘bytes’ or ‘latin1’
+you will not be able to load the file in NumPy versions &lt; 1.14. Default
+is ‘latin1’.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.14.0.</span></p>
+</div>
+</dd>
+</dl>
+<p>save : Save an array to a binary file in NumPy <code class="docutils literal notranslate"><span class="pre">.npy</span></code> format
+savez : Save several arrays into an uncompressed <code class="docutils literal notranslate"><span class="pre">.npz</span></code> archive
+savez_compressed : Save several arrays into a compressed <code class="docutils literal notranslate"><span class="pre">.npz</span></code> archive</p>
+<p>Further explanation of the <cite>fmt</cite> parameter
+(<code class="docutils literal notranslate"><span class="pre">%[flag]width[.precision]specifier</span></code>):</p>
+<dl>
+<dt>flags:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">-</span></code> : left justify</p>
+<p><code class="docutils literal notranslate"><span class="pre">+</span></code> : Forces to precede result with + or -.</p>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> : Left pad the number with zeros instead of space (see width).</p>
+</dd>
+<dt>width:</dt><dd><p>Minimum number of characters to be printed. The value is not truncated
+if it has more characters.</p>
+</dd>
+<dt>precision:</dt><dd><ul class="simple">
+<li><p>For integer specifiers (eg. <code class="docutils literal notranslate"><span class="pre">d,i,o,x</span></code>), the minimum number of
+digits.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">e,</span> <span class="pre">E</span></code> and <code class="docutils literal notranslate"><span class="pre">f</span></code> specifiers, the number of digits to print
+after the decimal point.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">g</span></code> and <code class="docutils literal notranslate"><span class="pre">G</span></code>, the maximum number of significant digits.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">s</span></code>, the maximum number of characters.</p></li>
+</ul>
+</dd>
+<dt>specifiers:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">c</span></code> : character</p>
+<p><code class="docutils literal notranslate"><span class="pre">d</span></code> or <code class="docutils literal notranslate"><span class="pre">i</span></code> : signed decimal integer</p>
+<p><code class="docutils literal notranslate"><span class="pre">e</span></code> or <code class="docutils literal notranslate"><span class="pre">E</span></code> : scientific notation with <code class="docutils literal notranslate"><span class="pre">e</span></code> or <code class="docutils literal notranslate"><span class="pre">E</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">f</span></code> : decimal floating point</p>
+<p><code class="docutils literal notranslate"><span class="pre">g,G</span></code> : use the shorter of <code class="docutils literal notranslate"><span class="pre">e,E</span></code> or <code class="docutils literal notranslate"><span class="pre">f</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">o</span></code> : signed octal</p>
+<p><code class="docutils literal notranslate"><span class="pre">s</span></code> : string of characters</p>
+<p><code class="docutils literal notranslate"><span class="pre">u</span></code> : unsigned decimal integer</p>
+<p><code class="docutils literal notranslate"><span class="pre">x,X</span></code> : unsigned hexadecimal integer</p>
+</dd>
+</dl>
+<p>This explanation of <code class="docutils literal notranslate"><span class="pre">fmt</span></code> is not complete, for an exhaustive
+specification see <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/library/string.html#format-specification-mini-language">Format Specification Mini-Language</a>,
+Python Documentation.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">5.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;test.out&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>   <span class="c1"># X is an array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;test.out&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">))</span>   <span class="c1"># x,y,z equal sized 1D arrays</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;test.out&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.4e</span><span class="s1">&#39;</span><span class="p">)</span>   <span class="c1"># use exponential notation</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.isin.html" title="previous chapter">isin</a></li>
+      <li>Next: <a href="numpy.loadtxt.html" title="next chapter">loadtxt</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.savetxt.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

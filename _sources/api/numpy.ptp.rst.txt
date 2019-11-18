@@ -1,0 +1,6 @@
+ptp
+===
+
+.. currentmodule:: numpy
+
+.. autofunction:: ptp

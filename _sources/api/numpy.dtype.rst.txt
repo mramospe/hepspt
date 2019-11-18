@@ -1,0 +1,69 @@
+dtype
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: dtype
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~dtype.alignment
+      ~dtype.base
+      ~dtype.byteorder
+      ~dtype.char
+      ~dtype.descr
+      ~dtype.fields
+      ~dtype.flags
+      ~dtype.hasobject
+      ~dtype.isalignedstruct
+      ~dtype.isbuiltin
+      ~dtype.isnative
+      ~dtype.itemsize
+      ~dtype.kind
+      ~dtype.metadata
+      ~dtype.name
+      ~dtype.names
+      ~dtype.ndim
+      ~dtype.num
+      ~dtype.shape
+      ~dtype.str
+      ~dtype.subdtype
+      ~dtype.type
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~dtype.newbyteorder
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: alignment
+   .. autoattribute:: base
+   .. autoattribute:: byteorder
+   .. autoattribute:: char
+   .. autoattribute:: descr
+   .. autoattribute:: fields
+   .. autoattribute:: flags
+   .. autoattribute:: hasobject
+   .. autoattribute:: isalignedstruct
+   .. autoattribute:: isbuiltin
+   .. autoattribute:: isnative
+   .. autoattribute:: itemsize
+   .. autoattribute:: kind
+   .. autoattribute:: metadata
+   .. autoattribute:: name
+   .. autoattribute:: names
+   .. autoattribute:: ndim
+   .. autoattribute:: num
+   .. autoattribute:: shape
+   .. autoattribute:: str
+   .. autoattribute:: subdtype
+   .. autoattribute:: type
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: newbyteorder

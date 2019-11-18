@@ -1,0 +1,6 @@
+genfromtxt
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: genfromtxt

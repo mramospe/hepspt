@@ -1,0 +1,6 @@
+add_newdoc
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: add_newdoc

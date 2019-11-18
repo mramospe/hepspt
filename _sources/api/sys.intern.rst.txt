@@ -1,0 +1,6 @@
+intern
+======
+
+.. currentmodule:: sys
+
+.. autofunction:: intern

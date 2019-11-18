@@ -1,0 +1,7 @@
+longlong
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: longlong
+   :show-inheritance:

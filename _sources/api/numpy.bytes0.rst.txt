@@ -1,0 +1,7 @@
+bytes0
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: bytes0
+   :show-inheritance:

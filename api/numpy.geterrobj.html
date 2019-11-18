@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>geterrobj &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="seterrobj" href="numpy.seterrobj.html" />
+    <link rel="prev" title="frompyfunc" href="numpy.frompyfunc.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="geterrobj">
+<h1>geterrobj<a class="headerlink" href="#geterrobj" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.geterrobj">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">geterrobj</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.geterrobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current object that defines floating-point error handling.</p>
+<p>The error object contains all information that defines the error handling
+behavior in NumPy. <cite>geterrobj</cite> is used internally by the other
+functions that get and set error handling behavior (<cite>geterr</cite>, <cite>seterr</cite>,
+<cite>geterrcall</cite>, <cite>seterrcall</cite>).</p>
+<dl>
+<dt>errobj<span class="classifier">list</span></dt><dd><p>The error object, a list containing three elements:
+[internal numpy buffer size, error mask, error callback function].</p>
+<p>The error mask is a single integer that holds the treatment information
+on all four floating point errors. The information for each error type
+is contained in three bits of the integer. If we print it in base 8, we
+can see what treatment is set for “invalid”, “under”, “over”, and
+“divide” (in that order). The printed string can be interpreted with</p>
+<ul class="simple">
+<li><p>0 : ‘ignore’</p></li>
+<li><p>1 : ‘warn’</p></li>
+<li><p>2 : ‘raise’</p></li>
+<li><p>3 : ‘call’</p></li>
+<li><p>4 : ‘print’</p></li>
+<li><p>5 : ‘log’</p></li>
+</ul>
+</dd>
+</dl>
+<p>seterrobj, seterr, geterr, seterrcall, geterrcall
+getbufsize, setbufsize</p>
+<p>For complete documentation of the types of floating-point exceptions and
+treatment options, see <cite>seterr</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">geterrobj</span><span class="p">()</span>  <span class="c1"># first get the defaults</span>
+<span class="go">[8192, 521, None]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">err_handler</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Floating point error (</span><span class="si">%s</span><span class="s2">), with flag </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">flag</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">old_bufsize</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setbufsize</span><span class="p">(</span><span class="mi">20000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">old_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">old_handler</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterrcall</span><span class="p">(</span><span class="n">err_handler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">geterrobj</span><span class="p">()</span>
+<span class="go">[8192, 521, &lt;function err_handler at 0x91dcaac&gt;]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">old_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">base_repr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">geterrobj</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+<span class="go">&#39;0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">old_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="n">over</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">under</span><span class="o">=</span><span class="s1">&#39;call&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;print&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">base_repr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">geterrobj</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+<span class="go">&#39;4351&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.frompyfunc.html" title="previous chapter">frompyfunc</a></li>
+      <li>Next: <a href="numpy.seterrobj.html" title="next chapter">seterrobj</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.geterrobj.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

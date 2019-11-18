@@ -1,0 +1,6 @@
+displayhook
+===========
+
+.. currentmodule:: sys
+
+.. autofunction:: displayhook

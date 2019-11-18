@@ -1,0 +1,6 @@
+outer
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: outer

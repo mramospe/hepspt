@@ -1,0 +1,6 @@
+convolve
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: convolve

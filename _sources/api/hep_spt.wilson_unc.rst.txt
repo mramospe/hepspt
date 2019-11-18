@@ -1,0 +1,6 @@
+wilson_unc
+==========
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: wilson_unc

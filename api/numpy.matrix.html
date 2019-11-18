@@ -1,0 +1,907 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>matrix &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ndenumerate" href="numpy.ndenumerate.html" />
+    <link rel="prev" title="iinfo" href="numpy.iinfo.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="matrix">
+<h1>matrix<a class="headerlink" href="#matrix" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.matrix">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">matrix</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">copy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is no longer recommended to use this class, even for linear
+algebra. Instead use regular arrays. The class may be removed
+in the future.</p>
+</div>
+<p>Returns a matrix from an array-like object, or from a string of data.
+A matrix is a specialized 2-D array that retains its 2-D nature
+through operations.  It has certain special operators, such as <code class="docutils literal notranslate"><span class="pre">*</span></code>
+(matrix multiplication) and <code class="docutils literal notranslate"><span class="pre">**</span></code> (matrix power).</p>
+<dl class="simple">
+<dt>data<span class="classifier">array_like or string</span></dt><dd><p>If <cite>data</cite> is a string, it is interpreted as a matrix with commas
+or spaces separating columns, and semicolons separating rows.</p>
+</dd>
+<dt>dtype<span class="classifier">data-type</span></dt><dd><p>Data-type of the output matrix.</p>
+</dd>
+<dt>copy<span class="classifier">bool</span></dt><dd><p>If <cite>data</cite> is already an <cite>ndarray</cite>, then this flag determines
+whether the data is copied (the default), or whether a view is
+constructed.</p>
+</dd>
+</dl>
+<p>array</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;1 2; 3 4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+</pre></div>
+</div>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.A" title="numpy.matrix.A"><code class="xref py py-obj docutils literal notranslate"><span class="pre">A</span></code></a></p></td>
+<td><p>Return <cite>self</cite> as an <cite>ndarray</cite> object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.A1" title="numpy.matrix.A1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">A1</span></code></a></p></td>
+<td><p>Return <cite>self</cite> as a flattened <cite>ndarray</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.H" title="numpy.matrix.H"><code class="xref py py-obj docutils literal notranslate"><span class="pre">H</span></code></a></p></td>
+<td><p>Returns the (complex) conjugate transpose of <cite>self</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.I" title="numpy.matrix.I"><code class="xref py py-obj docutils literal notranslate"><span class="pre">I</span></code></a></p></td>
+<td><p>Returns the (multiplicative) inverse of invertible <cite>self</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.T" title="numpy.matrix.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
+<td><p>Returns the transpose of the matrix.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.all" title="numpy.matrix.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>([axis, out])</p></td>
+<td><p>Test whether all matrix elements along a given axis evaluate to True.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.any" title="numpy.matrix.any"><code class="xref py py-obj docutils literal notranslate"><span class="pre">any</span></code></a>([axis, out])</p></td>
+<td><p>Test whether any array element along a given axis evaluates to True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.argmax" title="numpy.matrix.argmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmax</span></code></a>([axis, out])</p></td>
+<td><p>Indexes of the maximum values along an axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.argmin" title="numpy.matrix.argmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmin</span></code></a>([axis, out])</p></td>
+<td><p>Indexes of the minimum values along an axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.flatten" title="numpy.matrix.flatten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code></a>([order])</p></td>
+<td><p>Return a flattened copy of the matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.getA" title="numpy.matrix.getA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getA</span></code></a>()</p></td>
+<td><p>Return <cite>self</cite> as an <cite>ndarray</cite> object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.getA1" title="numpy.matrix.getA1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getA1</span></code></a>()</p></td>
+<td><p>Return <cite>self</cite> as a flattened <cite>ndarray</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.getH" title="numpy.matrix.getH"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getH</span></code></a>()</p></td>
+<td><p>Returns the (complex) conjugate transpose of <cite>self</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.getI" title="numpy.matrix.getI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getI</span></code></a>()</p></td>
+<td><p>Returns the (multiplicative) inverse of invertible <cite>self</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.getT" title="numpy.matrix.getT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getT</span></code></a>()</p></td>
+<td><p>Returns the transpose of the matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.max" title="numpy.matrix.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>([axis, out])</p></td>
+<td><p>Return the maximum value along an axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.mean" title="numpy.matrix.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a>([axis, dtype, out])</p></td>
+<td><p>Returns the average of the matrix elements along the given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.min" title="numpy.matrix.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>([axis, out])</p></td>
+<td><p>Return the minimum value along an axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.prod" title="numpy.matrix.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>([axis, dtype, out])</p></td>
+<td><p>Return the product of the array elements over the given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.ptp" title="numpy.matrix.ptp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ptp</span></code></a>([axis, out])</p></td>
+<td><p>Peak-to-peak (maximum - minimum) value along the given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.ravel" title="numpy.matrix.ravel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ravel</span></code></a>([order])</p></td>
+<td><p>Return a flattened matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.squeeze" title="numpy.matrix.squeeze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze</span></code></a>([axis])</p></td>
+<td><p>Return a possibly reshaped matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.std" title="numpy.matrix.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">std</span></code></a>([axis, dtype, out, ddof])</p></td>
+<td><p>Return the standard deviation of the array elements along the given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.sum" title="numpy.matrix.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>([axis, dtype, out])</p></td>
+<td><p>Returns the sum of the matrix elements, along the given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.matrix.tolist" title="numpy.matrix.tolist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolist</span></code></a>()</p></td>
+<td><p>Return the matrix as a (possibly nested) list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.matrix.var" title="numpy.matrix.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var</span></code></a>([axis, dtype, out, ddof])</p></td>
+<td><p>Returns the variance of the matrix elements, along the given axis.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="numpy.matrix.A">
+<code class="sig-name descname">A</code><a class="headerlink" href="#numpy.matrix.A" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>self</cite> as an <cite>ndarray</cite> object.</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">np.asarray(self)</span></code>.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">ndarray</span></dt><dd><p><cite>self</cite> as an <cite>ndarray</cite></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">getA</span><span class="p">()</span>
+<span class="go">array([[ 0,  1,  2,  3],</span>
+<span class="go">       [ 4,  5,  6,  7],</span>
+<span class="go">       [ 8,  9, 10, 11]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.matrix.A1">
+<code class="sig-name descname">A1</code><a class="headerlink" href="#numpy.matrix.A1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>self</cite> as a flattened <cite>ndarray</cite>.</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">np.asarray(x).ravel()</span></code></p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">ndarray</span></dt><dd><p><cite>self</cite>, 1-D, as an <cite>ndarray</cite></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">getA1</span><span class="p">()</span>
+<span class="go">array([ 0,  1,  2, ...,  9, 10, 11])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.matrix.H">
+<code class="sig-name descname">H</code><a class="headerlink" href="#numpy.matrix.H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (complex) conjugate transpose of <cite>self</cite>.</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">np.transpose(self)</span></code> if <cite>self</cite> is real-valued.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">matrix object</span></dt><dd><p>complex conjugate transpose of <cite>self</cite></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">x</span><span class="p">;</span> <span class="n">z</span>
+<span class="go">matrix([[  0. +0.j,   1. -1.j,   2. -2.j,   3. -3.j],</span>
+<span class="go">        [  4. -4.j,   5. -5.j,   6. -6.j,   7. -7.j],</span>
+<span class="go">        [  8. -8.j,   9. -9.j,  10.-10.j,  11.-11.j]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="o">.</span><span class="n">getH</span><span class="p">()</span>
+<span class="go">matrix([[ 0. -0.j,  4. +4.j,  8. +8.j],</span>
+<span class="go">        [ 1. +1.j,  5. +5.j,  9. +9.j],</span>
+<span class="go">        [ 2. +2.j,  6. +6.j, 10.+10.j],</span>
+<span class="go">        [ 3. +3.j,  7. +7.j, 11.+11.j]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.matrix.I">
+<code class="sig-name descname">I</code><a class="headerlink" href="#numpy.matrix.I" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (multiplicative) inverse of invertible <cite>self</cite>.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">matrix object</span></dt><dd><p>If <cite>self</cite> is non-singular, <cite>ret</cite> is such that <code class="docutils literal notranslate"><span class="pre">ret</span> <span class="pre">*</span> <span class="pre">self</span></code> ==
+<code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">*</span> <span class="pre">ret</span></code> == <code class="docutils literal notranslate"><span class="pre">np.matrix(np.eye(self[0,:].size)</span></code> all return
+<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>numpy.linalg.LinAlgError: Singular matrix</dt><dd><p>If <cite>self</cite> is singular.</p>
+</dd>
+</dl>
+<p>linalg.inv</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[1, 2; 3, 4]&#39;</span><span class="p">);</span> <span class="n">m</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">getI</span><span class="p">()</span>
+<span class="go">matrix([[-2. ,  1. ],</span>
+<span class="go">        [ 1.5, -0.5]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">getI</span><span class="p">()</span> <span class="o">*</span> <span class="n">m</span>
+<span class="go">matrix([[ 1.,  0.], # may vary</span>
+<span class="go">        [ 0.,  1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.matrix.T">
+<code class="sig-name descname">T</code><a class="headerlink" href="#numpy.matrix.T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transpose of the matrix.</p>
+<p>Does <em>not</em> conjugate!  For the complex conjugate transpose, use <code class="docutils literal notranslate"><span class="pre">.H</span></code>.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">matrix object</span></dt><dd><p>The (non-conjugated) transpose of the matrix.</p>
+</dd>
+</dl>
+<p>transpose, getH</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[1, 2; 3, 4]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">getT</span><span class="p">()</span>
+<span class="go">matrix([[1, 3],</span>
+<span class="go">        [2, 4]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.matrix.all">
+<code class="sig-name descname">all</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether all matrix elements along a given axis evaluate to True.</p>
+<p>See <cite>numpy.all</cite> for complete descriptions</p>
+<p>numpy.all</p>
+<p>This is the same as <cite>ndarray.all</cite>, but it returns a <cite>matrix</cite> object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="n">y</span>
+<span class="go">matrix([[0, 1, 2, 3]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">matrix([[ True,  True,  True,  True],</span>
+<span class="go">        [False, False, False, False],</span>
+<span class="go">        [False, False, False, False]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[False, False, False, False]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[ True],</span>
+<span class="go">        [False],</span>
+<span class="go">        [False]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.any">
+<code class="sig-name descname">any</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.any"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.any" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether any array element along a given axis evaluates to True.</p>
+<p>Refer to <cite>numpy.any</cite> for full documentation.</p>
+<dl class="simple">
+<dt>axis<span class="classifier">int, optional</span></dt><dd><p>Axis along which logical OR is performed</p>
+</dd>
+<dt>out<span class="classifier">ndarray, optional</span></dt><dd><p>Output to existing array instead of creating new one, must have
+same shape as expected output</p>
+</dd>
+</dl>
+<blockquote>
+<div><dl class="simple">
+<dt>any<span class="classifier">bool, ndarray</span></dt><dd><p>Returns a single bool if <cite>axis</cite> is <code class="docutils literal notranslate"><span class="pre">None</span></code>; otherwise,
+returns <cite>ndarray</cite></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.argmax">
+<code class="sig-name descname">argmax</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.argmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.argmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indexes of the maximum values along an axis.</p>
+<p>Return the indexes of the first occurrences of the maximum values
+along the specified axis.  If axis is None, the index is for the
+flattened matrix.</p>
+<p>See <cite>numpy.argmax</cite> for complete descriptions</p>
+<p>numpy.argmax</p>
+<p>This is the same as <cite>ndarray.argmax</cite>, but returns a <cite>matrix</cite> object
+where <cite>ndarray.argmax</cite> would return an <cite>ndarray</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+<span class="go">11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[2, 2, 2, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[3],</span>
+<span class="go">        [3],</span>
+<span class="go">        [3]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.argmin">
+<code class="sig-name descname">argmin</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.argmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.argmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indexes of the minimum values along an axis.</p>
+<p>Return the indexes of the first occurrences of the minimum values
+along the specified axis.  If axis is None, the index is for the
+flattened matrix.</p>
+<p>See <cite>numpy.argmin</cite> for complete descriptions.</p>
+<p>numpy.argmin</p>
+<p>This is the same as <cite>ndarray.argmin</cite>, but returns a <cite>matrix</cite> object
+where <cite>ndarray.argmin</cite> would return an <cite>ndarray</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[  0,  -1,  -2,  -3],</span>
+<span class="go">        [ -4,  -5,  -6,  -7],</span>
+<span class="go">        [ -8,  -9, -10, -11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+<span class="go">11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[2, 2, 2, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[3],</span>
+<span class="go">        [3],</span>
+<span class="go">        [3]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.flatten">
+<code class="sig-name descname">flatten</code><span class="sig-paren">(</span><em class="sig-param">order='C'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a flattened copy of the matrix.</p>
+<p>All <cite>N</cite> elements of the matrix are placed into a single row.</p>
+<dl class="simple">
+<dt>order<span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>‘C’ means to flatten in row-major (C-style) order. ‘F’ means to
+flatten in column-major (Fortran-style) order. ‘A’ means to
+flatten in column-major order if <cite>m</cite> is Fortran <em>contiguous</em> in
+memory, row-major order otherwise. ‘K’ means to flatten <cite>m</cite> in
+the order the elements occur in memory. The default is ‘C’.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>y<span class="classifier">matrix</span></dt><dd><p>A copy of the matrix, flattened to a <cite>(1, N)</cite> matrix where <cite>N</cite>
+is the number of elements in the original matrix.</p>
+</dd>
+</dl>
+<p>ravel : Return a flattened array.
+flat : A 1-D flat iterator over the matrix.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="go">matrix([[1, 2, 3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<span class="go">matrix([[1, 3, 2, 4]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.getA">
+<code class="sig-name descname">getA</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.matrix.getA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>self</cite> as an <cite>ndarray</cite> object.</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">np.asarray(self)</span></code>.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">ndarray</span></dt><dd><p><cite>self</cite> as an <cite>ndarray</cite></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">getA</span><span class="p">()</span>
+<span class="go">array([[ 0,  1,  2,  3],</span>
+<span class="go">       [ 4,  5,  6,  7],</span>
+<span class="go">       [ 8,  9, 10, 11]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.getA1">
+<code class="sig-name descname">getA1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.matrix.getA1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>self</cite> as a flattened <cite>ndarray</cite>.</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">np.asarray(x).ravel()</span></code></p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">ndarray</span></dt><dd><p><cite>self</cite>, 1-D, as an <cite>ndarray</cite></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">getA1</span><span class="p">()</span>
+<span class="go">array([ 0,  1,  2, ...,  9, 10, 11])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.getH">
+<code class="sig-name descname">getH</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.matrix.getH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (complex) conjugate transpose of <cite>self</cite>.</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">np.transpose(self)</span></code> if <cite>self</cite> is real-valued.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">matrix object</span></dt><dd><p>complex conjugate transpose of <cite>self</cite></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">x</span><span class="p">;</span> <span class="n">z</span>
+<span class="go">matrix([[  0. +0.j,   1. -1.j,   2. -2.j,   3. -3.j],</span>
+<span class="go">        [  4. -4.j,   5. -5.j,   6. -6.j,   7. -7.j],</span>
+<span class="go">        [  8. -8.j,   9. -9.j,  10.-10.j,  11.-11.j]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="o">.</span><span class="n">getH</span><span class="p">()</span>
+<span class="go">matrix([[ 0. -0.j,  4. +4.j,  8. +8.j],</span>
+<span class="go">        [ 1. +1.j,  5. +5.j,  9. +9.j],</span>
+<span class="go">        [ 2. +2.j,  6. +6.j, 10.+10.j],</span>
+<span class="go">        [ 3. +3.j,  7. +7.j, 11.+11.j]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.getI">
+<code class="sig-name descname">getI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.matrix.getI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (multiplicative) inverse of invertible <cite>self</cite>.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">matrix object</span></dt><dd><p>If <cite>self</cite> is non-singular, <cite>ret</cite> is such that <code class="docutils literal notranslate"><span class="pre">ret</span> <span class="pre">*</span> <span class="pre">self</span></code> ==
+<code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">*</span> <span class="pre">ret</span></code> == <code class="docutils literal notranslate"><span class="pre">np.matrix(np.eye(self[0,:].size)</span></code> all return
+<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>numpy.linalg.LinAlgError: Singular matrix</dt><dd><p>If <cite>self</cite> is singular.</p>
+</dd>
+</dl>
+<p>linalg.inv</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[1, 2; 3, 4]&#39;</span><span class="p">);</span> <span class="n">m</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">getI</span><span class="p">()</span>
+<span class="go">matrix([[-2. ,  1. ],</span>
+<span class="go">        [ 1.5, -0.5]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">getI</span><span class="p">()</span> <span class="o">*</span> <span class="n">m</span>
+<span class="go">matrix([[ 1.,  0.], # may vary</span>
+<span class="go">        [ 0.,  1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.getT">
+<code class="sig-name descname">getT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.matrix.getT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transpose of the matrix.</p>
+<p>Does <em>not</em> conjugate!  For the complex conjugate transpose, use <code class="docutils literal notranslate"><span class="pre">.H</span></code>.</p>
+<p>None</p>
+<dl class="simple">
+<dt>ret<span class="classifier">matrix object</span></dt><dd><p>The (non-conjugated) transpose of the matrix.</p>
+</dd>
+</dl>
+<p>transpose, getH</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[1, 2; 3, 4]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">getT</span><span class="p">()</span>
+<span class="go">matrix([[1, 3],</span>
+<span class="go">        [2, 4]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.max">
+<code class="sig-name descname">max</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum value along an axis.</p>
+<p>See <cite>amax</cite> for complete descriptions</p>
+<p>amax, ndarray.max</p>
+<p>This is the same as <cite>ndarray.max</cite>, but returns a <cite>matrix</cite> object
+where <cite>ndarray.max</cite> would return an ndarray.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="go">11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[ 3],</span>
+<span class="go">        [ 7],</span>
+<span class="go">        [11]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.mean">
+<code class="sig-name descname">mean</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the average of the matrix elements along the given axis.</p>
+<p>Refer to <cite>numpy.mean</cite> for full documentation.</p>
+<p>numpy.mean</p>
+<p>Same as <cite>ndarray.mean</cite> except that, where that returns an <cite>ndarray</cite>,
+this returns a <cite>matrix</cite> object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="go">5.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[4., 5., 6., 7.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[ 1.5],</span>
+<span class="go">        [ 5.5],</span>
+<span class="go">        [ 9.5]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.min">
+<code class="sig-name descname">min</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minimum value along an axis.</p>
+<p>See <cite>amin</cite> for complete descriptions.</p>
+<p>amin, ndarray.min</p>
+<p>This is the same as <cite>ndarray.min</cite>, but returns a <cite>matrix</cite> object
+where <cite>ndarray.min</cite> would return an ndarray.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[  0,  -1,  -2,  -3],</span>
+<span class="go">        [ -4,  -5,  -6,  -7],</span>
+<span class="go">        [ -8,  -9, -10, -11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="go">-11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[ -8,  -9, -10, -11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[ -3],</span>
+<span class="go">        [ -7],</span>
+<span class="go">        [-11]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.prod">
+<code class="sig-name descname">prod</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.prod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the product of the array elements over the given axis.</p>
+<p>Refer to <cite>prod</cite> for full documentation.</p>
+<p>prod, ndarray.prod</p>
+<p>Same as <cite>ndarray.prod</cite>, except, where that returns an <cite>ndarray</cite>, this
+returns a <cite>matrix</cite> object instead.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[  0,  45, 120, 231]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[   0],</span>
+<span class="go">        [ 840],</span>
+<span class="go">        [7920]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.ptp">
+<code class="sig-name descname">ptp</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.ptp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.ptp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Peak-to-peak (maximum - minimum) value along the given axis.</p>
+<p>Refer to <cite>numpy.ptp</cite> for full documentation.</p>
+<p>numpy.ptp</p>
+<p>Same as <cite>ndarray.ptp</cite>, except, where that would return an <cite>ndarray</cite> object,
+this returns a <cite>matrix</cite> object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">ptp</span><span class="p">()</span>
+<span class="go">11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[8, 8, 8, 8]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[3],</span>
+<span class="go">        [3],</span>
+<span class="go">        [3]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.ravel">
+<code class="sig-name descname">ravel</code><span class="sig-paren">(</span><em class="sig-param">order='C'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.ravel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.ravel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a flattened matrix.</p>
+<p>Refer to <cite>numpy.ravel</cite> for more documentation.</p>
+<dl class="simple">
+<dt>order<span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>The elements of <cite>m</cite> are read using this index order. ‘C’ means to
+index the elements in C-like order, with the last axis index
+changing fastest, back to the first axis index changing slowest.
+‘F’ means to index the elements in Fortran-like index order, with
+the first index changing fastest, and the last index changing
+slowest. Note that the ‘C’ and ‘F’ options take no account of the
+memory layout of the underlying array, and only refer to the order
+of axis indexing.  ‘A’ means to read the elements in Fortran-like
+index order if <cite>m</cite> is Fortran <em>contiguous</em> in memory, C-like order
+otherwise.  ‘K’ means to read the elements in the order they occur
+in memory, except for reversing the data when strides are negative.
+By default, ‘C’ index order is used.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ret<span class="classifier">matrix</span></dt><dd><p>Return the matrix flattened to shape <cite>(1, N)</cite> where <cite>N</cite>
+is the number of elements in the original matrix.
+A copy is made only if necessary.</p>
+</dd>
+</dl>
+<p>matrix.flatten : returns a similar output matrix but always a copy
+matrix.flat : a flat iterator on the array.
+numpy.ravel : related function which returns an ndarray</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.squeeze">
+<code class="sig-name descname">squeeze</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.squeeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.squeeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a possibly reshaped matrix.</p>
+<p>Refer to <cite>numpy.squeeze</cite> for more documentation.</p>
+<dl class="simple">
+<dt>axis<span class="classifier">None or int or tuple of ints, optional</span></dt><dd><p>Selects a subset of the single-dimensional entries in the shape.
+If an axis is selected with shape entry greater than one,
+an error is raised.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>squeezed<span class="classifier">matrix</span></dt><dd><p>The matrix, but as a (1, N) matrix if it had shape (N, 1).</p>
+</dd>
+</dl>
+<p>numpy.squeeze : related function</p>
+<p>If <cite>m</cite> has a single column then that column is returned
+as the single row of a matrix.  Otherwise <cite>m</cite> is returned.
+The returned matrix is always either <cite>m</cite> itself or a view into <cite>m</cite>.
+Supplying an axis keyword argument will not affect the returned matrix
+but it may cause an error to be raised.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<span class="go">matrix([[1],</span>
+<span class="go">        [2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="go">matrix([[1, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">T</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span>
+<span class="go">matrix([[1, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="go">matrix([[1, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="go">matrix([[1, 2],</span>
+<span class="go">        [3, 4]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.std">
+<code class="sig-name descname">std</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em>, <em class="sig-param">ddof=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the standard deviation of the array elements along the given axis.</p>
+<p>Refer to <cite>numpy.std</cite> for full documentation.</p>
+<p>numpy.std</p>
+<p>This is the same as <cite>ndarray.std</cite>, except that where an <cite>ndarray</cite> would
+be returned, a <cite>matrix</cite> object is returned instead.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="go">3.4520525295346629 # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[ 3.26598632,  3.26598632,  3.26598632,  3.26598632]]) # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[ 1.11803399],</span>
+<span class="go">        [ 1.11803399],</span>
+<span class="go">        [ 1.11803399]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.sum">
+<code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the sum of the matrix elements, along the given axis.</p>
+<p>Refer to <cite>numpy.sum</cite> for full documentation.</p>
+<p>numpy.sum</p>
+<p>This is the same as <cite>ndarray.sum</cite>, except that where an <cite>ndarray</cite> would
+be returned, a <cite>matrix</cite> object is returned instead.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[3],</span>
+<span class="go">        [7]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="go">matrix([[3.],</span>
+<span class="go">        [7.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asmatrix</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
+<span class="go">matrix([[3.],</span>
+<span class="go">        [7.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.tolist">
+<code class="sig-name descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.tolist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.tolist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the matrix as a (possibly nested) list.</p>
+<p>See <cite>ndarray.tolist</cite> for full documentation.</p>
+<p>ndarray.tolist</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)));</span> <span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.matrix.var">
+<code class="sig-name descname">var</code><span class="sig-paren">(</span><em class="sig-param">axis=None</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em>, <em class="sig-param">ddof=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/matrixlib/defmatrix.html#matrix.var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.matrix.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the variance of the matrix elements, along the given axis.</p>
+<p>Refer to <cite>numpy.var</cite> for full documentation.</p>
+<p>numpy.var</p>
+<p>This is the same as <cite>ndarray.var</cite>, except that where an <cite>ndarray</cite> would
+be returned, a <cite>matrix</cite> object is returned instead.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">matrix([[ 0,  1,  2,  3],</span>
+<span class="go">        [ 4,  5,  6,  7],</span>
+<span class="go">        [ 8,  9, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="go">11.916666666666666</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">matrix([[ 10.66666667,  10.66666667,  10.66666667,  10.66666667]]) # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">matrix([[1.25],</span>
+<span class="go">        [1.25],</span>
+<span class="go">        [1.25]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.iinfo.html" title="previous chapter">iinfo</a></li>
+      <li>Next: <a href="numpy.ndenumerate.html" title="next chapter">ndenumerate</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.matrix.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

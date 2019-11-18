@@ -1,0 +1,75 @@
+matrix
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: matrix
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~matrix.A
+      ~matrix.A1
+      ~matrix.H
+      ~matrix.I
+      ~matrix.T
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~matrix.all
+      ~matrix.any
+      ~matrix.argmax
+      ~matrix.argmin
+      ~matrix.flatten
+      ~matrix.getA
+      ~matrix.getA1
+      ~matrix.getH
+      ~matrix.getI
+      ~matrix.getT
+      ~matrix.max
+      ~matrix.mean
+      ~matrix.min
+      ~matrix.prod
+      ~matrix.ptp
+      ~matrix.ravel
+      ~matrix.squeeze
+      ~matrix.std
+      ~matrix.sum
+      ~matrix.tolist
+      ~matrix.var
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: A
+   .. autoattribute:: A1
+   .. autoattribute:: H
+   .. autoattribute:: I
+   .. autoattribute:: T
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: all
+   .. automethod:: any
+   .. automethod:: argmax
+   .. automethod:: argmin
+   .. automethod:: flatten
+   .. automethod:: getA
+   .. automethod:: getA1
+   .. automethod:: getH
+   .. automethod:: getI
+   .. automethod:: getT
+   .. automethod:: max
+   .. automethod:: mean
+   .. automethod:: min
+   .. automethod:: prod
+   .. automethod:: ptp
+   .. automethod:: ravel
+   .. automethod:: squeeze
+   .. automethod:: std
+   .. automethod:: sum
+   .. automethod:: tolist
+   .. automethod:: var

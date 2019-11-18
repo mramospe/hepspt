@@ -1,0 +1,6 @@
+insert
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: insert

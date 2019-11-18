@@ -1,0 +1,95 @@
+chararray
+=========
+
+.. currentmodule:: numpy
+
+.. autoclass:: chararray
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~chararray.argsort
+      ~chararray.capitalize
+      ~chararray.center
+      ~chararray.count
+      ~chararray.decode
+      ~chararray.encode
+      ~chararray.endswith
+      ~chararray.expandtabs
+      ~chararray.find
+      ~chararray.index
+      ~chararray.isalnum
+      ~chararray.isalpha
+      ~chararray.isdecimal
+      ~chararray.isdigit
+      ~chararray.islower
+      ~chararray.isnumeric
+      ~chararray.isspace
+      ~chararray.istitle
+      ~chararray.isupper
+      ~chararray.join
+      ~chararray.ljust
+      ~chararray.lower
+      ~chararray.lstrip
+      ~chararray.partition
+      ~chararray.replace
+      ~chararray.rfind
+      ~chararray.rindex
+      ~chararray.rjust
+      ~chararray.rpartition
+      ~chararray.rsplit
+      ~chararray.rstrip
+      ~chararray.split
+      ~chararray.splitlines
+      ~chararray.startswith
+      ~chararray.strip
+      ~chararray.swapcase
+      ~chararray.title
+      ~chararray.translate
+      ~chararray.upper
+      ~chararray.zfill
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: argsort
+   .. automethod:: capitalize
+   .. automethod:: center
+   .. automethod:: count
+   .. automethod:: decode
+   .. automethod:: encode
+   .. automethod:: endswith
+   .. automethod:: expandtabs
+   .. automethod:: find
+   .. automethod:: index
+   .. automethod:: isalnum
+   .. automethod:: isalpha
+   .. automethod:: isdecimal
+   .. automethod:: isdigit
+   .. automethod:: islower
+   .. automethod:: isnumeric
+   .. automethod:: isspace
+   .. automethod:: istitle
+   .. automethod:: isupper
+   .. automethod:: join
+   .. automethod:: ljust
+   .. automethod:: lower
+   .. automethod:: lstrip
+   .. automethod:: partition
+   .. automethod:: replace
+   .. automethod:: rfind
+   .. automethod:: rindex
+   .. automethod:: rjust
+   .. automethod:: rpartition
+   .. automethod:: rsplit
+   .. automethod:: rstrip
+   .. automethod:: split
+   .. automethod:: splitlines
+   .. automethod:: startswith
+   .. automethod:: strip
+   .. automethod:: swapcase
+   .. automethod:: title
+   .. automethod:: translate
+   .. automethod:: upper
+   .. automethod:: zfill

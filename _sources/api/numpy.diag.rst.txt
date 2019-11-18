@@ -1,0 +1,6 @@
+diag
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: diag

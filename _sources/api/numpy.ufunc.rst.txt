@@ -1,0 +1,49 @@
+ufunc
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: ufunc
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~ufunc.identity
+      ~ufunc.nargs
+      ~ufunc.nin
+      ~ufunc.nout
+      ~ufunc.ntypes
+      ~ufunc.signature
+      ~ufunc.types
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~ufunc.__call__
+      ~ufunc.accumulate
+      ~ufunc.at
+      ~ufunc.outer
+      ~ufunc.reduce
+      ~ufunc.reduceat
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: identity
+   .. autoattribute:: nargs
+   .. autoattribute:: nin
+   .. autoattribute:: nout
+   .. autoattribute:: ntypes
+   .. autoattribute:: signature
+   .. autoattribute:: types
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: __call__
+   .. automethod:: accumulate
+   .. automethod:: at
+   .. automethod:: outer
+   .. automethod:: reduce
+   .. automethod:: reduceat

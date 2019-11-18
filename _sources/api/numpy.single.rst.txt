@@ -1,0 +1,17 @@
+single
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: single
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~single.as_integer_ratio
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: as_integer_ratio

@@ -1,0 +1,7 @@
+complex64
+=========
+
+.. currentmodule:: numpy
+
+.. autoclass:: complex64
+   :show-inheritance:

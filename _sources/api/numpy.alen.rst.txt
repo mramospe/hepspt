@@ -1,0 +1,6 @@
+alen
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: alen

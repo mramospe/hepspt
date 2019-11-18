@@ -1,0 +1,7 @@
+clongdouble
+===========
+
+.. currentmodule:: numpy
+
+.. autoclass:: clongdouble
+   :show-inheritance:

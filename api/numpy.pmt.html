@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pmt &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="nper" href="numpy.nper.html" />
+    <link rel="prev" title="fv" href="numpy.fv.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pmt">
+<h1>pmt<a class="headerlink" href="#pmt" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.pmt">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">pmt</code><span class="sig-paren">(</span><em class="sig-param">rate</em>, <em class="sig-param">nper</em>, <em class="sig-param">pv</em>, <em class="sig-param">fv=0</em>, <em class="sig-param">when='end'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.pmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the payment against loan principal plus interest.</p>
+<dl class="simple">
+<dt>Given:</dt><dd><ul class="simple">
+<li><p>a present value, <cite>pv</cite> (e.g., an amount borrowed)</p></li>
+<li><p>a future value, <cite>fv</cite> (e.g., 0)</p></li>
+<li><p>an interest <cite>rate</cite> compounded once per period, of which
+there are</p></li>
+<li><p><cite>nper</cite> total</p></li>
+<li><p>and (optional) specification of whether payment is made
+at the beginning (<cite>when</cite> = {‘begin’, 1}) or the end
+(<cite>when</cite> = {‘end’, 0}) of each period</p></li>
+</ul>
+</dd>
+<dt>Return:</dt><dd><p>the (fixed) periodic payment.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>rate<span class="classifier">array_like</span></dt><dd><p>Rate of interest (per period)</p>
+</dd>
+<dt>nper<span class="classifier">array_like</span></dt><dd><p>Number of compounding periods</p>
+</dd>
+<dt>pv<span class="classifier">array_like</span></dt><dd><p>Present value</p>
+</dd>
+<dt>fv<span class="classifier">array_like,  optional</span></dt><dd><p>Future value (default = 0)</p>
+</dd>
+<dt>when<span class="classifier">{{‘begin’, 1}, {‘end’, 0}}, {string, int}</span></dt><dd><p>When payments are due (‘begin’ (1) or ‘end’ (0))</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">ndarray</span></dt><dd><p>Payment against loan plus interest.  If all input is scalar, returns a
+scalar float.  If any input is array_like, returns payment for each
+input element. If multiple inputs are array_like, they all must have
+the same shape.</p>
+</dd>
+</dl>
+<p>The payment is computed by solving the equation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fv</span> <span class="o">+</span>
+<span class="n">pv</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rate</span><span class="p">)</span><span class="o">**</span><span class="n">nper</span> <span class="o">+</span>
+<span class="n">pmt</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rate</span><span class="o">*</span><span class="n">when</span><span class="p">)</span><span class="o">/</span><span class="n">rate</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rate</span><span class="p">)</span><span class="o">**</span><span class="n">nper</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>or, when <code class="docutils literal notranslate"><span class="pre">rate</span> <span class="pre">==</span> <span class="pre">0</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fv</span> <span class="o">+</span> <span class="n">pv</span> <span class="o">+</span> <span class="n">pmt</span> <span class="o">*</span> <span class="n">nper</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>for <code class="docutils literal notranslate"><span class="pre">pmt</span></code>.</p>
+<p>Note that computing a monthly mortgage payment is only
+one use for this function.  For example, pmt returns the
+periodic deposit one must make to achieve a specified
+future balance given an initial deposit, a fixed,
+periodically compounded interest rate, and the total
+number of periods.</p>
+<dl class="citation">
+<dt class="label" id="wrw"><span class="brackets">WRW</span></dt>
+<dd><p>Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May).
+Open Document Format for Office Applications (OpenDocument)v1.2,
+Part 2: Recalculated Formula (OpenFormula) Format - Annotated Version,
+Pre-Draft 12. Organization for the Advancement of Structured Information
+Standards (OASIS). Billerica, MA, USA. [ODT Document].
+Available:
+<a class="reference external" href="http://www.oasis-open.org/committees/documents.php">http://www.oasis-open.org/committees/documents.php</a>
+?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt</p>
+</dd>
+</dl>
+<p>What is the monthly payment needed to pay off a $200,000 loan in 15
+years at an annual interest rate of 7.5%?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">pmt</span><span class="p">(</span><span class="mf">0.075</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="mi">200000</span><span class="p">)</span>
+<span class="go">-1854.0247200054619</span>
+</pre></div>
+</div>
+<p>In order to pay-off (i.e., have a future-value of 0) the $200,000 obtained
+today, a monthly payment of $1,854.02 would be required.  Note that this
+example illustrates usage of <cite>fv</cite> having a default value of 0.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.fv.html" title="previous chapter">fv</a></li>
+      <li>Next: <a href="numpy.nper.html" title="next chapter">nper</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.pmt.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

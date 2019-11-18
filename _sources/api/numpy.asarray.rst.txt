@@ -1,0 +1,6 @@
+asarray
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: asarray

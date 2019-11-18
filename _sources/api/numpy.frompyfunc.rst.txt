@@ -1,0 +1,6 @@
+frompyfunc
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: frompyfunc

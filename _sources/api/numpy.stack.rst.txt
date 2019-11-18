@@ -1,0 +1,6 @@
+stack
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: stack

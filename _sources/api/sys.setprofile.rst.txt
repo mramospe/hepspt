@@ -1,0 +1,6 @@
+setprofile
+==========
+
+.. currentmodule:: sys
+
+.. autofunction:: setprofile

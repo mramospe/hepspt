@@ -1,0 +1,7 @@
+ulonglong
+=========
+
+.. currentmodule:: numpy
+
+.. autoclass:: ulonglong
+   :show-inheritance:

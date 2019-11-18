@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>load &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="loads" href="numpy.loads.html" />
+    <link rel="prev" title="isclose" href="numpy.isclose.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="load">
+<h1>load<a class="headerlink" href="#load" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.load">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">file</em>, <em class="sig-param">mmap_mode=None</em>, <em class="sig-param">allow_pickle=False</em>, <em class="sig-param">fix_imports=True</em>, <em class="sig-param">encoding='ASCII'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load arrays or pickled objects from <code class="docutils literal notranslate"><span class="pre">.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">.npz</span></code> or pickled files.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Loading files that contain object arrays uses the <code class="docutils literal notranslate"><span class="pre">pickle</span></code>
+module, which is not secure against erroneous or maliciously
+constructed data. Consider passing <code class="docutils literal notranslate"><span class="pre">allow_pickle=False</span></code> to
+load data that is known not to contain object arrays for the
+safer handling of untrusted sources.</p>
+</div>
+<dl>
+<dt>file<span class="classifier">file-like object, string, or pathlib.Path</span></dt><dd><p>The file to read. File-like objects must support the
+<code class="docutils literal notranslate"><span class="pre">seek()</span></code> and <code class="docutils literal notranslate"><span class="pre">read()</span></code> methods. Pickled files require that the
+file-like object support the <code class="docutils literal notranslate"><span class="pre">readline()</span></code> method as well.</p>
+</dd>
+<dt>mmap_mode<span class="classifier">{None, ‘r+’, ‘r’, ‘w+’, ‘c’}, optional</span></dt><dd><p>If not None, then memory-map the file, using the given mode (see
+<cite>numpy.memmap</cite> for a detailed description of the modes).  A
+memory-mapped array is kept on disk. However, it can be accessed
+and sliced like any ndarray.  Memory mapping is especially useful
+for accessing small fragments of large files without reading the
+entire file into memory.</p>
+</dd>
+<dt>allow_pickle<span class="classifier">bool, optional</span></dt><dd><p>Allow loading pickled object arrays stored in npy files. Reasons for
+disallowing pickles include security, as loading pickled data can
+execute arbitrary code. If pickles are disallowed, loading object
+arrays will fail. Default: False</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.16.3: </span>Made default False in response to CVE-2019-6446.</p>
+</div>
+</dd>
+<dt>fix_imports<span class="classifier">bool, optional</span></dt><dd><p>Only useful when loading Python 2 generated pickled files on Python 3,
+which includes npy/npz files containing object arrays. If <cite>fix_imports</cite>
+is True, pickle will try to map the old Python 2 names to the new names
+used in Python 3.</p>
+</dd>
+<dt>encoding<span class="classifier">str, optional</span></dt><dd><p>What encoding to use when reading Python 2 strings. Only useful when
+loading Python 2 generated pickled files in Python 3, which includes
+npy/npz files containing object arrays. Values other than ‘latin1’,
+‘ASCII’, and ‘bytes’ are not allowed, as they can corrupt numerical
+data. Default: ‘ASCII’</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">array, tuple, dict, etc.</span></dt><dd><p>Data stored in the file. For <code class="docutils literal notranslate"><span class="pre">.npz</span></code> files, the returned instance
+of NpzFile class must be closed to avoid leaking file descriptors.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>IOError</dt><dd><p>If the input file does not exist or cannot be read.</p>
+</dd>
+<dt>ValueError</dt><dd><p>The file contains an object array, but allow_pickle=False given.</p>
+</dd>
+</dl>
+<p>save, savez, savez_compressed, loadtxt
+memmap : Create a memory-map to an array stored in a file on disk.
+lib.format.open_memmap : Create or load a memory-mapped <code class="docutils literal notranslate"><span class="pre">.npy</span></code> file.</p>
+<ul>
+<li><p>If the file contains pickle data, then whatever object is stored
+in the pickle is returned.</p></li>
+<li><p>If the file is a <code class="docutils literal notranslate"><span class="pre">.npy</span></code> file, then a single array is returned.</p></li>
+<li><p>If the file is a <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file, then a dictionary-like object is
+returned, containing <code class="docutils literal notranslate"><span class="pre">{filename:</span> <span class="pre">array}</span></code> key-value pairs, one for
+each file in the archive.</p></li>
+<li><p>If the file is a <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file, the returned value supports the
+context manager protocol in a similar fashion to the open function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;foo.npz&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The underlying file descriptor is closed when exiting the ‘with’
+block.</p>
+</li>
+</ul>
+<p>Store data to disk, and load it again:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;/tmp/123&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/tmp/123.npy&#39;</span><span class="p">)</span>
+<span class="go">array([[1, 2, 3],</span>
+<span class="go">       [4, 5, 6]])</span>
+</pre></div>
+</div>
+<p>Store compressed data to disk, and load it again:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span><span class="s1">&#39;/tmp/123.npz&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/tmp/123.npz&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="go">array([[1, 2, 3],</span>
+<span class="go">       [4, 5, 6]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="go">array([1, 2])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Mem-map the stored array, and then access the second row
+directly from disk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/tmp/123.npy&#39;</span><span class="p">,</span> <span class="n">mmap_mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+<span class="go">memmap([4, 5, 6])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.isclose.html" title="previous chapter">isclose</a></li>
+      <li>Next: <a href="numpy.loads.html" title="next chapter">loads</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.load.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

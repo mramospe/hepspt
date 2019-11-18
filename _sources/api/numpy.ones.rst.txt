@@ -1,0 +1,6 @@
+ones
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: ones

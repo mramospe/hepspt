@@ -1,0 +1,6 @@
+roll
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: roll

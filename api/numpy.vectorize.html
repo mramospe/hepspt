@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>vectorize &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="poly1d" href="numpy.poly1d.html" />
+    <link rel="prev" title="ndindex" href="numpy.ndindex.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="vectorize">
+<h1>vectorize<a class="headerlink" href="#vectorize" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.vectorize">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">vectorize</code><span class="sig-paren">(</span><em class="sig-param">pyfunc</em>, <em class="sig-param">otypes=None</em>, <em class="sig-param">doc=None</em>, <em class="sig-param">excluded=None</em>, <em class="sig-param">cache=False</em>, <em class="sig-param">signature=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.vectorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="simple">
+<dt>vectorize(pyfunc, otypes=None, doc=None, excluded=None, cache=False,</dt><dd><p>signature=None)</p>
+</dd>
+</dl>
+<p>Generalized function class.</p>
+<p>Define a vectorized function which takes a nested sequence of objects or
+numpy arrays as inputs and returns a single numpy array or a tuple of numpy
+arrays. The vectorized function evaluates <cite>pyfunc</cite> over successive tuples
+of the input arrays like the python map function, except it uses the
+broadcasting rules of numpy.</p>
+<p>The data type of the output of <cite>vectorized</cite> is determined by calling
+the function with the first element of the input.  This can be avoided
+by specifying the <cite>otypes</cite> argument.</p>
+<dl>
+<dt>pyfunc<span class="classifier">callable</span></dt><dd><p>A python function or method.</p>
+</dd>
+<dt>otypes<span class="classifier">str or list of dtypes, optional</span></dt><dd><p>The output data type. It must be specified as either a string of
+typecode characters or a list of data type specifiers. There should
+be one data type specifier for each output.</p>
+</dd>
+<dt>doc<span class="classifier">str, optional</span></dt><dd><p>The docstring for the function. If <cite>None</cite>, the docstring will be the
+<code class="docutils literal notranslate"><span class="pre">pyfunc.__doc__</span></code>.</p>
+</dd>
+<dt>excluded<span class="classifier">set, optional</span></dt><dd><p>Set of strings or integers representing the positional or keyword
+arguments for which the function will not be vectorized.  These will be
+passed directly to <cite>pyfunc</cite> unmodified.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+</dd>
+<dt>cache<span class="classifier">bool, optional</span></dt><dd><p>If <cite>True</cite>, then cache the first function call that determines the number
+of outputs if <cite>otypes</cite> is not provided.</p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+</div></blockquote>
+</dd>
+<dt>signature<span class="classifier">string, optional</span></dt><dd><p>Generalized universal function signature, e.g., <code class="docutils literal notranslate"><span class="pre">(m,n),(n)-&gt;(m)</span></code> for
+vectorized matrix-vector multiplication. If provided, <code class="docutils literal notranslate"><span class="pre">pyfunc</span></code> will
+be called with (and expected to return) arrays with shapes given by the
+size of corresponding core dimensions. By default, <code class="docutils literal notranslate"><span class="pre">pyfunc</span></code> is
+assumed to take scalars as input and output.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.12.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>vectorized<span class="classifier">callable</span></dt><dd><p>Vectorized function.</p>
+</dd>
+</dl>
+<p>frompyfunc : Takes an arbitrary Python function and returns a ufunc</p>
+<p>The <cite>vectorize</cite> function is provided primarily for convenience, not for
+performance. The implementation is essentially a for loop.</p>
+<p>If <cite>otypes</cite> is not specified, then a call to the function with the
+first argument will be used to determine the number of outputs.  The
+results of this call will be cached if <cite>cache</cite> is <cite>True</cite> to prevent
+calling the function twice.  However, to implement the cache, the
+original function must be wrapped which will slow down subsequent
+calls, so only do this if your function is expensive.</p>
+<p>The new keyword argument interface and <cite>excluded</cite> argument support
+further degrades performance.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>NumPy Reference, section <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/c-api.generalized-ufuncs.html">Generalized Universal Function API</a>.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="s2">&quot;Return a-b if a&gt;b, otherwise return a+b&quot;</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vfunc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">myfunc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vfunc</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">array([3, 4, 1, 2])</span>
+</pre></div>
+</div>
+<p>The docstring is taken from the input function to <cite>vectorize</cite> unless it
+is specified:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vfunc</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="go">&#39;Return a-b if a&gt;b, otherwise return a+b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vfunc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">myfunc</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Vectorized `myfunc`&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vfunc</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="go">&#39;Vectorized `myfunc`&#39;</span>
+</pre></div>
+</div>
+<p>The output type is determined by evaluating the first element of the input,
+unless it is specified:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">vfunc</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&lt;class &#39;numpy.int64&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vfunc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">myfunc</span><span class="p">,</span> <span class="n">otypes</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">vfunc</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&lt;class &#39;numpy.float64&#39;&gt;</span>
+</pre></div>
+</div>
+<p>The <cite>excluded</cite> argument can be used to prevent vectorizing over certain
+arguments.  This can be useful for array-like arguments of a fixed length
+such as the coefficients for a polynomial as in <cite>polyval</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mypolyval</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">_p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">res</span> <span class="o">=</span> <span class="n">_p</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="n">_p</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">_p</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">res</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vpolyval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">mypolyval</span><span class="p">,</span> <span class="n">excluded</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vpolyval</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([3, 6])</span>
+</pre></div>
+</div>
+<p>Positional arguments may also be excluded by specifying their position:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vpolyval</span><span class="o">.</span><span class="n">excluded</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vpolyval</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([3, 6])</span>
+</pre></div>
+</div>
+<p>The <cite>signature</cite> argument allows for vectorizing functions that act on
+non-scalar arrays of fixed length. For example, you can use it for a
+vectorized calculation of Pearson correlation coefficient and its p-value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pearsonr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">signature</span><span class="o">=</span><span class="s1">&#39;(n),(n)-&gt;(),()&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pearsonr</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="go">(array([ 1., -1.]), array([ 0.,  0.]))</span>
+</pre></div>
+</div>
+<p>Or for a vectorized convolution:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">convolve</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="s1">&#39;(n),(m)-&gt;(k)&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convolve</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([[1., 2., 1., 0., 0., 0.],</span>
+<span class="go">       [0., 1., 2., 1., 0., 0.],</span>
+<span class="go">       [0., 0., 1., 2., 1., 0.],</span>
+<span class="go">       [0., 0., 0., 1., 2., 1.]])</span>
+</pre></div>
+</div>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.vectorize.__call__" title="numpy.vectorize.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Return arrays with the results of <cite>pyfunc</cite> broadcast (vectorized) over <cite>args</cite> and <cite>kwargs</cite> not in <cite>excluded</cite>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.vectorize.__call__">
+<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/lib/function_base.html#vectorize.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.vectorize.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return arrays with the results of <cite>pyfunc</cite> broadcast (vectorized) over
+<cite>args</cite> and <cite>kwargs</cite> not in <cite>excluded</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.ndindex.html" title="previous chapter">ndindex</a></li>
+      <li>Next: <a href="numpy.poly1d.html" title="next chapter">poly1d</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.vectorize.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

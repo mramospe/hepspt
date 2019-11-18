@@ -1,0 +1,6 @@
+flip
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: flip

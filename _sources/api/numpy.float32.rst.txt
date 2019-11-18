@@ -1,0 +1,17 @@
+float32
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: float32
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~float32.as_integer_ratio
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: as_integer_ratio

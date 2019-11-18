@@ -1,0 +1,6 @@
+geterrobj
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: geterrobj

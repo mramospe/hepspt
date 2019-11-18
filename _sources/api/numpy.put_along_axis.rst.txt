@@ -1,0 +1,6 @@
+put_along_axis
+==============
+
+.. currentmodule:: numpy
+
+.. autofunction:: put_along_axis

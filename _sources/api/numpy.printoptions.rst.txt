@@ -1,0 +1,6 @@
+printoptions
+============
+
+.. currentmodule:: numpy
+
+.. autofunction:: printoptions

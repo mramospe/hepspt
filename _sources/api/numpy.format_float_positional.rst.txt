@@ -1,0 +1,6 @@
+format_float_positional
+=======================
+
+.. currentmodule:: numpy
+
+.. autofunction:: format_float_positional

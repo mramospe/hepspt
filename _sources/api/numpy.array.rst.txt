@@ -1,0 +1,6 @@
+array
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: array

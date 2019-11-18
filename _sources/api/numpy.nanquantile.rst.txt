@@ -1,0 +1,6 @@
+nanquantile
+===========
+
+.. currentmodule:: numpy
+
+.. autofunction:: nanquantile

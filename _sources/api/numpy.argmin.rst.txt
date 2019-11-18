@@ -1,0 +1,6 @@
+argmin
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: argmin

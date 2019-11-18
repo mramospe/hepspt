@@ -1,0 +1,6 @@
+repeat
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: repeat

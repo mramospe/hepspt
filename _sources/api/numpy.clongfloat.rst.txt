@@ -1,0 +1,7 @@
+clongfloat
+==========
+
+.. currentmodule:: numpy
+
+.. autoclass:: clongfloat
+   :show-inheritance:

@@ -1,0 +1,7 @@
+timedelta64
+===========
+
+.. currentmodule:: numpy
+
+.. autoclass:: timedelta64
+   :show-inheritance:

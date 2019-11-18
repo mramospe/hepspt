@@ -1,0 +1,6 @@
+source
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: source

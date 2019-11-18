@@ -1,0 +1,6 @@
+fromstring
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: fromstring

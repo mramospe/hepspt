@@ -1,0 +1,17 @@
+recarray
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: recarray
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~recarray.field
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: field

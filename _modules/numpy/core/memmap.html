@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>numpy.core.memmap &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for numpy.core.memmap</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.numeric</span> <span class="k">import</span> <span class="n">uint8</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">dtype</span>
+<span class="kn">from</span> <span class="nn">numpy.compat</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">long</span><span class="p">,</span> <span class="n">basestring</span><span class="p">,</span> <span class="n">os_fspath</span><span class="p">,</span> <span class="n">contextlib_nullcontext</span><span class="p">,</span> <span class="n">is_pathlib_path</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">numpy.core.overrides</span> <span class="k">import</span> <span class="n">set_module</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;memmap&#39;</span><span class="p">]</span>
+
+<span class="n">dtypedescr</span> <span class="o">=</span> <span class="n">dtype</span>
+<span class="n">valid_filemodes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">]</span>
+<span class="n">writeable_filemodes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">]</span>
+
+<span class="n">mode_equivalents</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;readonly&quot;</span><span class="p">:</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;copyonwrite&quot;</span><span class="p">:</span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;readwrite&quot;</span><span class="p">:</span><span class="s2">&quot;r+&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;write&quot;</span><span class="p">:</span><span class="s2">&quot;w+&quot;</span>
+    <span class="p">}</span>
+
+
+<span class="nd">@set_module</span><span class="p">(</span><span class="s1">&#39;numpy&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">memmap</span><span class="p">(</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a memory-map to an array stored in a *binary* file on disk.</span>
+
+<span class="sd">    Memory-mapped files are used for accessing small segments of large files</span>
+<span class="sd">    on disk, without reading the entire file into memory.  NumPy&#39;s</span>
+<span class="sd">    memmap&#39;s are array-like objects.  This differs from Python&#39;s ``mmap``</span>
+<span class="sd">    module, which uses file-like objects.</span>
+
+<span class="sd">    This subclass of ndarray has some unpleasant interactions with</span>
+<span class="sd">    some operations, because it doesn&#39;t quite fit properly as a subclass.</span>
+<span class="sd">    An alternative to using this subclass is to create the ``mmap``</span>
+<span class="sd">    object yourself, then create an ndarray with ndarray.__new__ directly,</span>
+<span class="sd">    passing the object created in its &#39;buffer=&#39; parameter.</span>
+
+<span class="sd">    This class may at some point be turned into a factory function</span>
+<span class="sd">    which returns a view into an mmap buffer.</span>
+
+<span class="sd">    Delete the memmap instance to close the memmap file.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str, file-like object, or pathlib.Path instance</span>
+<span class="sd">        The file name or file object to be used as the array data buffer.</span>
+<span class="sd">    dtype : data-type, optional</span>
+<span class="sd">        The data-type used to interpret the file contents.</span>
+<span class="sd">        Default is `uint8`.</span>
+<span class="sd">    mode : {&#39;r+&#39;, &#39;r&#39;, &#39;w+&#39;, &#39;c&#39;}, optional</span>
+<span class="sd">        The file is opened in this mode:</span>
+
+<span class="sd">        +------+-------------------------------------------------------------+</span>
+<span class="sd">        | &#39;r&#39;  | Open existing file for reading only.                        |</span>
+<span class="sd">        +------+-------------------------------------------------------------+</span>
+<span class="sd">        | &#39;r+&#39; | Open existing file for reading and writing.                 |</span>
+<span class="sd">        +------+-------------------------------------------------------------+</span>
+<span class="sd">        | &#39;w+&#39; | Create or overwrite existing file for reading and writing.  |</span>
+<span class="sd">        +------+-------------------------------------------------------------+</span>
+<span class="sd">        | &#39;c&#39;  | Copy-on-write: assignments affect data in memory, but       |</span>
+<span class="sd">        |      | changes are not saved to disk.  The file on disk is         |</span>
+<span class="sd">        |      | read-only.                                                  |</span>
+<span class="sd">        +------+-------------------------------------------------------------+</span>
+
+<span class="sd">        Default is &#39;r+&#39;.</span>
+<span class="sd">    offset : int, optional</span>
+<span class="sd">        In the file, array data starts at this offset. Since `offset` is</span>
+<span class="sd">        measured in bytes, it should normally be a multiple of the byte-size</span>
+<span class="sd">        of `dtype`. When ``mode != &#39;r&#39;``, even positive offsets beyond end of</span>
+<span class="sd">        file are valid; The file will be extended to accommodate the</span>
+<span class="sd">        additional data. By default, ``memmap`` will start at the beginning of</span>
+<span class="sd">        the file, even if ``filename`` is a file pointer ``fp`` and</span>
+<span class="sd">        ``fp.tell() != 0``.</span>
+<span class="sd">    shape : tuple, optional</span>
+<span class="sd">        The desired shape of the array. If ``mode == &#39;r&#39;`` and the number</span>
+<span class="sd">        of remaining bytes after `offset` is not a multiple of the byte-size</span>
+<span class="sd">        of `dtype`, you must specify `shape`. By default, the returned array</span>
+<span class="sd">        will be 1-D with the number of elements determined by file size</span>
+<span class="sd">        and data-type.</span>
+<span class="sd">    order : {&#39;C&#39;, &#39;F&#39;}, optional</span>
+<span class="sd">        Specify the order of the ndarray memory layout:</span>
+<span class="sd">        :term:`row-major`, C-style or :term:`column-major`,</span>
+<span class="sd">        Fortran-style.  This only has an effect if the shape is</span>
+<span class="sd">        greater than 1-D.  The default order is &#39;C&#39;.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str or pathlib.Path instance</span>
+<span class="sd">        Path to the mapped file.</span>
+<span class="sd">    offset : int</span>
+<span class="sd">        Offset position in the file.</span>
+<span class="sd">    mode : str</span>
+<span class="sd">        File mode.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    flush</span>
+<span class="sd">        Flush any changes in memory to file on disk.</span>
+<span class="sd">        When you delete a memmap object, flush is called first to write</span>
+<span class="sd">        changes to disk before removing the object.</span>
+
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    lib.format.open_memmap : Create or load a memory-mapped ``.npy`` file.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The memmap object can be used anywhere an ndarray is accepted.</span>
+<span class="sd">    Given a memmap ``fp``, ``isinstance(fp, numpy.ndarray)`` returns</span>
+<span class="sd">    ``True``.</span>
+<span class="sd">    </span>
+<span class="sd">    Memory-mapped files cannot be larger than 2GB on 32-bit systems.</span>
+
+<span class="sd">    When a memmap causes a file to be created or extended beyond its</span>
+<span class="sd">    current size in the filesystem, the contents of the new part are</span>
+<span class="sd">    unspecified. On systems with POSIX filesystem semantics, the extended</span>
+<span class="sd">    part will be filled with zero bytes.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; data = np.arange(12, dtype=&#39;float32&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; data.resize((3,4))</span>
+
+<span class="sd">    This example uses a temporary file so that doctest doesn&#39;t write</span>
+<span class="sd">    files to your directory. You would use a &#39;normal&#39; filename.</span>
+
+<span class="sd">    &gt;&gt;&gt; from tempfile import mkdtemp</span>
+<span class="sd">    &gt;&gt;&gt; import os.path as path</span>
+<span class="sd">    &gt;&gt;&gt; filename = path.join(mkdtemp(), &#39;newfile.dat&#39;)</span>
+
+<span class="sd">    Create a memmap with dtype and shape that matches our data:</span>
+
+<span class="sd">    &gt;&gt;&gt; fp = np.memmap(filename, dtype=&#39;float32&#39;, mode=&#39;w+&#39;, shape=(3,4))</span>
+<span class="sd">    &gt;&gt;&gt; fp</span>
+<span class="sd">    memmap([[0., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., 0.],</span>
+<span class="sd">            [0., 0., 0., 0.]], dtype=float32)</span>
+
+<span class="sd">    Write data to memmap array:</span>
+
+<span class="sd">    &gt;&gt;&gt; fp[:] = data[:]</span>
+<span class="sd">    &gt;&gt;&gt; fp</span>
+<span class="sd">    memmap([[  0.,   1.,   2.,   3.],</span>
+<span class="sd">            [  4.,   5.,   6.,   7.],</span>
+<span class="sd">            [  8.,   9.,  10.,  11.]], dtype=float32)</span>
+
+<span class="sd">    &gt;&gt;&gt; fp.filename == path.abspath(filename)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    Deletion flushes memory changes to disk before removing the object:</span>
+
+<span class="sd">    &gt;&gt;&gt; del fp</span>
+
+<span class="sd">    Load the memmap and verify data was stored:</span>
+
+<span class="sd">    &gt;&gt;&gt; newfp = np.memmap(filename, dtype=&#39;float32&#39;, mode=&#39;r&#39;, shape=(3,4))</span>
+<span class="sd">    &gt;&gt;&gt; newfp</span>
+<span class="sd">    memmap([[  0.,   1.,   2.,   3.],</span>
+<span class="sd">            [  4.,   5.,   6.,   7.],</span>
+<span class="sd">            [  8.,   9.,  10.,  11.]], dtype=float32)</span>
+
+<span class="sd">    Read-only memmap:</span>
+
+<span class="sd">    &gt;&gt;&gt; fpr = np.memmap(filename, dtype=&#39;float32&#39;, mode=&#39;r&#39;, shape=(3,4))</span>
+<span class="sd">    &gt;&gt;&gt; fpr.flags.writeable</span>
+<span class="sd">    False</span>
+
+<span class="sd">    Copy-on-write memmap:</span>
+
+<span class="sd">    &gt;&gt;&gt; fpc = np.memmap(filename, dtype=&#39;float32&#39;, mode=&#39;c&#39;, shape=(3,4))</span>
+<span class="sd">    &gt;&gt;&gt; fpc.flags.writeable</span>
+<span class="sd">    True</span>
+
+<span class="sd">    It&#39;s possible to assign to copy-on-write array, but values are only</span>
+<span class="sd">    written into the memory copy of the array, and not written to disk:</span>
+
+<span class="sd">    &gt;&gt;&gt; fpc</span>
+<span class="sd">    memmap([[  0.,   1.,   2.,   3.],</span>
+<span class="sd">            [  4.,   5.,   6.,   7.],</span>
+<span class="sd">            [  8.,   9.,  10.,  11.]], dtype=float32)</span>
+<span class="sd">    &gt;&gt;&gt; fpc[0,:] = 0</span>
+<span class="sd">    &gt;&gt;&gt; fpc</span>
+<span class="sd">    memmap([[  0.,   0.,   0.,   0.],</span>
+<span class="sd">            [  4.,   5.,   6.,   7.],</span>
+<span class="sd">            [  8.,   9.,  10.,  11.]], dtype=float32)</span>
+
+<span class="sd">    File on disk is unchanged:</span>
+
+<span class="sd">    &gt;&gt;&gt; fpr</span>
+<span class="sd">    memmap([[  0.,   1.,   2.,   3.],</span>
+<span class="sd">            [  4.,   5.,   6.,   7.],</span>
+<span class="sd">            [  8.,   9.,  10.,  11.]], dtype=float32)</span>
+
+<span class="sd">    Offset into a memmap:</span>
+
+<span class="sd">    &gt;&gt;&gt; fpo = np.memmap(filename, dtype=&#39;float32&#39;, mode=&#39;r&#39;, offset=16)</span>
+<span class="sd">    &gt;&gt;&gt; fpo</span>
+<span class="sd">    memmap([  4.,   5.,   6.,   7.,   8.,   9.,  10.,  11.], dtype=float32)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__array_priority__</span> <span class="o">=</span> <span class="o">-</span><span class="mf">100.0</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">uint8</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r+&#39;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">):</span>
+        <span class="c1"># Import here to minimize &#39;import numpy&#39; overhead</span>
+        <span class="kn">import</span> <span class="nn">mmap</span>
+        <span class="kn">import</span> <span class="nn">os.path</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">mode_equivalents</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_filemodes</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mode must be one of </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+                                 <span class="p">(</span><span class="n">valid_filemodes</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">mode_equivalents</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;w+&#39;</span> <span class="ow">and</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;shape must be given&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">):</span>
+            <span class="n">f_ctx</span> <span class="o">=</span> <span class="n">contextlib_nullcontext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f_ctx</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os_fspath</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span> <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span> <span class="k">else</span> <span class="n">mode</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">f_ctx</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
+            <span class="n">fid</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">flen</span> <span class="o">=</span> <span class="n">fid</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">dtypedescr</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">_dbytes</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">itemsize</span>
+
+            <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">bytes</span> <span class="o">=</span> <span class="n">flen</span> <span class="o">-</span> <span class="n">offset</span>
+                <span class="k">if</span> <span class="nb">bytes</span> <span class="o">%</span> <span class="n">_dbytes</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Size of available data is not a &quot;</span>
+                            <span class="s2">&quot;multiple of the data-type size.&quot;</span><span class="p">)</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="nb">bytes</span> <span class="o">//</span> <span class="n">_dbytes</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">,)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">,)</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># avoid default choice of np.int_, which might overflow</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">*=</span> <span class="n">k</span>
+
+            <span class="nb">bytes</span> <span class="o">=</span> <span class="n">long</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="n">size</span><span class="o">*</span><span class="n">_dbytes</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;w+&#39;</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">flen</span> <span class="o">&lt;</span> <span class="nb">bytes</span><span class="p">:</span>
+                <span class="n">fid</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="nb">bytes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">fid</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">fid</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+                <span class="n">acc</span> <span class="o">=</span> <span class="n">mmap</span><span class="o">.</span><span class="n">ACCESS_COPY</span>
+            <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span>
+                <span class="n">acc</span> <span class="o">=</span> <span class="n">mmap</span><span class="o">.</span><span class="n">ACCESS_READ</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">acc</span> <span class="o">=</span> <span class="n">mmap</span><span class="o">.</span><span class="n">ACCESS_WRITE</span>
+
+            <span class="n">start</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">-</span> <span class="n">offset</span> <span class="o">%</span> <span class="n">mmap</span><span class="o">.</span><span class="n">ALLOCATIONGRANULARITY</span>
+            <span class="nb">bytes</span> <span class="o">-=</span> <span class="n">start</span>
+            <span class="n">array_offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">-</span> <span class="n">start</span>
+            <span class="n">mm</span> <span class="o">=</span> <span class="n">mmap</span><span class="o">.</span><span class="n">mmap</span><span class="p">(</span><span class="n">fid</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">access</span><span class="o">=</span><span class="n">acc</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">start</span><span class="p">)</span>
+
+            <span class="bp">self</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">descr</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">mm</span><span class="p">,</span>
+                                   <span class="n">offset</span><span class="o">=</span><span class="n">array_offset</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mmap</span> <span class="o">=</span> <span class="n">mm</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+
+            <span class="k">if</span> <span class="n">is_pathlib_path</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+                <span class="c1"># special case - if we were constructed with a pathlib.path,</span>
+                <span class="c1"># then filename is a path object, not a string</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fid</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+                <span class="c1"># py3 returns int for TemporaryFile().name</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">fid</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># same as memmap copies (e.g. memmap + 1)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;_mmap&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">may_share_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mmap</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_mmap</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">filename</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">offset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">mode</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mmap</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="memmap.flush"><a class="viewcode-back" href="../../../api/numpy.memmap.html#numpy.memmap.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write any changes in the array to the file on disk.</span>
+
+<span class="sd">        For further information, see `memmap`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        memmap</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="s1">&#39;flush&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__array_wrap__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">memmap</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__array_wrap__</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+        <span class="c1"># Return a memmap if a memmap was given as the output of the</span>
+        <span class="c1"># ufunc. Leave the arr class unchanged if self is not a memmap</span>
+        <span class="c1"># to keep original memmap subclasses behavior</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">arr</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">memmap</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">arr</span>
+        <span class="c1"># Return scalar instead of 0d memmap, e.g. for np.sum with</span>
+        <span class="c1"># axis=None</span>
+        <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="k">return</span> <span class="n">arr</span><span class="p">[()]</span>
+        <span class="c1"># Return ndarray otherwise</span>
+        <span class="k">return</span> <span class="n">arr</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">memmap</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="ow">is</span> <span class="n">memmap</span> <span class="ow">and</span> <span class="n">res</span><span class="o">.</span><span class="n">_mmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ndarray</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">Functions and classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../numpy.html">numpy</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,7 @@
+csingle
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: csingle
+   :show-inheritance:

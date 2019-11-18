@@ -1,0 +1,6 @@
+around
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: around

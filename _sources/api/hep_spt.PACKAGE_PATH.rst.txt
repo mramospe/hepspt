@@ -1,0 +1,6 @@
+PACKAGE_PATH
+============
+
+.. currentmodule:: hep_spt
+
+.. autodata:: PACKAGE_PATH

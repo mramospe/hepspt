@@ -1,0 +1,994 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>numpy.core.records &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for numpy.core.records</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Record Arrays</span>
+<span class="sd">=============</span>
+<span class="sd">Record arrays expose the fields of structured arrays as properties.</span>
+
+<span class="sd">Most commonly, ndarrays contain elements of a single type, e.g. floats,</span>
+<span class="sd">integers, bools etc.  However, it is possible for elements to be combinations</span>
+<span class="sd">of these using structured types, such as::</span>
+
+<span class="sd">  &gt;&gt;&gt; a = np.array([(1, 2.0), (1, 2.0)], dtype=[(&#39;x&#39;, np.int64), (&#39;y&#39;, np.float64)])</span>
+<span class="sd">  &gt;&gt;&gt; a</span>
+<span class="sd">  array([(1, 2.), (1, 2.)], dtype=[(&#39;x&#39;, &#39;&lt;i8&#39;), (&#39;y&#39;, &#39;&lt;f8&#39;)])</span>
+
+<span class="sd">Here, each element consists of two fields: x (and int), and y (a float).</span>
+<span class="sd">This is known as a structured array.  The different fields are analogous</span>
+<span class="sd">to columns in a spread-sheet.  The different fields can be accessed as</span>
+<span class="sd">one would a dictionary::</span>
+
+<span class="sd">  &gt;&gt;&gt; a[&#39;x&#39;]</span>
+<span class="sd">  array([1, 1])</span>
+
+<span class="sd">  &gt;&gt;&gt; a[&#39;y&#39;]</span>
+<span class="sd">  array([2., 2.])</span>
+
+<span class="sd">Record arrays allow us to access fields as properties::</span>
+
+<span class="sd">  &gt;&gt;&gt; ar = np.rec.array(a)</span>
+
+<span class="sd">  &gt;&gt;&gt; ar.x</span>
+<span class="sd">  array([1, 1])</span>
+
+<span class="sd">  &gt;&gt;&gt; ar.y</span>
+<span class="sd">  array([2., 2.])</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">OrderedDict</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">numeric</span> <span class="k">as</span> <span class="n">sb</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">numerictypes</span> <span class="k">as</span> <span class="n">nt</span>
+<span class="kn">from</span> <span class="nn">numpy.compat</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">isfileobj</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">long</span><span class="p">,</span> <span class="n">unicode</span><span class="p">,</span> <span class="n">os_fspath</span><span class="p">,</span> <span class="n">contextlib_nullcontext</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">numpy.core.overrides</span> <span class="k">import</span> <span class="n">set_module</span>
+<span class="kn">from</span> <span class="nn">.arrayprint</span> <span class="k">import</span> <span class="n">get_printoptions</span>
+
+<span class="c1"># All of the functions allow formats to be a dtype</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;record&#39;</span><span class="p">,</span> <span class="s1">&#39;recarray&#39;</span><span class="p">,</span> <span class="s1">&#39;format_parser&#39;</span><span class="p">]</span>
+
+
+<span class="n">ndarray</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">ndarray</span>
+
+<span class="n">_byteorderconv</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;l&#39;</span><span class="p">:</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;n&#39;</span><span class="p">:</span><span class="s1">&#39;=&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;B&#39;</span><span class="p">:</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;L&#39;</span><span class="p">:</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;N&#39;</span><span class="p">:</span><span class="s1">&#39;=&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;S&#39;</span><span class="p">:</span><span class="s1">&#39;s&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;s&#39;</span><span class="p">:</span><span class="s1">&#39;s&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;&lt;&#39;</span><span class="p">:</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;=&#39;</span><span class="p">:</span><span class="s1">&#39;=&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;|&#39;</span><span class="p">:</span><span class="s1">&#39;|&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;I&#39;</span><span class="p">:</span><span class="s1">&#39;|&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;i&#39;</span><span class="p">:</span><span class="s1">&#39;|&#39;</span><span class="p">}</span>
+
+<span class="c1"># formats regular expression</span>
+<span class="c1"># allows multidimension spec with a tuple syntax in front</span>
+<span class="c1"># of the letter code &#39;(2,3)f4&#39; and &#39; (  2 ,  3  )  f4  &#39;</span>
+<span class="c1"># are equally allowed</span>
+
+<span class="n">numfmt</span> <span class="o">=</span> <span class="n">nt</span><span class="o">.</span><span class="n">typeDict</span>
+
+<span class="c1"># taken from OrderedDict recipes in the Python documentation</span>
+<span class="c1"># https://docs.python.org/3.3/library/collections.html#ordereddict-examples-and-recipes</span>
+<span class="k">class</span> <span class="nc">_OrderedCounter</span><span class="p">(</span><span class="n">Counter</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Counter that remembers the order elements are first encountered&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">(</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="n">OrderedDict</span><span class="p">(</span><span class="bp">self</span><span class="p">),)</span>
+
+
+<span class="k">def</span> <span class="nf">find_duplicate</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find duplication in a list, return a list of duplicated elements&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">item</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">counts</span> <span class="ow">in</span> <span class="n">_OrderedCounter</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">counts</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="p">]</span>
+
+
+<span class="nd">@set_module</span><span class="p">(</span><span class="s1">&#39;numpy&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">format_parser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to convert formats, names, titles description to a dtype.</span>
+
+<span class="sd">    After constructing the format_parser object, the dtype attribute is</span>
+<span class="sd">    the converted data-type:</span>
+<span class="sd">    ``dtype = format_parser(formats, names, titles).dtype``</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dtype : dtype</span>
+<span class="sd">        The converted data-type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    formats : str or list of str</span>
+<span class="sd">        The format description, either specified as a string with</span>
+<span class="sd">        comma-separated format descriptions in the form ``&#39;f8, i4, a5&#39;``, or</span>
+<span class="sd">        a list of format description strings  in the form</span>
+<span class="sd">        ``[&#39;f8&#39;, &#39;i4&#39;, &#39;a5&#39;]``.</span>
+<span class="sd">    names : str or list/tuple of str</span>
+<span class="sd">        The field names, either specified as a comma-separated string in the</span>
+<span class="sd">        form ``&#39;col1, col2, col3&#39;``, or as a list or tuple of strings in the</span>
+<span class="sd">        form ``[&#39;col1&#39;, &#39;col2&#39;, &#39;col3&#39;]``.</span>
+<span class="sd">        An empty list can be used, in that case default field names</span>
+<span class="sd">        (&#39;f0&#39;, &#39;f1&#39;, ...) are used.</span>
+<span class="sd">    titles : sequence</span>
+<span class="sd">        Sequence of title strings. An empty list can be used to leave titles</span>
+<span class="sd">        out.</span>
+<span class="sd">    aligned : bool, optional</span>
+<span class="sd">        If True, align the fields by padding as the C-compiler would.</span>
+<span class="sd">        Default is False.</span>
+<span class="sd">    byteorder : str, optional</span>
+<span class="sd">        If specified, all the fields will be changed to the</span>
+<span class="sd">        provided byte-order.  Otherwise, the default byte-order is</span>
+<span class="sd">        used. For all available string specifiers, see `dtype.newbyteorder`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    dtype, typename, sctype2char</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; np.format_parser([&#39;&lt;f8&#39;, &#39;&lt;i4&#39;, &#39;&lt;a5&#39;], [&#39;col1&#39;, &#39;col2&#39;, &#39;col3&#39;],</span>
+<span class="sd">    ...                  [&#39;T1&#39;, &#39;T2&#39;, &#39;T3&#39;]).dtype</span>
+<span class="sd">    dtype([((&#39;T1&#39;, &#39;col1&#39;), &#39;&lt;f8&#39;), ((&#39;T2&#39;, &#39;col2&#39;), &#39;&lt;i4&#39;), ((&#39;T3&#39;, &#39;col3&#39;), &#39;S5&#39;)])</span>
+
+<span class="sd">    `names` and/or `titles` can be empty lists. If `titles` is an empty list,</span>
+<span class="sd">    titles will simply not appear. If `names` is empty, default field names</span>
+<span class="sd">    will be used.</span>
+
+<span class="sd">    &gt;&gt;&gt; np.format_parser([&#39;f8&#39;, &#39;i4&#39;, &#39;a5&#39;], [&#39;col1&#39;, &#39;col2&#39;, &#39;col3&#39;],</span>
+<span class="sd">    ...                  []).dtype</span>
+<span class="sd">    dtype([(&#39;col1&#39;, &#39;&lt;f8&#39;), (&#39;col2&#39;, &#39;&lt;i4&#39;), (&#39;col3&#39;, &#39;&lt;S5&#39;)])</span>
+<span class="sd">    &gt;&gt;&gt; np.format_parser([&#39;&lt;f8&#39;, &#39;&lt;i4&#39;, &#39;&lt;a5&#39;], [], []).dtype</span>
+<span class="sd">    dtype([(&#39;f0&#39;, &#39;&lt;f8&#39;), (&#39;f1&#39;, &#39;&lt;i4&#39;), (&#39;f2&#39;, &#39;S5&#39;)])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parseFormats</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">aligned</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setfieldnames</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_createdescr</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_descr</span>
+
+    <span class="k">def</span> <span class="nf">_parseFormats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parse the field formats &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">formats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Need formats argument&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span>
+                <span class="p">[(</span><span class="s1">&#39;f</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">format_</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">format_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">formats</span><span class="p">)],</span>
+                <span class="n">aligned</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">aligned</span><span class="p">)</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">fields</span>
+        <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)],</span> <span class="n">aligned</span><span class="p">)</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">fields</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_f_formats</span> <span class="o">=</span> <span class="p">[</span><span class="n">fields</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offsets</span> <span class="o">=</span> <span class="p">[</span><span class="n">fields</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nfields</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setfieldnames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;convert input field names into a list and assign to the _names</span>
+<span class="sd">        attribute &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]):</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;illegal input names </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_nfields</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># if the names are not specified, they will be assigned as</span>
+        <span class="c1">#  &quot;f0, f1, f2,...&quot;</span>
+        <span class="c1"># if not enough names are specified, they will be assigned as &quot;f[n],</span>
+        <span class="c1"># f[n+1],...&quot; etc. where n is the number of specified names...&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;f</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">),</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">_nfields</span><span class="p">)]</span>
+        <span class="c1"># check for redundant names</span>
+        <span class="n">_dup</span> <span class="o">=</span> <span class="n">find_duplicate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_dup</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duplicate field names: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">_dup</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">titles</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">titles</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_nfields</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nfields</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nfields</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_createdescr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">):</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">({</span><span class="s1">&#39;names&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span>
+                          <span class="s1">&#39;formats&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_f_formats</span><span class="p">,</span>
+                          <span class="s1">&#39;offsets&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_offsets</span><span class="p">,</span>
+                          <span class="s1">&#39;titles&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_titles</span><span class="p">})</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">byteorder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">byteorder</span> <span class="o">=</span> <span class="n">_byteorderconv</span><span class="p">[</span><span class="n">byteorder</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_descr</span> <span class="o">=</span> <span class="n">descr</span>
+
+<span class="k">class</span> <span class="nc">record</span><span class="p">(</span><span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A data-type scalar that allows field access as attribute lookup.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># manually set name and module so that this class&#39;s type shows up</span>
+    <span class="c1"># as numpy.record when printed</span>
+    <span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;record&#39;</span>
+    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;numpy&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">get_printoptions</span><span class="p">()[</span><span class="s1">&#39;legacy&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1.13&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">get_printoptions</span><span class="p">()[</span><span class="s1">&#39;legacy&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1.13&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;setfield&#39;</span><span class="p">,</span> <span class="s1">&#39;getfield&#39;</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">fielddict</span> <span class="o">=</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">fielddict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getfield</span><span class="p">(</span><span class="o">*</span><span class="n">res</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="c1"># if it has fields return a record,</span>
+            <span class="c1"># otherwise return the object</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dt</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1">#happens if field is Object type</span>
+                <span class="k">return</span> <span class="n">obj</span>
+            <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;record&#39; object has no &quot;</span>
+                    <span class="s2">&quot;attribute &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">attr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;setfield&#39;</span><span class="p">,</span> <span class="s1">&#39;getfield&#39;</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Cannot set &#39;</span><span class="si">%s</span><span class="s2">&#39; attribute&quot;</span> <span class="o">%</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="n">fielddict</span> <span class="o">=</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">fielddict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">setfield</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="o">*</span><span class="n">res</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;record&#39; object has no &quot;</span>
+                        <span class="s2">&quot;attribute &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">attr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indx</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indx</span><span class="p">)</span>
+
+        <span class="c1"># copy behavior of record.__getattribute__,</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># return a single element</span>
+            <span class="k">return</span> <span class="n">obj</span>
+
+<div class="viewcode-block" id="record.pprint"><a class="viewcode-back" href="../../../api/numpy.record.html#numpy.record.pprint">[docs]</a>    <span class="k">def</span> <span class="nf">pprint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pretty-print all fields.&quot;&quot;&quot;</span>
+        <span class="c1"># pretty-print all fields</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+        <span class="n">maxlen</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%%</span><span class="s1"> </span><span class="si">%d</span><span class="s1">s: </span><span class="si">%%</span><span class="s1">s&#39;</span> <span class="o">%</span> <span class="n">maxlen</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
+
+<span class="c1"># The recarray is almost identical to a standard array (which supports</span>
+<span class="c1">#   named fields already)  The biggest difference is that it can use</span>
+<span class="c1">#   attribute-lookup to find the fields and it is constructed using</span>
+<span class="c1">#   a record.</span>
+
+<span class="c1"># If byteorder is given it forces a particular byteorder on all</span>
+<span class="c1">#  the fields (and any subfields)</span>
+
+<span class="k">class</span> <span class="nc">recarray</span><span class="p">(</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct an ndarray that allows field access using attributes.</span>
+
+<span class="sd">    Arrays may have a data-types containing fields, analogous</span>
+<span class="sd">    to columns in a spread sheet.  An example is ``[(x, int), (y, float)]``,</span>
+<span class="sd">    where each entry in the array is a pair of ``(int, float)``.  Normally,</span>
+<span class="sd">    these attributes are accessed using dictionary lookups such as ``arr[&#39;x&#39;]``</span>
+<span class="sd">    and ``arr[&#39;y&#39;]``.  Record arrays allow the fields to be accessed as members</span>
+<span class="sd">    of the array, using ``arr.x`` and ``arr.y``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shape : tuple</span>
+<span class="sd">        Shape of output array.</span>
+<span class="sd">    dtype : data-type, optional</span>
+<span class="sd">        The desired data-type.  By default, the data-type is determined</span>
+<span class="sd">        from `formats`, `names`, `titles`, `aligned` and `byteorder`.</span>
+<span class="sd">    formats : list of data-types, optional</span>
+<span class="sd">        A list containing the data-types for the different columns, e.g.</span>
+<span class="sd">        ``[&#39;i4&#39;, &#39;f8&#39;, &#39;i4&#39;]``.  `formats` does *not* support the new</span>
+<span class="sd">        convention of using types directly, i.e. ``(int, float, int)``.</span>
+<span class="sd">        Note that `formats` must be a list, not a tuple.</span>
+<span class="sd">        Given that `formats` is somewhat limited, we recommend specifying</span>
+<span class="sd">        `dtype` instead.</span>
+<span class="sd">    names : tuple of str, optional</span>
+<span class="sd">        The name of each column, e.g. ``(&#39;x&#39;, &#39;y&#39;, &#39;z&#39;)``.</span>
+<span class="sd">    buf : buffer, optional</span>
+<span class="sd">        By default, a new array is created of the given shape and data-type.</span>
+<span class="sd">        If `buf` is specified and is an object exposing the buffer interface,</span>
+<span class="sd">        the array will use the memory from the existing buffer.  In this case,</span>
+<span class="sd">        the `offset` and `strides` keywords are available.</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    titles : tuple of str, optional</span>
+<span class="sd">        Aliases for column names.  For example, if `names` were</span>
+<span class="sd">        ``(&#39;x&#39;, &#39;y&#39;, &#39;z&#39;)`` and `titles` is</span>
+<span class="sd">        ``(&#39;x_coordinate&#39;, &#39;y_coordinate&#39;, &#39;z_coordinate&#39;)``, then</span>
+<span class="sd">        ``arr[&#39;x&#39;]`` is equivalent to both ``arr.x`` and ``arr.x_coordinate``.</span>
+<span class="sd">    byteorder : {&#39;&lt;&#39;, &#39;&gt;&#39;, &#39;=&#39;}, optional</span>
+<span class="sd">        Byte-order for all fields.</span>
+<span class="sd">    aligned : bool, optional</span>
+<span class="sd">        Align the fields in memory as the C-compiler would.</span>
+<span class="sd">    strides : tuple of ints, optional</span>
+<span class="sd">        Buffer (`buf`) is interpreted according to these strides (strides</span>
+<span class="sd">        define how many bytes each array element, row, column, etc.</span>
+<span class="sd">        occupy in memory).</span>
+<span class="sd">    offset : int, optional</span>
+<span class="sd">        Start reading buffer (`buf`) from this offset onwards.</span>
+<span class="sd">    order : {&#39;C&#39;, &#39;F&#39;}, optional</span>
+<span class="sd">        Row-major (C-style) or column-major (Fortran-style) order.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rec : recarray</span>
+<span class="sd">        Empty array of the given shape and type.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    rec.fromrecords : Construct a record array from data.</span>
+<span class="sd">    record : fundamental data-type for `recarray`.</span>
+<span class="sd">    format_parser : determine a data-type from formats, names, titles.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This constructor can be compared to ``empty``: it creates a new record</span>
+<span class="sd">    array but does not fill it with data.  To create a record array from data,</span>
+<span class="sd">    use one of the following methods:</span>
+
+<span class="sd">    1. Create a standard ndarray and convert it to a record array,</span>
+<span class="sd">       using ``arr.view(np.recarray)``</span>
+<span class="sd">    2. Use the `buf` keyword.</span>
+<span class="sd">    3. Use `np.rec.fromrecords`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Create an array with two fields, ``x`` and ``y``:</span>
+
+<span class="sd">    &gt;&gt;&gt; x = np.array([(1.0, 2), (3.0, 4)], dtype=[(&#39;x&#39;, &#39;&lt;f8&#39;), (&#39;y&#39;, &#39;&lt;i8&#39;)])</span>
+<span class="sd">    &gt;&gt;&gt; x</span>
+<span class="sd">    array([(1., 2), (3., 4)], dtype=[(&#39;x&#39;, &#39;&lt;f8&#39;), (&#39;y&#39;, &#39;&lt;i8&#39;)])</span>
+
+<span class="sd">    &gt;&gt;&gt; x[&#39;x&#39;]</span>
+<span class="sd">    array([1., 3.])</span>
+
+<span class="sd">    View the array as a record array:</span>
+
+<span class="sd">    &gt;&gt;&gt; x = x.view(np.recarray)</span>
+
+<span class="sd">    &gt;&gt;&gt; x.x</span>
+<span class="sd">    array([1., 3.])</span>
+
+<span class="sd">    &gt;&gt;&gt; x.y</span>
+<span class="sd">    array([2, 4])</span>
+
+<span class="sd">    Create a new, empty record array:</span>
+
+<span class="sd">    &gt;&gt;&gt; np.recarray((2,),</span>
+<span class="sd">    ... dtype=[(&#39;x&#39;, int), (&#39;y&#39;, float), (&#39;z&#39;, int)]) #doctest: +SKIP</span>
+<span class="sd">    rec.array([(-1073741821, 1.2249118382103472e-301, 24547520),</span>
+<span class="sd">           (3471280, 1.2134086255804012e-316, 0)],</span>
+<span class="sd">          dtype=[(&#39;x&#39;, &#39;&lt;i4&#39;), (&#39;y&#39;, &#39;&lt;f8&#39;), (&#39;z&#39;, &#39;&lt;i4&#39;)])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># manually set name and module so that this class&#39;s type shows</span>
+    <span class="c1"># up as &quot;numpy.recarray&quot; when printed</span>
+    <span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;recarray&#39;</span>
+    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;numpy&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">buf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">byteorder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">format_parser</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">)</span><span class="o">.</span><span class="n">_descr</span>
+
+        <span class="k">if</span> <span class="n">buf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">descr</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">descr</span><span class="p">),</span>
+                                      <span class="n">buffer</span><span class="o">=</span><span class="n">buf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+                                      <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">record</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># if self.dtype is not np.record, invoke __setattr__ which will</span>
+            <span class="c1"># convert it to a record if it is a void dtype.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+
+    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="c1"># See if ndarray has this attr, and return it if so. (note that this</span>
+        <span class="c1"># means a field with the same name as an ndarray attr cannot be</span>
+        <span class="c1"># accessed by attribute).</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>  <span class="c1"># attr must be a fieldname</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># look for a field with this name</span>
+        <span class="n">fielddict</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">fielddict</span><span class="p">[</span><span class="n">attr</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;recarray has no attribute </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getfield</span><span class="p">(</span><span class="o">*</span><span class="n">res</span><span class="p">)</span>
+
+        <span class="c1"># At this point obj will always be a recarray, since (see</span>
+        <span class="c1"># PyArray_GetField) the type of obj is inherited. Next, if obj.dtype is</span>
+        <span class="c1"># non-structured, convert it to an ndarray. Then if obj is structured</span>
+        <span class="c1"># with void type convert it to the same dtype.type (eg to preserve</span>
+        <span class="c1"># numpy.record type if present), since nested structured fields do not</span>
+        <span class="c1"># inherit type. Don&#39;t do this for non-void structures though.</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">ndarray</span><span class="p">)</span>
+
+    <span class="c1"># Save the dictionary.</span>
+    <span class="c1"># If the attr is a field name and not in the saved dictionary</span>
+    <span class="c1"># Undo any &quot;setting&quot; of the attribute and do a setfield</span>
+    <span class="c1"># Thus, you can&#39;t create attributes on-the-fly that are field names.</span>
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+
+        <span class="c1"># Automatically convert (void) structured types to records</span>
+        <span class="c1"># (but not non-void structures, subarrays, or non-structured voids)</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;dtype&#39;</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">((</span><span class="n">record</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+
+        <span class="n">newattr</span> <span class="o">=</span> <span class="n">attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">fielddict</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fielddict</span><span class="p">:</span>
+                <span class="n">exctype</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">raise</span> <span class="n">exctype</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fielddict</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fielddict</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ret</span>
+            <span class="k">if</span> <span class="n">newattr</span><span class="p">:</span>
+                <span class="c1"># We just added this one or this setattr worked on an</span>
+                <span class="c1"># internal attribute.</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">object</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">ret</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">fielddict</span><span class="p">[</span><span class="n">attr</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;record array has no attribute </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">setfield</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="o">*</span><span class="n">res</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indx</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">recarray</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">indx</span><span class="p">)</span>
+
+        <span class="c1"># copy behavior of getattr, except that here</span>
+        <span class="c1"># we might also be returning a single element</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">obj</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ndarray</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># return a single element</span>
+            <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">repr_dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">record</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="p">))):</span>
+            <span class="c1"># If this is a full record array (has numpy.record dtype),</span>
+            <span class="c1"># or if it has a scalar (non-void) dtype with no records,</span>
+            <span class="c1"># represent it using the rec.array function. Since rec.array</span>
+            <span class="c1"># converts dtype to a numpy.record for us, convert back</span>
+            <span class="c1"># to non-record before printing</span>
+            <span class="k">if</span> <span class="n">repr_dtype</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">record</span><span class="p">:</span>
+                <span class="n">repr_dtype</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">((</span><span class="n">nt</span><span class="o">.</span><span class="n">void</span><span class="p">,</span> <span class="n">repr_dtype</span><span class="p">))</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;rec.array(&quot;</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;rec.array(</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">dtype=</span><span class="si">%s</span><span class="s1">)&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># otherwise represent it using np.array plus a view</span>
+            <span class="c1"># This should only happen if the user is playing</span>
+            <span class="c1"># strange games with dtypes.</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;array(&quot;</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;array(</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">dtype=</span><span class="si">%s</span><span class="s1">).view(numpy.recarray)&#39;</span>
+
+        <span class="c1"># get data/shape string. logic taken from numeric.array_repr</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,):</span>
+            <span class="n">lst</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># show zero-length shape unless it is (0,)</span>
+            <span class="n">lst</span> <span class="o">=</span> <span class="s2">&quot;[], shape=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">),)</span>
+
+        <span class="n">lf</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">get_printoptions</span><span class="p">()[</span><span class="s1">&#39;legacy&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1.13&#39;</span><span class="p">:</span>
+            <span class="n">lf</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">lf</span>  <span class="c1"># trailing space</span>
+        <span class="k">return</span> <span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">lf</span><span class="p">,</span> <span class="n">repr_dtype</span><span class="p">)</span>
+
+<div class="viewcode-block" id="recarray.field"><a class="viewcode-back" href="../../../api/numpy.recarray.html#numpy.recarray.field">[docs]</a>    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">names</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+
+        <span class="n">fielddict</span> <span class="o">=</span> <span class="n">ndarray</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">fielddict</span><span class="p">[</span><span class="n">attr</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getfield</span><span class="p">(</span><span class="o">*</span><span class="n">res</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">obj</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">ndarray</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">setfield</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="o">*</span><span class="n">res</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">fromarrays</span><span class="p">(</span><span class="n">arrayList</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; create a record array from a (flat) list of arrays</span>
+
+<span class="sd">    &gt;&gt;&gt; x1=np.array([1,2,3,4])</span>
+<span class="sd">    &gt;&gt;&gt; x2=np.array([&#39;a&#39;,&#39;dd&#39;,&#39;xyz&#39;,&#39;12&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; x3=np.array([1.1,2,3,4])</span>
+<span class="sd">    &gt;&gt;&gt; r = np.core.records.fromarrays([x1,x2,x3],names=&#39;a,b,c&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(r[1])</span>
+<span class="sd">    (2, &#39;dd&#39;, 2.0) # may vary</span>
+<span class="sd">    &gt;&gt;&gt; x1[1]=34</span>
+<span class="sd">    &gt;&gt;&gt; r.a</span>
+<span class="sd">    array([1, 2, 3, 4])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">arrayList</span> <span class="o">=</span> <span class="p">[</span><span class="n">sb</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">arrayList</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">shape</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">arrayList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">,)</span>
+
+    <span class="k">if</span> <span class="n">formats</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># go through each object in the list to see if it is an ndarray</span>
+        <span class="c1"># and determine the formats.</span>
+        <span class="n">formats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">arrayList</span><span class="p">:</span>
+            <span class="n">formats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">_names</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">names</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">format_parser</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">_names</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">_names</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">_descr</span>
+
+    <span class="c1"># Determine shape from data-type.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">descr</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arrayList</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mismatch between the number of fields &quot;</span>
+                <span class="s2">&quot;and the number of arrays&quot;</span><span class="p">)</span>
+
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nn</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="n">nn</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">arrayList</span><span class="p">):</span>
+        <span class="n">nn</span> <span class="o">=</span> <span class="n">descr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span>
+        <span class="n">testshape</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="n">obj</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="n">nn</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">testshape</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;array-shape mismatch in array </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">k</span><span class="p">)</span>
+
+    <span class="n">_array</span> <span class="o">=</span> <span class="n">recarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">descr</span><span class="p">)</span>
+
+    <span class="c1"># populate the record array (makes a copy)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arrayList</span><span class="p">)):</span>
+        <span class="n">_array</span><span class="p">[</span><span class="n">_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">arrayList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">_array</span>
+
+<span class="k">def</span> <span class="nf">fromrecords</span><span class="p">(</span><span class="n">recList</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; create a recarray from a list of records in text form</span>
+
+<span class="sd">        The data in the same field can be heterogeneous, they will be promoted</span>
+<span class="sd">        to the highest data type.  This method is intended for creating</span>
+<span class="sd">        smaller record arrays.  If used to create large array without formats</span>
+<span class="sd">        defined</span>
+
+<span class="sd">        r=fromrecords([(2,3.,&#39;abc&#39;)]*100000)</span>
+
+<span class="sd">        it can be slow.</span>
+
+<span class="sd">        If formats is None, then this will auto-detect formats. Use list of</span>
+<span class="sd">        tuples rather than list of lists for faster processing.</span>
+
+<span class="sd">    &gt;&gt;&gt; r=np.core.records.fromrecords([(456,&#39;dbe&#39;,1.2),(2,&#39;de&#39;,1.3)],</span>
+<span class="sd">    ... names=&#39;col1,col2,col3&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(r[0])</span>
+<span class="sd">    (456, &#39;dbe&#39;, 1.2)</span>
+<span class="sd">    &gt;&gt;&gt; r.col1</span>
+<span class="sd">    array([456,   2])</span>
+<span class="sd">    &gt;&gt;&gt; r.col2</span>
+<span class="sd">    array([&#39;dbe&#39;, &#39;de&#39;], dtype=&#39;&lt;U3&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; import pickle</span>
+<span class="sd">    &gt;&gt;&gt; pickle.loads(pickle.dumps(r))</span>
+<span class="sd">    rec.array([(456, &#39;dbe&#39;, 1.2), (  2, &#39;de&#39;, 1.3)],</span>
+<span class="sd">              dtype=[(&#39;col1&#39;, &#39;&lt;i8&#39;), (&#39;col2&#39;, &#39;&lt;U3&#39;), (&#39;col3&#39;, &#39;&lt;f8&#39;)])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">formats</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># slower</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">recList</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="n">arrlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">sb</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="k">return</span> <span class="n">fromarrays</span><span class="p">(</span><span class="n">arrlist</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="n">formats</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span>
+                          <span class="n">titles</span><span class="o">=</span><span class="n">titles</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="n">aligned</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="n">byteorder</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">((</span><span class="n">record</span><span class="p">,</span> <span class="n">dtype</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">format_parser</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">)</span><span class="o">.</span><span class="n">_descr</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">recList</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">descr</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">shape</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">recList</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">long</span><span class="p">)):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">,)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can only deal with 1-d array.&quot;</span><span class="p">)</span>
+        <span class="n">_array</span> <span class="o">=</span> <span class="n">recarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">descr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_array</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">_array</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">recList</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="c1"># list of lists instead of list of tuples ?</span>
+        <span class="c1"># 2018-02-07, 1.14.1</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;fromrecords expected a list of tuples, may have received a list &quot;</span>
+            <span class="s2">&quot;of lists instead. In the future that will raise an error&quot;</span><span class="p">,</span>
+            <span class="ne">FutureWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_array</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">retval</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">:</span>
+            <span class="n">retval</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">retval</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">recarray</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">fromstring</span><span class="p">(</span><span class="n">datastring</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; create a (read-only) record array from binary data contained in</span>
+<span class="sd">    a string&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">formats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;fromstring() needs a &#39;dtype&#39; or &#39;formats&#39; argument&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="n">format_parser</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">)</span><span class="o">.</span><span class="n">_descr</span>
+
+    <span class="n">itemsize</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">itemsize</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">shape</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">shape</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">datastring</span><span class="p">)</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">//</span> <span class="n">itemsize</span>
+
+    <span class="n">_array</span> <span class="o">=</span> <span class="n">recarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">descr</span><span class="p">,</span> <span class="n">buf</span><span class="o">=</span><span class="n">datastring</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_array</span>
+
+<span class="k">def</span> <span class="nf">get_remaining_size</span><span class="p">(</span><span class="n">fd</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">-</span> <span class="n">fd</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">st_size</span> <span class="o">-</span> <span class="n">fd</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">size</span>
+
+<span class="k">def</span> <span class="nf">fromfile</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an array from binary file data</span>
+
+<span class="sd">    If file is a string or a path-like object then that file is opened,</span>
+<span class="sd">    else it is assumed to be a file object. The file object must</span>
+<span class="sd">    support random access (i.e. it must have tell and seek methods).</span>
+
+<span class="sd">    &gt;&gt;&gt; from tempfile import TemporaryFile</span>
+<span class="sd">    &gt;&gt;&gt; a = np.empty(10,dtype=&#39;f8,i4,a5&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; a[5] = (0.5,10,&#39;abcde&#39;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; fd=TemporaryFile()</span>
+<span class="sd">    &gt;&gt;&gt; a = a.newbyteorder(&#39;&lt;&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; a.tofile(fd)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; _ = fd.seek(0)</span>
+<span class="sd">    &gt;&gt;&gt; r=np.core.records.fromfile(fd, formats=&#39;f8,i4,a5&#39;, shape=10,</span>
+<span class="sd">    ... byteorder=&#39;&lt;&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(r[5])</span>
+<span class="sd">    (0.5, 10, &#39;abcde&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; r.shape</span>
+<span class="sd">    (10,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">formats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;fromfile() needs a &#39;dtype&#39; or &#39;formats&#39; argument&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">shape</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">long</span><span class="p">)):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">,)</span>
+
+    <span class="k">if</span> <span class="n">isfileobj</span><span class="p">(</span><span class="n">fd</span><span class="p">):</span>
+        <span class="c1"># file already opened</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">contextlib_nullcontext</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># open file</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os_fspath</span><span class="p">(</span><span class="n">fd</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">ctx</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">fd</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">get_remaining_size</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">format_parser</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">)</span><span class="o">.</span><span class="n">_descr</span>
+
+        <span class="n">itemsize</span> <span class="o">=</span> <span class="n">descr</span><span class="o">.</span><span class="n">itemsize</span>
+
+        <span class="n">shapeprod</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">nt</span><span class="o">.</span><span class="n">intp</span><span class="p">)</span>
+        <span class="n">shapesize</span> <span class="o">=</span> <span class="n">shapeprod</span> <span class="o">*</span> <span class="n">itemsize</span>
+        <span class="k">if</span> <span class="n">shapesize</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">shape</span><span class="p">[</span><span class="n">shape</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="o">-</span><span class="n">shapesize</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">shapeprod</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">nt</span><span class="o">.</span><span class="n">intp</span><span class="p">)</span>
+
+        <span class="n">nbytes</span> <span class="o">=</span> <span class="n">shapeprod</span> <span class="o">*</span> <span class="n">itemsize</span>
+
+        <span class="k">if</span> <span class="n">nbytes</span> <span class="o">&gt;</span> <span class="n">size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Not enough bytes left in file for specified shape and type&quot;</span><span class="p">)</span>
+
+        <span class="c1"># create the array</span>
+        <span class="n">_array</span> <span class="o">=</span> <span class="n">recarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">descr</span><span class="p">)</span>
+        <span class="n">nbytesread</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readinto</span><span class="p">(</span><span class="n">_array</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nbytesread</span> <span class="o">!=</span> <span class="n">nbytes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Didn&#39;t read as many bytes as expected&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_array</span>
+
+<span class="k">def</span> <span class="nf">array</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+          <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct a record array from a wide-variety of objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="nb">str</span><span class="p">))</span> <span class="ow">or</span> <span class="n">isfileobj</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span> <span class="ow">and</span>
+           <span class="p">(</span><span class="n">formats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must define formats (or dtype) if object is &quot;</span>
+                         <span class="s2">&quot;None, string, or an open file&quot;</span><span class="p">)</span>
+
+    <span class="n">kwds</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">format_parser</span><span class="p">(</span><span class="n">formats</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span>
+                              <span class="n">aligned</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">)</span><span class="o">.</span><span class="n">_descr</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">kwds</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;formats&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">,</span>
+                <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="n">names</span><span class="p">,</span>
+                <span class="s1">&#39;titles&#39;</span><span class="p">:</span> <span class="n">titles</span><span class="p">,</span>
+                <span class="s1">&#39;aligned&#39;</span><span class="p">:</span> <span class="n">aligned</span><span class="p">,</span>
+                <span class="s1">&#39;byteorder&#39;</span><span class="p">:</span> <span class="n">byteorder</span>
+                <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must define a shape if obj is None&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">recarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">buf</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">fromstring</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">fromrecords</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fromarrays</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">recarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">):</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">new</span>
+
+    <span class="k">elif</span> <span class="n">isfileobj</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">fromfile</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">):</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">new</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">recarray</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">interface</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__array_interface__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">interface</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown input type&quot;</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">recarray</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">Functions and classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../numpy.html">numpy</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

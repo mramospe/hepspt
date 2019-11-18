@@ -1,0 +1,7 @@
+unsignedinteger
+===============
+
+.. currentmodule:: numpy
+
+.. autoclass:: unsignedinteger
+   :show-inheritance:

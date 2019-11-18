@@ -1,0 +1,6 @@
+vander
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: vander

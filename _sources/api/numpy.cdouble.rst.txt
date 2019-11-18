@@ -1,0 +1,7 @@
+cdouble
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: cdouble
+   :show-inheritance:

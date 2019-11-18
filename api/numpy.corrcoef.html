@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>corrcoef &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msort" href="numpy.msort.html" />
+    <link rel="prev" title="cov" href="numpy.cov.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="corrcoef">
+<h1>corrcoef<a class="headerlink" href="#corrcoef" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.corrcoef">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">corrcoef</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y=None</em>, <em class="sig-param">rowvar=True</em>, <em class="sig-param">bias=&lt;no value&gt;</em>, <em class="sig-param">ddof=&lt;no value&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.corrcoef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Pearson product-moment correlation coefficients.</p>
+<p>Please refer to the documentation for <cite>cov</cite> for more detail.  The
+relationship between the correlation coefficient matrix, <cite>R</cite>, and the
+covariance matrix, <cite>C</cite>, is</p>
+<div class="math notranslate nohighlight">
+\[R_{ij} = \frac{ C_{ij} } { \sqrt{ C_{ii} * C_{jj} } }\]</div>
+<p>The values of <cite>R</cite> are between -1 and 1, inclusive.</p>
+<dl>
+<dt>x<span class="classifier">array_like</span></dt><dd><p>A 1-D or 2-D array containing multiple variables and observations.
+Each row of <cite>x</cite> represents a variable, and each column a single
+observation of all those variables. Also see <cite>rowvar</cite> below.</p>
+</dd>
+<dt>y<span class="classifier">array_like, optional</span></dt><dd><p>An additional set of variables and observations. <cite>y</cite> has the same
+shape as <cite>x</cite>.</p>
+</dd>
+<dt>rowvar<span class="classifier">bool, optional</span></dt><dd><p>If <cite>rowvar</cite> is True (default), then each row represents a
+variable, with observations in the columns. Otherwise, the relationship
+is transposed: each column represents a variable, while the rows
+contain observations.</p>
+</dd>
+<dt>bias<span class="classifier">_NoValue, optional</span></dt><dd><p>Has no effect, do not use.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.10.0.</span></p>
+</div>
+</dd>
+<dt>ddof<span class="classifier">_NoValue, optional</span></dt><dd><p>Has no effect, do not use.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.10.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>R<span class="classifier">ndarray</span></dt><dd><p>The correlation coefficient matrix of the variables.</p>
+</dd>
+</dl>
+<p>cov : Covariance matrix</p>
+<p>Due to floating point rounding the resulting array may not be Hermitian,
+the diagonal elements may not be 1, and the elements may not satisfy the
+inequality abs(a) &lt;= 1. The real and imaginary parts are clipped to the
+interval [-1,  1] in an attempt to improve on that situation but is not
+much help in the complex case.</p>
+<p>This function accepts but discards arguments <cite>bias</cite> and <cite>ddof</cite>.  This is
+for backwards compatibility with previous versions of this function.  These
+arguments had no effect on the return values of the function and can be
+safely ignored in this and previous versions of numpy.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.cov.html" title="previous chapter">cov</a></li>
+      <li>Next: <a href="numpy.msort.html" title="next chapter">msort</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.corrcoef.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

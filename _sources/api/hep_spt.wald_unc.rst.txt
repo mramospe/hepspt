@@ -1,0 +1,6 @@
+wald_unc
+========
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: wald_unc

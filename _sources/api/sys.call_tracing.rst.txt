@@ -1,0 +1,6 @@
+call_tracing
+============
+
+.. currentmodule:: sys
+
+.. autofunction:: call_tracing

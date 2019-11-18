@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>outer &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="vdot" href="numpy.vdot.html" />
+    <link rel="prev" title="dot" href="numpy.dot.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="outer">
+<h1>outer<a class="headerlink" href="#outer" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.outer">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">outer</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">b</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.outer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the outer product of two vectors.</p>
+<p>Given two vectors, <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[a0,</span> <span class="pre">a1,</span> <span class="pre">...,</span> <span class="pre">aM]</span></code> and
+<code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">[b0,</span> <span class="pre">b1,</span> <span class="pre">...,</span> <span class="pre">bN]</span></code>,
+the outer product <a class="footnote-reference brackets" href="#id2" id="id1">1</a> is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">a0</span><span class="o">*</span><span class="n">b0</span>  <span class="n">a0</span><span class="o">*</span><span class="n">b1</span> <span class="o">...</span> <span class="n">a0</span><span class="o">*</span><span class="n">bN</span> <span class="p">]</span>
+ <span class="p">[</span><span class="n">a1</span><span class="o">*</span><span class="n">b0</span>    <span class="o">.</span>
+ <span class="p">[</span> <span class="o">...</span>          <span class="o">.</span>
+ <span class="p">[</span><span class="n">aM</span><span class="o">*</span><span class="n">b0</span>            <span class="n">aM</span><span class="o">*</span><span class="n">bN</span> <span class="p">]]</span>
+</pre></div>
+</div>
+<dl>
+<dt>a<span class="classifier">(M,) array_like</span></dt><dd><p>First input vector.  Input is flattened if
+not already 1-dimensional.</p>
+</dd>
+<dt>b<span class="classifier">(N,) array_like</span></dt><dd><p>Second input vector.  Input is flattened if
+not already 1-dimensional.</p>
+</dd>
+<dt>out<span class="classifier">(M, N) ndarray, optional</span></dt><dd><p>A location where the result is stored</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.9.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">(M, N) ndarray</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">out[i,</span> <span class="pre">j]</span> <span class="pre">=</span> <span class="pre">a[i]</span> <span class="pre">*</span> <span class="pre">b[j]</span></code></p>
+</dd>
+</dl>
+<p>inner
+einsum : <code class="docutils literal notranslate"><span class="pre">einsum('i,j-&gt;ij',</span> <span class="pre">a.ravel(),</span> <span class="pre">b.ravel())</span></code> is the equivalent.
+ufunc.outer : A generalization to N dimensions and other operations.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">np.multiply.outer(a.ravel(),</span> <span class="pre">b.ravel())</span></code> is the equivalent.</p>
+</div></blockquote>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>: G. H. Golub and C. F. Van Loan, <em>Matrix Computations</em>, 3rd
+ed., Baltimore, MD, Johns Hopkins University Press, 1996,
+pg. 8.</p>
+</dd>
+</dl>
+<p>Make a (<em>very</em> coarse) grid for computing a Mandelbrot set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,)),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rl</span>
+<span class="go">array([[-2., -1.,  0.,  1.,  2.],</span>
+<span class="go">       [-2., -1.,  0.,  1.,  2.],</span>
+<span class="go">       [-2., -1.,  0.,  1.,  2.],</span>
+<span class="go">       [-2., -1.,  0.,  1.,  2.],</span>
+<span class="go">       [-2., -1.,  0.,  1.,  2.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">im</span>
+<span class="go">array([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],</span>
+<span class="go">       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],</span>
+<span class="go">       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],</span>
+<span class="go">       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],</span>
+<span class="go">       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">rl</span> <span class="o">+</span> <span class="n">im</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span>
+<span class="go">array([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],</span>
+<span class="go">       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],</span>
+<span class="go">       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],</span>
+<span class="go">       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],</span>
+<span class="go">       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])</span>
+</pre></div>
+</div>
+<p>An example using a “vector” of letters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">array([[&#39;a&#39;, &#39;aa&#39;, &#39;aaa&#39;],</span>
+<span class="go">       [&#39;b&#39;, &#39;bb&#39;, &#39;bbb&#39;],</span>
+<span class="go">       [&#39;c&#39;, &#39;cc&#39;, &#39;ccc&#39;]], dtype=object)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.dot.html" title="previous chapter">dot</a></li>
+      <li>Next: <a href="numpy.vdot.html" title="next chapter">vdot</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.outer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,33 @@
+void
+====
+
+.. currentmodule:: numpy
+
+.. autoclass:: void
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~void.base
+      ~void.dtype
+      ~void.flags
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~void.getfield
+      ~void.setfield
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: base
+   .. autoattribute:: dtype
+   .. autoattribute:: flags
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: getfield
+   .. automethod:: setfield

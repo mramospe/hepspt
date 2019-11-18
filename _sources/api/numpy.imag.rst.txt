@@ -1,0 +1,6 @@
+imag
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: imag

@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>binary_repr &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="base_repr" href="numpy.base_repr.html" />
+    <link rel="prev" title="isscalar" href="numpy.isscalar.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="binary-repr">
+<h1>binary_repr<a class="headerlink" href="#binary-repr" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.binary_repr">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">binary_repr</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">width=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.binary_repr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the binary representation of the input number as a string.</p>
+<p>For negative numbers, if width is not given, a minus sign is added to the
+front. If width is given, the two’s complement of the number is
+returned, with respect to that width.</p>
+<p>In a two’s-complement system negative numbers are represented by the two’s
+complement of the absolute value. This is the most common method of
+representing signed integers on computers <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. A N-bit two’s-complement
+system can represent every integer in the range
+<span class="math notranslate nohighlight">\(-2^{N-1}\)</span> to <span class="math notranslate nohighlight">\(+2^{N-1}-1\)</span>.</p>
+<dl>
+<dt>num<span class="classifier">int</span></dt><dd><p>Only an integer decimal number can be used.</p>
+</dd>
+<dt>width<span class="classifier">int, optional</span></dt><dd><p>The length of the returned string if <cite>num</cite> is positive, or the length
+of the two’s complement if <cite>num</cite> is negative, provided that <cite>width</cite> is
+at least a sufficient number of bits for <cite>num</cite> to be represented in the
+designated form.</p>
+<p>If the <cite>width</cite> value is insufficient, it will be ignored, and <cite>num</cite> will
+be returned in binary (<cite>num</cite> &gt; 0) or two’s complement (<cite>num</cite> &lt; 0) form
+with its width equal to the minimum number of bits needed to represent
+the number in the designated form. This behavior is deprecated and will
+later raise an error.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.12.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>bin<span class="classifier">str</span></dt><dd><p>Binary representation of <cite>num</cite> or two’s complement of <cite>num</cite>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>base_repr: Return a string representation of a number in the given base</dt><dd><p>system.</p>
+</dd>
+</dl>
+<p>bin: Python’s built-in binary representation generator of an integer.</p>
+<p><cite>binary_repr</cite> is equivalent to using <cite>base_repr</cite> with base 2, but about 25x
+faster.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Wikipedia, “Two’s complement”,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Two's_complement">https://en.wikipedia.org/wiki/Two’s_complement</a></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;11&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;-11&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">&#39;0011&#39;</span>
+</pre></div>
+</div>
+<p>The two’s complement is returned when the input number is negative and
+width is specified:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;101&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">&#39;11101&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.isscalar.html" title="previous chapter">isscalar</a></li>
+      <li>Next: <a href="numpy.base_repr.html" title="next chapter">base_repr</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.binary_repr.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

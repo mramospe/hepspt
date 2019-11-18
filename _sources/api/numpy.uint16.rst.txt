@@ -1,0 +1,7 @@
+uint16
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: uint16
+   :show-inheritance:

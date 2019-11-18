@@ -1,0 +1,6 @@
+datetime_data
+=============
+
+.. currentmodule:: numpy
+
+.. autofunction:: datetime_data

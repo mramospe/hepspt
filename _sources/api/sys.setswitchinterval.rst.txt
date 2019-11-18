@@ -1,0 +1,6 @@
+setswitchinterval
+=================
+
+.. currentmodule:: sys
+
+.. autofunction:: setswitchinterval

@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>block &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hstack" href="numpy.hstack.html" />
+    <link rel="prev" title="atleast_3d" href="numpy.atleast_3d.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="block">
+<h1>block<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.block">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">block</code><span class="sig-paren">(</span><em class="sig-param">arrays</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble an nd-array from nested lists of blocks.</p>
+<p>Blocks in the innermost lists are concatenated (see <cite>concatenate</cite>) along
+the last dimension (-1), then these are concatenated along the
+second-last dimension (-2), and so on until the outermost list is reached.</p>
+<p>Blocks can be of any dimension, but will not be broadcasted using the normal
+rules. Instead, leading axes of size 1 are inserted, to make <code class="docutils literal notranslate"><span class="pre">block.ndim</span></code>
+the same for all blocks. This is primarily useful for working with scalars,
+and means that code like <code class="docutils literal notranslate"><span class="pre">np.block([v,</span> <span class="pre">1])</span></code> is valid, where
+<code class="docutils literal notranslate"><span class="pre">v.ndim</span> <span class="pre">==</span> <span class="pre">1</span></code>.</p>
+<p>When the nested list is two levels deep, this allows block matrices to be
+constructed from their components.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.13.0.</span></p>
+</div>
+<dl>
+<dt>arrays<span class="classifier">nested list of array_like or scalars (but not tuples)</span></dt><dd><p>If passed a single ndarray or scalar (a nested list of depth 0), this
+is returned unmodified (and not copied).</p>
+<p>Elements shapes must match along the appropriate axes (without
+broadcasting), but leading 1s will be prepended to the shape as
+necessary to make the dimensions match.</p>
+</dd>
+</dl>
+<dl>
+<dt>block_array<span class="classifier">ndarray</span></dt><dd><p>The array assembled from the given blocks.</p>
+<p>The dimensionality of the output is equal to the greatest of:
+* the dimensionality of all the inputs
+* the depth to which the input list is nested</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ValueError</dt><dd><ul class="simple">
+<li><p>If list depths are mismatched - for instance, <code class="docutils literal notranslate"><span class="pre">[[a,</span> <span class="pre">b],</span> <span class="pre">c]</span></code> is
+illegal, and should be spelt <code class="docutils literal notranslate"><span class="pre">[[a,</span> <span class="pre">b],</span> <span class="pre">[c]]</span></code></p></li>
+<li><p>If lists are empty - for instance, <code class="docutils literal notranslate"><span class="pre">[[a,</span> <span class="pre">b],</span> <span class="pre">[]]</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>concatenate : Join a sequence of arrays together.
+stack : Stack arrays in sequence along a new dimension.
+hstack : Stack arrays in sequence horizontally (column wise).
+vstack : Stack arrays in sequence vertically (row wise).
+dstack : Stack arrays in sequence depth wise (along third dimension).
+vsplit : Split array into a list of multiple sub-arrays vertically.</p>
+<p>When called with only scalars, <code class="docutils literal notranslate"><span class="pre">np.block</span></code> is equivalent to an ndarray
+call. So <code class="docutils literal notranslate"><span class="pre">np.block([[1,</span> <span class="pre">2],</span> <span class="pre">[3,</span> <span class="pre">4]])</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">np.array([[1,</span> <span class="pre">2],</span> <span class="pre">[3,</span> <span class="pre">4]])</span></code>.</p>
+<p>This function does not enforce that the blocks lie on a fixed grid.
+<code class="docutils literal notranslate"><span class="pre">np.block([[a,</span> <span class="pre">b],</span> <span class="pre">[c,</span> <span class="pre">d]])</span></code> is not restricted to arrays of the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AAAbb</span>
+<span class="n">AAAbb</span>
+<span class="n">cccDD</span>
+</pre></div>
+</div>
+<p>But is also allowed to produce, for some <code class="docutils literal notranslate"><span class="pre">a,</span> <span class="pre">b,</span> <span class="pre">c,</span> <span class="pre">d</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AAAbb</span>
+<span class="n">AAAbb</span>
+<span class="n">cDDDD</span>
+</pre></div>
+</div>
+<p>Since concatenation happens along the last axis first, <cite>block</cite> is _not_
+capable of producing the following directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AAAbb</span>
+<span class="n">cccbb</span>
+<span class="n">cccDD</span>
+</pre></div>
+</div>
+<p>Matlab’s “square bracket stacking”, <code class="docutils literal notranslate"><span class="pre">[A,</span> <span class="pre">B,</span> <span class="pre">...;</span> <span class="pre">p,</span> <span class="pre">q,</span> <span class="pre">...]</span></code>, is
+equivalent to <code class="docutils literal notranslate"><span class="pre">np.block([[A,</span> <span class="pre">B,</span> <span class="pre">...],</span> <span class="pre">[p,</span> <span class="pre">q,</span> <span class="pre">...]])</span></code>.</p>
+<p>The most common use of this function is to build a block matrix</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">A</span><span class="p">,</span>               <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">B</span>               <span class="p">]</span>
+<span class="gp">... </span><span class="p">])</span>
+<span class="go">array([[2., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 2., 0., 0., 0.],</span>
+<span class="go">       [1., 1., 3., 0., 0.],</span>
+<span class="go">       [1., 1., 0., 3., 0.],</span>
+<span class="go">       [1., 1., 0., 0., 3.]])</span>
+</pre></div>
+</div>
+<p>With a list of depth 1, <cite>block</cite> can be used as <cite>hstack</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>              <span class="c1"># hstack([1, 2, 3])</span>
+<span class="go">array([1, 2, 3])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>             <span class="c1"># hstack([a, b, 10])</span>
+<span class="go">array([ 1,  2,  3,  2,  3,  4, 10])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">])</span>                 <span class="c1"># hstack([A, B])</span>
+<span class="go">array([[1, 1, 2, 2],</span>
+<span class="go">       [1, 1, 2, 2]])</span>
+</pre></div>
+</div>
+<p>With a list of depth 2, <cite>block</cite> can be used in place of <cite>vstack</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">a</span><span class="p">],</span> <span class="p">[</span><span class="n">b</span><span class="p">]])</span>             <span class="c1"># vstack([a, b])</span>
+<span class="go">array([[1, 2, 3],</span>
+<span class="go">       [2, 3, 4]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A</span><span class="p">],</span> <span class="p">[</span><span class="n">B</span><span class="p">]])</span>             <span class="c1"># vstack([A, B])</span>
+<span class="go">array([[1, 1],</span>
+<span class="go">       [1, 1],</span>
+<span class="go">       [2, 2],</span>
+<span class="go">       [2, 2]])</span>
+</pre></div>
+</div>
+<p>It can also be used in places of <cite>atleast_1d</cite> and <cite>atleast_2d</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([</span><span class="n">a</span><span class="p">])</span>                    <span class="c1"># atleast_1d(a)</span>
+<span class="go">array([0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([</span><span class="n">b</span><span class="p">])</span>                    <span class="c1"># atleast_1d(b)</span>
+<span class="go">array([1])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">a</span><span class="p">]])</span>                  <span class="c1"># atleast_2d(a)</span>
+<span class="go">array([[0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">b</span><span class="p">]])</span>                  <span class="c1"># atleast_2d(b)</span>
+<span class="go">array([[1]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.atleast_3d.html" title="previous chapter">atleast_3d</a></li>
+      <li>Next: <a href="numpy.hstack.html" title="next chapter">hstack</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.block.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

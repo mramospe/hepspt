@@ -1,0 +1,6 @@
+tensordot
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: tensordot

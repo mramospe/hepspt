@@ -1,0 +1,7 @@
+uint0
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: uint0
+   :show-inheritance:

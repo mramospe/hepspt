@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>RemotePath &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SSHPath" href="hep_rfm.SSHPath.html" />
+    <link rel="prev" title="ProtocolPath" href="hep_rfm.ProtocolPath.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="remotepath">
+<h1>RemotePath<a class="headerlink" href="#remotepath" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hep_rfm.RemotePath">
+<em class="property">class </em><code class="sig-prename descclassname">hep_rfm.</code><code class="sig-name descname">RemotePath</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">path_checker=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_rfm/protocols.html#RemotePath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_rfm.RemotePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath" title="hep_rfm.protocols.ProtocolPath"><code class="docutils literal notranslate"><span class="pre">hep_rfm.ProtocolPath</span></code></a></p>
+<p>Represent a remote path.
+This is an abstract class, any class inheriting from it must override
+the following methods:
+1. <a class="reference internal" href="hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath.copy" title="hep_rfm.ProtocolPath.copy"><code class="xref py py-func docutils literal notranslate"><span class="pre">ProtocolPath.copy()</span></code></a>
+2. <a class="reference internal" href="#hep_rfm.RemotePath.join_path" title="hep_rfm.RemotePath.join_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">RemotePath.join_path()</span></code></a> (must be decorated with <a class="reference external" href="https://docs.python.org/3/library/functions.html#staticmethod" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">staticmethod()</span></code></a>)
+4. <a class="reference internal" href="hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath.mkdirs" title="hep_rfm.ProtocolPath.mkdirs"><code class="xref py py-func docutils literal notranslate"><span class="pre">ProtocolPath.mkdirs()</span></code></a>
+5. <a class="reference internal" href="#hep_rfm.RemotePath.split_path" title="hep_rfm.RemotePath.split_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">RemotePath.split_path()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – path to save, pointing to a file.</p></li>
+<li><p><strong>path_checker</strong> (<em>function</em>) – possible function that checks the the given path         actually corresponds to the protocol. It must take a path as argument         and return a bool.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – if the path does not satisfy the requirements         from “path_checker”.</p>
+</dd>
+</dl>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hep_rfm.RemotePath.join_path" title="hep_rfm.RemotePath.join_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_path</span></code></a>(prefix, path)</p></td>
+<td><p>Policy to merge a prefix and a path in this protocol.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hep_rfm.RemotePath.split_path" title="hep_rfm.RemotePath.split_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_path</span></code></a>()</p></td>
+<td><p>Split the remote path in the server specifications and path in the server.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="hep_rfm.RemotePath.join_path">
+<em class="property">static </em><code class="sig-name descname">join_path</code><span class="sig-paren">(</span><em class="sig-param">prefix</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_rfm/protocols.html#RemotePath.join_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_rfm.RemotePath.join_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Policy to merge a prefix and a path in this protocol.
+In this case, this is an abstract method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – prefix to add to the current path.</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – path to the file in the remote.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result of joining the prefix and the path for this protocol.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_rfm.RemotePath.split_path">
+<code class="sig-name descname">split_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_rfm/protocols.html#RemotePath.split_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_rfm.RemotePath.split_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split the remote path in the server specifications and path in the
+server.
+In this case, this is an abstract method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="hep_rfm.ProtocolPath.html" title="previous chapter">ProtocolPath</a></li>
+      <li>Next: <a href="hep_rfm.SSHPath.html" title="next chapter">SSHPath</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/hep_rfm.RemotePath.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,17 @@
+memmap
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: memmap
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~memmap.flush
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: flush

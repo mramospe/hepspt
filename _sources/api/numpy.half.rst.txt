@@ -1,0 +1,17 @@
+half
+====
+
+.. currentmodule:: numpy
+
+.. autoclass:: half
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~half.as_integer_ratio
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: as_integer_ratio

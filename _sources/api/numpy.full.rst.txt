@@ -1,0 +1,6 @@
+full
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: full

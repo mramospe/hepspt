@@ -1,0 +1,6 @@
+polydiv
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: polydiv

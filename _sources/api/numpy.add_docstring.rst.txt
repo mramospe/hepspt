@@ -1,0 +1,6 @@
+add_docstring
+=============
+
+.. currentmodule:: numpy
+
+.. autofunction:: add_docstring

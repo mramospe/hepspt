@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>histogram &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="histogramdd" href="numpy.histogramdd.html" />
+    <link rel="prev" title="nanquantile" href="numpy.nanquantile.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="histogram">
+<h1>histogram<a class="headerlink" href="#histogram" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.histogram">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">histogram</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">bins=10</em>, <em class="sig-param">range=None</em>, <em class="sig-param">normed=None</em>, <em class="sig-param">weights=None</em>, <em class="sig-param">density=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the histogram of a set of data.</p>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>Input data. The histogram is computed over the flattened array.</p>
+</dd>
+<dt>bins<span class="classifier">int or sequence of scalars or str, optional</span></dt><dd><p>If <cite>bins</cite> is an int, it defines the number of equal-width
+bins in the given range (10, by default). If <cite>bins</cite> is a
+sequence, it defines a monotonically increasing array of bin edges,
+including the rightmost edge, allowing for non-uniform bin widths.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.11.0.</span></p>
+</div>
+<p>If <cite>bins</cite> is a string, it defines the method used to calculate the
+optimal bin width, as defined by <cite>histogram_bin_edges</cite>.</p>
+</dd>
+<dt>range<span class="classifier">(float, float), optional</span></dt><dd><p>The lower and upper range of the bins.  If not provided, range
+is simply <code class="docutils literal notranslate"><span class="pre">(a.min(),</span> <span class="pre">a.max())</span></code>.  Values outside the range are
+ignored. The first element of the range must be less than or
+equal to the second. <cite>range</cite> affects the automatic bin
+computation as well. While bin width is computed to be optimal
+based on the actual data within <cite>range</cite>, the bin count will fill
+the entire range including portions containing no data.</p>
+</dd>
+</dl>
+<p>normed : bool, optional</p>
+<blockquote>
+<div><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.6.0.</span></p>
+</div>
+<p>This is equivalent to the <cite>density</cite> argument, but produces incorrect
+results for unequal bin widths. It should not be used.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.15.0: </span>DeprecationWarnings are actually emitted.</p>
+</div>
+</div></blockquote>
+<dl>
+<dt>weights<span class="classifier">array_like, optional</span></dt><dd><p>An array of weights, of the same shape as <cite>a</cite>.  Each value in
+<cite>a</cite> only contributes its associated weight towards the bin count
+(instead of 1). If <cite>density</cite> is True, the weights are
+normalized, so that the integral of the density over the range
+remains 1.</p>
+</dd>
+<dt>density<span class="classifier">bool, optional</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the result will contain the number of samples in
+each bin. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the result is the value of the
+probability <em>density</em> function at the bin, normalized such that
+the <em>integral</em> over the range is 1. Note that the sum of the
+histogram values will not be equal to 1 unless bins of unity
+width are chosen; it is not a probability <em>mass</em> function.</p>
+<p>Overrides the <code class="docutils literal notranslate"><span class="pre">normed</span></code> keyword if given.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>hist<span class="classifier">array</span></dt><dd><p>The values of the histogram. See <cite>density</cite> and <cite>weights</cite> for a
+description of the possible semantics.</p>
+</dd>
+<dt>bin_edges<span class="classifier">array of dtype float</span></dt><dd><p>Return the bin edges <code class="docutils literal notranslate"><span class="pre">(length(hist)+1)</span></code>.</p>
+</dd>
+</dl>
+<p>histogramdd, bincount, searchsorted, digitize, histogram_bin_edges</p>
+<p>All but the last (righthand-most) bin is half-open.  In other words,
+if <cite>bins</cite> is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>then the first bin is <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2)</span></code> (including 1, but excluding 2) and
+the second <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3)</span></code>.  The last bin, however, is <code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">4]</span></code>, which
+<em>includes</em> 4.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">(array([0, 2, 1]), array([0, 1, 2, 3]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">(array([0.25, 0.25, 0.25, 0.25]), array([0, 1, 2, 3, 4]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">(array([1, 4, 1]), array([0, 1, 2, 3]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hist</span>
+<span class="go">array([0.5, 0. , 0.5, 0. , 0. , 0.5, 0. , 0.5, 0. , 0.5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="go">2.4999999999999996</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hist</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">))</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.11.0.</span></p>
+</div>
+<p>Automated Bin Selection Methods example, using 2 peak random data
+with 2000 points:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># deterministic random data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
+<span class="gp">... </span>               <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>  <span class="c1"># arguments are passed to np.histogram</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Histogram with &#39;auto&#39; bins&quot;</span><span class="p">)</span>
+<span class="go">Text(0.5, 1.0, &quot;Histogram with &#39;auto&#39; bins&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.nanquantile.html" title="previous chapter">nanquantile</a></li>
+      <li>Next: <a href="numpy.histogramdd.html" title="next chapter">histogramdd</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.histogram.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,6 @@
+seterrobj
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: seterrobj

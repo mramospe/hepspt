@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ufunc &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="broadcast" href="numpy.broadcast.html" />
+    <link rel="prev" title="nditer" href="numpy.nditer.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ufunc">
+<h1>ufunc<a class="headerlink" href="#ufunc" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.ufunc">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">ufunc</code><a class="headerlink" href="#numpy.ufunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Functions that operate element by element on whole arrays.</p>
+<p>To see the documentation for a specific ufunc, use <cite>info</cite>.  For
+example, <code class="docutils literal notranslate"><span class="pre">np.info(np.sin)</span></code>.  Because ufuncs are written in C
+(for speed) and linked into Python with NumPy’s ufunc facility,
+Python’s help() function finds this page whenever help() is called
+on a ufunc.</p>
+<p>A detailed explanation of ufuncs can be found in the docs for <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/ufuncs.html#ufuncs" title="(in NumPy v1.17)"><span>Universal functions (ufunc)</span></a>.</p>
+<p>op(<a href="#id1"><span class="problematic" id="id2">*</span></a>x[, out], where=True, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs)
+Apply <cite>op</cite> to the arguments <cite>*x</cite> elementwise, broadcasting the arguments.</p>
+<p>The broadcasting rules are:</p>
+<ul class="simple">
+<li><p>Dimensions of length 1 may be prepended to either array.</p></li>
+<li><p>Arrays may be repeated along dimensions of length 1.</p></li>
+</ul>
+<dl class="simple">
+<dt><a href="#id5"><span class="problematic" id="id6">*</span></a>x<span class="classifier">array_like</span></dt><dd><p>Input arrays.</p>
+</dd>
+<dt>out<span class="classifier">ndarray, None, or tuple of ndarray and None, optional</span></dt><dd><p>Alternate array object(s) in which to put the result; if provided, it
+must have a shape that the inputs broadcast to. A tuple of arrays
+(possible only as a keyword argument) must have length equal to the
+number of outputs; use <cite>None</cite> for uninitialized outputs to be
+allocated by the ufunc.</p>
+</dd>
+<dt>where<span class="classifier">array_like, optional</span></dt><dd><p>This condition is broadcast over the input. At locations where the
+condition is True, the <cite>out</cite> array will be set to the ufunc result.
+Elsewhere, the <cite>out</cite> array will retain its original value.
+Note that if an uninitialized <cite>out</cite> array is created via the default
+<code class="docutils literal notranslate"><span class="pre">out=None</span></code>, locations within it where the condition is False will
+remain uninitialized.</p>
+</dd>
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs</dt><dd><p>For other keyword-only arguments, see the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/ufuncs.html#ufuncs-kwargs" title="(in NumPy v1.17)"><span class="xref std std-ref">ufunc docs</span></a>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>r<span class="classifier">ndarray or tuple of ndarray</span></dt><dd><p><cite>r</cite> will have the shape that the arrays in <cite>x</cite> broadcast to; if <cite>out</cite> is
+provided, it will be returned. If not, <cite>r</cite> will be allocated and
+may contain uninitialized values. If the function has more than one
+output, then the result will be a tuple of arrays.</p>
+</dd>
+</dl>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.ufunc.identity" title="numpy.ufunc.identity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">identity</span></code></a></p></td>
+<td><p>The identity value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.ufunc.nargs" title="numpy.ufunc.nargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nargs</span></code></a></p></td>
+<td><p>The number of arguments.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.ufunc.nin" title="numpy.ufunc.nin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nin</span></code></a></p></td>
+<td><p>The number of inputs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.ufunc.nout" title="numpy.ufunc.nout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nout</span></code></a></p></td>
+<td><p>The number of outputs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.ufunc.ntypes" title="numpy.ufunc.ntypes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ntypes</span></code></a></p></td>
+<td><p>The number of types.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.ufunc.signature" title="numpy.ufunc.signature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signature</span></code></a></p></td>
+<td><p>Definition of the core elements a generalized ufunc operates on.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.ufunc.types" title="numpy.ufunc.types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">types</span></code></a></p></td>
+<td><p>Returns a list with types grouped input-&gt;output.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.ufunc.__call__" title="numpy.ufunc.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a></p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.ufunc.accumulate" title="numpy.ufunc.accumulate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accumulate</span></code></a>(array[, axis, dtype, out])</p></td>
+<td><p>Accumulate the result of applying the operator to all elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.ufunc.at" title="numpy.ufunc.at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">at</span></code></a>(a, indices[, b])</p></td>
+<td><p>Performs unbuffered in place operation on operand ‘a’ for elements specified by ‘indices’.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.ufunc.outer" title="numpy.ufunc.outer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer</span></code></a>(A, B, **kwargs)</p></td>
+<td><p>Apply the ufunc <cite>op</cite> to all pairs (a, b) with a in <cite>A</cite> and b in <cite>B</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.ufunc.reduce" title="numpy.ufunc.reduce"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce</span></code></a>(a[, axis, dtype, out, keepdims, …])</p></td>
+<td><p>Reduces <cite>a</cite>’s dimension by one, by applying ufunc along one axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.ufunc.reduceat" title="numpy.ufunc.reduceat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduceat</span></code></a>(a, indices[, axis, dtype, out])</p></td>
+<td><p>Performs a (local) reduce with specified slices over a single axis.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="numpy.ufunc.identity">
+<code class="sig-name descname">identity</code><a class="headerlink" href="#numpy.ufunc.identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The identity value.</p>
+<p>Data attribute containing the identity element for the ufunc, if it has one.
+If it does not, the attribute value is None.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">identity</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">identity</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">identity</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">identity</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.ufunc.nargs">
+<code class="sig-name descname">nargs</code><a class="headerlink" href="#numpy.ufunc.nargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of arguments.</p>
+<p>Data attribute containing the number of arguments the ufunc takes, including
+optional ones.</p>
+<p>Typically this value will be one more than what you might expect because all
+ufuncs take  the optional “out” argument.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">nargs</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">nargs</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">nargs</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">nargs</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.ufunc.nin">
+<code class="sig-name descname">nin</code><a class="headerlink" href="#numpy.ufunc.nin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of inputs.</p>
+<p>Data attribute containing the number of arguments the ufunc treats as input.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">nin</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">nin</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">nin</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">nin</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.ufunc.nout">
+<code class="sig-name descname">nout</code><a class="headerlink" href="#numpy.ufunc.nout" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of outputs.</p>
+<p>Data attribute containing the number of arguments the ufunc treats as output.</p>
+<p>Since all ufuncs can take output arguments, this will always be (at least) 1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">nout</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">nout</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">nout</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">nout</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.ufunc.ntypes">
+<code class="sig-name descname">ntypes</code><a class="headerlink" href="#numpy.ufunc.ntypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of types.</p>
+<p>The number of numerical NumPy types - of which there are 18 total - on which
+the ufunc can operate.</p>
+<p>numpy.ufunc.types</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">ntypes</span>
+<span class="go">18</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">ntypes</span>
+<span class="go">18</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">ntypes</span>
+<span class="go">17</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">ntypes</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="o">.</span><span class="n">ntypes</span>
+<span class="go">14</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.ufunc.signature">
+<code class="sig-name descname">signature</code><a class="headerlink" href="#numpy.ufunc.signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition of the core elements a generalized ufunc operates on.</p>
+<p>The signature determines how the dimensions of each input/output array
+are split into core and loop dimensions:</p>
+<ol class="arabic simple">
+<li><p>Each dimension in the signature is matched to a dimension of the
+corresponding passed-in array, starting from the end of the shape tuple.</p></li>
+<li><p>Core dimensions assigned to the same label in the signature must have
+exactly matching sizes, no broadcasting is performed.</p></li>
+<li><p>The core dimensions are removed from all inputs and the remaining
+dimensions are broadcast together, defining the loop dimensions.</p></li>
+</ol>
+<p>Generalized ufuncs are used internally in many linalg functions, and in
+the testing suite; the examples below are taken from these.
+For ufuncs that operate on scalars, the signature is <cite>None</cite>, which is
+equivalent to ‘()’ for every argument.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">umath_tests</span><span class="o">.</span><span class="n">matrix_multiply</span><span class="o">.</span><span class="n">signature</span>
+<span class="go">&#39;(m,n),(n,p)-&gt;(m,p)&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">_umath_linalg</span><span class="o">.</span><span class="n">det</span><span class="o">.</span><span class="n">signature</span>
+<span class="go">&#39;(m,m)-&gt;()&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">signature</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True  # equivalent to &#39;(),()-&gt;()&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.ufunc.types">
+<code class="sig-name descname">types</code><a class="headerlink" href="#numpy.ufunc.types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list with types grouped input-&gt;output.</p>
+<p>Data attribute listing the data-type “Domain-Range” groupings the ufunc can
+deliver. The data-types are given using the character codes.</p>
+<p>numpy.ufunc.ntypes</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">types</span>
+<span class="go">[&#39;??-&gt;?&#39;, &#39;bb-&gt;b&#39;, &#39;BB-&gt;B&#39;, &#39;hh-&gt;h&#39;, &#39;HH-&gt;H&#39;, &#39;ii-&gt;i&#39;, &#39;II-&gt;I&#39;, &#39;ll-&gt;l&#39;,</span>
+<span class="go">&#39;LL-&gt;L&#39;, &#39;qq-&gt;q&#39;, &#39;QQ-&gt;Q&#39;, &#39;ff-&gt;f&#39;, &#39;dd-&gt;d&#39;, &#39;gg-&gt;g&#39;, &#39;FF-&gt;F&#39;, &#39;DD-&gt;D&#39;,</span>
+<span class="go">&#39;GG-&gt;G&#39;, &#39;OO-&gt;O&#39;]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">types</span>
+<span class="go">[&#39;??-&gt;?&#39;, &#39;bb-&gt;b&#39;, &#39;BB-&gt;B&#39;, &#39;hh-&gt;h&#39;, &#39;HH-&gt;H&#39;, &#39;ii-&gt;i&#39;, &#39;II-&gt;I&#39;, &#39;ll-&gt;l&#39;,</span>
+<span class="go">&#39;LL-&gt;L&#39;, &#39;qq-&gt;q&#39;, &#39;QQ-&gt;Q&#39;, &#39;ff-&gt;f&#39;, &#39;dd-&gt;d&#39;, &#39;gg-&gt;g&#39;, &#39;FF-&gt;F&#39;, &#39;DD-&gt;D&#39;,</span>
+<span class="go">&#39;GG-&gt;G&#39;, &#39;OO-&gt;O&#39;]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">types</span>
+<span class="go">[&#39;bb-&gt;b&#39;, &#39;BB-&gt;B&#39;, &#39;hh-&gt;h&#39;, &#39;HH-&gt;H&#39;, &#39;ii-&gt;i&#39;, &#39;II-&gt;I&#39;, &#39;ll-&gt;l&#39;, &#39;LL-&gt;L&#39;,</span>
+<span class="go">&#39;qq-&gt;q&#39;, &#39;QQ-&gt;Q&#39;, &#39;ff-&gt;f&#39;, &#39;dd-&gt;d&#39;, &#39;gg-&gt;g&#39;, &#39;FF-&gt;F&#39;, &#39;DD-&gt;D&#39;, &#39;GG-&gt;G&#39;,</span>
+<span class="go">&#39;OO-&gt;O&#39;]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">types</span>
+<span class="go">[&#39;f-&gt;f&#39;, &#39;d-&gt;d&#39;, &#39;g-&gt;g&#39;, &#39;F-&gt;F&#39;, &#39;D-&gt;D&#39;, &#39;G-&gt;G&#39;, &#39;O-&gt;O&#39;]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="o">.</span><span class="n">types</span>
+<span class="go">[&#39;bb-&gt;b&#39;, &#39;BB-&gt;B&#39;, &#39;hh-&gt;h&#39;, &#39;HH-&gt;H&#39;, &#39;ii-&gt;i&#39;, &#39;II-&gt;I&#39;, &#39;ll-&gt;l&#39;, &#39;LL-&gt;L&#39;,</span>
+<span class="go">&#39;qq-&gt;q&#39;, &#39;QQ-&gt;Q&#39;, &#39;ff-&gt;f&#39;, &#39;dd-&gt;d&#39;, &#39;gg-&gt;g&#39;, &#39;OO-&gt;O&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.ufunc.__call__">
+<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.ufunc.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call self as a function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.ufunc.accumulate">
+<code class="sig-name descname">accumulate</code><span class="sig-paren">(</span><em class="sig-param">array</em>, <em class="sig-param">axis=0</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.ufunc.accumulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accumulate the result of applying the operator to all elements.</p>
+<p>For a one-dimensional array, accumulate produces results equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">identity</span>        <span class="c1"># op = the ufunc being applied to A&#39;s  elements</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p>For example, add.accumulate() is equivalent to np.cumsum().</p>
+<p>For a multi-dimensional array, accumulate is applied along only one
+axis (axis zero by default; see Examples below) so repeated use is
+necessary if one wants to accumulate over multiple axes.</p>
+<dl>
+<dt>array<span class="classifier">array_like</span></dt><dd><p>The array to act on.</p>
+</dd>
+<dt>axis<span class="classifier">int, optional</span></dt><dd><p>The axis along which to apply the accumulation; default is zero.</p>
+</dd>
+<dt>dtype<span class="classifier">data-type code, optional</span></dt><dd><p>The data-type used to represent the intermediate results. Defaults
+to the data-type of the output array if such is provided, or the
+the data-type of the input array if no output array is provided.</p>
+</dd>
+<dt>out<span class="classifier">ndarray, None, or tuple of ndarray and None, optional</span></dt><dd><p>A location into which the result is stored. If not provided or <cite>None</cite>,
+a freshly-allocated array is returned. For consistency with
+<code class="docutils literal notranslate"><span class="pre">ufunc.__call__</span></code>, if given as a keyword, this may be wrapped in a
+1-element tuple.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.13.0: </span>Tuples are allowed for keyword argument.</p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>r<span class="classifier">ndarray</span></dt><dd><p>The accumulated values. If <cite>out</cite> was supplied, <cite>r</cite> is a reference to
+<cite>out</cite>.</p>
+</dd>
+</dl>
+<p>1-D array examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">accumulate</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="go">array([ 2,  5, 10])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">accumulate</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="go">array([ 2,  6, 30])</span>
+</pre></div>
+</div>
+<p>2-D array examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">I</span>
+<span class="go">array([[1.,  0.],</span>
+<span class="go">       [0.,  1.]])</span>
+</pre></div>
+</div>
+<p>Accumulate along axis 0 (rows), down columns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">array([[1.,  0.],</span>
+<span class="go">       [1.,  1.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="c1"># no axis specified = axis zero</span>
+<span class="go">array([[1.,  0.],</span>
+<span class="go">       [1.,  1.]])</span>
+</pre></div>
+</div>
+<p>Accumulate along axis 1 (columns), through rows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">array([[1.,  1.],</span>
+<span class="go">       [0.,  1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.ufunc.at">
+<code class="sig-name descname">at</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">indices</em>, <em class="sig-param">b=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.ufunc.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs unbuffered in place operation on operand ‘a’ for elements
+specified by ‘indices’. For addition ufunc, this method is equivalent to
+<code class="docutils literal notranslate"><span class="pre">a[indices]</span> <span class="pre">+=</span> <span class="pre">b</span></code>, except that results are accumulated for elements that
+are indexed more than once. For example, <code class="docutils literal notranslate"><span class="pre">a[[0,0]]</span> <span class="pre">+=</span> <span class="pre">1</span></code> will only
+increment the first element once because of buffering, whereas
+<code class="docutils literal notranslate"><span class="pre">add.at(a,</span> <span class="pre">[0,0],</span> <span class="pre">1)</span></code> will increment the first element twice.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+</div>
+<dl class="simple">
+<dt>a<span class="classifier">array_like</span></dt><dd><p>The array to perform in place operation on.</p>
+</dd>
+<dt>indices<span class="classifier">array_like or tuple</span></dt><dd><p>Array like index object or slice object for indexing into first
+operand. If first operand has multiple dimensions, indices can be a
+tuple of array like index objects or slice objects.</p>
+</dd>
+<dt>b<span class="classifier">array_like</span></dt><dd><p>Second operand for ufuncs requiring two operands. Operand must be
+broadcastable over first operand after indexing or slicing.</p>
+</dd>
+</dl>
+<p>Set items 0 and 1 to their negative values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([-1, -2,  3,  4])</span>
+</pre></div>
+</div>
+<p>Increment items 0 and 1, and increment item 2 twice:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([2, 3, 5, 4])</span>
+</pre></div>
+</div>
+<p>Add items 0 and 1 in first array to second array,
+and store results in first array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([2, 4, 3, 4])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.ufunc.outer">
+<code class="sig-name descname">outer</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">B</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.ufunc.outer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the ufunc <cite>op</cite> to all pairs (a, b) with a in <cite>A</cite> and b in <cite>B</cite>.</p>
+<p>Let <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">A.ndim</span></code>, <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">B.ndim</span></code>. Then the result, <cite>C</cite>, of
+<code class="docutils literal notranslate"><span class="pre">op.outer(A,</span> <span class="pre">B)</span></code> is an array of dimension M + N such that:</p>
+<div class="math notranslate nohighlight">
+\[C[i_0, ..., i_{M-1}, j_0, ..., j_{N-1}] =
+op(A[i_0, ..., i_{M-1}], B[j_0, ..., j_{N-1}])\]</div>
+<p>For <cite>A</cite> and <cite>B</cite> one-dimensional, this is equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)):</span>
+        <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="c1"># op = ufunc in question</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>A<span class="classifier">array_like</span></dt><dd><p>First array</p>
+</dd>
+<dt>B<span class="classifier">array_like</span></dt><dd><p>Second array</p>
+</dd>
+<dt>kwargs<span class="classifier">any</span></dt><dd><p>Arguments to pass on to the ufunc. Typically <cite>dtype</cite> or <cite>out</cite>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>r<span class="classifier">ndarray</span></dt><dd><p>Output array</p>
+</dd>
+</dl>
+<p>numpy.outer</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">outer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="go">array([[ 4,  5,  6],</span>
+<span class="go">       [ 8, 10, 12],</span>
+<span class="go">       [12, 15, 18]])</span>
+</pre></div>
+</div>
+<p>A multi-dimensional example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">;</span> <span class="n">C</span>
+<span class="go">(2, 3, 1, 4)</span>
+<span class="go">array([[[[ 1,  2,  3,  4]],</span>
+<span class="go">        [[ 2,  4,  6,  8]],</span>
+<span class="go">        [[ 3,  6,  9, 12]]],</span>
+<span class="go">       [[[ 4,  8, 12, 16]],</span>
+<span class="go">        [[ 5, 10, 15, 20]],</span>
+<span class="go">        [[ 6, 12, 18, 24]]]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.ufunc.reduce">
+<code class="sig-name descname">reduce</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">axis=0</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em>, <em class="sig-param">keepdims=False</em>, <em class="sig-param">initial=&lt;no value&gt;</em>, <em class="sig-param">where=True</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.ufunc.reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduces <cite>a</cite>’s dimension by one, by applying ufunc along one axis.</p>
+<p>Let <span class="math notranslate nohighlight">\(a.shape = (N_0, ..., N_i, ..., N_{M-1})\)</span>.  Then
+<span class="math notranslate nohighlight">\(ufunc.reduce(a, axis=i)[k_0, ..,k_{i-1}, k_{i+1}, .., k_{M-1}]\)</span> =
+the result of iterating <cite>j</cite> over <span class="math notranslate nohighlight">\(range(N_i)\)</span>, cumulatively applying
+ufunc to each <span class="math notranslate nohighlight">\(a[k_0, ..,k_{i-1}, j, k_{i+1}, .., k_{M-1}]\)</span>.
+For a one-dimensional array, reduce produces results equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">identity</span> <span class="c1"># op = ufunc</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p>For example, add.reduce() is equivalent to sum().</p>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>The array to act on.</p>
+</dd>
+<dt>axis<span class="classifier">None or int or tuple of ints, optional</span></dt><dd><p>Axis or axes along which a reduction is performed.
+The default (<cite>axis</cite> = 0) is perform a reduction over the first
+dimension of the input array. <cite>axis</cite> may be negative, in
+which case it counts from the last to the first axis.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+<p>If this is <cite>None</cite>, a reduction is performed over all the axes.
+If this is a tuple of ints, a reduction is performed on multiple
+axes, instead of a single axis or all the axes as before.</p>
+<p>For operations which are either not commutative or not associative,
+doing a reduction over multiple axes is not well-defined. The
+ufuncs do not currently raise an exception in this case, but will
+likely do so in the future.</p>
+</dd>
+<dt>dtype<span class="classifier">data-type code, optional</span></dt><dd><p>The type used to represent the intermediate results. Defaults
+to the data-type of the output array if this is provided, or
+the data-type of the input array if no output array is provided.</p>
+</dd>
+<dt>out<span class="classifier">ndarray, None, or tuple of ndarray and None, optional</span></dt><dd><p>A location into which the result is stored. If not provided or <cite>None</cite>,
+a freshly-allocated array is returned. For consistency with
+<code class="docutils literal notranslate"><span class="pre">ufunc.__call__</span></code>, if given as a keyword, this may be wrapped in a
+1-element tuple.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.13.0: </span>Tuples are allowed for keyword argument.</p>
+</div>
+</dd>
+<dt>keepdims<span class="classifier">bool, optional</span></dt><dd><p>If this is set to True, the axes which are reduced are left
+in the result as dimensions with size one. With this option,
+the result will broadcast correctly against the original <cite>arr</cite>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+</dd>
+<dt>initial<span class="classifier">scalar, optional</span></dt><dd><p>The value with which to start the reduction.
+If the ufunc has no identity or the dtype is object, this defaults
+to None - otherwise it defaults to ufunc.identity.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code> is given, the first element of the reduction is used,
+and an error is thrown if the reduction is empty.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.15.0.</span></p>
+</div>
+</dd>
+<dt>where<span class="classifier">array_like of bool, optional</span></dt><dd><p>A boolean array which is broadcasted to match the dimensions
+of <cite>a</cite>, and selects elements to include in the reduction. Note
+that for ufuncs like <code class="docutils literal notranslate"><span class="pre">minimum</span></code> that do not have an identity
+defined, one has to pass in also <code class="docutils literal notranslate"><span class="pre">initial</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.17.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>r<span class="classifier">ndarray</span></dt><dd><p>The reduced array. If <cite>out</cite> was supplied, <cite>r</cite> is a reference to it.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">reduce</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">30</span>
+</pre></div>
+</div>
+<p>A multi-dimensional array example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
+<span class="go">array([[[0, 1],</span>
+<span class="go">        [2, 3]],</span>
+<span class="go">       [[4, 5],</span>
+<span class="go">        [6, 7]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">array([[ 4,  6],</span>
+<span class="go">       [ 8, 10]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># confirm: default axis value is 0</span>
+<span class="go">array([[ 4,  6],</span>
+<span class="go">       [ 8, 10]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">array([[ 2,  4],</span>
+<span class="go">       [10, 12]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">array([[ 1,  5],</span>
+<span class="go">       [ 9, 13]])</span>
+</pre></div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">initial</span></code> keyword argument to initialize the reduction
+with a different value, and <code class="docutils literal notranslate"><span class="pre">where</span></code> to select specific elements to include:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">([</span><span class="mi">10</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">array([14., 14.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">where</span><span class="o">=~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="go">20.0</span>
+</pre></div>
+</div>
+<p>Allows reductions of empty arrays where they would normally fail, i.e.
+for ufuncs without an identity.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="o">.</span><span class="n">reduce</span><span class="p">([],</span> <span class="n">initial</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="go">inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="o">.</span><span class="n">reduce</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">]],</span> <span class="n">initial</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<span class="go">array([ 1., 10.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="o">.</span><span class="n">reduce</span><span class="p">([])</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">zero-size array to reduction operation minimum which has no identity</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.ufunc.reduceat">
+<code class="sig-name descname">reduceat</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">indices</em>, <em class="sig-param">axis=0</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.ufunc.reduceat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a (local) reduce with specified slices over a single axis.</p>
+<p>For i in <code class="docutils literal notranslate"><span class="pre">range(len(indices))</span></code>, <cite>reduceat</cite> computes
+<code class="docutils literal notranslate"><span class="pre">ufunc.reduce(a[indices[i]:indices[i+1]])</span></code>, which becomes the i-th
+generalized “row” parallel to <cite>axis</cite> in the final result (i.e., in a
+2-D array, for example, if <cite>axis = 0</cite>, it becomes the i-th row, but if
+<cite>axis = 1</cite>, it becomes the i-th column).  There are three exceptions to this:</p>
+<ul class="simple">
+<li><p>when <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">=</span> <span class="pre">len(indices)</span> <span class="pre">-</span> <span class="pre">1</span></code> (so for the last index),
+<code class="docutils literal notranslate"><span class="pre">indices[i+1]</span> <span class="pre">=</span> <span class="pre">a.shape[axis]</span></code>.</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">indices[i]</span> <span class="pre">&gt;=</span> <span class="pre">indices[i</span> <span class="pre">+</span> <span class="pre">1]</span></code>, the i-th generalized “row” is
+simply <code class="docutils literal notranslate"><span class="pre">a[indices[i]]</span></code>.</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">indices[i]</span> <span class="pre">&gt;=</span> <span class="pre">len(a)</span></code> or <code class="docutils literal notranslate"><span class="pre">indices[i]</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>, an error is raised.</p></li>
+</ul>
+<p>The shape of the output depends on the size of <cite>indices</cite>, and may be
+larger than <cite>a</cite> (this happens if <code class="docutils literal notranslate"><span class="pre">len(indices)</span> <span class="pre">&gt;</span> <span class="pre">a.shape[axis]</span></code>).</p>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>The array to act on.</p>
+</dd>
+<dt>indices<span class="classifier">array_like</span></dt><dd><p>Paired indices, comma separated (not colon), specifying slices to
+reduce.</p>
+</dd>
+<dt>axis<span class="classifier">int, optional</span></dt><dd><p>The axis along which to apply the reduceat.</p>
+</dd>
+<dt>dtype<span class="classifier">data-type code, optional</span></dt><dd><p>The type used to represent the intermediate results. Defaults
+to the data type of the output array if this is provided, or
+the data type of the input array if no output array is provided.</p>
+</dd>
+<dt>out<span class="classifier">ndarray, None, or tuple of ndarray and None, optional</span></dt><dd><p>A location into which the result is stored. If not provided or <cite>None</cite>,
+a freshly-allocated array is returned. For consistency with
+<code class="docutils literal notranslate"><span class="pre">ufunc.__call__</span></code>, if given as a keyword, this may be wrapped in a
+1-element tuple.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.13.0: </span>Tuples are allowed for keyword argument.</p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>r<span class="classifier">ndarray</span></dt><dd><p>The reduced values. If <cite>out</cite> was supplied, <cite>r</cite> is a reference to
+<cite>out</cite>.</p>
+</dd>
+</dl>
+<p>A descriptive example:</p>
+<p>If <cite>a</cite> is 1-D, the function <cite>ufunc.accumulate(a)</cite> is the same as
+<code class="docutils literal notranslate"><span class="pre">ufunc.reduceat(a,</span> <span class="pre">indices)[::2]</span></code> where <cite>indices</cite> is
+<code class="docutils literal notranslate"><span class="pre">range(len(array)</span> <span class="pre">-</span> <span class="pre">1)</span></code> with a zero placed
+in every other element:
+<code class="docutils literal notranslate"><span class="pre">indices</span> <span class="pre">=</span> <span class="pre">zeros(2</span> <span class="pre">*</span> <span class="pre">len(a)</span> <span class="pre">-</span> <span class="pre">1)</span></code>, <code class="docutils literal notranslate"><span class="pre">indices[1::2]</span> <span class="pre">=</span> <span class="pre">range(1,</span> <span class="pre">len(a))</span></code>.</p>
+<p>Don’t be fooled by this attribute’s name: <cite>reduceat(a)</cite> is not
+necessarily smaller than <cite>a</cite>.</p>
+<p>To take the running sum of four successive values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduceat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">),[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">])[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">array([ 6, 10, 14, 18])</span>
+</pre></div>
+</div>
+<p>A 2-D example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([[ 0.,   1.,   2.,   3.],</span>
+<span class="go">       [ 4.,   5.,   6.,   7.],</span>
+<span class="go">       [ 8.,   9.,  10.,  11.],</span>
+<span class="go">       [12.,  13.,  14.,  15.]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># reduce such that the result has the following five rows:</span>
+<span class="c1"># [row1 + row2 + row3]</span>
+<span class="c1"># [row4]</span>
+<span class="c1"># [row2]</span>
+<span class="c1"># [row3]</span>
+<span class="c1"># [row1 + row2 + row3 + row4]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduceat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([[12.,  15.,  18.,  21.],</span>
+<span class="go">       [12.,  13.,  14.,  15.],</span>
+<span class="go">       [ 4.,   5.,   6.,   7.],</span>
+<span class="go">       [ 8.,   9.,  10.,  11.],</span>
+<span class="go">       [24.,  28.,  32.,  36.]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># reduce such that result has the following two columns:</span>
+<span class="c1"># [col1 * col2 * col3, col4]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">reduceat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">array([[   0.,     3.],</span>
+<span class="go">       [ 120.,     7.],</span>
+<span class="go">       [ 720.,    11.],</span>
+<span class="go">       [2184.,    15.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.nditer.html" title="previous chapter">nditer</a></li>
+      <li>Next: <a href="numpy.broadcast.html" title="next chapter">broadcast</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.ufunc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

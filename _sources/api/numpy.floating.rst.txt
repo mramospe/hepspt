@@ -1,0 +1,7 @@
+floating
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: floating
+   :show-inheritance:

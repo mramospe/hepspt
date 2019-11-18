@@ -1,0 +1,6 @@
+isreal
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: isreal

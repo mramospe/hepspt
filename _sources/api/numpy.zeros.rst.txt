@@ -1,0 +1,6 @@
+zeros
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: zeros

@@ -1,0 +1,6 @@
+geterr
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: geterr

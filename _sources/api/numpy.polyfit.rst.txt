@@ -1,0 +1,6 @@
+polyfit
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: polyfit

@@ -1,0 +1,6 @@
+issctype
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: issctype

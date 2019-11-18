@@ -1,0 +1,6 @@
+tile
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: tile

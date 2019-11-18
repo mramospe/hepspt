@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>choose &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="clip" href="numpy.clip.html" />
+    <link rel="prev" title="around" href="numpy.around.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="choose">
+<h1>choose<a class="headerlink" href="#choose" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.choose">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">choose</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">choices</em>, <em class="sig-param">out=None</em>, <em class="sig-param">mode='raise'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.choose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an array from an index array and a set of arrays to choose from.</p>
+<p>First of all, if confused or uncertain, definitely look at the Examples -
+in its full generality, this function is less simple than it might
+seem from the following code description (below ndi =
+<cite>numpy.lib.index_tricks</cite>):</p>
+<p><code class="docutils literal notranslate"><span class="pre">np.choose(a,c)</span> <span class="pre">==</span> <span class="pre">np.array([c[a[I]][I]</span> <span class="pre">for</span> <span class="pre">I</span> <span class="pre">in</span> <span class="pre">ndi.ndindex(a.shape)])</span></code>.</p>
+<p>But this omits some subtleties.  Here is a fully general summary:</p>
+<p>Given an “index” array (<cite>a</cite>) of integers and a sequence of <cite>n</cite> arrays
+(<cite>choices</cite>), <cite>a</cite> and each choice array are first broadcast, as necessary,
+to arrays of a common shape; calling these <em>Ba</em> and <em>Bchoices[i], i =
+0,…,n-1</em> we have that, necessarily, <code class="docutils literal notranslate"><span class="pre">Ba.shape</span> <span class="pre">==</span> <span class="pre">Bchoices[i].shape</span></code>
+for each <cite>i</cite>.  Then, a new array with shape <code class="docutils literal notranslate"><span class="pre">Ba.shape</span></code> is created as
+follows:</p>
+<ul class="simple">
+<li><p>if <code class="docutils literal notranslate"><span class="pre">mode=raise</span></code> (the default), then, first of all, each element of
+<cite>a</cite> (and thus <cite>Ba</cite>) must be in the range <cite>[0, n-1]</cite>; now, suppose that
+<cite>i</cite> (in that range) is the value at the <cite>(j0, j1, …, jm)</cite> position
+in <cite>Ba</cite> - then the value at the same position in the new array is the
+value in <cite>Bchoices[i]</cite> at that same position;</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">mode=wrap</span></code>, values in <cite>a</cite> (and thus <cite>Ba</cite>) may be any (signed)
+integer; modular arithmetic is used to map integers outside the range
+<cite>[0, n-1]</cite> back into that range; and then the new array is constructed
+as above;</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">mode=clip</span></code>, values in <cite>a</cite> (and thus <cite>Ba</cite>) may be any (signed)
+integer; negative integers are mapped to 0; values greater than <cite>n-1</cite>
+are mapped to <cite>n-1</cite>; and then the new array is constructed as above.</p></li>
+</ul>
+<dl>
+<dt>a<span class="classifier">int array</span></dt><dd><p>This array must contain integers in <cite>[0, n-1]</cite>, where <cite>n</cite> is the number
+of choices, unless <code class="docutils literal notranslate"><span class="pre">mode=wrap</span></code> or <code class="docutils literal notranslate"><span class="pre">mode=clip</span></code>, in which cases any
+integers are permissible.</p>
+</dd>
+<dt>choices<span class="classifier">sequence of arrays</span></dt><dd><p>Choice arrays. <cite>a</cite> and all of the choices must be broadcastable to the
+same shape.  If <cite>choices</cite> is itself an array (not recommended), then
+its outermost dimension (i.e., the one corresponding to
+<code class="docutils literal notranslate"><span class="pre">choices.shape[0]</span></code>) is taken as defining the “sequence”.</p>
+</dd>
+<dt>out<span class="classifier">array, optional</span></dt><dd><p>If provided, the result will be inserted into this array. It should
+be of the appropriate shape and dtype. Note that <cite>out</cite> is always
+buffered if <cite>mode=’raise’</cite>; use other modes for better performance.</p>
+</dd>
+<dt>mode<span class="classifier">{‘raise’ (default), ‘wrap’, ‘clip’}, optional</span></dt><dd><p>Specifies how indices outside <cite>[0, n-1]</cite> will be treated:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘raise’ : an exception is raised</p></li>
+<li><p>‘wrap’ : value becomes value mod <cite>n</cite></p></li>
+<li><p>‘clip’ : values &lt; 0 are mapped to 0, values &gt; n-1 are mapped to n-1</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="simple">
+<dt>merged_array<span class="classifier">array</span></dt><dd><p>The merged result.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ValueError: shape mismatch</dt><dd><p>If <cite>a</cite> and each choice array are not all broadcastable to the same
+shape.</p>
+</dd>
+</dl>
+<p>ndarray.choose : equivalent method</p>
+<p>To reduce the chance of misinterpretation, even though the following
+“abuse” is nominally supported, <cite>choices</cite> should neither be, nor be
+thought of as, a single array, i.e., the outermost sequence-like container
+should be either a list or a tuple.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">choose</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">choices</span>
+<span class="gp">... </span><span class="c1"># the first element of the result will be the first element of the</span>
+<span class="gp">... </span><span class="c1"># third (2+1) &quot;array&quot; in choices, namely, 20; the second element</span>
+<span class="gp">... </span><span class="c1"># will be the second element of the fourth (3+1) choice array, i.e.,</span>
+<span class="gp">... </span><span class="c1"># 31, etc.</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">array([20, 31, 12,  3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">choose</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">choices</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;clip&#39;</span><span class="p">)</span> <span class="c1"># 4 goes to 3 (4-1)</span>
+<span class="go">array([20, 31, 12,  3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># because there are 4 choice arrays</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">choose</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">choices</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wrap&#39;</span><span class="p">)</span> <span class="c1"># 4 goes to (4 mod 4)</span>
+<span class="go">array([20,  1, 12,  3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># i.e., 0</span>
+</pre></div>
+</div>
+<p>A couple examples illustrating how choose broadcasts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">choices</span><span class="p">)</span>
+<span class="go">array([[ 10, -10,  10],</span>
+<span class="go">       [-10,  10, -10],</span>
+<span class="go">       [ 10, -10,  10]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># With thanks to Anne Archibald</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">))</span> <span class="c1"># result is 2x3x5, res[0,:,:]=c1, res[1,:,:]=c2</span>
+<span class="go">array([[[ 1,  1,  1,  1,  1],</span>
+<span class="go">        [ 2,  2,  2,  2,  2],</span>
+<span class="go">        [ 3,  3,  3,  3,  3]],</span>
+<span class="go">       [[-1, -2, -3, -4, -5],</span>
+<span class="go">        [-1, -2, -3, -4, -5],</span>
+<span class="go">        [-1, -2, -3, -4, -5]]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.around.html" title="previous chapter">around</a></li>
+      <li>Next: <a href="numpy.clip.html" title="next chapter">clip</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.choose.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

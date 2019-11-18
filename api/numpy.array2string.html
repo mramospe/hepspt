@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>array2string &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="array_str" href="numpy.array_str.html" />
+    <link rel="prev" title="is_busday" href="numpy.is_busday.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="array2string">
+<h1>array2string<a class="headerlink" href="#array2string" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.array2string">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">array2string</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">max_line_width=None</em>, <em class="sig-param">precision=None</em>, <em class="sig-param">suppress_small=None</em>, <em class="sig-param">separator=' '</em>, <em class="sig-param">prefix=''</em>, <em class="sig-param">style=&lt;no value&gt;</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">threshold=None</em>, <em class="sig-param">edgeitems=None</em>, <em class="sig-param">sign=None</em>, <em class="sig-param">floatmode=None</em>, <em class="sig-param">suffix=''</em>, <em class="sig-param">**kwarg</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.array2string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of an array.</p>
+<dl class="simple">
+<dt>a<span class="classifier">array_like</span></dt><dd><p>Input array.</p>
+</dd>
+<dt>max_line_width<span class="classifier">int, optional</span></dt><dd><p>Inserts newlines if text is longer than <cite>max_line_width</cite>.
+Defaults to <code class="docutils literal notranslate"><span class="pre">numpy.get_printoptions()['linewidth']</span></code>.</p>
+</dd>
+<dt>precision<span class="classifier">int or None, optional</span></dt><dd><p>Floating point precision.
+Defaults to <code class="docutils literal notranslate"><span class="pre">numpy.get_printoptions()['precision']</span></code>.</p>
+</dd>
+<dt>suppress_small<span class="classifier">bool, optional</span></dt><dd><p>Represent numbers “very close” to zero as zero; default is False.
+Very close is defined by precision: if the precision is 8, e.g.,
+numbers smaller (in absolute value) than 5e-9 are represented as
+zero.
+Defaults to <code class="docutils literal notranslate"><span class="pre">numpy.get_printoptions()['suppress']</span></code>.</p>
+</dd>
+<dt>separator<span class="classifier">str, optional</span></dt><dd><p>Inserted between elements.</p>
+</dd>
+</dl>
+<p>prefix : str, optional
+suffix: str, optional</p>
+<blockquote>
+<div><p>The length of the prefix and suffix strings are used to respectively
+align and wrap the output. An array is typically printed as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prefix</span> <span class="o">+</span> <span class="n">array2string</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffix</span>
+</pre></div>
+</div>
+<p>The output is left-padded by the length of the prefix string, and
+wrapping is forced at the column <code class="docutils literal notranslate"><span class="pre">max_line_width</span> <span class="pre">-</span> <span class="pre">len(suffix)</span></code>.
+It should be noted that the content of prefix and suffix strings are
+not included in the output.</p>
+</div></blockquote>
+<dl>
+<dt>style<span class="classifier">_NoValue, optional</span></dt><dd><p>Has no effect, do not use.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.14.0.</span></p>
+</div>
+</dd>
+<dt>formatter<span class="classifier">dict of callables, optional</span></dt><dd><p>If not None, the keys should indicate the type(s) that the respective
+formatting function applies to.  Callables should return a string.
+Types that are not specified (by their corresponding keys) are handled
+by the default formatters.  Individual types for which a formatter
+can be set are:</p>
+<ul class="simple">
+<li><p>‘bool’</p></li>
+<li><p>‘int’</p></li>
+<li><p>‘timedelta’ : a <cite>numpy.timedelta64</cite></p></li>
+<li><p>‘datetime’ : a <cite>numpy.datetime64</cite></p></li>
+<li><p>‘float’</p></li>
+<li><p>‘longfloat’ : 128-bit floats</p></li>
+<li><p>‘complexfloat’</p></li>
+<li><p>‘longcomplexfloat’ : composed of two 128-bit floats</p></li>
+<li><p>‘void’ : type <cite>numpy.void</cite></p></li>
+<li><p>‘numpystr’ : types <cite>numpy.string_</cite> and <cite>numpy.unicode_</cite></p></li>
+<li><p>‘str’ : all other strings</p></li>
+</ul>
+<p>Other keys that can be used to set a group of types at once are:</p>
+<ul class="simple">
+<li><p>‘all’ : sets all types</p></li>
+<li><p>‘int_kind’ : sets ‘int’</p></li>
+<li><p>‘float_kind’ : sets ‘float’ and ‘longfloat’</p></li>
+<li><p>‘complex_kind’ : sets ‘complexfloat’ and ‘longcomplexfloat’</p></li>
+<li><p>‘str_kind’ : sets ‘str’ and ‘numpystr’</p></li>
+</ul>
+</dd>
+<dt>threshold<span class="classifier">int, optional</span></dt><dd><p>Total number of array elements which trigger summarization
+rather than full repr.
+Defaults to <code class="docutils literal notranslate"><span class="pre">numpy.get_printoptions()['threshold']</span></code>.</p>
+</dd>
+<dt>edgeitems<span class="classifier">int, optional</span></dt><dd><p>Number of array items in summary at beginning and end of
+each dimension.
+Defaults to <code class="docutils literal notranslate"><span class="pre">numpy.get_printoptions()['edgeitems']</span></code>.</p>
+</dd>
+<dt>sign<span class="classifier">string, either ‘-‘, ‘+’, or ‘ ‘, optional</span></dt><dd><p>Controls printing of the sign of floating-point types. If ‘+’, always
+print the sign of positive values. If ‘ ‘, always prints a space
+(whitespace character) in the sign position of positive values.  If
+‘-‘, omit the sign character of positive values.
+Defaults to <code class="docutils literal notranslate"><span class="pre">numpy.get_printoptions()['sign']</span></code>.</p>
+</dd>
+<dt>floatmode<span class="classifier">str, optional</span></dt><dd><p>Controls the interpretation of the <cite>precision</cite> option for
+floating-point types.
+Defaults to <code class="docutils literal notranslate"><span class="pre">numpy.get_printoptions()['floatmode']</span></code>.
+Can take the following values:</p>
+<ul class="simple">
+<li><p>‘fixed’: Always print exactly <cite>precision</cite> fractional digits,
+even if this would print more or fewer digits than
+necessary to specify the value uniquely.</p></li>
+<li><p>‘unique’: Print the minimum number of fractional digits necessary
+to represent each value uniquely. Different elements may
+have a different number of digits.  The value of the
+<cite>precision</cite> option is ignored.</p></li>
+<li><p>‘maxprec’: Print at most <cite>precision</cite> fractional digits, but if
+an element can be uniquely represented with fewer digits
+only print it with that many.</p></li>
+<li><p>‘maxprec_equal’: Print at most <cite>precision</cite> fractional digits,
+but if every element in the array can be uniquely
+represented with an equal number of fewer digits, use that
+many digits for all elements.</p></li>
+</ul>
+</dd>
+<dt>legacy<span class="classifier">string or <cite>False</cite>, optional</span></dt><dd><p>If set to the string <cite>‘1.13’</cite> enables 1.13 legacy printing mode. This
+approximates numpy 1.13 print output by including a space in the sign
+position of floats and different behavior for 0d arrays. If set to
+<cite>False</cite>, disables legacy mode. Unrecognized strings will be ignored
+with a warning for forward compatibility.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.14.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>array_str<span class="classifier">str</span></dt><dd><p>String representation of the array.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>if a callable in <cite>formatter</cite> does not return a string.</p>
+</dd>
+</dl>
+<p>array_str, array_repr, set_printoptions, get_printoptions</p>
+<p>If a formatter is specified for a certain type, the <cite>precision</cite> keyword is
+ignored for that type.</p>
+<p>This is a very flexible function; <cite>array_repr</cite> and <cite>array_str</cite> are using
+<cite>array2string</cite> internally so keywords with the same name should work
+identically in all three functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1e-16</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                      <span class="n">suppress_small</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;[0.,1.,2.,3.]&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;float_kind&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="p">})</span>
+<span class="go">&#39;[0.00 1.00 2.00]&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;int&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">hex</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span>
+<span class="go">&#39;[0x0 0x1 0x2]&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.is_busday.html" title="previous chapter">is_busday</a></li>
+      <li>Next: <a href="numpy.array_str.html" title="next chapter">array_str</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.array2string.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

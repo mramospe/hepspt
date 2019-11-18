@@ -1,0 +1,19 @@
+busdaycalendar
+==============
+
+.. currentmodule:: numpy
+
+.. autoclass:: busdaycalendar
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~busdaycalendar.holidays
+      ~busdaycalendar.weekmask
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: holidays
+   .. autoattribute:: weekmask

@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>format_float_positional &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="format_float_scientific" href="numpy.format_float_scientific.html" />
+    <link rel="prev" title="printoptions" href="numpy.printoptions.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="format-float-positional">
+<h1>format_float_positional<a class="headerlink" href="#format-float-positional" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.format_float_positional">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">format_float_positional</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">precision=None</em>, <em class="sig-param">unique=True</em>, <em class="sig-param">fractional=True</em>, <em class="sig-param">trim='k'</em>, <em class="sig-param">sign=False</em>, <em class="sig-param">pad_left=None</em>, <em class="sig-param">pad_right=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.format_float_positional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a floating-point scalar as a decimal string in positional notation.</p>
+<p>Provides control over rounding, trimming and padding. Uses and assumes
+IEEE unbiased rounding. Uses the “Dragon4” algorithm.</p>
+<dl class="simple">
+<dt>x<span class="classifier">python float or numpy floating scalar</span></dt><dd><p>Value to format.</p>
+</dd>
+<dt>precision<span class="classifier">non-negative integer or None, optional</span></dt><dd><p>Maximum number of digits to print. May be None if <cite>unique</cite> is
+<cite>True</cite>, but must be an integer if unique is <cite>False</cite>.</p>
+</dd>
+<dt>unique<span class="classifier">boolean, optional</span></dt><dd><p>If <cite>True</cite>, use a digit-generation strategy which gives the shortest
+representation which uniquely identifies the floating-point number from
+other values of the same type, by judicious rounding. If <cite>precision</cite>
+was omitted, print out all necessary digits, otherwise digit generation
+is cut off after <cite>precision</cite> digits and the remaining value is rounded.
+If <cite>False</cite>, digits are generated as if printing an infinite-precision
+value and stopping after <cite>precision</cite> digits, rounding the remaining
+value.</p>
+</dd>
+<dt>fractional<span class="classifier">boolean, optional</span></dt><dd><p>If <cite>True</cite>, the cutoff of <cite>precision</cite> digits refers to the total number
+of digits after the decimal point, including leading zeros.
+If <cite>False</cite>, <cite>precision</cite> refers to the total number of significant
+digits, before or after the decimal point, ignoring leading zeros.</p>
+</dd>
+<dt>trim<span class="classifier">one of ‘k’, ‘.’, ‘0’, ‘-‘, optional</span></dt><dd><p>Controls post-processing trimming of trailing digits, as follows:</p>
+<ul class="simple">
+<li><p>‘k’ : keep trailing zeros, keep decimal point (no trimming)</p></li>
+<li><p>‘.’ : trim all trailing zeros, leave decimal point</p></li>
+<li><p>‘0’ : trim all but the zero before the decimal point. Insert the
+zero if it is missing.</p></li>
+<li><p>‘-‘ : trim trailing zeros and any trailing decimal point</p></li>
+</ul>
+</dd>
+<dt>sign<span class="classifier">boolean, optional</span></dt><dd><p>Whether to show the sign for positive values.</p>
+</dd>
+<dt>pad_left<span class="classifier">non-negative integer, optional</span></dt><dd><p>Pad the left side of the string with whitespace until at least that
+many characters are to the left of the decimal point.</p>
+</dd>
+<dt>pad_right<span class="classifier">non-negative integer, optional</span></dt><dd><p>Pad the right side of the string with whitespace until at least that
+many characters are to the right of the decimal point.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>rep<span class="classifier">string</span></dt><dd><p>The string representation of the floating point value</p>
+</dd>
+</dl>
+<p>format_float_scientific</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">format_float_positional</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+<span class="go">&#39;3.1415927&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">format_float_positional</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+<span class="go">&#39;3.14&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">format_float_positional</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+<span class="go">&#39;0.3&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">format_float_positional</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">&#39;0.3000488281&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.printoptions.html" title="previous chapter">printoptions</a></li>
+      <li>Next: <a href="numpy.format_float_scientific.html" title="next chapter">format_float_scientific</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.format_float_positional.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,6 @@
+sw2_unc
+=======
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: sw2_unc

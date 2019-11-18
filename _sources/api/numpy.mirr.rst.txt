@@ -1,0 +1,6 @@
+mirr
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: mirr

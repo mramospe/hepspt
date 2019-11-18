@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>seterrcall &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="geterrcall" href="numpy.geterrcall.html" />
+    <link rel="prev" title="getbufsize" href="numpy.getbufsize.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="seterrcall">
+<h1>seterrcall<a class="headerlink" href="#seterrcall" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.seterrcall">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">seterrcall</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.seterrcall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the floating-point error callback function or log object.</p>
+<p>There are two ways to capture floating-point error messages.  The first
+is to set the error-handler to ‘call’, using <cite>seterr</cite>.  Then, set
+the function to call using this function.</p>
+<p>The second is to set the error-handler to ‘log’, using <cite>seterr</cite>.
+Floating-point errors then trigger a call to the ‘write’ method of
+the provided object.</p>
+<dl>
+<dt>func<span class="classifier">callable f(err, flag) or object with write method</span></dt><dd><p>Function to call upon floating-point errors (‘call’-mode) or
+object whose ‘write’ method is used to log such message (‘log’-mode).</p>
+<p>The call function takes two arguments. The first is a string describing
+the type of error (such as “divide by zero”, “overflow”, “underflow”,
+or “invalid value”), and the second is the status flag.  The flag is a
+byte, whose four least-significant bits indicate the type of error, one
+of “divide”, “over”, “under”, “invalid”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="n">divide</span> <span class="n">over</span> <span class="n">under</span> <span class="n">invalid</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In other words, <code class="docutils literal notranslate"><span class="pre">flags</span> <span class="pre">=</span> <span class="pre">divide</span> <span class="pre">+</span> <span class="pre">2*over</span> <span class="pre">+</span> <span class="pre">4*under</span> <span class="pre">+</span> <span class="pre">8*invalid</span></code>.</p>
+<p>If an object is provided, its write method should take one argument,
+a string.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>h<span class="classifier">callable, log instance or None</span></dt><dd><p>The old error handler.</p>
+</dd>
+</dl>
+<p>seterr, geterr, geterrcall</p>
+<p>Callback upon error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">err_handler</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Floating point error (</span><span class="si">%s</span><span class="s2">), with flag </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">flag</span><span class="p">))</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">saved_handler</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterrcall</span><span class="p">(</span><span class="n">err_handler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">save_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;call&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="mf">0.0</span>
+<span class="go">Floating point error (divide by zero), with flag 1</span>
+<span class="go">array([inf, inf, inf])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">seterrcall</span><span class="p">(</span><span class="n">saved_handler</span><span class="p">)</span>
+<span class="go">&lt;function err_handler at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="o">**</span><span class="n">save_err</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+<span class="go">OrderedDict([(&#39;divide&#39;, &#39;call&#39;), (&#39;invalid&#39;, &#39;call&#39;), (&#39;over&#39;, &#39;call&#39;), (&#39;under&#39;, &#39;call&#39;)])</span>
+</pre></div>
+</div>
+<p>Log error message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Log</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LOG: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span> <span class="o">=</span> <span class="n">Log</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">saved_handler</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterrcall</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">save_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="mf">0.0</span>
+<span class="go">LOG: Warning: divide by zero encountered in true_divide</span>
+<span class="go">array([inf, inf, inf])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">seterrcall</span><span class="p">(</span><span class="n">saved_handler</span><span class="p">)</span>
+<span class="go">&lt;numpy.core.numeric.Log object at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="o">**</span><span class="n">save_err</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+<span class="go">OrderedDict([(&#39;divide&#39;, &#39;log&#39;), (&#39;invalid&#39;, &#39;log&#39;), (&#39;over&#39;, &#39;log&#39;), (&#39;under&#39;, &#39;log&#39;)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.getbufsize.html" title="previous chapter">getbufsize</a></li>
+      <li>Next: <a href="numpy.geterrcall.html" title="next chapter">geterrcall</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.seterrcall.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,6 @@
+allclose
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: allclose

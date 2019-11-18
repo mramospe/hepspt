@@ -1,0 +1,7 @@
+singlecomplex
+=============
+
+.. currentmodule:: numpy
+
+.. autoclass:: singlecomplex
+   :show-inheritance:

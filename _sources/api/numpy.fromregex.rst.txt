@@ -1,0 +1,6 @@
+fromregex
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: fromregex

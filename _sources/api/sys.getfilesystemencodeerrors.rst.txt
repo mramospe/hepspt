@@ -1,0 +1,6 @@
+getfilesystemencodeerrors
+=========================
+
+.. currentmodule:: sys
+
+.. autofunction:: getfilesystemencodeerrors

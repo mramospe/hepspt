@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>polyfit &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="issubclass" href="numpy.issubclass_.html" />
+    <link rel="prev" title="polyval" href="numpy.polyval.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="polyfit">
+<h1>polyfit<a class="headerlink" href="#polyfit" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.polyfit">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">polyfit</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">deg</em>, <em class="sig-param">rcond=None</em>, <em class="sig-param">full=False</em>, <em class="sig-param">w=None</em>, <em class="sig-param">cov=False</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.polyfit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Least squares polynomial fit.</p>
+<p>Fit a polynomial <code class="docutils literal notranslate"><span class="pre">p(x)</span> <span class="pre">=</span> <span class="pre">p[0]</span> <span class="pre">*</span> <span class="pre">x**deg</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">p[deg]</span></code> of degree <cite>deg</cite>
+to points <cite>(x, y)</cite>. Returns a vector of coefficients <cite>p</cite> that minimises
+the squared error in the order <cite>deg</cite>, <cite>deg-1</cite>, … <cite>0</cite>.</p>
+<p>The <cite>Polynomial.fit &lt;numpy.polynomial.polynomial.Polynomial.fit&gt;</cite> class
+method is recommended for new code as it is more stable numerically. See
+the documentation of the method for more information.</p>
+<dl class="simple">
+<dt>x<span class="classifier">array_like, shape (M,)</span></dt><dd><p>x-coordinates of the M sample points <code class="docutils literal notranslate"><span class="pre">(x[i],</span> <span class="pre">y[i])</span></code>.</p>
+</dd>
+<dt>y<span class="classifier">array_like, shape (M,) or (M, K)</span></dt><dd><p>y-coordinates of the sample points. Several data sets of sample
+points sharing the same x-coordinates can be fitted at once by
+passing in a 2D-array that contains one dataset per column.</p>
+</dd>
+<dt>deg<span class="classifier">int</span></dt><dd><p>Degree of the fitting polynomial</p>
+</dd>
+<dt>rcond<span class="classifier">float, optional</span></dt><dd><p>Relative condition number of the fit. Singular values smaller than
+this relative to the largest singular value will be ignored. The
+default value is len(x)*eps, where eps is the relative precision of
+the float type, about 2e-16 in most cases.</p>
+</dd>
+<dt>full<span class="classifier">bool, optional</span></dt><dd><p>Switch determining nature of return value. When it is False (the
+default) just the coefficients are returned, when True diagnostic
+information from the singular value decomposition is also returned.</p>
+</dd>
+<dt>w<span class="classifier">array_like, shape (M,), optional</span></dt><dd><p>Weights to apply to the y-coordinates of the sample points. For
+gaussian uncertainties, use 1/sigma (not 1/sigma**2).</p>
+</dd>
+<dt>cov<span class="classifier">bool or str, optional</span></dt><dd><p>If given and not <cite>False</cite>, return not just the estimate but also its
+covariance matrix. By default, the covariance are scaled by
+chi2/sqrt(N-dof), i.e., the weights are presumed to be unreliable
+except in a relative sense and everything is scaled such that the
+reduced chi2 is unity. This scaling is omitted if <code class="docutils literal notranslate"><span class="pre">cov='unscaled'</span></code>,
+as is relevant for the case that the weights are 1/sigma**2, with
+sigma known to be a reliable estimate of the uncertainty.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>p<span class="classifier">ndarray, shape (deg + 1,) or (deg + 1, K)</span></dt><dd><p>Polynomial coefficients, highest power first.  If <cite>y</cite> was 2-D, the
+coefficients for <cite>k</cite>-th data set are in <code class="docutils literal notranslate"><span class="pre">p[:,k]</span></code>.</p>
+</dd>
+<dt>residuals, rank, singular_values, rcond</dt><dd><p>Present only if <cite>full</cite> = True.  Residuals of the least-squares fit,
+the effective rank of the scaled Vandermonde coefficient matrix,
+its singular values, and the specified value of <cite>rcond</cite>. For more
+details, see <cite>linalg.lstsq</cite>.</p>
+</dd>
+<dt>V<span class="classifier">ndarray, shape (M,M) or (M,M,K)</span></dt><dd><p>Present only if <cite>full</cite> = False and <cite>cov`=True.  The covariance
+matrix of the polynomial coefficient estimates.  The diagonal of
+this matrix are the variance estimates for each coefficient.  If y
+is a 2-D array, then the covariance matrix for the `k</cite>-th data set
+are in <code class="docutils literal notranslate"><span class="pre">V[:,:,k]</span></code></p>
+</dd>
+</dl>
+<dl>
+<dt>RankWarning</dt><dd><p>The rank of the coefficient matrix in the least-squares fit is
+deficient. The warning is only raised if <cite>full</cite> = False.</p>
+<p>The warnings can be turned off by</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">RankWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>polyval : Compute polynomial values.
+linalg.lstsq : Computes a least-squares fit.
+scipy.interpolate.UnivariateSpline : Computes spline fits.</p>
+<p>The solution minimizes the squared error</p>
+<div class="math notranslate nohighlight">
+\[E = \sum_{j=0}^k |p(x_j) - y_j|^2\]</div>
+<p>in the equations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="o">...</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="o">...</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="o">...</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The coefficient matrix of the coefficients <cite>p</cite> is a Vandermonde matrix.</p>
+<p><cite>polyfit</cite> issues a <cite>RankWarning</cite> when the least-squares fit is badly
+conditioned. This implies that the best fit is not well-defined due
+to numerical error. The results may be improved by lowering the polynomial
+degree or by replacing <cite>x</cite> by <cite>x</cite> - <cite>x</cite>.mean(). The <cite>rcond</cite> parameter
+can also be set to a value smaller than its default, but the resulting
+fit may be spurious: including contributions from the small singular
+values can add numerical noise to the result.</p>
+<p>Note that fitting polynomial coefficients is inherently badly conditioned
+when the degree of the polynomial is large or the interval of sample points
+is badly centered. The quality of the fit should always be checked in these
+cases. When polynomial fits are not satisfactory, splines may be a good
+alternative.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Wikipedia, “Curve fitting”,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Curve_fitting">https://en.wikipedia.org/wiki/Curve_fitting</a></p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p>Wikipedia, “Polynomial interpolation”,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Polynomial_interpolation">https://en.wikipedia.org/wiki/Polynomial_interpolation</a></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span>  <span class="mf">4.0</span><span class="p">,</span>  <span class="mf">5.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>
+<span class="go">array([ 0.08703704, -0.81349206,  1.69312169, -0.03968254]) # may vary</span>
+</pre></div>
+</div>
+<p>It is convenient to use <cite>poly1d</cite> objects for dealing with polynomials:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">poly1d</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">0.6143849206349179 # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">(</span><span class="mf">3.5</span><span class="p">)</span>
+<span class="go">-0.34732142857143039 # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">22.579365079365115 # may vary</span>
+</pre></div>
+</div>
+<p>High-order polynomials may oscillate wildly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">RankWarning</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">p30</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">poly1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p30</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">-0.80000000000000204 # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p30</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">-0.99999999999999445 # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p30</span><span class="p">(</span><span class="mf">4.5</span><span class="p">)</span>
+<span class="go">-0.10547061179440398 # may vary</span>
+</pre></div>
+</div>
+<p>Illustration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">xp</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">p30</span><span class="p">(</span><span class="n">xp</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">(-2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.polyval.html" title="previous chapter">polyval</a></li>
+      <li>Next: <a href="numpy.issubclass_.html" title="next chapter">issubclass</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.polyfit.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

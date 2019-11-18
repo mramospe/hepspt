@@ -1,0 +1,6 @@
+getprofile
+==========
+
+.. currentmodule:: sys
+
+.. autofunction:: getprofile

@@ -1,0 +1,6 @@
+piecewise
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: piecewise

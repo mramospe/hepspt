@@ -1,0 +1,7 @@
+uintp
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: uintp
+   :show-inheritance:

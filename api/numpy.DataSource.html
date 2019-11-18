@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>DataSource &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../examples.html" />
+    <link rel="prev" title="RankWarning" href="numpy.RankWarning.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="datasource">
+<h1>DataSource<a class="headerlink" href="#datasource" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.DataSource">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">DataSource</code><span class="sig-paren">(</span><em class="sig-param">destpath='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.DataSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Create a DataSource with a local path at destpath.</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.DataSource.abspath" title="numpy.DataSource.abspath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abspath</span></code></a>(path)</p></td>
+<td><p>Return absolute path of file in the DataSource directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.DataSource.exists" title="numpy.DataSource.exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exists</span></code></a>(path)</p></td>
+<td><p>Test if path exists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.DataSource.open" title="numpy.DataSource.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a>(path[, mode, encoding, newline])</p></td>
+<td><p>Open and return file-like object.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.DataSource.abspath">
+<code class="sig-name descname">abspath</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/lib/_datasource.html#DataSource.abspath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.DataSource.abspath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return absolute path of file in the DataSource directory.</p>
+<p>If <cite>path</cite> is an URL, then <cite>abspath</cite> will return either the location
+the file exists locally or the location it would exist when opened
+using the <cite>open</cite> method.</p>
+<dl class="simple">
+<dt>path<span class="classifier">str</span></dt><dd><p>Can be a local file or a remote URL.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">str</span></dt><dd><p>Complete path, including the <cite>DataSource</cite> destination directory.</p>
+</dd>
+</dl>
+<p>The functionality is based on <cite>os.path.abspath</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.DataSource.exists">
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/lib/_datasource.html#DataSource.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.DataSource.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if path exists.</p>
+<p>Test if <cite>path</cite> exists as (and in this order):</p>
+<ul class="simple">
+<li><p>a local file.</p></li>
+<li><p>a remote URL that has been downloaded and stored locally in the
+<cite>DataSource</cite> directory.</p></li>
+<li><p>a remote URL that has not been downloaded, but is valid and
+accessible.</p></li>
+</ul>
+<dl class="simple">
+<dt>path<span class="classifier">str</span></dt><dd><p>Can be a local file or a remote URL.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">bool</span></dt><dd><p>True if <cite>path</cite> exists.</p>
+</dd>
+</dl>
+<p>When <cite>path</cite> is an URL, <cite>exists</cite> will return True if it’s either
+stored locally in the <cite>DataSource</cite> directory, or is a valid remote
+URL.  <cite>DataSource</cite> does not discriminate between the two, the file
+is accessible if it exists in either location.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.DataSource.open">
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">mode='r'</em>, <em class="sig-param">encoding=None</em>, <em class="sig-param">newline=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/lib/_datasource.html#DataSource.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.DataSource.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open and return file-like object.</p>
+<p>If <cite>path</cite> is an URL, it will be downloaded, stored in the
+<cite>DataSource</cite> directory and opened from there.</p>
+<dl class="simple">
+<dt>path<span class="classifier">str</span></dt><dd><p>Local file path or URL to open.</p>
+</dd>
+<dt>mode<span class="classifier">{‘r’, ‘w’, ‘a’}, optional</span></dt><dd><p>Mode to open <cite>path</cite>.  Mode ‘r’ for reading, ‘w’ for writing,
+‘a’ to append. Available modes depend on the type of object
+specified by <cite>path</cite>. Default is ‘r’.</p>
+</dd>
+<dt>encoding<span class="classifier">{None, str}, optional</span></dt><dd><p>Open text file with given encoding. The default encoding will be
+what <cite>io.open</cite> uses.</p>
+</dd>
+<dt>newline<span class="classifier">{None, str}, optional</span></dt><dd><p>Newline to use when reading text file.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">file object</span></dt><dd><p>File object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.RankWarning.html" title="previous chapter">RankWarning</a></li>
+      <li>Next: <a href="../examples.html" title="next chapter">Examples</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.DataSource.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

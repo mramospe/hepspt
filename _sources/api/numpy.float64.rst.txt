@@ -1,0 +1,17 @@
+float64
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: float64
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~float64.as_integer_ratio
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: as_integer_ratio

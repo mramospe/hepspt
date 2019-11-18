@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>savez &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="savez_compressed" href="numpy.savez_compressed.html" />
+    <link rel="prev" title="save" href="numpy.save.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="savez">
+<h1>savez<a class="headerlink" href="#savez" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.savez">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">savez</code><span class="sig-paren">(</span><em class="sig-param">file</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.savez" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save several arrays into a single file in uncompressed <code class="docutils literal notranslate"><span class="pre">.npz</span></code> format.</p>
+<p>If arguments are passed in with no keywords, the corresponding variable
+names, in the <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file, are ‘arr_0’, ‘arr_1’, etc. If keyword
+arguments are given, the corresponding variable names, in the <code class="docutils literal notranslate"><span class="pre">.npz</span></code>
+file will match the keyword names.</p>
+<dl class="simple">
+<dt>file<span class="classifier">str or file</span></dt><dd><p>Either the file name (string) or an open file (file-like object)
+where the data will be saved. If file is a string or a Path, the
+<code class="docutils literal notranslate"><span class="pre">.npz</span></code> extension will be appended to the file name if it is not
+already there.</p>
+</dd>
+<dt>args<span class="classifier">Arguments, optional</span></dt><dd><p>Arrays to save to the file. Since it is not possible for Python to
+know the names of the arrays outside <cite>savez</cite>, the arrays will be saved
+with names “arr_0”, “arr_1”, and so on. These arguments can be any
+expression.</p>
+</dd>
+<dt>kwds<span class="classifier">Keyword arguments, optional</span></dt><dd><p>Arrays to save to the file. Arrays will be saved in the file with the
+keyword names.</p>
+</dd>
+</dl>
+<p>None</p>
+<p>save : Save a single array to a binary file in NumPy format.
+savetxt : Save an array to a file as plain text.
+savez_compressed : Save several arrays into a compressed <code class="docutils literal notranslate"><span class="pre">.npz</span></code> archive</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file format is a zipped archive of files named after the
+variables they contain.  The archive is not compressed and each file
+in the archive contains one variable in <code class="docutils literal notranslate"><span class="pre">.npy</span></code> format. For a
+description of the <code class="docutils literal notranslate"><span class="pre">.npy</span></code> format, see <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.lib.format.html#module-numpy.lib.format" title="(in NumPy v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.lib.format</span></code></a>.</p>
+<p>When opening the saved <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file with <cite>load</cite> a <cite>NpzFile</cite> object is
+returned. This is a dictionary-like object which can be queried for
+its list of arrays (with the <code class="docutils literal notranslate"><span class="pre">.files</span></code> attribute), and for the arrays
+themselves.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tempfile</span> <span class="k">import</span> <span class="n">TemporaryFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outfile</span> <span class="o">=</span> <span class="n">TemporaryFile</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using <cite>savez</cite> with *args, the arrays are saved with default names.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">outfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># Only needed here to simulate closing &amp; reopening file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">npzfile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">npzfile</span><span class="o">.</span><span class="n">files</span>
+<span class="go">[&#39;arr_0&#39;, &#39;arr_1&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">npzfile</span><span class="p">[</span><span class="s1">&#39;arr_0&#39;</span><span class="p">]</span>
+<span class="go">array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</span>
+</pre></div>
+</div>
+<p>Using <cite>savez</cite> with **kwds, the arrays are saved with the keyword names.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">outfile</span> <span class="o">=</span> <span class="n">TemporaryFile</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">outfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">npzfile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">npzfile</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
+<span class="go">[&#39;x&#39;, &#39;y&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">npzfile</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="go">array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.save.html" title="previous chapter">save</a></li>
+      <li>Next: <a href="numpy.savez_compressed.html" title="next chapter">savez_compressed</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.savez.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

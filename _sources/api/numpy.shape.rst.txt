@@ -1,0 +1,6 @@
+shape
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: shape

@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>busday_offset &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="busday_count" href="numpy.busday_count.html" />
+    <link rel="prev" title="datetime_as_string" href="numpy.datetime_as_string.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="busday-offset">
+<h1>busday_offset<a class="headerlink" href="#busday-offset" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.busday_offset">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">busday_offset</code><span class="sig-paren">(</span><em class="sig-param">dates</em>, <em class="sig-param">offsets</em>, <em class="sig-param">roll='raise'</em>, <em class="sig-param">weekmask='1111100'</em>, <em class="sig-param">holidays=None</em>, <em class="sig-param">busdaycal=None</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.busday_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>First adjusts the date to fall on a valid day according to
+the <code class="docutils literal notranslate"><span class="pre">roll</span></code> rule, then applies offsets to the given dates
+counted in valid days.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+<dl>
+<dt>dates<span class="classifier">array_like of datetime64[D]</span></dt><dd><p>The array of dates to process.</p>
+</dd>
+<dt>offsets<span class="classifier">array_like of int</span></dt><dd><p>The array of offsets, which is broadcast with <code class="docutils literal notranslate"><span class="pre">dates</span></code>.</p>
+</dd>
+<dt>roll<span class="classifier">{‘raise’, ‘nat’, ‘forward’, ‘following’, ‘backward’, ‘preceding’, ‘modifiedfollowing’, ‘modifiedpreceding’}, optional</span></dt><dd><p>How to treat dates that do not fall on a valid day. The default
+is ‘raise’.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘raise’ means to raise an exception for an invalid day.</p></li>
+<li><p>‘nat’ means to return a NaT (not-a-time) for an invalid day.</p></li>
+<li><p>‘forward’ and ‘following’ mean to take the first valid day
+later in time.</p></li>
+<li><p>‘backward’ and ‘preceding’ mean to take the first valid day
+earlier in time.</p></li>
+<li><p>‘modifiedfollowing’ means to take the first valid day
+later in time unless it is across a Month boundary, in which
+case to take the first valid day earlier in time.</p></li>
+<li><p>‘modifiedpreceding’ means to take the first valid day
+earlier in time unless it is across a Month boundary, in which
+case to take the first valid day later in time.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>weekmask<span class="classifier">str or array_like of bool, optional</span></dt><dd><p>A seven-element array indicating which of Monday through Sunday are
+valid days. May be specified as a length-seven list or array, like
+[1,1,1,1,1,0,0]; a length-seven string, like ‘1111100’; or a string
+like “Mon Tue Wed Thu Fri”, made up of 3-character abbreviations for
+weekdays, optionally separated by white space. Valid abbreviations
+are: Mon Tue Wed Thu Fri Sat Sun</p>
+</dd>
+<dt>holidays<span class="classifier">array_like of datetime64[D], optional</span></dt><dd><p>An array of dates to consider as invalid dates.  They may be
+specified in any order, and NaT (not-a-time) dates are ignored.
+This list is saved in a normalized form that is suited for
+fast calculations of valid days.</p>
+</dd>
+<dt>busdaycal<span class="classifier">busdaycalendar, optional</span></dt><dd><p>A <cite>busdaycalendar</cite> object which specifies the valid days. If this
+parameter is provided, neither weekmask nor holidays may be
+provided.</p>
+</dd>
+<dt>out<span class="classifier">array of datetime64[D], optional</span></dt><dd><p>If provided, this array is filled with the result.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">array of datetime64[D]</span></dt><dd><p>An array with a shape from broadcasting <code class="docutils literal notranslate"><span class="pre">dates</span></code> and <code class="docutils literal notranslate"><span class="pre">offsets</span></code>
+together, containing the dates with offsets applied.</p>
+</dd>
+</dl>
+<p>busdaycalendar: An object that specifies a custom set of valid days.
+is_busday : Returns a boolean array indicating valid days.
+busday_count : Counts how many valid days are in a half-open date range.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># First business day in October 2011 (not accounting for holidays)</span>
+<span class="gp">... </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2011-10&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2011-10-03&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Last business day in February 2012 (not accounting for holidays)</span>
+<span class="gp">... </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2012-03&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2012-02-29&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Third Wednesday in January 2011</span>
+<span class="gp">... </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2011-01&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">weekmask</span><span class="o">=</span><span class="s1">&#39;Wed&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2011-01-19&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 2012 Mother&#39;s Day in Canada and the U.S.</span>
+<span class="gp">... </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2012-05&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">weekmask</span><span class="o">=</span><span class="s1">&#39;Sun&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2012-05-13&#39;)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># First business day on or after a date</span>
+<span class="gp">... </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2011-03-20&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2011-03-21&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2011-03-22&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2011-03-22&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># First business day after a date</span>
+<span class="gp">... </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2011-03-20&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2011-03-21&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">busday_offset</span><span class="p">(</span><span class="s1">&#39;2011-03-22&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+<span class="go">numpy.datetime64(&#39;2011-03-23&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.datetime_as_string.html" title="previous chapter">datetime_as_string</a></li>
+      <li>Next: <a href="numpy.busday_count.html" title="next chapter">busday_count</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.busday_offset.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

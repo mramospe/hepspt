@@ -1,0 +1,7 @@
+bool_
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: bool_
+   :show-inheritance:

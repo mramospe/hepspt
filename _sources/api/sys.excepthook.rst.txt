@@ -1,0 +1,6 @@
+excepthook
+==========
+
+.. currentmodule:: sys
+
+.. autofunction:: excepthook

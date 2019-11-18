@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>quantile &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="column_stack" href="numpy.column_stack.html" />
+    <link rel="prev" title="add_newdoc_ufunc" href="numpy.add_newdoc_ufunc.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="quantile">
+<h1>quantile<a class="headerlink" href="#quantile" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.quantile">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">quantile</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">q</em>, <em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em>, <em class="sig-param">overwrite_input=False</em>, <em class="sig-param">interpolation='linear'</em>, <em class="sig-param">keepdims=False</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.quantile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the q-th quantile of the data along the specified axis.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.15.0.</span></p>
+</div>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>Input array or object that can be converted to an array.</p>
+</dd>
+<dt>q<span class="classifier">array_like of float</span></dt><dd><p>Quantile or sequence of quantiles to compute, which must be between
+0 and 1 inclusive.</p>
+</dd>
+<dt>axis<span class="classifier">{int, tuple of int, None}, optional</span></dt><dd><p>Axis or axes along which the quantiles are computed. The
+default is to compute the quantile(s) along a flattened
+version of the array.</p>
+</dd>
+<dt>out<span class="classifier">ndarray, optional</span></dt><dd><p>Alternative output array in which to place the result. It must
+have the same shape and buffer length as the expected output,
+but the type (of the output) will be cast if necessary.</p>
+</dd>
+<dt>overwrite_input<span class="classifier">bool, optional</span></dt><dd><p>If True, then allow the input array <cite>a</cite> to be modified by intermediate
+calculations, to save memory. In this case, the contents of the input
+<cite>a</cite> after this function completes is undefined.</p>
+</dd>
+<dt>interpolation<span class="classifier">{‘linear’, ‘lower’, ‘higher’, ‘midpoint’, ‘nearest’}</span></dt><dd><p>This optional parameter specifies the interpolation method to
+use when the desired quantile lies between two data points
+<code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">j</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>linear: <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">(j</span> <span class="pre">-</span> <span class="pre">i)</span> <span class="pre">*</span> <span class="pre">fraction</span></code>, where <code class="docutils literal notranslate"><span class="pre">fraction</span></code>
+is the fractional part of the index surrounded by <code class="docutils literal notranslate"><span class="pre">i</span></code>
+and <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p></li>
+<li><p>lower: <code class="docutils literal notranslate"><span class="pre">i</span></code>.</p></li>
+<li><p>higher: <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p></li>
+<li><p>nearest: <code class="docutils literal notranslate"><span class="pre">i</span></code> or <code class="docutils literal notranslate"><span class="pre">j</span></code>, whichever is nearest.</p></li>
+<li><p>midpoint: <code class="docutils literal notranslate"><span class="pre">(i</span> <span class="pre">+</span> <span class="pre">j)</span> <span class="pre">/</span> <span class="pre">2</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>keepdims<span class="classifier">bool, optional</span></dt><dd><p>If this is set to True, the axes which are reduced are left in
+the result as dimensions with size one. With this option, the
+result will broadcast correctly against the original array <cite>a</cite>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>quantile<span class="classifier">scalar or ndarray</span></dt><dd><p>If <cite>q</cite> is a single quantile and <cite>axis=None</cite>, then the result
+is a scalar. If multiple quantiles are given, first axis of
+the result corresponds to the quantiles. The other axes are
+the axes that remain after the reduction of <cite>a</cite>. If the input
+contains integers or floats smaller than <code class="docutils literal notranslate"><span class="pre">float64</span></code>, the output
+data-type is <code class="docutils literal notranslate"><span class="pre">float64</span></code>. Otherwise, the output data-type is the
+same as that of the input. If <cite>out</cite> is specified, that array is
+returned instead.</p>
+</dd>
+</dl>
+<p>mean
+percentile : equivalent to quantile, but with q in the range [0, 100].
+median : equivalent to <code class="docutils literal notranslate"><span class="pre">quantile(...,</span> <span class="pre">0.5)</span></code>
+nanquantile</p>
+<p>Given a vector <code class="docutils literal notranslate"><span class="pre">V</span></code> of length <code class="docutils literal notranslate"><span class="pre">N</span></code>, the q-th quantile of
+<code class="docutils literal notranslate"><span class="pre">V</span></code> is the value <code class="docutils literal notranslate"><span class="pre">q</span></code> of the way from the minimum to the
+maximum in a sorted copy of <code class="docutils literal notranslate"><span class="pre">V</span></code>. The values and distances of
+the two nearest neighbors as well as the <cite>interpolation</cite> parameter
+will determine the quantile if the normalized ranking does not
+match the location of <code class="docutils literal notranslate"><span class="pre">q</span></code> exactly. This function is the same as
+the median if <code class="docutils literal notranslate"><span class="pre">q=0.5</span></code>, the same as the minimum if <code class="docutils literal notranslate"><span class="pre">q=0.0</span></code> and the
+same as the maximum if <code class="docutils literal notranslate"><span class="pre">q=1.0</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[10,  7,  4],</span>
+<span class="go">       [ 3,  2,  1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="go">3.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">array([6.5, 4.5, 2.5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">array([7.,  2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">array([[7.],</span>
+<span class="go">       [2.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+<span class="go">array([6.5, 4.5, 2.5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span>
+<span class="go">array([6.5, 4.5, 2.5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">overwrite_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">array([7.,  2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.add_newdoc_ufunc.html" title="previous chapter">add_newdoc_ufunc</a></li>
+      <li>Next: <a href="numpy.column_stack.html" title="next chapter">column_stack</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.quantile.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

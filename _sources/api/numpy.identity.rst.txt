@@ -1,0 +1,6 @@
+identity
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: identity

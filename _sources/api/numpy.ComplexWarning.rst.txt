@@ -1,0 +1,6 @@
+ComplexWarning
+==============
+
+.. currentmodule:: numpy
+
+.. autoexception:: ComplexWarning

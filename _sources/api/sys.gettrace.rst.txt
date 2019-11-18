@@ -1,0 +1,6 @@
+gettrace
+========
+
+.. currentmodule:: sys
+
+.. autofunction:: gettrace

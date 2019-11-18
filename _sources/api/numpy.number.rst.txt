@@ -1,0 +1,7 @@
+number
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: number
+   :show-inheritance:

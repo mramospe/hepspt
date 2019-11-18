@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>correlate &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="convolve" href="numpy.convolve.html" />
+    <link rel="prev" title="ones_like" href="numpy.ones_like.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="correlate">
+<h1>correlate<a class="headerlink" href="#correlate" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.correlate">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">correlate</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">v</em>, <em class="sig-param">mode='valid'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.correlate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cross-correlation of two 1-dimensional sequences.</p>
+<p>This function computes the correlation as generally defined in signal
+processing texts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c_</span><span class="p">{</span><span class="n">av</span><span class="p">}[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_n</span> <span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">conj</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>with a and v sequences being zero-padded where necessary and conj being
+the conjugate.</p>
+<dl class="simple">
+<dt>a, v<span class="classifier">array_like</span></dt><dd><p>Input sequences.</p>
+</dd>
+<dt>mode<span class="classifier">{‘valid’, ‘same’, ‘full’}, optional</span></dt><dd><p>Refer to the <cite>convolve</cite> docstring.  Note that the default
+is ‘valid’, unlike <cite>convolve</cite>, which uses ‘full’.</p>
+</dd>
+<dt>old_behavior<span class="classifier">bool</span></dt><dd><p><cite>old_behavior</cite> was removed in NumPy 1.10. If you need the old
+behavior, use <cite>multiarray.correlate</cite>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">ndarray</span></dt><dd><p>Discrete cross-correlation of <cite>a</cite> and <cite>v</cite>.</p>
+</dd>
+</dl>
+<p>convolve : Discrete, linear convolution of two one-dimensional sequences.
+multiarray.correlate : Old, no conjugate, version of correlate.</p>
+<p>The definition of correlation above is not unique and sometimes correlation
+may be defined differently. Another common definition is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="s1">&#39;_</span><span class="si">{av}</span><span class="s1">[k] = sum_n a[n] conj(v[n+k])</span>
+</pre></div>
+</div>
+<p>which is related to <code class="docutils literal notranslate"><span class="pre">c_{av}[k]</span></code> by <code class="docutils literal notranslate"><span class="pre">c'_{av}[k]</span> <span class="pre">=</span> <span class="pre">c_{av}[-k]</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="go">array([3.5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="s2">&quot;same&quot;</span><span class="p">)</span>
+<span class="go">array([2. ,  3.5,  3. ])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="s2">&quot;full&quot;</span><span class="p">)</span>
+<span class="go">array([0.5,  2. ,  3.5,  3. ,  0. ])</span>
+</pre></div>
+</div>
+<p>Using complex sequences:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">([</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="n">j</span><span class="p">],</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="go">array([ 0.5-0.5j,  1.0+0.j ,  1.5-1.5j,  3.0-1.j ,  0.0+0.j ])</span>
+</pre></div>
+</div>
+<p>Note that you get the time reversed, complex conjugated result
+when the two input sequences change places, i.e.,
+<code class="docutils literal notranslate"><span class="pre">c_{va}[k]</span> <span class="pre">=</span> <span class="pre">c^{*}_{av}[-k]</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="go">array([ 0.0+0.j ,  3.0+1.j ,  1.5+1.5j,  1.0+0.j ,  0.5+0.5j])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.ones_like.html" title="previous chapter">ones_like</a></li>
+      <li>Next: <a href="numpy.convolve.html" title="next chapter">convolve</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.correlate.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

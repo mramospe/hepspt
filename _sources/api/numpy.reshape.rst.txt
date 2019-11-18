@@ -1,0 +1,6 @@
+reshape
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: reshape

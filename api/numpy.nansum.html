@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>nansum &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="nanmax" href="numpy.nanmax.html" />
+    <link rel="prev" title="mirr" href="numpy.mirr.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="nansum">
+<h1>nansum<a class="headerlink" href="#nansum" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.nansum">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">nansum</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">axis=None</em>, <em class="sig-param">dtype=None</em>, <em class="sig-param">out=None</em>, <em class="sig-param">keepdims=&lt;no value&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nansum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sum of array elements over a given axis treating Not a
+Numbers (NaNs) as zero.</p>
+<p>In NumPy versions &lt;= 1.9.0 Nan is returned for slices that are all-NaN or
+empty. In later versions zero is returned.</p>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>Array containing numbers whose sum is desired. If <cite>a</cite> is not an
+array, a conversion is attempted.</p>
+</dd>
+<dt>axis<span class="classifier">{int, tuple of int, None}, optional</span></dt><dd><p>Axis or axes along which the sum is computed. The default is to compute the
+sum of the flattened array.</p>
+</dd>
+<dt>dtype<span class="classifier">data-type, optional</span></dt><dd><p>The type of the returned array and of the accumulator in which the
+elements are summed.  By default, the dtype of <cite>a</cite> is used.  An
+exception is when <cite>a</cite> has an integer type with less precision than
+the platform (u)intp. In that case, the default will be either
+(u)int32 or (u)int64 depending on whether the platform is 32 or 64
+bits. For inexact inputs, dtype must be inexact.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+</div>
+</dd>
+<dt>out<span class="classifier">ndarray, optional</span></dt><dd><p>Alternate output array in which to place the result.  The default
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>. If provided, it must have the same shape as the
+expected output, but the type will be cast if necessary.  See
+<cite>doc.ufuncs</cite> for details. The casting of NaN to integer can yield
+unexpected results.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+</div>
+</dd>
+<dt>keepdims<span class="classifier">bool, optional</span></dt><dd><p>If this is set to True, the axes which are reduced are left
+in the result as dimensions with size one. With this option,
+the result will broadcast correctly against the original <cite>a</cite>.</p>
+<p>If the value is anything but the default, then
+<cite>keepdims</cite> will be passed through to the <cite>mean</cite> or <cite>sum</cite> methods
+of sub-classes of <cite>ndarray</cite>.  If the sub-classes methods
+does not implement <cite>keepdims</cite> any exceptions will be raised.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>nansum<span class="classifier">ndarray.</span></dt><dd><p>A new array holding the result is returned unless <cite>out</cite> is
+specified, in which it is returned. The result has the same
+size as <cite>a</cite>, and the same shape as <cite>a</cite> if <cite>axis</cite> is not None
+or <cite>a</cite> is a 1-d array.</p>
+</dd>
+</dl>
+<p>numpy.sum : Sum across array propagating NaNs.
+isnan : Show which elements are NaN.
+isfinite: Show which elements are not NaN or +/-inf.</p>
+<p>If both positive and negative infinity are present, the sum will be Not
+A Number (NaN).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">3.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">array([2.,  1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">])</span>
+<span class="go">inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NINF</span><span class="p">])</span>
+<span class="go">-inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="k">import</span> <span class="n">suppress_warnings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">suppress_warnings</span><span class="p">()</span> <span class="k">as</span> <span class="n">sup</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">sup</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">])</span> <span class="c1"># both +/- infinity present</span>
+<span class="go">nan</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.mirr.html" title="previous chapter">mirr</a></li>
+      <li>Next: <a href="numpy.nanmax.html" title="next chapter">nanmax</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.nansum.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>amax &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="amin" href="numpy.amin.html" />
+    <link rel="prev" title="alltrue" href="numpy.alltrue.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="amax">
+<h1>amax<a class="headerlink" href="#amax" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.amax">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">amax</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">axis=None</em>, <em class="sig-param">out=None</em>, <em class="sig-param">keepdims=&lt;no value&gt;</em>, <em class="sig-param">initial=&lt;no value&gt;</em>, <em class="sig-param">where=&lt;no value&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.amax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum of an array or maximum along an axis.</p>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>Input data.</p>
+</dd>
+<dt>axis<span class="classifier">None or int or tuple of ints, optional</span></dt><dd><p>Axis or axes along which to operate.  By default, flattened input is
+used.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+<p>If this is a tuple of ints, the maximum is selected over multiple axes,
+instead of a single axis or all the axes as before.</p>
+</dd>
+<dt>out<span class="classifier">ndarray, optional</span></dt><dd><p>Alternative output array in which to place the result.  Must
+be of the same shape and buffer length as the expected output.
+See <cite>doc.ufuncs</cite> (Section “Output arguments”) for more details.</p>
+</dd>
+<dt>keepdims<span class="classifier">bool, optional</span></dt><dd><p>If this is set to True, the axes which are reduced are left
+in the result as dimensions with size one. With this option,
+the result will broadcast correctly against the input array.</p>
+<p>If the default value is passed, then <cite>keepdims</cite> will not be
+passed through to the <cite>amax</cite> method of sub-classes of
+<cite>ndarray</cite>, however any non-default value will be.  If the
+sub-class’ method does not implement <cite>keepdims</cite> any
+exceptions will be raised.</p>
+</dd>
+<dt>initial<span class="classifier">scalar, optional</span></dt><dd><p>The minimum value of an output element. Must be present to allow
+computation on empty slice. See <cite>~numpy.ufunc.reduce</cite> for details.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.15.0.</span></p>
+</div>
+</dd>
+<dt>where<span class="classifier">array_like of bool, optional</span></dt><dd><p>Elements to compare for the maximum. See <cite>~numpy.ufunc.reduce</cite>
+for details.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.17.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>amax<span class="classifier">ndarray or scalar</span></dt><dd><p>Maximum of <cite>a</cite>. If <cite>axis</cite> is None, the result is a scalar value.
+If <cite>axis</cite> is given, the result is an array of dimension
+<code class="docutils literal notranslate"><span class="pre">a.ndim</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>amin :</dt><dd><p>The minimum value of an array along a given axis, propagating any NaNs.</p>
+</dd>
+<dt>nanmax :</dt><dd><p>The maximum value of an array along a given axis, ignoring any NaNs.</p>
+</dd>
+<dt>maximum :</dt><dd><p>Element-wise maximum of two arrays, propagating any NaNs.</p>
+</dd>
+<dt>fmax :</dt><dd><p>Element-wise maximum of two arrays, ignoring any NaNs.</p>
+</dd>
+<dt>argmax :</dt><dd><p>Return the indices of the maximum values.</p>
+</dd>
+</dl>
+<p>nanmin, minimum, fmin</p>
+<p>NaN values are propagated, that is if at least one item is NaN, the
+corresponding max value will be NaN as well. To ignore NaN values
+(MATLAB behavior), please use nanmax.</p>
+<p>Don’t use <cite>amax</cite> for element-wise comparison of 2 arrays; when
+<code class="docutils literal notranslate"><span class="pre">a.shape[0]</span></code> is 2, <code class="docutils literal notranslate"><span class="pre">maximum(a[0],</span> <span class="pre">a[1])</span></code> is faster than
+<code class="docutils literal notranslate"><span class="pre">amax(a,</span> <span class="pre">axis=0)</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[0, 1],</span>
+<span class="go">       [2, 3]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>           <span class="c1"># Maximum of the flattened array</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># Maxima along the first axis</span>
+<span class="go">array([2, 3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># Maxima along the second axis</span>
+<span class="go">array([1, 3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">array([-1,  3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">nan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">where</span><span class="o">=~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">4.0</span>
+</pre></div>
+</div>
+<p>You can use an initial value to compute the maximum of an empty slice, or
+to initialize it to a different value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([[</span><span class="o">-</span><span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">array([ 0, 10])</span>
+</pre></div>
+</div>
+<p>Notice that the initial value is used as one of the elements for which the
+maximum is determined, unlike for the default argument Python’s max
+function, which is only used for empty iterables.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">5</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">([</span><span class="mi">5</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.alltrue.html" title="previous chapter">alltrue</a></li>
+      <li>Next: <a href="numpy.amin.html" title="next chapter">amin</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.amax.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

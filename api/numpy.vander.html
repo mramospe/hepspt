@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>vander &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="histogram2d" href="numpy.histogram2d.html" />
+    <link rel="prev" title="tril" href="numpy.tril.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="vander">
+<h1>vander<a class="headerlink" href="#vander" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.vander">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">vander</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">N=None</em>, <em class="sig-param">increasing=False</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.vander" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a Vandermonde matrix.</p>
+<p>The columns of the output matrix are powers of the input vector. The
+order of the powers is determined by the <cite>increasing</cite> boolean argument.
+Specifically, when <cite>increasing</cite> is False, the <cite>i</cite>-th output column is
+the input vector raised element-wise to the power of <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">-</span> <span class="pre">i</span> <span class="pre">-</span> <span class="pre">1</span></code>. Such
+a matrix with a geometric progression in each row is named for Alexandre-
+Theophile Vandermonde.</p>
+<dl>
+<dt>x<span class="classifier">array_like</span></dt><dd><p>1-D input array.</p>
+</dd>
+<dt>N<span class="classifier">int, optional</span></dt><dd><p>Number of columns in the output.  If <cite>N</cite> is not specified, a square
+array is returned (<code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">len(x)</span></code>).</p>
+</dd>
+<dt>increasing<span class="classifier">bool, optional</span></dt><dd><p>Order of the powers of the columns.  If True, the powers increase
+from left to right, if False (the default) they are reversed.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.9.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">ndarray</span></dt><dd><p>Vandermonde matrix.  If <cite>increasing</cite> is False, the first column is
+<code class="docutils literal notranslate"><span class="pre">x^(N-1)</span></code>, the second <code class="docutils literal notranslate"><span class="pre">x^(N-2)</span></code> and so forth. If <cite>increasing</cite> is
+True, the columns are <code class="docutils literal notranslate"><span class="pre">x^0,</span> <span class="pre">x^1,</span> <span class="pre">...,</span> <span class="pre">x^(N-1)</span></code>.</p>
+</dd>
+</dl>
+<p>polynomial.polynomial.polyvander</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">vander</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="go">array([[ 1,  1,  1],</span>
+<span class="go">       [ 4,  2,  1],</span>
+<span class="go">       [ 9,  3,  1],</span>
+<span class="go">       [25,  5,  1]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+<span class="go">array([[ 1,  1,  1],</span>
+<span class="go">       [ 4,  2,  1],</span>
+<span class="go">       [ 9,  3,  1],</span>
+<span class="go">       [25,  5,  1]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">vander</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([[  1,   1,   1,   1],</span>
+<span class="go">       [  8,   4,   2,   1],</span>
+<span class="go">       [ 27,   9,   3,   1],</span>
+<span class="go">       [125,  25,   5,   1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">vander</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">increasing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">array([[  1,   1,   1,   1],</span>
+<span class="go">       [  1,   2,   4,   8],</span>
+<span class="go">       [  1,   3,   9,  27],</span>
+<span class="go">       [  1,   5,  25, 125]])</span>
+</pre></div>
+</div>
+<p>The determinant of a square Vandermonde matrix is the product
+of the differences between the values of the input vector:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vander</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="go">48.000000000000043 # may vary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">48</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.tril.html" title="previous chapter">tril</a></li>
+      <li>Next: <a href="numpy.histogram2d.html" title="next chapter">histogram2d</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.vander.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

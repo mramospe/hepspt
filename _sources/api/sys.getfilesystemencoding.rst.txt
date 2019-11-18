@@ -1,0 +1,6 @@
+getfilesystemencoding
+=====================
+
+.. currentmodule:: sys
+
+.. autofunction:: getfilesystemencoding

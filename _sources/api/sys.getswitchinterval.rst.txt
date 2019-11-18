@@ -1,0 +1,6 @@
+getswitchinterval
+=================
+
+.. currentmodule:: sys
+
+.. autofunction:: getswitchinterval

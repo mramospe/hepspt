@@ -1,0 +1,6 @@
+setbufsize
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: setbufsize

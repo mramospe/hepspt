@@ -1,0 +1,6 @@
+moveaxis
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: moveaxis

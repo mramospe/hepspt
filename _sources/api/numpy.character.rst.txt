@@ -1,0 +1,7 @@
+character
+=========
+
+.. currentmodule:: numpy
+
+.. autoclass:: character
+   :show-inheritance:

@@ -1,0 +1,6 @@
+pad
+===
+
+.. currentmodule:: numpy
+
+.. autofunction:: pad

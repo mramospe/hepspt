@@ -1,0 +1,10 @@
+<map id="inheritanced791bcf4fe" name="inheritanced791bcf4fe">
+<area shape="rect" id="node1" href="api/hep_spt.AdBin.html#hep_spt.AdBin" target="_top" title="AdBin" alt="" coords="38,201,110,227"/>
+<area shape="rect" id="node2" href="api/hep_spt.CLsHypo.html#hep_spt.CLsHypo" target="_top" title="CLsHypo" alt="" coords="35,152,113,177"/>
+<area shape="rect" id="node3" href="api/hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" target="_top" title="CLsHypo_continuous" alt="" coords="191,128,348,153"/>
+<area shape="rect" id="node4" href="api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete" target="_top" title="CLsHypo_discrete" alt="" coords="200,177,339,203"/>
+<area shape="rect" id="node5" href="api/hep_spt.CLsTS.html#hep_spt.CLsTS" target="_top" title="CLsTS" alt="" coords="38,55,110,80"/>
+<area shape="rect" id="node6" href="api/hep_spt.CLsTS_continuous.html#hep_spt.CLsTS_continuous" target="_top" title="CLsTS_continuous" alt="" coords="200,29,339,55"/>
+<area shape="rect" id="node7" href="api/hep_spt.CLsTS_discrete.html#hep_spt.CLsTS_discrete" target="_top" title="CLsTS_discrete" alt="" coords="209,79,329,104"/>
+<area shape="rect" id="node8" href="api/hep_spt.FlatDistTransform.html#hep_spt.FlatDistTransform" target="_top" title="Instance to transform values following an unknown distribution :math:`f(x)`" alt="" coords="5,5,143,31"/>
+</map>

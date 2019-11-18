@@ -1,0 +1,21 @@
+DataSource
+==========
+
+.. currentmodule:: numpy
+
+.. autoclass:: DataSource
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~DataSource.abspath
+      ~DataSource.exists
+      ~DataSource.open
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: abspath
+   .. automethod:: exists
+   .. automethod:: open

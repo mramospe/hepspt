@@ -1,0 +1,6 @@
+lexsort
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: lexsort

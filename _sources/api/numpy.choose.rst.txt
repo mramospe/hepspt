@@ -1,0 +1,6 @@
+choose
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: choose

@@ -1,0 +1,6 @@
+amax
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: amax

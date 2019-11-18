@@ -1,0 +1,6 @@
+mafromtxt
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: mafromtxt

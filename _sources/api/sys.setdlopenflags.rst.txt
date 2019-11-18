@@ -1,0 +1,6 @@
+setdlopenflags
+==============
+
+.. currentmodule:: sys
+
+.. autofunction:: setdlopenflags

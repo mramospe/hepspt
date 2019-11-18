@@ -16,7 +16,7 @@ AdBin
       ~AdBin.free_memory
       ~AdBin.size
       ~AdBin.sw
-      ~AdBin.sw_u
+      ~AdBin.sw_unc
 
    .. rubric:: Methods Documentation
 
@@ -26,4 +26,4 @@ AdBin
    .. automethod:: free_memory
    .. automethod:: size
    .. automethod:: sw
-   .. automethod:: sw_u
+   .. automethod:: sw_unc

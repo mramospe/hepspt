@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>lexsort &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="set_numeric_ops" href="numpy.set_numeric_ops.html" />
+    <link rel="prev" title="fastCopyAndTranspose" href="numpy.fastCopyAndTranspose.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="lexsort">
+<h1>lexsort<a class="headerlink" href="#lexsort" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.lexsort">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">lexsort</code><span class="sig-paren">(</span><em class="sig-param">keys</em>, <em class="sig-param">axis=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.lexsort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an indirect stable sort using a sequence of keys.</p>
+<p>Given multiple sorting keys, which can be interpreted as columns in a
+spreadsheet, lexsort returns an array of integer indices that describes
+the sort order by multiple columns. The last key in the sequence is used
+for the primary sort order, the second-to-last key for the secondary sort
+order, and so on. The keys argument must be a sequence of objects that
+can be converted to arrays of the same shape. If a 2D array is provided
+for the keys argument, it’s rows are interpreted as the sorting keys and
+sorting is according to the last row, second last row etc.</p>
+<dl class="simple">
+<dt>keys<span class="classifier">(k, N) array or tuple containing k (N,)-shaped sequences</span></dt><dd><p>The <cite>k</cite> different “columns” to be sorted.  The last column (or row if
+<cite>keys</cite> is a 2D array) is the primary sort key.</p>
+</dd>
+<dt>axis<span class="classifier">int, optional</span></dt><dd><p>Axis to be indirectly sorted.  By default, sort over the last axis.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>indices<span class="classifier">(N,) ndarray of ints</span></dt><dd><p>Array of indices that sort the keys along the specified axis.</p>
+</dd>
+</dl>
+<p>argsort : Indirect sort.
+ndarray.sort : In-place sort.
+sort : Return a sorted copy of an array.</p>
+<p>Sort names: first by surname, then by name.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surnames</span> <span class="o">=</span>    <span class="p">(</span><span class="s1">&#39;Hertz&#39;</span><span class="p">,</span>    <span class="s1">&#39;Galilei&#39;</span><span class="p">,</span> <span class="s1">&#39;Hertz&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Heinrich&#39;</span><span class="p">,</span> <span class="s1">&#39;Galileo&#39;</span><span class="p">,</span> <span class="s1">&#39;Gustav&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">first_names</span><span class="p">,</span> <span class="n">surnames</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span>
+<span class="go">array([1, 2, 0])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">surnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">first_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+<span class="go">[&#39;Galilei, Galileo&#39;, &#39;Hertz, Gustav&#39;, &#39;Hertz, Heinrich&#39;]</span>
+</pre></div>
+</div>
+<p>Sort two columns of numbers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># First column</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># Second column</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="p">))</span> <span class="c1"># Sort by a, then by b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span>
+<span class="go">array([2, 0, 4, 6, 5, 3, 1])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+<span class="go">[(1, 0), (1, 9), (3, 0), (4, 1), (4, 2), (4, 4), (5, 4)]</span>
+</pre></div>
+</div>
+<p>Note that sorting is first according to the elements of <code class="docutils literal notranslate"><span class="pre">a</span></code>.
+Secondary sorting is according to the elements of <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<p>A normal <code class="docutils literal notranslate"><span class="pre">argsort</span></code> would have yielded:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">a</span><span class="p">)]</span>
+<span class="go">[(1, 9), (1, 0), (3, 0), (4, 4), (4, 2), (4, 1), (5, 4)]</span>
+</pre></div>
+</div>
+<p>Structured arrays are sorted lexically by <code class="docutils literal notranslate"><span class="pre">argsort</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)],</span>
+<span class="gp">... </span>             <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># or np.argsort(x, order=(&#39;x&#39;, &#39;y&#39;))</span>
+<span class="go">array([2, 0, 4, 6, 5, 3, 1])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.fastCopyAndTranspose.html" title="previous chapter">fastCopyAndTranspose</a></li>
+      <li>Next: <a href="numpy.set_numeric_ops.html" title="next chapter">set_numeric_ops</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.lexsort.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

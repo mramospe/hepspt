@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Introduction &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <meta charset="utf-8" />
+    <title>Introduction &#8212; hep_spt 0.0.0.dev5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -14,7 +12,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Functions and classes" href="main.html" />
@@ -42,12 +43,12 @@
 <h1>Main points<a class="headerlink" href="#main-points" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><ul class="simple">
-<li>Functions needed on day-to-day work, like calculating errors, residuals, etc.</li>
-<li>Classes to create adaptive binned histograms, and some functions to represent them using <a class="reference external" href="https://matplotlib.org/">matplotlib</a>.</li>
-<li>Statistical functions to work with Bayesian/Frequentist approaches.</li>
-<li>Utilities to handle poissonian and/or weighted histograms.</li>
-<li>Simple classes to work with the CLs method.</li>
-<li>A set of <a class="reference external" href="https://matplotlib.org/">matplotlib</a> styles.</li>
+<li><p>Functions needed on day-to-day work, like calculating errors, residuals, etc.</p></li>
+<li><p>Classes to create adaptive binned histograms, and some functions to represent them using <a class="reference external" href="https://matplotlib.org/">matplotlib</a>.</p></li>
+<li><p>Statistical functions to work with Bayesian/Frequentist approaches.</p></li>
+<li><p>Utilities to handle poissonian and/or weighted histograms.</p></li>
+<li><p>Simple classes to work with the CLs method.</p></li>
+<li><p>A set of <a class="reference external" href="https://matplotlib.org/">matplotlib</a> styles.</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -55,9 +56,9 @@
 <h1>Considerations:<a class="headerlink" href="#considerations" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><ul class="simple">
-<li>Inputs passed to the functions and classes are usually preferred as <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ndarray.html">numpy.ndarray</a> objects.</li>
-<li>Plotting functions and classes are designed to work with <a class="reference external" href="https://matplotlib.org/">matplotlib</a>.</li>
-<li>Statistical tools are built on top of the standard <a class="reference external" href="https://scipy.org/">scipy</a> package.</li>
+<li><p>Inputs passed to the functions and classes are usually preferred as <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ndarray.html">numpy.ndarray</a> objects.</p></li>
+<li><p>Plotting functions and classes are designed to work with <a class="reference external" href="https://matplotlib.org/">matplotlib</a>.</p></li>
+<li><p>Statistical tools are built on top of the standard <a class="reference external" href="https://scipy.org/">scipy</a> package.</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -82,7 +83,12 @@ pip install hep_spt
 following sections:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="main.html">Functions and classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Functions and classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/stats.html">Statistical tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/plotting.html">Plotting</a></li>
@@ -96,9 +102,9 @@ following sections:</p>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </div>
 
@@ -133,13 +139,11 @@ following sections:</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -160,7 +164,7 @@ following sections:</p>
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

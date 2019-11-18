@@ -1,0 +1,6 @@
+deprecate_with_doc
+==================
+
+.. currentmodule:: numpy
+
+.. autofunction:: deprecate_with_doc

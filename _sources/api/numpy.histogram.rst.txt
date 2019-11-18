@@ -1,0 +1,6 @@
+histogram
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: histogram

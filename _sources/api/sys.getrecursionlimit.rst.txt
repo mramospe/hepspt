@@ -1,0 +1,6 @@
+getrecursionlimit
+=================
+
+.. currentmodule:: sys
+
+.. autofunction:: getrecursionlimit

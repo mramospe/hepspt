@@ -1,0 +1,6 @@
+loadtxt
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: loadtxt

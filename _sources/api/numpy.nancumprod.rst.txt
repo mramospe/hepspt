@@ -1,0 +1,6 @@
+nancumprod
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: nancumprod

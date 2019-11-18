@@ -1,0 +1,6 @@
+einsum_path
+===========
+
+.. currentmodule:: numpy
+
+.. autofunction:: einsum_path

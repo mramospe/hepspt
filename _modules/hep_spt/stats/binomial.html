@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>hep_spt.stats.binomial &#8212; hep_spt 0.0.0.dev5 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hep_spt.stats.binomial</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Function involving the binomial distribution.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Miguel Ramos Pernas&#39;</span><span class="p">]</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;miguel.ramos.pernas@cern.ch&#39;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">hep_spt.core</span> <span class="k">import</span> <span class="n">decorate</span><span class="p">,</span> <span class="n">taking_ndarray</span>
+<span class="kn">from</span> <span class="nn">hep_spt.stats.core</span> <span class="k">import</span> <span class="n">one_sigma</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">beta</span><span class="p">,</span> <span class="n">norm</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;clopper_pearson_int&#39;</span><span class="p">,</span> <span class="s1">&#39;clopper_pearson_unc&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;wald_int&#39;</span><span class="p">,</span> <span class="s1">&#39;wald_unc&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;wald_weighted_int&#39;</span><span class="p">,</span> <span class="s1">&#39;wald_weighted_unc&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;wilson_int&#39;</span><span class="p">,</span> <span class="s1">&#39;wilson_unc&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="clopper_pearson_int"><a class="viewcode-back" href="../../../api/hep_spt.clopper_pearson_int.html#hep_spt.clopper_pearson_int">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">clopper_pearson_int</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the frequentist Clopper-Pearson interval of having</span>
+<span class="sd">    &quot;k&quot; events in &quot;N&quot;.</span>
+
+<span class="sd">    :param k: passed events.</span>
+<span class="sd">    :type k: int or numpy.ndarray(int)</span>
+<span class="sd">    :param N: total number of events.</span>
+<span class="sd">    :type N: int or numpy.ndarray(int)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: Lower and upper bounds for the probability.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">/</span><span class="n">N</span>
+
+    <span class="n">pcl</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">cl</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lw</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">pcl</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lw</span> <span class="o">=</span> <span class="n">p</span>
+
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">N</span><span class="p">:</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">pcl</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1"># Solve for low uncertainty</span>
+        <span class="n">lw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">cd</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pcl</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lpcl</span> <span class="o">=</span> <span class="n">pcl</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lpcl</span> <span class="o">=</span> <span class="n">pcl</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">lk</span><span class="p">,</span> <span class="n">lN</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">cd</span><span class="p">],</span> <span class="n">N</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">lw</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">lk</span><span class="p">,</span> <span class="n">lN</span> <span class="o">-</span> <span class="n">lk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">lpcl</span><span class="p">)</span>
+
+        <span class="c1"># Solve for upper uncertainty</span>
+        <span class="n">up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">cd</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">!=</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pcl</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">upcl</span> <span class="o">=</span> <span class="n">pcl</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">upcl</span> <span class="o">=</span> <span class="n">pcl</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">uk</span><span class="p">,</span> <span class="n">uN</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">cd</span><span class="p">],</span> <span class="n">N</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span>
+
+        <span class="n">up</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">uk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">uN</span> <span class="o">-</span> <span class="n">uk</span><span class="p">)</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">upcl</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lw</span><span class="p">,</span> <span class="n">up</span></div>
+
+
+<div class="viewcode-block" id="clopper_pearson_unc"><a class="viewcode-back" href="../../../api/hep_spt.clopper_pearson_unc.html#hep_spt.clopper_pearson_unc">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">clopper_pearson_unc</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the frequentist Clopper-Pearson uncertainties of having</span>
+<span class="sd">    &quot;k&quot; events in &quot;N&quot;.</span>
+
+<span class="sd">    :param k: passed events.</span>
+<span class="sd">    :type k: int or numpy.ndarray(int)</span>
+<span class="sd">    :param N: total number of events.</span>
+<span class="sd">    :type N: int or numpy.ndarray(int)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: Lower and upper uncertainties for the probability.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">N</span>
+    <span class="n">p_l</span><span class="p">,</span> <span class="n">p_u</span> <span class="o">=</span> <span class="n">clopper_pearson_int</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p</span> <span class="o">-</span> <span class="n">p_l</span><span class="p">,</span> <span class="n">p_u</span> <span class="o">-</span> <span class="n">p</span></div>
+
+
+<div class="viewcode-block" id="wald_int"><a class="viewcode-back" href="../../../api/hep_spt.wald_int.html#hep_spt.wald_int">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">wald_int</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the symmetric Wald interval of having &quot;k&quot; elements</span>
+<span class="sd">    in &quot;N&quot;.</span>
+
+<span class="sd">    :param k: passed events.</span>
+<span class="sd">    :type k: int or numpy.ndarray(int)</span>
+<span class="sd">    :param N: total number of events.</span>
+<span class="sd">    :type N: int or numpy.ndarray(int)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: Lower and upper bounds for the probability.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">N</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">wald_unc</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p</span> <span class="o">-</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span> <span class="o">+</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="wald_unc"><a class="viewcode-back" href="../../../api/hep_spt.wald_unc.html#hep_spt.wald_unc">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">wald_unc</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the symmetric Wald uncertainty of having &quot;k&quot; elements</span>
+<span class="sd">    in &quot;N&quot;.</span>
+
+<span class="sd">    :param k: passed events.</span>
+<span class="sd">    :type k: int or numpy.ndarray(int)</span>
+<span class="sd">    :param N: total number of events.</span>
+<span class="sd">    :type N: int or numpy.ndarray(int)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: symmetric uncertainty.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">isf</span><span class="p">((</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">cl</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">N</span>
+    <span class="k">return</span> <span class="n">z</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="n">N</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="wald_weighted_int"><a class="viewcode-back" href="../../../api/hep_spt.wald_weighted_int.html#hep_spt.wald_weighted_int">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">wald_weighted_int</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the symmetric Wald interval for a weighted sample,</span>
+<span class="sd">    where &quot;k&quot; is the array of weights in the survival sample</span>
+<span class="sd">    and &quot;N&quot; in the main sample.</span>
+
+<span class="sd">    :param k: passed weights.</span>
+<span class="sd">    :type k: numpy.ndarray(float)</span>
+<span class="sd">    :param N: total weights.</span>
+<span class="sd">    :type N: numpy.ndarray(float)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: Lower and upper bounds for the probability.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">sw_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">sw_N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">sw_k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">sw_N</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">wald_weighted_unc</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p</span> <span class="o">-</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span> <span class="o">+</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="wald_weighted_unc"><a class="viewcode-back" href="../../../api/hep_spt.wald_weighted_unc.html#hep_spt.wald_weighted_unc">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">wald_weighted_unc</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the symmetric Wald uncertainty for a weighted sample,</span>
+<span class="sd">    where &quot;k&quot; is the array of weights in the survival sample</span>
+<span class="sd">    and &quot;N&quot; in the main sample.</span>
+
+<span class="sd">    :param k: passed weights.</span>
+<span class="sd">    :type k: numpy.ndarray(float)</span>
+<span class="sd">    :param N: total weights.</span>
+<span class="sd">    :type N: numpy.ndarray(float)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: symmetric uncertainty.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">isf</span><span class="p">((</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">cl</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+
+    <span class="n">sN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">W1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">W2</span> <span class="o">=</span> <span class="n">sN</span> <span class="o">-</span> <span class="n">W1</span>
+
+    <span class="n">vw1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">vw2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">N</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-</span> <span class="n">vw1</span>
+
+    <span class="k">return</span> <span class="n">z</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">W1</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">vw2</span> <span class="o">+</span> <span class="n">W2</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">vw1</span><span class="p">)</span><span class="o">/</span><span class="n">sN</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="wilson_int"><a class="viewcode-back" href="../../../api/hep_spt.wilson_int.html#hep_spt.wilson_int">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">wilson_int</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the Wilson interval of having &quot;k&quot; elements in &quot;N&quot;.</span>
+
+<span class="sd">    :param k: passed events.</span>
+<span class="sd">    :type k: int or numpy.ndarray(int)</span>
+<span class="sd">    :param N: total number of events.</span>
+<span class="sd">    :type N: int or numpy.ndarray(int)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: Lower and upper bounds for the probability.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">iN</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">N</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">k</span><span class="o">*</span><span class="n">iN</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">isf</span><span class="p">((</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">cl</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">z</span><span class="o">*</span><span class="n">z</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">z2</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="n">iN</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">z</span><span class="o">*</span><span class="n">iN</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">N</span> <span class="o">+</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">z2</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">+</span> <span class="n">z2</span><span class="o">*</span><span class="n">iN</span>
+
+    <span class="n">p_l</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">d</span>
+    <span class="n">p_u</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">d</span>
+
+    <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="n">one</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">p_l</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">p_l</span><span class="p">[</span><span class="n">zero</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">elif</span> <span class="n">zero</span><span class="p">:</span>
+        <span class="n">p_l</span> <span class="o">=</span> <span class="mf">0.</span>
+
+    <span class="k">if</span> <span class="n">p_u</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">p_u</span><span class="p">[</span><span class="n">one</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="k">elif</span> <span class="n">one</span><span class="p">:</span>
+        <span class="n">p_u</span> <span class="o">=</span> <span class="mf">1.</span>
+
+    <span class="k">return</span> <span class="n">p_l</span><span class="p">,</span> <span class="n">p_u</span></div>
+
+
+<div class="viewcode-block" id="wilson_unc"><a class="viewcode-back" href="../../../api/hep_spt.wilson_unc.html#hep_spt.wilson_unc">[docs]</a><span class="nd">@taking_ndarray</span>
+<span class="k">def</span> <span class="nf">wilson_unc</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="o">=</span><span class="n">one_sigma</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the Wilson uncertainties of having &quot;k&quot; elements in &quot;N&quot;.</span>
+
+<span class="sd">    :param k: passed events.</span>
+<span class="sd">    :type k: int or numpy.ndarray(int)</span>
+<span class="sd">    :param N: total number of events.</span>
+<span class="sd">    :type N: int or numpy.ndarray(int)</span>
+<span class="sd">    :param cl: confidence level.</span>
+<span class="sd">    :type cl: float or numpy.ndarray(float)</span>
+<span class="sd">    :returns: Lower and upper uncertainties for the probability.</span>
+<span class="sd">    :rtype: float or numpy.ndarray(float)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">k</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">N</span>
+    <span class="n">p_l</span><span class="p">,</span> <span class="n">p_u</span> <span class="o">=</span> <span class="n">wilson_int</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cl</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p</span> <span class="o">-</span> <span class="n">p_l</span><span class="p">,</span> <span class="n">p_u</span> <span class="o">-</span> <span class="n">p</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">Functions and classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

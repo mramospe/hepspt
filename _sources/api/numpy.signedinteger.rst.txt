@@ -1,0 +1,7 @@
+signedinteger
+=============
+
+.. currentmodule:: numpy
+
+.. autoclass:: signedinteger
+   :show-inheritance:

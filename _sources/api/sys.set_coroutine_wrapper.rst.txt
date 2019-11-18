@@ -1,0 +1,6 @@
+set_coroutine_wrapper
+=====================
+
+.. currentmodule:: sys
+
+.. autofunction:: set_coroutine_wrapper

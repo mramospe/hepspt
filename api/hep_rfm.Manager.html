@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Manager &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ProcessError" href="hep_rfm.ProcessError.html" />
+    <link rel="prev" title="MakeDirsError" href="hep_rfm.MakeDirsError.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="manager">
+<h1>Manager<a class="headerlink" href="#manager" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hep_rfm.Manager">
+<em class="property">class </em><code class="sig-prename descclassname">hep_rfm.</code><code class="sig-name descname">Manager</code><a class="reference internal" href="../_modules/hep_rfm/tables.html#Manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_rfm.Manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represent a class to store tables in different local/remote hosts, being
+able to do updates among them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>tables</strong> – paths to the stored tables.</p>
+</dd>
+</dl>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hep_rfm.Manager.add_table" title="hep_rfm.Manager.add_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_table</span></code></a>(path[, protocol])</p></td>
+<td><p>Add a new table to the list of tables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hep_rfm.Manager.available_table" title="hep_rfm.Manager.available_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">available_table</span></code></a>([modifiers, allow_protocols])</p></td>
+<td><p>Get the path to the first available table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hep_rfm.Manager.update" title="hep_rfm.Manager.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([parallelize, wdir, modifiers])</p></td>
+<td><p>Update the different tables registered within this manager.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="hep_rfm.Manager.add_table">
+<code class="sig-name descname">add_table</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">protocol=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_rfm/tables.html#Manager.add_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_rfm.Manager.add_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new table to the list of tables.
+The path is automatically transformed into the corresponding
+<a class="reference internal" href="hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath" title="hep_rfm.ProtocolPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtocolPath</span></code></a> instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – path to the new table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_rfm.Manager.available_table">
+<code class="sig-name descname">available_table</code><span class="sig-paren">(</span><em class="sig-param">modifiers=None</em>, <em class="sig-param">allow_protocols=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_rfm/tables.html#Manager.available_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_rfm.Manager.available_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the path to the first available table.
+The behavior is similar to that of <a class="reference internal" href="hep_rfm.available_path.html#hep_rfm.available_path" title="hep_rfm.available_path"><code class="xref py py-class docutils literal notranslate"><span class="pre">hep_rfm.available_path</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modifiers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – modifiers to be applied in the set of paths.</p></li>
+<li><p><strong>allow_protocols</strong> (<em>container</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>)</em>) – possible protocols to consider.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>path to the first available table.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="hep_rfm.available_path.html#hep_rfm.available_path" title="hep_rfm.available_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">available_path()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="hep_rfm.Manager.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">parallelize=False</em>, <em class="sig-param">wdir=None</em>, <em class="sig-param">modifiers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_rfm/tables.html#Manager.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_rfm.Manager.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the different tables registered within this manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parallelize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – number of processes allowed to parallelize the         synchronization of all the proxies. By default it is set to 0, so no         parallelization  is done.</p></li>
+<li><p><strong>wdir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – where to create the temporary directory. The option         is passed to <code class="xref py py-class docutils literal notranslate"><span class="pre">tempfile.TemporaryDirectory</span></code> as “dir”.</p></li>
+<li><p><strong>modifiers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – information to modify the path of this class. For         more information on its structure, see the definition of         <a class="reference internal" href="hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath.with_modifiers" title="hep_rfm.ProtocolPath.with_modifiers"><code class="xref py py-func docutils literal notranslate"><span class="pre">hep_rfm.ProtocolPath.with_modifiers()</span></code></a> for each protocol.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.8)"><strong>RuntimeError</strong></a> – if a file is missing for any of the tables.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="hep_rfm.Table.html#hep_rfm.Table" title="hep_rfm.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">hep_rfm.Table</span></code></a>, <a class="reference internal" href="hep_rfm.copy_file.html#hep_rfm.copy_file" title="hep_rfm.copy_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">hep_rfm.copy_file()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="hep_rfm.MakeDirsError.html" title="previous chapter">MakeDirsError</a></li>
+      <li>Next: <a href="hep_rfm.ProcessError.html" title="next chapter">ProcessError</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/hep_rfm.Manager.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

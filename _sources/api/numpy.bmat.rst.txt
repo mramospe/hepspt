@@ -1,0 +1,6 @@
+bmat
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: bmat

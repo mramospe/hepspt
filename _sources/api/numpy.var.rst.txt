@@ -1,0 +1,6 @@
+var
+===
+
+.. currentmodule:: numpy
+
+.. autofunction:: var

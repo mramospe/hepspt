@@ -1,0 +1,6 @@
+histogram_bin_edges
+===================
+
+.. currentmodule:: numpy
+
+.. autofunction:: histogram_bin_edges

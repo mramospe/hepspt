@@ -1,0 +1,6 @@
+show_config
+===========
+
+.. currentmodule:: numpy
+
+.. autofunction:: show_config

@@ -1,0 +1,6 @@
+isclose
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: isclose

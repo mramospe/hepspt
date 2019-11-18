@@ -1,0 +1,6 @@
+polyval
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: polyval

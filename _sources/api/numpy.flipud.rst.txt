@@ -1,0 +1,6 @@
+flipud
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: flipud

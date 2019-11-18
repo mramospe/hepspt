@@ -1,0 +1,6 @@
+cov
+===
+
+.. currentmodule:: numpy
+
+.. autofunction:: cov

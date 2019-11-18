@@ -1,0 +1,7 @@
+errstate
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: errstate
+   :show-inheritance:

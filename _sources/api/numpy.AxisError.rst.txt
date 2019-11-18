@@ -1,0 +1,6 @@
+AxisError
+=========
+
+.. currentmodule:: numpy
+
+.. autoexception:: AxisError

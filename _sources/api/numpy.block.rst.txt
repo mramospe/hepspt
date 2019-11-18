@@ -1,0 +1,6 @@
+block
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: block

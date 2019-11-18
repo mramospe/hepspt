@@ -1,0 +1,7 @@
+short
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: short
+   :show-inheritance:

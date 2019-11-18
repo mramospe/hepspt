@@ -1,0 +1,6 @@
+unwrap
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: unwrap

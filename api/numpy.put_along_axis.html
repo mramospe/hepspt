@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>put_along_axis &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="broadcast_to" href="numpy.broadcast_to.html" />
+    <link rel="prev" title="take_along_axis" href="numpy.take_along_axis.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="put-along-axis">
+<h1>put_along_axis<a class="headerlink" href="#put-along-axis" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.put_along_axis">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">put_along_axis</code><span class="sig-paren">(</span><em class="sig-param">arr</em>, <em class="sig-param">indices</em>, <em class="sig-param">values</em>, <em class="sig-param">axis</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.put_along_axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put values into the destination array by matching 1d index and data slices.</p>
+<p>This iterates over matching 1d slices oriented along the specified axis in
+the index and data arrays, and uses the former to place values into the
+latter. These slices can be different lengths.</p>
+<p>Functions returning an index along an axis, like <cite>argsort</cite> and
+<cite>argpartition</cite>, produce suitable indices for this function.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.15.0.</span></p>
+</div>
+<dl class="simple">
+<dt>arr: ndarray (Ni…, M, Nk…)</dt><dd><p>Destination array.</p>
+</dd>
+<dt>indices: ndarray (Ni…, J, Nk…)</dt><dd><p>Indices to change along each 1d slice of <cite>arr</cite>. This must match the
+dimension of arr, but dimensions in Ni and Nj may be 1 to broadcast
+against <cite>arr</cite>.</p>
+</dd>
+<dt>values: array_like (Ni…, J, Nk…)</dt><dd><p>values to insert at those indices. Its shape and dimension are
+broadcast to match that of <cite>indices</cite>.</p>
+</dd>
+<dt>axis: int</dt><dd><p>The axis to take 1d slices along. If axis is None, the destination
+array is treated as if a flattened 1d view had been created of it.</p>
+</dd>
+</dl>
+<p>This is equivalent to (but faster than) the following use of <cite>ndindex</cite> and
+<cite>s_</cite>, which sets each of <code class="docutils literal notranslate"><span class="pre">ii</span></code> and <code class="docutils literal notranslate"><span class="pre">kk</span></code> to a tuple of indices:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Ni</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">Nk</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="n">axis</span><span class="p">],</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>  <span class="c1"># Need not equal M</span>
+
+<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">ndindex</span><span class="p">(</span><span class="n">Ni</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">ndindex</span><span class="p">(</span><span class="n">Nk</span><span class="p">):</span>
+        <span class="n">a_1d</span>       <span class="o">=</span> <span class="n">a</span>      <span class="p">[</span><span class="n">ii</span> <span class="o">+</span> <span class="n">s_</span><span class="p">[:,]</span> <span class="o">+</span> <span class="n">kk</span><span class="p">]</span>
+        <span class="n">indices_1d</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">ii</span> <span class="o">+</span> <span class="n">s_</span><span class="p">[:,]</span> <span class="o">+</span> <span class="n">kk</span><span class="p">]</span>
+        <span class="n">values_1d</span>  <span class="o">=</span> <span class="n">values</span> <span class="p">[</span><span class="n">ii</span> <span class="o">+</span> <span class="n">s_</span><span class="p">[:,]</span> <span class="o">+</span> <span class="n">kk</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">J</span><span class="p">):</span>
+            <span class="n">a_1d</span><span class="p">[</span><span class="n">indices_1d</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="n">values_1d</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Equivalently, eliminating the inner loop, the last two lines would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a_1d</span><span class="p">[</span><span class="n">indices_1d</span><span class="p">]</span> <span class="o">=</span> <span class="n">values_1d</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>take_along_axis :</dt><dd><p>Take values from the input array by matching 1d index and data slices</p>
+</dd>
+</dl>
+<p>For this sample array</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>We can replace the maximum values with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ai</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ai</span>
+<span class="go">array([[1],</span>
+<span class="go">       [0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">put_along_axis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ai</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[10, 99, 20],</span>
+<span class="go">       [99, 40, 50]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.take_along_axis.html" title="previous chapter">take_along_axis</a></li>
+      <li>Next: <a href="numpy.broadcast_to.html" title="next chapter">broadcast_to</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.put_along_axis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>lookfor &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="byte_bounds" href="numpy.byte_bounds.html" />
+    <link rel="prev" title="who" href="numpy.who.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="lookfor">
+<h1>lookfor<a class="headerlink" href="#lookfor" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.lookfor">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">lookfor</code><span class="sig-paren">(</span><em class="sig-param">what</em>, <em class="sig-param">module=None</em>, <em class="sig-param">import_modules=True</em>, <em class="sig-param">regenerate=False</em>, <em class="sig-param">output=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.lookfor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do a keyword search on docstrings.</p>
+<p>A list of objects that matched the search is displayed,
+sorted by relevance. All given keywords need to be found in the
+docstring for it to be returned as a result, but the order does
+not matter.</p>
+<dl class="simple">
+<dt>what<span class="classifier">str</span></dt><dd><p>String containing words to look for.</p>
+</dd>
+<dt>module<span class="classifier">str or list, optional</span></dt><dd><p>Name of module(s) whose docstrings to go through.</p>
+</dd>
+<dt>import_modules<span class="classifier">bool, optional</span></dt><dd><p>Whether to import sub-modules in packages. Default is True.</p>
+</dd>
+<dt>regenerate<span class="classifier">bool, optional</span></dt><dd><p>Whether to re-generate the docstring cache. Default is False.</p>
+</dd>
+<dt>output<span class="classifier">file-like, optional</span></dt><dd><p>File-like object to write the output to. If omitted, use a pager.</p>
+</dd>
+</dl>
+<p>source, info</p>
+<p>Relevance is determined only roughly, by checking if the keywords occur
+in the function name, at the start of a docstring, etc.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">lookfor</span><span class="p">(</span><span class="s1">&#39;binary representation&#39;</span><span class="p">)</span> 
+<span class="go">Search results for &#39;binary representation&#39;</span>
+<span class="go">------------------------------------------</span>
+<span class="go">numpy.binary_repr</span>
+<span class="go">    Return the binary representation of the input number as a string.</span>
+<span class="go">numpy.core.setup_common.long_double_representation</span>
+<span class="go">    Given a binary dump as given by GNU od -b, look for long double</span>
+<span class="go">numpy.base_repr</span>
+<span class="go">    Return a string representation of a number in the given base system.</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.who.html" title="previous chapter">who</a></li>
+      <li>Next: <a href="numpy.byte_bounds.html" title="next chapter">byte_bounds</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.lookfor.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,6 @@
+asmatrix
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: asmatrix

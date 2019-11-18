@@ -1,0 +1,6 @@
+concatenate
+===========
+
+.. currentmodule:: numpy
+
+.. autofunction:: concatenate

@@ -1,0 +1,17 @@
+ndenumerate
+===========
+
+.. currentmodule:: numpy
+
+.. autoclass:: ndenumerate
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~ndenumerate.next
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: next

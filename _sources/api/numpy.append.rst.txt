@@ -1,0 +1,6 @@
+append
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: append

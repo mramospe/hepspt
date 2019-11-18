@@ -1,0 +1,6 @@
+getsizeof
+=========
+
+.. currentmodule:: sys
+
+.. autofunction:: getsizeof

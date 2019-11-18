@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>around &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="choose" href="numpy.choose.html" />
+    <link rel="prev" title="argsort" href="numpy.argsort.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="around">
+<h1>around<a class="headerlink" href="#around" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.around">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">around</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">decimals=0</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.around" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evenly round to the given number of decimals.</p>
+<dl class="simple">
+<dt>a<span class="classifier">array_like</span></dt><dd><p>Input data.</p>
+</dd>
+<dt>decimals<span class="classifier">int, optional</span></dt><dd><p>Number of decimal places to round to (default: 0).  If
+decimals is negative, it specifies the number of positions to
+the left of the decimal point.</p>
+</dd>
+<dt>out<span class="classifier">ndarray, optional</span></dt><dd><p>Alternative output array in which to place the result. It must have
+the same shape as the expected output, but the type of the output
+values will be cast if necessary. See <cite>doc.ufuncs</cite> (Section
+“Output arguments”) for details.</p>
+</dd>
+</dl>
+<dl>
+<dt>rounded_array<span class="classifier">ndarray</span></dt><dd><p>An array of the same type as <cite>a</cite>, containing the rounded values.
+Unless <cite>out</cite> was specified, a new array is created.  A reference to
+the result is returned.</p>
+<p>The real and imaginary parts of complex numbers are rounded
+separately.  The result of rounding a float is a float.</p>
+</dd>
+</dl>
+<p>ndarray.round : equivalent method</p>
+<p>ceil, fix, floor, rint, trunc</p>
+<p>For values exactly halfway between rounded decimal values, NumPy
+rounds to the nearest even value. Thus 1.5 and 2.5 round to 2.0,
+-0.5 and 0.5 round to 0.0, etc. Results may also be surprising due
+to the inexact representation of decimal fractions in the IEEE
+floating point standard <a class="footnote-reference brackets" href="#id2" id="id1">1</a> and errors introduced when scaling
+by powers of ten.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>“Lecture Notes on the Status of IEEE 754”, William Kahan,
+<a class="reference external" href="https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF">https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF</a></p>
+</dd>
+<dt class="label" id="id3"><span class="brackets">2</span></dt>
+<dd><p>“How Futile are Mindless Assessments of
+Roundoff in Floating-Point Computation?”, William Kahan,
+<a class="reference external" href="https://people.eecs.berkeley.edu/~wkahan/Mindless.pdf">https://people.eecs.berkeley.edu/~wkahan/Mindless.pdf</a></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">([</span><span class="mf">0.37</span><span class="p">,</span> <span class="mf">1.64</span><span class="p">])</span>
+<span class="go">array([0.,  2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">([</span><span class="mf">0.37</span><span class="p">,</span> <span class="mf">1.64</span><span class="p">],</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">array([0.4,  1.6])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">([</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span> <span class="c1"># rounds to nearest even value</span>
+<span class="go">array([0.,  2.,  2.,  4.,  4.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">11</span><span class="p">],</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># ndarray of ints is returned</span>
+<span class="go">array([ 1,  2,  3, 11])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">11</span><span class="p">],</span> <span class="n">decimals</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">array([ 0,  0,  0, 10])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.argsort.html" title="previous chapter">argsort</a></li>
+      <li>Next: <a href="numpy.choose.html" title="next chapter">choose</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.around.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

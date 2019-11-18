@@ -1,0 +1,47 @@
+poly1d
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: poly1d
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~poly1d.c
+      ~poly1d.coef
+      ~poly1d.coefficients
+      ~poly1d.coeffs
+      ~poly1d.o
+      ~poly1d.order
+      ~poly1d.r
+      ~poly1d.roots
+      ~poly1d.variable
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~poly1d.__call__
+      ~poly1d.deriv
+      ~poly1d.integ
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: c
+   .. autoattribute:: coef
+   .. autoattribute:: coefficients
+   .. autoattribute:: coeffs
+   .. autoattribute:: o
+   .. autoattribute:: order
+   .. autoattribute:: r
+   .. autoattribute:: roots
+   .. autoattribute:: variable
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: __call__
+   .. automethod:: deriv
+   .. automethod:: integ

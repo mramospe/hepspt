@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>piecewise &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="trim_zeros" href="numpy.trim_zeros.html" />
+    <link rel="prev" title="select" href="numpy.select.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="piecewise">
+<h1>piecewise<a class="headerlink" href="#piecewise" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.piecewise">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">piecewise</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">condlist</em>, <em class="sig-param">funclist</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.piecewise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a piecewise-defined function.</p>
+<p>Given a set of conditions and corresponding functions, evaluate each
+function on the input data wherever its condition is true.</p>
+<dl>
+<dt>x<span class="classifier">ndarray or scalar</span></dt><dd><p>The input domain.</p>
+</dd>
+<dt>condlist<span class="classifier">list of bool arrays or bool scalars</span></dt><dd><p>Each boolean array corresponds to a function in <cite>funclist</cite>.  Wherever
+<cite>condlist[i]</cite> is True, <cite>funclist[i](x)</cite> is used as the output value.</p>
+<p>Each boolean array in <cite>condlist</cite> selects a piece of <cite>x</cite>,
+and should therefore be of the same shape as <cite>x</cite>.</p>
+<p>The length of <cite>condlist</cite> must correspond to that of <cite>funclist</cite>.
+If one extra function is given, i.e. if
+<code class="docutils literal notranslate"><span class="pre">len(funclist)</span> <span class="pre">==</span> <span class="pre">len(condlist)</span> <span class="pre">+</span> <span class="pre">1</span></code>, then that extra function
+is the default value, used wherever all conditions are false.</p>
+</dd>
+<dt>funclist<span class="classifier">list of callables, f(x,*args,**kw), or scalars</span></dt><dd><p>Each function is evaluated over <cite>x</cite> wherever its corresponding
+condition is True.  It should take a 1d array as input and give an 1d
+array or a scalar value as output.  If, instead of a callable,
+a scalar is provided then a constant function (<code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">scalar</span></code>) is
+assumed.</p>
+</dd>
+<dt>args<span class="classifier">tuple, optional</span></dt><dd><p>Any further arguments given to <cite>piecewise</cite> are passed to the functions
+upon execution, i.e., if called <code class="docutils literal notranslate"><span class="pre">piecewise(...,</span> <span class="pre">...,</span> <span class="pre">1,</span> <span class="pre">'a')</span></code>, then
+each function is called as <code class="docutils literal notranslate"><span class="pre">f(x,</span> <span class="pre">1,</span> <span class="pre">'a')</span></code>.</p>
+</dd>
+<dt>kw<span class="classifier">dict, optional</span></dt><dd><p>Keyword arguments used in calling <cite>piecewise</cite> are passed to the
+functions upon execution, i.e., if called
+<code class="docutils literal notranslate"><span class="pre">piecewise(...,</span> <span class="pre">...,</span> <span class="pre">alpha=1)</span></code>, then each function is called as
+<code class="docutils literal notranslate"><span class="pre">f(x,</span> <span class="pre">alpha=1)</span></code>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">ndarray</span></dt><dd><p>The output is the same shape and type as x and is found by
+calling the functions in <cite>funclist</cite> on the appropriate portions of <cite>x</cite>,
+as defined by the boolean arrays in <cite>condlist</cite>.  Portions not covered
+by any condition have a default value of 0.</p>
+</dd>
+</dl>
+<p>choose, select, where</p>
+<p>This is similar to choose or select, except that functions are
+evaluated on elements of <cite>x</cite> that satisfy the corresponding condition from
+<cite>condlist</cite>.</p>
+<p>The result is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>      <span class="o">|--</span>
+      <span class="o">|</span><span class="n">funclist</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">x</span><span class="p">[</span><span class="n">condlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+<span class="n">out</span> <span class="o">=</span> <span class="o">|</span><span class="n">funclist</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">[</span><span class="n">condlist</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+      <span class="o">|...</span>
+      <span class="o">|</span><span class="n">funclist</span><span class="p">[</span><span class="n">n2</span><span class="p">](</span><span class="n">x</span><span class="p">[</span><span class="n">condlist</span><span class="p">[</span><span class="n">n2</span><span class="p">]])</span>
+      <span class="o">|--</span>
+</pre></div>
+</div>
+<p>Define the sigma function, which is -1 for <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0</span></code> and +1 for <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">piecewise</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([-1., -1., -1.,  1.,  1.,  1.])</span>
+</pre></div>
+</div>
+<p>Define the absolute value, which is <code class="docutils literal notranslate"><span class="pre">-x</span></code> for <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;0</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span></code> for
+<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">piecewise</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">])</span>
+<span class="go">array([2.5,  1.5,  0.5,  0.5,  1.5,  2.5])</span>
+</pre></div>
+</div>
+<p>Apply the same function to a scalar value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">piecewise</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">])</span>
+<span class="go">array(2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.select.html" title="previous chapter">select</a></li>
+      <li>Next: <a href="numpy.trim_zeros.html" title="next chapter">trim_zeros</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.piecewise.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

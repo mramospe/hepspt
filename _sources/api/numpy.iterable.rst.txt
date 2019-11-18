@@ -1,0 +1,6 @@
+iterable
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: iterable

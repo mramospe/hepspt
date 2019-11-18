@@ -1,0 +1,6 @@
+savez
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: savez

@@ -1,0 +1,6 @@
+copy
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: copy

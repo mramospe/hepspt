@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>convolve &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="inner" href="numpy.inner.html" />
+    <link rel="prev" title="correlate" href="numpy.correlate.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="convolve">
+<h1>convolve<a class="headerlink" href="#convolve" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.convolve">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">convolve</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">v</em>, <em class="sig-param">mode='full'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.convolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the discrete, linear convolution of two one-dimensional sequences.</p>
+<p>The convolution operator is often seen in signal processing, where it
+models the effect of a linear time-invariant system on a signal <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.  In
+probability theory, the sum of two independent random variables is
+distributed according to the convolution of their individual
+distributions.</p>
+<p>If <cite>v</cite> is longer than <cite>a</cite>, the arrays are swapped before computation.</p>
+<dl class="simple">
+<dt>a<span class="classifier">(N,) array_like</span></dt><dd><p>First one-dimensional input array.</p>
+</dd>
+<dt>v<span class="classifier">(M,) array_like</span></dt><dd><p>Second one-dimensional input array.</p>
+</dd>
+<dt>mode<span class="classifier">{‘full’, ‘valid’, ‘same’}, optional</span></dt><dd><dl class="simple">
+<dt>‘full’:</dt><dd><p>By default, mode is ‘full’.  This returns the convolution
+at each point of overlap, with an output shape of (N+M-1,). At
+the end-points of the convolution, the signals do not overlap
+completely, and boundary effects may be seen.</p>
+</dd>
+<dt>‘same’:</dt><dd><p>Mode ‘same’ returns output of length <code class="docutils literal notranslate"><span class="pre">max(M,</span> <span class="pre">N)</span></code>.  Boundary
+effects are still visible.</p>
+</dd>
+<dt>‘valid’:</dt><dd><p>Mode ‘valid’ returns output of length
+<code class="docutils literal notranslate"><span class="pre">max(M,</span> <span class="pre">N)</span> <span class="pre">-</span> <span class="pre">min(M,</span> <span class="pre">N)</span> <span class="pre">+</span> <span class="pre">1</span></code>.  The convolution product is only given
+for points where the signals overlap completely.  Values outside
+the signal boundary have no effect.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">ndarray</span></dt><dd><p>Discrete, linear convolution of <cite>a</cite> and <cite>v</cite>.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>scipy.signal.fftconvolve<span class="classifier">Convolve two arrays using the Fast Fourier</span></dt><dd><p>Transform.</p>
+</dd>
+</dl>
+<p>scipy.linalg.toeplitz : Used to construct the convolution operator.
+polymul : Polynomial multiplication. Same output as convolve, but also</p>
+<blockquote>
+<div><p>accepts poly1d objects as input.</p>
+</div></blockquote>
+<p>The discrete convolution operation is defined as</p>
+<div class="math notranslate nohighlight">
+\[(a * v)[n] = \sum_{m = -\infty}^{\infty} a[m] v[n - m]\]</div>
+<p>It can be shown that a convolution <span class="math notranslate nohighlight">\(x(t) * y(t)\)</span> in time/space
+is equivalent to the multiplication <span class="math notranslate nohighlight">\(X(f) Y(f)\)</span> in the Fourier
+domain, after appropriate padding (padding is necessary to prevent
+circular convolution).  Since multiplication is more efficient (faster)
+than convolution, the function <cite>scipy.signal.fftconvolve</cite> exploits the
+FFT to calculate the convolution of large data-sets.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Wikipedia, “Convolution”,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Convolution">https://en.wikipedia.org/wiki/Convolution</a></p>
+</dd>
+</dl>
+<p>Note how the convolution operator flips the second array
+before “sliding” the two across one another:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="go">array([0. , 1. , 2.5, 4. , 1.5])</span>
+</pre></div>
+</div>
+<p>Only return the middle values of the convolution.
+Contains boundary effects, where zeros are taken
+into account:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span> <span class="s1">&#39;same&#39;</span><span class="p">)</span>
+<span class="go">array([1. ,  2.5,  4. ])</span>
+</pre></div>
+</div>
+<p>The two arrays are of the same length, so there
+is only one position where they completely overlap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span> <span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+<span class="go">array([2.5])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.correlate.html" title="previous chapter">correlate</a></li>
+      <li>Next: <a href="numpy.inner.html" title="next chapter">inner</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.convolve.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

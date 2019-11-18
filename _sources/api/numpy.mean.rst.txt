@@ -1,0 +1,6 @@
+mean
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: mean

@@ -1,0 +1,7 @@
+complex256
+==========
+
+.. currentmodule:: numpy
+
+.. autoclass:: complex256
+   :show-inheritance:

@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>poly &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="roots" href="numpy.roots.html" />
+    <link rel="prev" title="pad" href="numpy.pad.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="poly">
+<h1>poly<a class="headerlink" href="#poly" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.poly">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">poly</code><span class="sig-paren">(</span><em class="sig-param">seq_of_zeros</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the coefficients of a polynomial with the given sequence of roots.</p>
+<p>Returns the coefficients of the polynomial whose leading coefficient
+is one for the given sequence of zeros (multiple roots must be included
+in the sequence as many times as their multiplicity; see Examples).
+A square matrix (or array, which will be treated as a matrix) can also
+be given, in which case the coefficients of the characteristic polynomial
+of the matrix are returned.</p>
+<dl class="simple">
+<dt>seq_of_zeros<span class="classifier">array_like, shape (N,) or (N, N)</span></dt><dd><p>A sequence of polynomial roots, or a square array or matrix object.</p>
+</dd>
+</dl>
+<dl>
+<dt>c<span class="classifier">ndarray</span></dt><dd><p>1D array of polynomial coefficients from highest to lowest degree:</p>
+<p><code class="docutils literal notranslate"><span class="pre">c[0]</span> <span class="pre">*</span> <span class="pre">x**(N)</span> <span class="pre">+</span> <span class="pre">c[1]</span> <span class="pre">*</span> <span class="pre">x**(N-1)</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">c[N-1]</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">c[N]</span></code>
+where c[0] always equals 1.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If input is the wrong shape (the input must be a 1-D or square
+2-D array).</p>
+</dd>
+</dl>
+<p>polyval : Compute polynomial values.
+roots : Return the roots of a polynomial.
+polyfit : Least squares polynomial fit.
+poly1d : A one-dimensional polynomial class.</p>
+<p>Specifying the roots of a polynomial still leaves one degree of
+freedom, typically represented by an undetermined leading
+coefficient. <a class="footnote-reference brackets" href="#id3" id="id1">1</a> In the case of this function, that coefficient -
+the first one in the returned array - is always taken as one. (If
+for some reason you have one other point, the only automatic way
+presently to leverage that information is to use <code class="docutils literal notranslate"><span class="pre">polyfit</span></code>.)</p>
+<p>The characteristic polynomial, <span class="math notranslate nohighlight">\(p_a(t)\)</span>, of an <cite>n</cite>-by-<cite>n</cite>
+matrix <strong>A</strong> is given by</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(p_a(t) = \mathrm{det}(t\, \mathbf{I} - \mathbf{A})\)</span>,</p>
+</div></blockquote>
+<p>where <strong>I</strong> is the <cite>n</cite>-by-<cite>n</cite> identity matrix. <a class="footnote-reference brackets" href="#id4" id="id2">2</a></p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>M. Sullivan and M. Sullivan, III, “Algebra and Trignometry,
+Enhanced With Graphing Utilities,” Prentice-Hall, pg. 318, 1996.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>G. Strang, “Linear Algebra and Its Applications, 2nd Edition,”
+Academic Press, pg. 182, 1980.</p>
+</dd>
+</dl>
+<p>Given a sequence of a polynomial’s zeros:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">poly</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1"># Multiple root example</span>
+<span class="go">array([1., 0., 0., 0.])</span>
+</pre></div>
+</div>
+<p>The line above represents z**3 + 0*z**2 + 0*z + 0.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">poly</span><span class="p">((</span><span class="o">-</span><span class="mf">1.</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">array([ 1.  ,  0.  , -0.25,  0.  ])</span>
+</pre></div>
+</div>
+<p>The line above represents z**3 - z/4</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">poly</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="go">array([ 1.        , -0.77086955,  0.08618131,  0.        ]) # random</span>
+</pre></div>
+</div>
+<p>Given a square array object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="go">array([1.        , 0.        , 0.16666667])</span>
+</pre></div>
+</div>
+<p>Note how in all cases the leading coefficient is always 1.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.pad.html" title="previous chapter">pad</a></li>
+      <li>Next: <a href="numpy.roots.html" title="next chapter">roots</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.poly.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

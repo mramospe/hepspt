@@ -1,0 +1,6 @@
+loads
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: loads

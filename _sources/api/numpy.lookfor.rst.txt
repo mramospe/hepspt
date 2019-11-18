@@ -1,0 +1,6 @@
+lookfor
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: lookfor

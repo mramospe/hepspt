@@ -1,0 +1,7 @@
+complexfloating
+===============
+
+.. currentmodule:: numpy
+
+.. autoclass:: complexfloating
+   :show-inheritance:

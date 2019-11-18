@@ -1,0 +1,6 @@
+argsort
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: argsort

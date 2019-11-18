@@ -1,0 +1,871 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>hep_rfm.protocols &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hep_rfm.protocols</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Define functions to manage protocols.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Miguel Ramos Pernas&#39;</span><span class="p">]</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;miguel.ramos.pernas@cern.ch&#39;</span><span class="p">]</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ProtocolPath&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LocalPath&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RemotePath&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SSHPath&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;XRootDPath&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;available_path&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;available_working_path&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_remote&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;process&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;protocol_path&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;register_protocol&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;remote_protocol&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">hep_rfm.parallel</span> <span class="k">import</span> <span class="n">Registry</span>
+<span class="kn">from</span> <span class="nn">hep_rfm.exceptions</span> <span class="k">import</span> <span class="n">AbstractMethodError</span><span class="p">,</span> <span class="n">CopyFileError</span><span class="p">,</span> <span class="n">MakeDirsError</span><span class="p">,</span> <span class="n">MustOverrideError</span>
+<span class="kn">from</span> <span class="nn">hep_rfm.fields</span> <span class="k">import</span> <span class="n">function_with_fields</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+
+<span class="k">def</span> <span class="nf">decorate_copy</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Decorator for the &quot;copy&quot; methods of the protocols.</span>
+
+<span class="sd">    :param method: method to wrap, which must be any overriden version of \</span>
+<span class="sd">    :func:`ProtocolPath.copy`.</span>
+<span class="sd">    :type method: function</span>
+<span class="sd">    :returns: wrapper around the method.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Internal wrapper to copy the file to a target.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="n">CopyFileError</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="k">def</span> <span class="nf">decorate_mkdirs</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Decorator for the &quot;mkdirs&quot; methods of the protocols.</span>
+
+<span class="sd">    :param method: method to wrap, which must be any overriden version of \</span>
+<span class="sd">    :func:`ProtocolPath.mkdirs`.</span>
+<span class="sd">    :type method: function</span>
+<span class="sd">    :returns: wrapper around the method.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Internal wrapper to create the necessary directories to a target.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="n">MakeDirsError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<div class="viewcode-block" id="register_protocol"><a class="viewcode-back" href="../../api/hep_rfm.register_protocol.html#hep_rfm.register_protocol">[docs]</a><span class="k">def</span> <span class="nf">register_protocol</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Decorator to register a protocol with the given name.</span>
+<span class="sd">    The new protocol is stored in a dictionary in the :class:`ProtocolPath`</span>
+<span class="sd">    class.</span>
+
+<span class="sd">    :returns: wrapper for the class.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">protocol</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Wrapper around the protocol constructor.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ProtocolPath</span><span class="o">.</span><span class="n">__protocols__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Protocol path with name &quot;</span><span class="si">{}</span><span class="s1">&quot; already exists&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+        <span class="n">must_override</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">ProtocolPath</span><span class="p">,</span> <span class="n">ProtocolPath</span><span class="o">.</span><span class="n">copy</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">ProtocolPath</span><span class="p">,</span> <span class="n">ProtocolPath</span><span class="o">.</span><span class="n">mkdirs</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">RemotePath</span><span class="p">):</span>
+            <span class="n">must_override</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">RemotePath</span><span class="p">,</span> <span class="n">RemotePath</span><span class="o">.</span><span class="n">join_path</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">RemotePath</span><span class="p">,</span> <span class="n">RemotePath</span><span class="o">.</span><span class="n">split_path</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">ProtocolPath</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s1">&#39;Attempt to register a protocol path that does not inherit from ProtocolPath&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">must_override</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span> <span class="o">==</span> <span class="n">m</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MustOverrideError</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+
+        <span class="c1"># Apply the decorators</span>
+        <span class="n">protocol</span><span class="o">.</span><span class="n">copy</span> <span class="o">=</span> <span class="n">decorate_copy</span><span class="p">(</span><span class="n">protocol</span><span class="o">.</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">protocol</span><span class="o">.</span><span class="n">mkdirs</span> <span class="o">=</span> <span class="n">decorate_mkdirs</span><span class="p">(</span><span class="n">protocol</span><span class="o">.</span><span class="n">mkdirs</span><span class="p">)</span>
+
+        <span class="c1"># Add protocol to dictionary</span>
+        <span class="n">ProtocolPath</span><span class="o">.</span><span class="n">__protocols__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">protocol</span>
+        <span class="n">protocol</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="k">return</span> <span class="n">protocol</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<div class="viewcode-block" id="ProtocolPath"><a class="viewcode-back" href="../../api/hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath">[docs]</a><span class="k">class</span> <span class="nc">ProtocolPath</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1"># All protocols must have a protocol ID.</span>
+    <span class="n">__protocols__</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">path_checker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Base class to represent a protocol to manage a path to a file.</span>
+<span class="sd">        The protocol IDs are defined at runtime, using</span>
+<span class="sd">        :func:`ProtocolPath.register_protocol`.</span>
+<span class="sd">        These IDs are saved in the registered classes on the attribute</span>
+<span class="sd">        &quot;pid&quot;.</span>
+<span class="sd">        It is very important not to ovewrite this value, since it would</span>
+<span class="sd">        lead to undefined behaviour.</span>
+<span class="sd">        The protocols are saved on a dictionary, where the keys are the</span>
+<span class="sd">        protocol IDs.</span>
+<span class="sd">        This is an abstract class, and any class inheriting from it must</span>
+<span class="sd">        override the following methods:</span>
+<span class="sd">        1. :func:`ProtocolPath.copy`</span>
+<span class="sd">        2. :func:`ProtocolPath.mkdirs`</span>
+
+<span class="sd">        :param path: path to save, pointing to a file.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param path_checker: possible function that checks the the given path \</span>
+<span class="sd">        actually corresponds to the protocol. It must take a path as argument \</span>
+<span class="sd">        and return a bool.</span>
+<span class="sd">        :type path_checker: function</span>
+<span class="sd">        :raises ValueError: if the path does not satisfy the requirements \</span>
+<span class="sd">        from &quot;path_checker&quot;.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">path_checker</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path_checker</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance of protocol path &quot;</span><span class="si">{}</span><span class="s1">&quot; can not be built from path &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Two :class:`ProtocolPath` instances are considered equal if they have</span>
+<span class="sd">        the same path.</span>
+
+<span class="sd">        :returns: whether the two protocol paths are equal</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">path</span>
+
+    <span class="k">def</span> <span class="nf">__neq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Negation of the result from :func:`ProtocolPath.__eq__`.</span>
+
+<span class="sd">        :returns: whether two :class:`ProtocolPath` instances are not equal.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Representation of this object when printed.</span>
+
+<span class="sd">        :returns: representation of this object when printed.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Representation as a string.</span>
+
+<span class="sd">        :returns: this class as a string.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(path=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProtocolPath.copy"><a class="viewcode-back" href="../../api/hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath.copy">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Copy the source file to the target using this protocol.</span>
+<span class="sd">        The target must be accessible.</span>
+<span class="sd">        It must return a :class:`subprocess.Popen` object.</span>
+<span class="sd">        In this case, this is an abstract method.</span>
+
+<span class="sd">        :param source: source file to copy.</span>
+<span class="sd">        :type source: ProtocolPath</span>
+<span class="sd">        :param target: path where to copy the file to.</span>
+<span class="sd">        :type target: ProtocolPath</span>
+<span class="sd">        :returns: running process copying the file in the current location \</span>
+<span class="sd">        to the target.</span>
+<span class="sd">        :rtype: subprocess.Popen</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">AbstractMethodError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ProtocolPath.mkdirs"><a class="viewcode-back" href="../../api/hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath.mkdirs">[docs]</a>    <span class="k">def</span> <span class="nf">mkdirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Make directories to the file path within this protocol.</span>
+<span class="sd">        It must return a :class:`subprocess.Popen` object.</span>
+<span class="sd">        In this case, this is an abstract method.</span>
+
+<span class="sd">        :returns: running process to make the necessary directories to the \</span>
+<span class="sd">        target.</span>
+<span class="sd">        :rtype: subprocess.Popen</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">AbstractMethodError</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the associated path to the file.</span>
+
+<span class="sd">        :returns: associated path.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+
+<div class="viewcode-block" id="ProtocolPath.with_modifiers"><a class="viewcode-back" href="../../api/hep_rfm.ProtocolPath.html#hep_rfm.ProtocolPath.with_modifiers">[docs]</a>    <span class="k">def</span> <span class="nf">with_modifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return an instance of this class after applying modifications.</span>
+<span class="sd">        The input dictionary can contain information not understood for a given</span>
+<span class="sd">        :class:`hep_rfm.ProtocolPath`.</span>
+<span class="sd">        By default the same class, with no modifications, is returned.</span>
+
+<span class="sd">        :param modifiers: information to modify the path of this class.</span>
+<span class="sd">        :type modifiers: dict</span>
+<span class="sd">        :returns: modified instance if a modification is applied. Otherwise \</span>
+<span class="sd">        same instance.</span>
+<span class="sd">        :rtype: ProtocolPath</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="RemotePath"><a class="viewcode-back" href="../../api/hep_rfm.RemotePath.html#hep_rfm.RemotePath">[docs]</a><span class="k">class</span> <span class="nc">RemotePath</span><span class="p">(</span><span class="n">ProtocolPath</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">path_checker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Represent a remote path.</span>
+<span class="sd">        This is an abstract class, any class inheriting from it must override</span>
+<span class="sd">        the following methods:</span>
+<span class="sd">        1. :func:`ProtocolPath.copy`</span>
+<span class="sd">        2. :func:`RemotePath.join_path` (must be decorated with :func:`staticmethod`)</span>
+<span class="sd">        4. :func:`ProtocolPath.mkdirs`</span>
+<span class="sd">        5. :func:`RemotePath.split_path`</span>
+
+<span class="sd">        :param path: path to save, pointing to a file.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param path_checker: possible function that checks the the given path \</span>
+<span class="sd">        actually corresponds to the protocol. It must take a path as argument \</span>
+<span class="sd">        and return a bool.</span>
+<span class="sd">        :type path_checker: function</span>
+<span class="sd">        :raises ValueError: if the path does not satisfy the requirements \</span>
+<span class="sd">        from &quot;path_checker&quot;.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RemotePath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path_checker</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RemotePath.join_path"><a class="viewcode-back" href="../../api/hep_rfm.RemotePath.html#hep_rfm.RemotePath.join_path">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">join_path</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Policy to merge a prefix and a path in this protocol.</span>
+<span class="sd">        In this case, this is an abstract method.</span>
+
+<span class="sd">        :param prefix: prefix to add to the current path.</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :param path: path to the file in the remote.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :returns: result of joining the prefix and the path for this protocol.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">AbstractMethodError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RemotePath.split_path"><a class="viewcode-back" href="../../api/hep_rfm.RemotePath.html#hep_rfm.RemotePath.split_path">[docs]</a>    <span class="k">def</span> <span class="nf">split_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Split the remote path in the server specifications and path in the</span>
+<span class="sd">        server.</span>
+<span class="sd">        In this case, this is an abstract method.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">AbstractMethodError</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="LocalPath"><a class="viewcode-back" href="../../api/hep_rfm.LocalPath.html#hep_rfm.LocalPath">[docs]</a><span class="nd">@register_protocol</span><span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">LocalPath</span><span class="p">(</span><span class="n">ProtocolPath</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Represent a path to a local file.</span>
+
+<span class="sd">        :param path: path to save, pointing to a file.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LocalPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LocalPath.copy"><a class="viewcode-back" href="../../api/hep_rfm.LocalPath.html#hep_rfm.LocalPath.copy">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Copy the source file to the target using this protocol.</span>
+<span class="sd">        The target must be accessible.</span>
+
+<span class="sd">        :param source: source file to copy.</span>
+<span class="sd">        :type source: ProtocolPath</span>
+<span class="sd">        :param target: where to copy the file.</span>
+<span class="sd">        :type target: ProtocolPath</span>
+<span class="sd">        :raises CopyFileError: if a problem appears while copying the file.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LocalPath.mkdirs"><a class="viewcode-back" href="../../api/hep_rfm.LocalPath.html#hep_rfm.LocalPath.mkdirs">[docs]</a>    <span class="k">def</span> <span class="nf">mkdirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Make directories to the file path within this protocol.</span>
+
+<span class="sd">        :raises MakeDirsError: if an error occurs while creating directories.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">dpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;mkdir&#39;</span><span class="p">,</span> <span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">dpath</span> <span class="k">if</span> <span class="n">dpath</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="s1">&#39;./&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SSHPath"><a class="viewcode-back" href="../../api/hep_rfm.SSHPath.html#hep_rfm.SSHPath">[docs]</a><span class="nd">@register_protocol</span><span class="p">(</span><span class="s1">&#39;ssh&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SSHPath</span><span class="p">(</span><span class="n">RemotePath</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Represent a path to be handled using SSH.</span>
+
+<span class="sd">        :param path: path to save, pointing to a file.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;@&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Path &quot;</span><span class="si">{}</span><span class="s1">&quot; is not a valid SSH path&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">SSHPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;@&#39;</span> <span class="ow">in</span> <span class="n">p</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SSHPath.copy"><a class="viewcode-back" href="../../api/hep_rfm.SSHPath.html#hep_rfm.SSHPath.copy">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Copy the source file to the target using this protocol.</span>
+<span class="sd">        The target must be accessible.</span>
+
+<span class="sd">        :param source: source file to copy.</span>
+<span class="sd">        :type source: ProtocolPath</span>
+<span class="sd">        :param target: where to copy the file.</span>
+<span class="sd">        :type target: ProtocolPath</span>
+<span class="sd">        :raises CopyFileError: if a problem appears while copying the file.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;scp&#39;</span><span class="p">,</span> <span class="s1">&#39;-q&#39;</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SSHPath.join_path"><a class="viewcode-back" href="../../api/hep_rfm.SSHPath.html#hep_rfm.SSHPath.join_path">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">join_path</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Policy to merge a prefix and a path in this protocol.</span>
+
+<span class="sd">        :param prefix: prefix to add to the current path.</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :param path: path to the file in the remote.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :returns: result of joining the prefix and the path for this protocol.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">path</span></div>
+
+<div class="viewcode-block" id="SSHPath.mkdirs"><a class="viewcode-back" href="../../api/hep_rfm.SSHPath.html#hep_rfm.SSHPath.mkdirs">[docs]</a>    <span class="k">def</span> <span class="nf">mkdirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Make directories to the file path within this protocol.</span>
+
+<span class="sd">        :raises MakeDirsError: if an error occurs while creating directories.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">server</span><span class="p">,</span> <span class="n">sepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_path</span><span class="p">()</span>
+
+        <span class="n">dpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sepath</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;ssh&#39;</span><span class="p">,</span> <span class="s1">&#39;-X&#39;</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="s1">&#39;mkdir&#39;</span><span class="p">,</span> <span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">dpath</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SSHPath.specify_server"><a class="viewcode-back" href="../../api/hep_rfm.SSHPath.html#hep_rfm.SSHPath.specify_server">[docs]</a>    <span class="k">def</span> <span class="nf">specify_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Process the given path and return a modified version of it adding</span>
+<span class="sd">        the correct user name.</span>
+<span class="sd">        The user name for each host must be specified in server_spec.</span>
+
+<span class="sd">        :param path: path to a file.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param server_spec: specification of user for each SSH server. Must \</span>
+<span class="sd">        be specified as a dictionary, where the keys are the hosts and the \</span>
+<span class="sd">        values are the user names.</span>
+<span class="sd">        :type server_spec: dict</span>
+<span class="sd">        :returns: modified version of &quot;path&quot;.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :raises RuntimeError: if there is no way to determine the user name \</span>
+<span class="sd">        for the given path.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+
+        <span class="n">server_spec</span> <span class="o">=</span> <span class="n">server_spec</span> <span class="k">if</span> <span class="n">server_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+
+        <span class="n">l</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">server_spec</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s1">&#39;User name not specified for path &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="n">uh</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_path</span><span class="p">()</span>
+
+        <span class="n">u</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">uh</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">host</span><span class="p">,</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">server_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="n">host</span> <span class="o">==</span> <span class="n">h</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">uname</span> <span class="o">+</span> <span class="n">path</span><span class="p">[</span><span class="n">l</span><span class="p">:]</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s1">&#39;Unable to find a proper user name for path &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SSHPath.split_path"><a class="viewcode-back" href="../../api/hep_rfm.SSHPath.html#hep_rfm.SSHPath.split_path">[docs]</a>    <span class="k">def</span> <span class="nf">split_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Split the remote path in the server specifications and path in the</span>
+<span class="sd">        server.</span>
+
+<span class="sd">        :returns: server specifications and path in the server.</span>
+<span class="sd">        :rtype: str, str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SSHPath.with_modifiers"><a class="viewcode-back" href="../../api/hep_rfm.SSHPath.html#hep_rfm.SSHPath.with_modifiers">[docs]</a>    <span class="k">def</span> <span class="nf">with_modifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return an instance of this class after applying modifications.</span>
+<span class="sd">        The input dictionary &quot;modifiers&quot; might contain information about the</span>
+<span class="sd">        user-name for the host in the stored path.</span>
+<span class="sd">        The allowed keys for this dictionary are:</span>
+<span class="sd">        - &quot;ssh_hosts&quot;: list containing the hosts accessible from the place</span>
+<span class="sd">        where the operation is being done. If the path stored in this class</span>
+<span class="sd">        has a host that coincides with any of those here specified, it will</span>
+<span class="sd">        return a :class:`hep_rfm.LocalPath` instance.</span>
+<span class="sd">        - &quot;ssh_usernames&quot;: dictionary containing the user-name to use for each</span>
+<span class="sd">        host (although only one will be appliable for a given</span>
+<span class="sd">        :class:`hep_rfm.SSHPath` instance). In case the path has already one</span>
+<span class="sd">        user-name defined, it will be overwritten.</span>
+
+<span class="sd">        :param modifiers: information to modify the path of this class.</span>
+<span class="sd">        :type modifiers: dict</span>
+<span class="sd">        :returns: modified instance if a modification is applied. Otherwise \</span>
+<span class="sd">        same instance.</span>
+<span class="sd">        :rtype: ProtocolPath</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">modifiers</span> <span class="o">=</span> <span class="n">modifiers</span> <span class="k">if</span> <span class="n">modifiers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+
+        <span class="k">if</span> <span class="n">modifiers</span><span class="p">:</span>
+
+            <span class="n">uh</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_path</span><span class="p">()</span>
+
+            <span class="n">_</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">uh</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;ssh_hosts&#39;</span> <span class="ow">in</span> <span class="n">modifiers</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="n">modifiers</span><span class="p">[</span><span class="s1">&#39;ssh_hosts&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">host</span> <span class="o">==</span> <span class="n">h</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">LocalPath</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;ssh_usernames&#39;</span> <span class="ow">in</span> <span class="n">modifiers</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">host</span><span class="p">,</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">modifiers</span><span class="p">[</span><span class="s1">&#39;ssh_usernames&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">host</span> <span class="o">==</span> <span class="n">h</span><span class="p">:</span>
+                        <span class="n">path</span> <span class="o">=</span> <span class="n">uname</span> <span class="o">+</span> <span class="n">path</span><span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">):]</span>
+                        <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s1">&#39;User name must be specified for &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="XRootDPath"><a class="viewcode-back" href="../../api/hep_rfm.XRootDPath.html#hep_rfm.XRootDPath">[docs]</a><span class="nd">@register_protocol</span><span class="p">(</span><span class="s1">&#39;xrootd&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">XRootDPath</span><span class="p">(</span><span class="n">RemotePath</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Represent a path to be handled using XROOTD protocol.</span>
+
+<span class="sd">        :param path: path to save, pointing to a file.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">XRootDPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;root://&#39;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="XRootDPath.copy"><a class="viewcode-back" href="../../api/hep_rfm.XRootDPath.html#hep_rfm.XRootDPath.copy">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Copy the source file to the target using this protocol.</span>
+<span class="sd">        The target must be accessible.</span>
+
+<span class="sd">        :param source: source file to copy.</span>
+<span class="sd">        :type source: ProtocolPath</span>
+<span class="sd">        :param target: where to copy the file.</span>
+<span class="sd">        :type target: ProtocolPath</span>
+<span class="sd">        :raises CopyFileError: if a problem appears while copying the file.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;xrdcp&#39;</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XRootDPath.join_path"><a class="viewcode-back" href="../../api/hep_rfm.XRootDPath.html#hep_rfm.XRootDPath.join_path">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">join_path</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Policy to merge a prefix and a path in this protocol.</span>
+
+<span class="sd">        :param prefix: prefix to add to the current path.</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :param path: path to the file in the remote.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :returns: result of joining the prefix and the path for this protocol.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">while</span> <span class="n">prefix</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">while</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;//&#39;</span> <span class="o">+</span> <span class="n">path</span></div>
+
+<div class="viewcode-block" id="XRootDPath.mkdirs"><a class="viewcode-back" href="../../api/hep_rfm.XRootDPath.html#hep_rfm.XRootDPath.mkdirs">[docs]</a>    <span class="k">def</span> <span class="nf">mkdirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Make directories to the file path within this protocol.</span>
+
+<span class="sd">        :raises MakeDirsError: if an error occurs while creating directories.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">server</span><span class="p">,</span> <span class="n">sepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_path</span><span class="p">()</span>
+
+        <span class="n">dpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sepath</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;xrd&#39;</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="s1">&#39;mkdir&#39;</span><span class="p">,</span> <span class="n">dpath</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XRootDPath.split_path"><a class="viewcode-back" href="../../api/hep_rfm.XRootDPath.html#hep_rfm.XRootDPath.split_path">[docs]</a>    <span class="k">def</span> <span class="nf">split_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Split the remote path in the server specifications and path in the</span>
+<span class="sd">        server.</span>
+
+<span class="sd">        :returns: server specifications and path in the server.</span>
+<span class="sd">        :rtype: str, str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">rp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="n">rp</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="n">rp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span></div>
+
+<div class="viewcode-block" id="XRootDPath.with_modifiers"><a class="viewcode-back" href="../../api/hep_rfm.XRootDPath.html#hep_rfm.XRootDPath.with_modifiers">[docs]</a>    <span class="k">def</span> <span class="nf">with_modifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return an instance of this class after applying modifications.</span>
+<span class="sd">        The input dictionary &quot;modifiers&quot; might contain information about the</span>
+<span class="sd">        user-name for the host in the stored path.</span>
+<span class="sd">        The allowed keys for this dictionary are:</span>
+<span class="sd">        - &quot;xrootd_servers&quot;: list containing the XRootD servers accessible from</span>
+<span class="sd">        the place where the operation is being done. If the path stored in this</span>
+<span class="sd">        class has a host that coincides with any of those here specified, it</span>
+<span class="sd">        will return a :class:`hep_rfm.LocalPath` instance.</span>
+
+<span class="sd">        :param modifiers: information to modify the path of this class.</span>
+<span class="sd">        :type modifiers: dict</span>
+<span class="sd">        :returns: modified instance if a modification is applied. Otherwise \</span>
+<span class="sd">        same instance.</span>
+<span class="sd">        :rtype: ProtocolPath</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">modifiers</span> <span class="o">=</span> <span class="n">modifiers</span> <span class="k">if</span> <span class="n">modifiers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">modifiers</span><span class="p">:</span>
+
+            <span class="n">h</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_path</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="s1">&#39;xrootd_servers&#39;</span> <span class="ow">in</span> <span class="n">modifiers</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">modifiers</span><span class="p">[</span><span class="s1">&#39;xrootd_servers&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">server</span> <span class="o">==</span> <span class="n">h</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">LocalPath</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="available_working_path"><a class="viewcode-back" href="../../api/hep_rfm.available_working_path.html#hep_rfm.available_working_path">[docs]</a><span class="k">def</span> <span class="nf">available_working_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">modifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_protocols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    If an accessible path can be resolved from &quot;path&quot;, it returns it.</span>
+<span class="sd">    Return None otherwise.</span>
+<span class="sd">    If &quot;path&quot; is remote, then &quot;allow_protocols&quot; permits the user to make</span>
+<span class="sd">    this function return a path if it belongs to one of the given</span>
+<span class="sd">    protocols, that must be specified as a container of strings.</span>
+
+<span class="sd">    :param path: path to process.</span>
+<span class="sd">    :type path: ProtocolPath</span>
+<span class="sd">    :param modifiers: modifiers to be applied in the set of paths.</span>
+<span class="sd">    :type modifiers: dict</span>
+<span class="sd">    :param allow_protocols: possible protocols to consider.</span>
+<span class="sd">    :type allow_protocols: container(str)</span>
+<span class="sd">    :returns: local path.</span>
+<span class="sd">    :rtype: str or None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">modifiers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_modifiers</span><span class="p">(</span><span class="n">modifiers</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">allow_protocols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">pid</span> <span class="ow">in</span> <span class="n">allow_protocols</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">path</span>
+
+    <span class="k">if</span> <span class="n">is_remote</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+        <span class="n">server</span><span class="p">,</span> <span class="n">sepath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split_path</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sepath</span><span class="p">):</span>
+            <span class="c1"># Local and remote hosts are the same</span>
+            <span class="k">return</span> <span class="n">sepath</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">path</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="available_path"><a class="viewcode-back" href="../../api/hep_rfm.available_path.html#hep_rfm.available_path">[docs]</a><span class="k">def</span> <span class="nf">available_path</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">modifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_protocols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the first available path from a list of paths.</span>
+<span class="sd">    If a local path results after applying &quot;modifiers&quot; to any of the</span>
+<span class="sd">    given paths, then this is returned (as a local path).</span>
+<span class="sd">    If any of the paths in &quot;paths&quot; is remote, then &quot;allow_protocols&quot; permits</span>
+<span class="sd">    the user to make this function return a path if it belongs to one of the</span>
+<span class="sd">    given protocols, that must be specified as a container of strings.</span>
+<span class="sd">    The first matching path will be returned.</span>
+
+<span class="sd">    :param paths: list of paths to process.</span>
+<span class="sd">    :type paths: collection(ProtocolPath)</span>
+<span class="sd">    :param modifiers: modifiers to be applied in the set of paths.</span>
+<span class="sd">    :type modifiers: dict</span>
+<span class="sd">    :param allow_protocols: possible protocols to consider.</span>
+<span class="sd">    :type allow_protocols: container(str)</span>
+<span class="sd">    :returns: first available path found.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises RuntimeError: if it fails to find an available path.</span>
+
+<span class="sd">    .. seealso:: :func:`available_working_path`</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">       If the path to a file on a remote site matches that of a local file,</span>
+<span class="sd">       it will be returned. This allows to use local files while specifying</span>
+<span class="sd">       remote paths. However, if a path on a remote site matches a local</span>
+<span class="sd">       file, which does not correspond to a proxy of the path referenced by</span>
+<span class="sd">       this object, it will result on a fake reference to the file.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="n">available_working_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">modifiers</span><span class="p">,</span> <span class="n">allow_protocols</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p</span>
+
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unable to find an available path&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_remote"><a class="viewcode-back" href="../../api/hep_rfm.is_remote.html#hep_rfm.is_remote">[docs]</a><span class="k">def</span> <span class="nf">is_remote</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return whether the given protocol path belongs to a remote protocol or not.</span>
+
+<span class="sd">    :param path: protocol path to process.</span>
+<span class="sd">    :type path: ProtocolPath</span>
+<span class="sd">    :returns: whether the protocol is local (True in this case).</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">RemotePath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="process"><a class="viewcode-back" href="../../api/hep_rfm.process.html#hep_rfm.process">[docs]</a><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create a subprocess object where the output from &quot;stdout&quot; and &quot;stderr&quot;</span>
+<span class="sd">    is redirected to subprocess.PIPE.</span>
+
+<span class="sd">    :param args: set of commands to call.</span>
+<span class="sd">    :type args: tuple</span>
+<span class="sd">    :returns: subprocess applying the given commands.</span>
+<span class="sd">    :rtype: subprocess.Popen</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="protocol_path"><a class="viewcode-back" href="../../api/hep_rfm.protocol_path.html#hep_rfm.protocol_path">[docs]</a><span class="k">def</span> <span class="nf">protocol_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return a instantiated protocol using the given path and protocol ID.</span>
+<span class="sd">    If None is provided for &quot;protocol&quot;, then a :class:`LocalPath` will</span>
+<span class="sd">    be used.</span>
+
+<span class="sd">    :param path: path to process.</span>
+<span class="sd">    :type path: ProtocolPath</span>
+<span class="sd">    :param protocol: protocol ID to use.</span>
+<span class="sd">    :type protocol: str</span>
+<span class="sd">    :returns: protocol associated to the given path.</span>
+<span class="sd">    :rtype: ProtocolPath</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">LocalPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">protocol</span> <span class="ow">in</span> <span class="n">ProtocolPath</span><span class="o">.</span><span class="n">__protocols__</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ProtocolPath</span><span class="o">.</span><span class="n">__protocols__</span><span class="p">[</span><span class="n">protocol</span><span class="p">](</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span>
+                <span class="s1">&#39;Protocol with name &quot;</span><span class="si">{}</span><span class="s1">&quot; is not registered or unknown&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protocol</span><span class="p">))</span></div>
+
+
+<span class="nd">@function_with_fields</span><span class="p">([</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="s1">&#39;pid&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">protocol_path_from_fields</span><span class="p">(</span><span class="o">**</span><span class="n">fields</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return an instantiated protocol from a set of fields, which</span>
+<span class="sd">    might or not coincide with those in the class constructor.</span>
+
+<span class="sd">    :param fields: fields to process.</span>
+<span class="sd">    :type fields: dict</span>
+<span class="sd">    :returns: protocol associated to the given path.</span>
+<span class="sd">    :rtype: ProtocolPath</span>
+
+<span class="sd">    .. seealso:: :func:`hep_rfm.protocol_path`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">protocol_path</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span> <span class="n">fields</span><span class="p">[</span><span class="s1">&#39;pid&#39;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="remote_protocol"><a class="viewcode-back" href="../../api/hep_rfm.remote_protocol.html#hep_rfm.remote_protocol">[docs]</a><span class="k">def</span> <span class="nf">remote_protocol</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Determine the protocol to use given two paths to files. Return None if</span>
+<span class="sd">    the two protocols are not compatible.</span>
+
+<span class="sd">    :param a: path to the firs file.</span>
+<span class="sd">    :type a: str</span>
+<span class="sd">    :param b: path to the second file.</span>
+<span class="sd">    :type b: str</span>
+<span class="sd">    :returns: protocol ID.</span>
+<span class="sd">    :rtype: int or None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">is_remote</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">is_remote</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">pid</span> <span class="o">!=</span> <span class="n">b</span><span class="o">.</span><span class="n">pid</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">pid</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">pid</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Functions and classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

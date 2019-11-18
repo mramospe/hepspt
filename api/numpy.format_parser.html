@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>format_parser &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="chararray" href="numpy.chararray.html" />
+    <link rel="prev" title="recarray" href="numpy.recarray.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="format-parser">
+<h1>format_parser<a class="headerlink" href="#format-parser" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.format_parser">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">format_parser</code><span class="sig-paren">(</span><em class="sig-param">formats</em>, <em class="sig-param">names</em>, <em class="sig-param">titles</em>, <em class="sig-param">aligned=False</em>, <em class="sig-param">byteorder=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.format_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to convert formats, names, titles description to a dtype.</p>
+<p>After constructing the format_parser object, the dtype attribute is
+the converted data-type:
+<code class="docutils literal notranslate"><span class="pre">dtype</span> <span class="pre">=</span> <span class="pre">format_parser(formats,</span> <span class="pre">names,</span> <span class="pre">titles).dtype</span></code></p>
+<dl class="simple">
+<dt>dtype<span class="classifier">dtype</span></dt><dd><p>The converted data-type.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>formats<span class="classifier">str or list of str</span></dt><dd><p>The format description, either specified as a string with
+comma-separated format descriptions in the form <code class="docutils literal notranslate"><span class="pre">'f8,</span> <span class="pre">i4,</span> <span class="pre">a5'</span></code>, or
+a list of format description strings  in the form
+<code class="docutils literal notranslate"><span class="pre">['f8',</span> <span class="pre">'i4',</span> <span class="pre">'a5']</span></code>.</p>
+</dd>
+<dt>names<span class="classifier">str or list/tuple of str</span></dt><dd><p>The field names, either specified as a comma-separated string in the
+form <code class="docutils literal notranslate"><span class="pre">'col1,</span> <span class="pre">col2,</span> <span class="pre">col3'</span></code>, or as a list or tuple of strings in the
+form <code class="docutils literal notranslate"><span class="pre">['col1',</span> <span class="pre">'col2',</span> <span class="pre">'col3']</span></code>.
+An empty list can be used, in that case default field names
+(‘f0’, ‘f1’, …) are used.</p>
+</dd>
+<dt>titles<span class="classifier">sequence</span></dt><dd><p>Sequence of title strings. An empty list can be used to leave titles
+out.</p>
+</dd>
+<dt>aligned<span class="classifier">bool, optional</span></dt><dd><p>If True, align the fields by padding as the C-compiler would.
+Default is False.</p>
+</dd>
+<dt>byteorder<span class="classifier">str, optional</span></dt><dd><p>If specified, all the fields will be changed to the
+provided byte-order.  Otherwise, the default byte-order is
+used. For all available string specifiers, see <cite>dtype.newbyteorder</cite>.</p>
+</dd>
+</dl>
+<p>dtype, typename, sctype2char</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">format_parser</span><span class="p">([</span><span class="s1">&#39;&lt;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;i4&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;a5&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span> <span class="s1">&#39;col2&#39;</span><span class="p">,</span> <span class="s1">&#39;col3&#39;</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="s1">&#39;T1&#39;</span><span class="p">,</span> <span class="s1">&#39;T2&#39;</span><span class="p">,</span> <span class="s1">&#39;T3&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">dtype</span>
+<span class="go">dtype([((&#39;T1&#39;, &#39;col1&#39;), &#39;&lt;f8&#39;), ((&#39;T2&#39;, &#39;col2&#39;), &#39;&lt;i4&#39;), ((&#39;T3&#39;, &#39;col3&#39;), &#39;S5&#39;)])</span>
+</pre></div>
+</div>
+<p><cite>names</cite> and/or <cite>titles</cite> can be empty lists. If <cite>titles</cite> is an empty list,
+titles will simply not appear. If <cite>names</cite> is empty, default field names
+will be used.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">format_parser</span><span class="p">([</span><span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">,</span> <span class="s1">&#39;a5&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span> <span class="s1">&#39;col2&#39;</span><span class="p">,</span> <span class="s1">&#39;col3&#39;</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[])</span><span class="o">.</span><span class="n">dtype</span>
+<span class="go">dtype([(&#39;col1&#39;, &#39;&lt;f8&#39;), (&#39;col2&#39;, &#39;&lt;i4&#39;), (&#39;col3&#39;, &#39;&lt;S5&#39;)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">format_parser</span><span class="p">([</span><span class="s1">&#39;&lt;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;i4&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;a5&#39;</span><span class="p">],</span> <span class="p">[],</span> <span class="p">[])</span><span class="o">.</span><span class="n">dtype</span>
+<span class="go">dtype([(&#39;f0&#39;, &#39;&lt;f8&#39;), (&#39;f1&#39;, &#39;&lt;i4&#39;), (&#39;f2&#39;, &#39;S5&#39;)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.recarray.html" title="previous chapter">recarray</a></li>
+      <li>Next: <a href="numpy.chararray.html" title="next chapter">chararray</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.format_parser.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

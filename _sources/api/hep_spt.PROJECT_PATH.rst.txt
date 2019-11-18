@@ -1,0 +1,6 @@
+PROJECT_PATH
+============
+
+.. currentmodule:: hep_spt
+
+.. autodata:: PROJECT_PATH

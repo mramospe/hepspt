@@ -1,0 +1,73 @@
+nditer
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: nditer
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~nditer.dtypes
+      ~nditer.finished
+      ~nditer.has_delayed_bufalloc
+      ~nditer.has_index
+      ~nditer.has_multi_index
+      ~nditer.index
+      ~nditer.iterationneedsapi
+      ~nditer.iterindex
+      ~nditer.iterrange
+      ~nditer.itersize
+      ~nditer.itviews
+      ~nditer.multi_index
+      ~nditer.ndim
+      ~nditer.nop
+      ~nditer.operands
+      ~nditer.shape
+      ~nditer.value
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~nditer.close
+      ~nditer.copy
+      ~nditer.debug_print
+      ~nditer.enable_external_loop
+      ~nditer.iternext
+      ~nditer.remove_axis
+      ~nditer.remove_multi_index
+      ~nditer.reset
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: dtypes
+   .. autoattribute:: finished
+   .. autoattribute:: has_delayed_bufalloc
+   .. autoattribute:: has_index
+   .. autoattribute:: has_multi_index
+   .. autoattribute:: index
+   .. autoattribute:: iterationneedsapi
+   .. autoattribute:: iterindex
+   .. autoattribute:: iterrange
+   .. autoattribute:: itersize
+   .. autoattribute:: itviews
+   .. autoattribute:: multi_index
+   .. autoattribute:: ndim
+   .. autoattribute:: nop
+   .. autoattribute:: operands
+   .. autoattribute:: shape
+   .. autoattribute:: value
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: close
+   .. automethod:: copy
+   .. automethod:: debug_print
+   .. automethod:: enable_external_loop
+   .. automethod:: iternext
+   .. automethod:: remove_axis
+   .. automethod:: remove_multi_index
+   .. automethod:: reset

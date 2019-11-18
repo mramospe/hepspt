@@ -1,0 +1,17 @@
+longdouble
+==========
+
+.. currentmodule:: numpy
+
+.. autoclass:: longdouble
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~longdouble.as_integer_ratio
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: as_integer_ratio

@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>searchsorted &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="shape" href="numpy.shape.html" />
+    <link rel="prev" title="round" href="numpy.round_.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="searchsorted">
+<h1>searchsorted<a class="headerlink" href="#searchsorted" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.searchsorted">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">searchsorted</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">v</em>, <em class="sig-param">side='left'</em>, <em class="sig-param">sorter=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.searchsorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find indices where elements should be inserted to maintain order.</p>
+<p>Find the indices into a sorted array <cite>a</cite> such that, if the
+corresponding elements in <cite>v</cite> were inserted before the indices, the
+order of <cite>a</cite> would be preserved.</p>
+<p>Assuming that <cite>a</cite> is sorted:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><cite>side</cite></p></th>
+<th class="head"><p>returned index <cite>i</cite> satisfies</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>left</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a[i-1]</span> <span class="pre">&lt;</span> <span class="pre">v</span> <span class="pre">&lt;=</span> <span class="pre">a[i]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>right</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a[i-1]</span> <span class="pre">&lt;=</span> <span class="pre">v</span> <span class="pre">&lt;</span> <span class="pre">a[i]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<dl>
+<dt>a<span class="classifier">1-D array_like</span></dt><dd><p>Input array. If <cite>sorter</cite> is None, then it must be sorted in
+ascending order, otherwise <cite>sorter</cite> must be an array of indices
+that sort it.</p>
+</dd>
+<dt>v<span class="classifier">array_like</span></dt><dd><p>Values to insert into <cite>a</cite>.</p>
+</dd>
+<dt>side<span class="classifier">{‘left’, ‘right’}, optional</span></dt><dd><p>If ‘left’, the index of the first suitable location found is given.
+If ‘right’, return the last such index.  If there is no suitable
+index, return either 0 or N (where N is the length of <cite>a</cite>).</p>
+</dd>
+<dt>sorter<span class="classifier">1-D array_like, optional</span></dt><dd><p>Optional array of integer indices that sort array a into ascending
+order. They are typically the result of argsort.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>indices<span class="classifier">array of ints</span></dt><dd><p>Array of insertion points with the same shape as <cite>v</cite>.</p>
+</dd>
+</dl>
+<p>sort : Return a sorted copy of an array.
+histogram : Produce histogram from 1-D data.</p>
+<p>Binary search is used to find the required insertion points.</p>
+<p>As of NumPy 1.4.0 <cite>searchsorted</cite> works with real/complex arrays containing
+<cite>nan</cite> values. The enhanced sort order is documented in <cite>sort</cite>.</p>
+<p>This function uses the same algorithm as the builtin python <cite>bisect.bisect_left</cite>
+(<code class="docutils literal notranslate"><span class="pre">side='left'</span></code>) and <cite>bisect.bisect_right</cite> (<code class="docutils literal notranslate"><span class="pre">side='right'</span></code>) functions,
+which is also vectorized in the <cite>v</cite> argument.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">array([0, 5, 1, 2])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.round_.html" title="previous chapter">round</a></li>
+      <li>Next: <a href="numpy.shape.html" title="next chapter">shape</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.searchsorted.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

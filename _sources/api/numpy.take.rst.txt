@@ -1,0 +1,6 @@
+take
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: take

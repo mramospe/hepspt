@@ -1,0 +1,6 @@
+recfromcsv
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: recfromcsv

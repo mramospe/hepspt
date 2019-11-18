@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>isclose &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="load" href="numpy.load.html" />
+    <link rel="prev" title="fromfunction" href="numpy.fromfunction.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="isclose">
+<h1>isclose<a class="headerlink" href="#isclose" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.isclose">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">isclose</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">b</em>, <em class="sig-param">rtol=1e-05</em>, <em class="sig-param">atol=1e-08</em>, <em class="sig-param">equal_nan=False</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.isclose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean array where two arrays are element-wise equal within a
+tolerance.</p>
+<p>The tolerance values are positive, typically very small numbers.  The
+relative difference (<cite>rtol</cite> * abs(<cite>b</cite>)) and the absolute difference
+<cite>atol</cite> are added together to compare against the absolute difference
+between <cite>a</cite> and <cite>b</cite>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The default <cite>atol</cite> is not appropriate for comparing numbers
+that are much smaller than one (see Notes).</p>
+</div>
+<dl class="simple">
+<dt>a, b<span class="classifier">array_like</span></dt><dd><p>Input arrays to compare.</p>
+</dd>
+<dt>rtol<span class="classifier">float</span></dt><dd><p>The relative tolerance parameter (see Notes).</p>
+</dd>
+<dt>atol<span class="classifier">float</span></dt><dd><p>The absolute tolerance parameter (see Notes).</p>
+</dd>
+<dt>equal_nan<span class="classifier">bool</span></dt><dd><p>Whether to compare NaN’s as equal.  If True, NaN’s in <cite>a</cite> will be
+considered equal to NaN’s in <cite>b</cite> in the output array.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>y<span class="classifier">array_like</span></dt><dd><p>Returns a boolean array of where <cite>a</cite> and <cite>b</cite> are equal within the
+given tolerance. If both <cite>a</cite> and <cite>b</cite> are scalars, returns a single
+boolean value.</p>
+</dd>
+</dl>
+<p>allclose</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+<p>For finite values, isclose uses the following equation to test whether
+two floating point values are equivalent.</p>
+<blockquote>
+<div><p>absolute(<cite>a</cite> - <cite>b</cite>) &lt;= (<cite>atol</cite> + <cite>rtol</cite> * absolute(<cite>b</cite>))</p>
+</div></blockquote>
+<p>Unlike the built-in <cite>math.isclose</cite>, the above equation is not symmetric
+in <cite>a</cite> and <cite>b</cite> – it assumes <cite>b</cite> is the reference value – so that
+<cite>isclose(a, b)</cite> might be different from <cite>isclose(b, a)</cite>. Furthermore,
+the default value of atol is not zero, and is used to determine what
+small values should be considered close to zero. The default value is
+appropriate for expected values of order unity: if the expected values
+are significantly smaller than one, it can result in false positives.
+<cite>atol</cite> should be carefully selected for the use case at hand. A zero value
+for <cite>atol</cite> will result in <cite>False</cite> if either <cite>a</cite> or <cite>b</cite> is zero.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1e10</span><span class="p">,</span><span class="mf">1e-7</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.00001e10</span><span class="p">,</span><span class="mf">1e-8</span><span class="p">])</span>
+<span class="go">array([ True, False])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1e10</span><span class="p">,</span><span class="mf">1e-8</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.00001e10</span><span class="p">,</span><span class="mf">1e-9</span><span class="p">])</span>
+<span class="go">array([ True, True])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1e10</span><span class="p">,</span><span class="mf">1e-8</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0001e10</span><span class="p">,</span><span class="mf">1e-9</span><span class="p">])</span>
+<span class="go">array([False,  True])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+<span class="go">array([ True, False])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="n">equal_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">array([ True, True])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="go">array([ True, False])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1e-100</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="go">array([False, False])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-20</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="go">array([ True,  True])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-20</span><span class="p">,</span> <span class="mf">0.999999e-10</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="go">array([False,  True])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.fromfunction.html" title="previous chapter">fromfunction</a></li>
+      <li>Next: <a href="numpy.load.html" title="next chapter">load</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.isclose.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

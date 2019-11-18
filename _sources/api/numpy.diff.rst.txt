@@ -1,0 +1,6 @@
+diff
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: diff

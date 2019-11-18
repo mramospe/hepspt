@@ -1,0 +1,6 @@
+set_asyncgen_hooks
+==================
+
+.. currentmodule:: sys
+
+.. autofunction:: set_asyncgen_hooks

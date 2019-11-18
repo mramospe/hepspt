@@ -1,0 +1,7 @@
+finfo
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: finfo
+   :show-inheritance:

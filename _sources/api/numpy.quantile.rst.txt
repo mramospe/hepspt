@@ -1,0 +1,6 @@
+quantile
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: quantile

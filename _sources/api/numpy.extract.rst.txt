@@ -1,0 +1,6 @@
+extract
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: extract

@@ -1,0 +1,6 @@
+sometrue
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: sometrue

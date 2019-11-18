@@ -1,0 +1,6 @@
+ipmt
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: ipmt

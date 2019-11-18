@@ -1,0 +1,6 @@
+nanpercentile
+=============
+
+.. currentmodule:: numpy
+
+.. autofunction:: nanpercentile

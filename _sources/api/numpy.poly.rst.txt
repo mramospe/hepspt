@@ -1,0 +1,6 @@
+poly
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: poly

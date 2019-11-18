@@ -1,0 +1,7 @@
+str0
+====
+
+.. currentmodule:: numpy
+
+.. autoclass:: str0
+   :show-inheritance:

@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>packbits &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="unpackbits" href="numpy.unpackbits.html" />
+    <link rel="prev" title="savez_compressed" href="numpy.savez_compressed.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="packbits">
+<h1>packbits<a class="headerlink" href="#packbits" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.packbits">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">packbits</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">axis=None</em>, <em class="sig-param">bitorder='big'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.packbits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Packs the elements of a binary-valued array into bits in a uint8 array.</p>
+<p>The result is padded to full bytes by inserting zero bits at the end.</p>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>An array of integers or booleans whose elements should be packed to
+bits.</p>
+</dd>
+<dt>axis<span class="classifier">int, optional</span></dt><dd><p>The dimension over which bit-packing is done.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> implies packing the flattened array.</p>
+</dd>
+<dt>bitorder<span class="classifier">{‘big’, ‘little’}, optional</span></dt><dd><p>The order of the input bits. ‘big’ will mimic bin(val),
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">1]</span> <span class="pre">=&gt;</span> <span class="pre">3</span> <span class="pre">=</span> <span class="pre">0b00000011</span> <span class="pre">=&gt;</span> <span class="pre">``,</span> <span class="pre">'little'</span> <span class="pre">will</span>
+<span class="pre">reverse</span> <span class="pre">the</span> <span class="pre">order</span> <span class="pre">so</span> <span class="pre">``[1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0]</span> <span class="pre">=&gt;</span> <span class="pre">3</span></code>.
+Defaults to ‘big’.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.17.0.</span></p>
+</div>
+</dd>
+</dl>
+<dl class="simple">
+<dt>packed<span class="classifier">ndarray</span></dt><dd><p>Array of type uint8 whose elements represent bits corresponding to the
+logical (0 or nonzero) value of the input elements. The shape of
+<cite>packed</cite> has the same number of dimensions as the input (unless <cite>axis</cite>
+is None, in which case the output is 1-D).</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>unpackbits: Unpacks elements of a uint8 array into a binary-valued output</dt><dd><p>array.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>               <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span>
+<span class="gp">... </span>              <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>               <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">packbits</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">array([[[160],</span>
+<span class="go">        [ 64]],</span>
+<span class="go">       [[192],</span>
+<span class="go">        [ 32]]], dtype=uint8)</span>
+</pre></div>
+</div>
+<p>Note that in binary 160 = 1010 0000, 64 = 0100 0000, 192 = 1100 0000,
+and 32 = 0010 0000.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.savez_compressed.html" title="previous chapter">savez_compressed</a></li>
+      <li>Next: <a href="numpy.unpackbits.html" title="next chapter">unpackbits</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.packbits.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

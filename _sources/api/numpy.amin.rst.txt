@@ -1,0 +1,6 @@
+amin
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: amin

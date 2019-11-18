@@ -1,0 +1,6 @@
+transpose
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: transpose

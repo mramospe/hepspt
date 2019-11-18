@@ -1,0 +1,6 @@
+isfortran
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: isfortran

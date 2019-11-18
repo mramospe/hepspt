@@ -1,0 +1,6 @@
+correlate
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: correlate

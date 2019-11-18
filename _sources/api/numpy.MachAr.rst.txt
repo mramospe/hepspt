@@ -1,0 +1,7 @@
+MachAr
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: MachAr
+   :show-inheritance:

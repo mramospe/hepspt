@@ -1,0 +1,6 @@
+squeeze
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: squeeze

@@ -1,0 +1,6 @@
+logspace
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: logspace

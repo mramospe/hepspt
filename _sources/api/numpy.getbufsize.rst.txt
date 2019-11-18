@@ -1,0 +1,6 @@
+getbufsize
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: getbufsize

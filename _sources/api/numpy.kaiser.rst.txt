@@ -1,0 +1,6 @@
+kaiser
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: kaiser

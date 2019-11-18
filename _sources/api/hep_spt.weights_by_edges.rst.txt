@@ -1,0 +1,6 @@
+weights_by_edges
+================
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: weights_by_edges

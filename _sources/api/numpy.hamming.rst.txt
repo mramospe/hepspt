@@ -1,0 +1,6 @@
+hamming
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: hamming

@@ -1,0 +1,6 @@
+polyint
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: polyint

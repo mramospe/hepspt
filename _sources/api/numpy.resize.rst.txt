@@ -1,0 +1,6 @@
+resize
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: resize

@@ -1,0 +1,6 @@
+argmax
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: argmax

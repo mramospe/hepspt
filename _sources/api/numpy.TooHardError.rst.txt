@@ -1,0 +1,6 @@
+TooHardError
+============
+
+.. currentmodule:: numpy
+
+.. autoexception:: TooHardError

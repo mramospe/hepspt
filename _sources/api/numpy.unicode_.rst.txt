@@ -1,0 +1,7 @@
+unicode_
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: unicode_
+   :show-inheritance:

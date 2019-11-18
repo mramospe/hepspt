@@ -1,0 +1,157 @@
+generic
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: generic
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~generic.T
+      ~generic.base
+      ~generic.data
+      ~generic.dtype
+      ~generic.flags
+      ~generic.flat
+      ~generic.imag
+      ~generic.itemsize
+      ~generic.nbytes
+      ~generic.ndim
+      ~generic.real
+      ~generic.shape
+      ~generic.size
+      ~generic.strides
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~generic.all
+      ~generic.any
+      ~generic.argmax
+      ~generic.argmin
+      ~generic.argsort
+      ~generic.astype
+      ~generic.byteswap
+      ~generic.choose
+      ~generic.clip
+      ~generic.compress
+      ~generic.conj
+      ~generic.conjugate
+      ~generic.copy
+      ~generic.cumprod
+      ~generic.cumsum
+      ~generic.diagonal
+      ~generic.dump
+      ~generic.dumps
+      ~generic.fill
+      ~generic.flatten
+      ~generic.getfield
+      ~generic.item
+      ~generic.itemset
+      ~generic.max
+      ~generic.mean
+      ~generic.min
+      ~generic.newbyteorder
+      ~generic.nonzero
+      ~generic.prod
+      ~generic.ptp
+      ~generic.put
+      ~generic.ravel
+      ~generic.repeat
+      ~generic.reshape
+      ~generic.resize
+      ~generic.round
+      ~generic.searchsorted
+      ~generic.setfield
+      ~generic.setflags
+      ~generic.sort
+      ~generic.squeeze
+      ~generic.std
+      ~generic.sum
+      ~generic.swapaxes
+      ~generic.take
+      ~generic.tobytes
+      ~generic.tofile
+      ~generic.tolist
+      ~generic.tostring
+      ~generic.trace
+      ~generic.transpose
+      ~generic.var
+      ~generic.view
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: T
+   .. autoattribute:: base
+   .. autoattribute:: data
+   .. autoattribute:: dtype
+   .. autoattribute:: flags
+   .. autoattribute:: flat
+   .. autoattribute:: imag
+   .. autoattribute:: itemsize
+   .. autoattribute:: nbytes
+   .. autoattribute:: ndim
+   .. autoattribute:: real
+   .. autoattribute:: shape
+   .. autoattribute:: size
+   .. autoattribute:: strides
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: all
+   .. automethod:: any
+   .. automethod:: argmax
+   .. automethod:: argmin
+   .. automethod:: argsort
+   .. automethod:: astype
+   .. automethod:: byteswap
+   .. automethod:: choose
+   .. automethod:: clip
+   .. automethod:: compress
+   .. automethod:: conj
+   .. automethod:: conjugate
+   .. automethod:: copy
+   .. automethod:: cumprod
+   .. automethod:: cumsum
+   .. automethod:: diagonal
+   .. automethod:: dump
+   .. automethod:: dumps
+   .. automethod:: fill
+   .. automethod:: flatten
+   .. automethod:: getfield
+   .. automethod:: item
+   .. automethod:: itemset
+   .. automethod:: max
+   .. automethod:: mean
+   .. automethod:: min
+   .. automethod:: newbyteorder
+   .. automethod:: nonzero
+   .. automethod:: prod
+   .. automethod:: ptp
+   .. automethod:: put
+   .. automethod:: ravel
+   .. automethod:: repeat
+   .. automethod:: reshape
+   .. automethod:: resize
+   .. automethod:: round
+   .. automethod:: searchsorted
+   .. automethod:: setfield
+   .. automethod:: setflags
+   .. automethod:: sort
+   .. automethod:: squeeze
+   .. automethod:: std
+   .. automethod:: sum
+   .. automethod:: swapaxes
+   .. automethod:: take
+   .. automethod:: tobytes
+   .. automethod:: tofile
+   .. automethod:: tolist
+   .. automethod:: tostring
+   .. automethod:: trace
+   .. automethod:: transpose
+   .. automethod:: var
+   .. automethod:: view

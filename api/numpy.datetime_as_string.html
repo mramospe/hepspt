@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>datetime_as_string &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="busday_offset" href="numpy.busday_offset.html" />
+    <link rel="prev" title="datetime_data" href="numpy.datetime_data.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="datetime-as-string">
+<h1>datetime_as_string<a class="headerlink" href="#datetime-as-string" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.datetime_as_string">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">datetime_as_string</code><span class="sig-paren">(</span><em class="sig-param">arr</em>, <em class="sig-param">unit=None</em>, <em class="sig-param">timezone='naive'</em>, <em class="sig-param">casting='same_kind'</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.datetime_as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an array of datetimes into an array of strings.</p>
+<dl class="simple">
+<dt>arr<span class="classifier">array_like of datetime64</span></dt><dd><p>The array of UTC timestamps to format.</p>
+</dd>
+<dt>unit<span class="classifier">str</span></dt><dd><p>One of None, ‘auto’, or a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/arrays.datetime.html#arrays-dtypes-dateunits" title="(in NumPy v1.17)"><span class="xref std std-ref">datetime unit</span></a>.</p>
+</dd>
+<dt>timezone<span class="classifier">{‘naive’, ‘UTC’, ‘local’} or tzinfo</span></dt><dd><p>Timezone information to use when displaying the datetime. If ‘UTC’, end
+with a Z to indicate UTC time. If ‘local’, convert to the local timezone
+first, and suffix with a +-#### timezone offset. If a tzinfo object,
+then do as with ‘local’, but use the specified timezone.</p>
+</dd>
+<dt>casting<span class="classifier">{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}</span></dt><dd><p>Casting to allow when changing between datetime units.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>str_arr<span class="classifier">ndarray</span></dt><dd><p>An array of strings the same shape as <cite>arr</cite>.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="s1">&#39;2002-10-27T04:30&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;M8[m]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span>
+<span class="go">array([&#39;2002-10-27T04:30&#39;, &#39;2002-10-27T05:30&#39;, &#39;2002-10-27T06:30&#39;,</span>
+<span class="go">       &#39;2002-10-27T07:30&#39;], dtype=&#39;datetime64[m]&#39;)</span>
+</pre></div>
+</div>
+<p>Setting the timezone to UTC shows the same information, but with a Z suffix</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">timezone</span><span class="o">=</span><span class="s1">&#39;UTC&#39;</span><span class="p">)</span>
+<span class="go">array([&#39;2002-10-27T04:30Z&#39;, &#39;2002-10-27T05:30Z&#39;, &#39;2002-10-27T06:30Z&#39;,</span>
+<span class="go">       &#39;2002-10-27T07:30Z&#39;], dtype=&#39;&lt;U35&#39;)</span>
+</pre></div>
+</div>
+<p>Note that we picked datetimes that cross a DST boundary. Passing in a
+<code class="docutils literal notranslate"><span class="pre">pytz</span></code> timezone object will print the appropriate offset</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">timezone</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s1">&#39;US/Eastern&#39;</span><span class="p">))</span>
+<span class="go">array([&#39;2002-10-27T00:30-0400&#39;, &#39;2002-10-27T01:30-0400&#39;,</span>
+<span class="go">       &#39;2002-10-27T01:30-0500&#39;, &#39;2002-10-27T02:30-0500&#39;], dtype=&#39;&lt;U39&#39;)</span>
+</pre></div>
+</div>
+<p>Passing in a unit will change the precision</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
+<span class="go">array([&#39;2002-10-27T04&#39;, &#39;2002-10-27T05&#39;, &#39;2002-10-27T06&#39;, &#39;2002-10-27T07&#39;],</span>
+<span class="go">      dtype=&#39;&lt;U32&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+<span class="go">array([&#39;2002-10-27T04:30:00&#39;, &#39;2002-10-27T05:30:00&#39;, &#39;2002-10-27T06:30:00&#39;,</span>
+<span class="go">       &#39;2002-10-27T07:30:00&#39;], dtype=&#39;&lt;U38&#39;)</span>
+</pre></div>
+</div>
+<p>‘casting’ can be used to specify whether precision can be changed</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">casting</span><span class="o">=</span><span class="s1">&#39;safe&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">TypeError</span>: <span class="n">Cannot create a datetime string as units &#39;h&#39; from a NumPy</span>
+<span class="go">datetime with units &#39;m&#39; according to the rule &#39;safe&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.datetime_data.html" title="previous chapter">datetime_data</a></li>
+      <li>Next: <a href="numpy.busday_offset.html" title="next chapter">busday_offset</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.datetime_as_string.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

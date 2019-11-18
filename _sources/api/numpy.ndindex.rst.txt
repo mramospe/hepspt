@@ -1,0 +1,19 @@
+ndindex
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: ndindex
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~ndindex.ndincr
+      ~ndindex.next
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: ndincr
+   .. automethod:: next

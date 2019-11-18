@@ -1,0 +1,6 @@
+hstack
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: hstack

@@ -1,0 +1,6 @@
+getallocatedblocks
+==================
+
+.. currentmodule:: sys
+
+.. autofunction:: getallocatedblocks

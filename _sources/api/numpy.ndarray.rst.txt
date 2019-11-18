@@ -1,0 +1,165 @@
+ndarray
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: ndarray
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~ndarray.T
+      ~ndarray.base
+      ~ndarray.ctypes
+      ~ndarray.data
+      ~ndarray.dtype
+      ~ndarray.flags
+      ~ndarray.flat
+      ~ndarray.imag
+      ~ndarray.itemsize
+      ~ndarray.nbytes
+      ~ndarray.ndim
+      ~ndarray.real
+      ~ndarray.shape
+      ~ndarray.size
+      ~ndarray.strides
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~ndarray.all
+      ~ndarray.any
+      ~ndarray.argmax
+      ~ndarray.argmin
+      ~ndarray.argpartition
+      ~ndarray.argsort
+      ~ndarray.astype
+      ~ndarray.byteswap
+      ~ndarray.choose
+      ~ndarray.clip
+      ~ndarray.compress
+      ~ndarray.conj
+      ~ndarray.conjugate
+      ~ndarray.copy
+      ~ndarray.cumprod
+      ~ndarray.cumsum
+      ~ndarray.diagonal
+      ~ndarray.dot
+      ~ndarray.dump
+      ~ndarray.dumps
+      ~ndarray.fill
+      ~ndarray.flatten
+      ~ndarray.getfield
+      ~ndarray.item
+      ~ndarray.itemset
+      ~ndarray.max
+      ~ndarray.mean
+      ~ndarray.min
+      ~ndarray.newbyteorder
+      ~ndarray.nonzero
+      ~ndarray.partition
+      ~ndarray.prod
+      ~ndarray.ptp
+      ~ndarray.put
+      ~ndarray.ravel
+      ~ndarray.repeat
+      ~ndarray.reshape
+      ~ndarray.resize
+      ~ndarray.round
+      ~ndarray.searchsorted
+      ~ndarray.setfield
+      ~ndarray.setflags
+      ~ndarray.sort
+      ~ndarray.squeeze
+      ~ndarray.std
+      ~ndarray.sum
+      ~ndarray.swapaxes
+      ~ndarray.take
+      ~ndarray.tobytes
+      ~ndarray.tofile
+      ~ndarray.tolist
+      ~ndarray.tostring
+      ~ndarray.trace
+      ~ndarray.transpose
+      ~ndarray.var
+      ~ndarray.view
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: T
+   .. autoattribute:: base
+   .. autoattribute:: ctypes
+   .. autoattribute:: data
+   .. autoattribute:: dtype
+   .. autoattribute:: flags
+   .. autoattribute:: flat
+   .. autoattribute:: imag
+   .. autoattribute:: itemsize
+   .. autoattribute:: nbytes
+   .. autoattribute:: ndim
+   .. autoattribute:: real
+   .. autoattribute:: shape
+   .. autoattribute:: size
+   .. autoattribute:: strides
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: all
+   .. automethod:: any
+   .. automethod:: argmax
+   .. automethod:: argmin
+   .. automethod:: argpartition
+   .. automethod:: argsort
+   .. automethod:: astype
+   .. automethod:: byteswap
+   .. automethod:: choose
+   .. automethod:: clip
+   .. automethod:: compress
+   .. automethod:: conj
+   .. automethod:: conjugate
+   .. automethod:: copy
+   .. automethod:: cumprod
+   .. automethod:: cumsum
+   .. automethod:: diagonal
+   .. automethod:: dot
+   .. automethod:: dump
+   .. automethod:: dumps
+   .. automethod:: fill
+   .. automethod:: flatten
+   .. automethod:: getfield
+   .. automethod:: item
+   .. automethod:: itemset
+   .. automethod:: max
+   .. automethod:: mean
+   .. automethod:: min
+   .. automethod:: newbyteorder
+   .. automethod:: nonzero
+   .. automethod:: partition
+   .. automethod:: prod
+   .. automethod:: ptp
+   .. automethod:: put
+   .. automethod:: ravel
+   .. automethod:: repeat
+   .. automethod:: reshape
+   .. automethod:: resize
+   .. automethod:: round
+   .. automethod:: searchsorted
+   .. automethod:: setfield
+   .. automethod:: setflags
+   .. automethod:: sort
+   .. automethod:: squeeze
+   .. automethod:: std
+   .. automethod:: sum
+   .. automethod:: swapaxes
+   .. automethod:: take
+   .. automethod:: tobytes
+   .. automethod:: tofile
+   .. automethod:: tolist
+   .. automethod:: tostring
+   .. automethod:: trace
+   .. automethod:: transpose
+   .. automethod:: var
+   .. automethod:: view

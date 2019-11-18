@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>rate &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="irr" href="numpy.irr.html" />
+    <link rel="prev" title="pv" href="numpy.pv.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="rate">
+<h1>rate<a class="headerlink" href="#rate" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.rate">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">rate</code><span class="sig-paren">(</span><em class="sig-param">nper</em>, <em class="sig-param">pmt</em>, <em class="sig-param">pv</em>, <em class="sig-param">fv</em>, <em class="sig-param">when='end'</em>, <em class="sig-param">guess=None</em>, <em class="sig-param">tol=None</em>, <em class="sig-param">maxiter=100</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the rate of interest per period.</p>
+<dl class="simple">
+<dt>nper<span class="classifier">array_like</span></dt><dd><p>Number of compounding periods</p>
+</dd>
+<dt>pmt<span class="classifier">array_like</span></dt><dd><p>Payment</p>
+</dd>
+<dt>pv<span class="classifier">array_like</span></dt><dd><p>Present value</p>
+</dd>
+<dt>fv<span class="classifier">array_like</span></dt><dd><p>Future value</p>
+</dd>
+<dt>when<span class="classifier">{{‘begin’, 1}, {‘end’, 0}}, {string, int}, optional</span></dt><dd><p>When payments are due (‘begin’ (1) or ‘end’ (0))</p>
+</dd>
+<dt>guess<span class="classifier">Number, optional</span></dt><dd><p>Starting guess for solving the rate of interest, default 0.1</p>
+</dd>
+<dt>tol<span class="classifier">Number, optional</span></dt><dd><p>Required tolerance for the solution, default 1e-6</p>
+</dd>
+<dt>maxiter<span class="classifier">int, optional</span></dt><dd><p>Maximum iterations in finding the solution</p>
+</dd>
+</dl>
+<p>The rate of interest is computed by iteratively solving the
+(non-linear) equation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fv</span> <span class="o">+</span> <span class="n">pv</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">rate</span><span class="p">)</span><span class="o">**</span><span class="n">nper</span> <span class="o">+</span> <span class="n">pmt</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">rate</span><span class="o">*</span><span class="n">when</span><span class="p">)</span><span class="o">/</span><span class="n">rate</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">rate</span><span class="p">)</span><span class="o">**</span><span class="n">nper</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>for <code class="docutils literal notranslate"><span class="pre">rate</span></code>.</p>
+<p>Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May). Open Document
+Format for Office Applications (OpenDocument)v1.2, Part 2: Recalculated
+Formula (OpenFormula) Format - Annotated Version, Pre-Draft 12.
+Organization for the Advancement of Structured Information Standards
+(OASIS). Billerica, MA, USA. [ODT Document]. Available:
+<a class="reference external" href="http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formula">http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formula</a>
+OpenDocument-formula-20090508.odt</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.pv.html" title="previous chapter">pv</a></li>
+      <li>Next: <a href="numpy.irr.html" title="next chapter">irr</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.rate.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

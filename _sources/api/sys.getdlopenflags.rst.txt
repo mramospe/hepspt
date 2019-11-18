@@ -1,0 +1,6 @@
+getdlopenflags
+==============
+
+.. currentmodule:: sys
+
+.. autofunction:: getdlopenflags

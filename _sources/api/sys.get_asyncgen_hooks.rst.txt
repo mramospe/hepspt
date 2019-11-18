@@ -1,0 +1,6 @@
+get_asyncgen_hooks
+==================
+
+.. currentmodule:: sys
+
+.. autofunction:: get_asyncgen_hooks

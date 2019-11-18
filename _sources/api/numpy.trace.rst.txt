@@ -1,0 +1,6 @@
+trace
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: trace

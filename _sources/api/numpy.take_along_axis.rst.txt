@@ -1,0 +1,6 @@
+take_along_axis
+===============
+
+.. currentmodule:: numpy
+
+.. autofunction:: take_along_axis

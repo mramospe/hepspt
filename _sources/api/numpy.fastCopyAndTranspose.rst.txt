@@ -1,0 +1,6 @@
+fastCopyAndTranspose
+====================
+
+.. currentmodule:: numpy
+
+.. autofunction:: fastCopyAndTranspose

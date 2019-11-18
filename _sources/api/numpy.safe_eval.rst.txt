@@ -1,0 +1,6 @@
+safe_eval
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: safe_eval

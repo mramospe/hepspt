@@ -1,0 +1,6 @@
+getrefcount
+===========
+
+.. currentmodule:: sys
+
+.. autofunction:: getrefcount

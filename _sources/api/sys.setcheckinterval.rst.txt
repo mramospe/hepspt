@@ -1,0 +1,6 @@
+setcheckinterval
+================
+
+.. currentmodule:: sys
+
+.. autofunction:: setcheckinterval

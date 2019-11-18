@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>adbin_hist2d_rectangles &#8212; hep_spt 0.0.0.dev3 documentation</title>
+    <meta charset="utf-8" />
+    <title>adbin_hist2d_rectangles &#8212; hep_spt 0.0.0.dev5 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -14,11 +12,14 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="adbin_hist1d" href="hep_spt.adbin_hist1d.html" />
-    <link rel="prev" title="Functions and classes" href="../main.html" />
+    <link rel="next" title="available_styles" href="hep_spt.available_styles.html" />
+    <link rel="prev" title="adbin_hist1d_edges" href="hep_spt.adbin_hist1d_edges.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -39,34 +40,30 @@
 <h1>adbin_hist2d_rectangles<a class="headerlink" href="#adbin-hist2d-rectangles" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="hep_spt.adbin_hist2d_rectangles">
-<code class="descclassname">hep_spt.</code><code class="descname">adbin_hist2d_rectangles</code><span class="sig-paren">(</span><em>bins</em>, <em>smp</em>, <em>range=None</em>, <em>weights=None</em>, <em>cmap=None</em>, <em>fill='sw'</em>, <em>color=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d_rectangles" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hep_spt.</code><code class="sig-name descname">adbin_hist2d_rectangles</code><span class="sig-paren">(</span><em class="sig-param">bins</em>, <em class="sig-param">smp</em>, <em class="sig-param">range=None</em>, <em class="sig-param">weights=None</em>, <em class="sig-param">cmap=None</em>, <em class="sig-param">fill='sw'</em>, <em class="sig-param">color=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hep_spt/adbin.html#adbin_hist2d_rectangles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hep_spt.adbin_hist2d_rectangles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a list of rectangles from a list of bins.
 It uses the input data in “arr” to calculate the associated quantity,
 which is specified in “fill”.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>(</em><a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><em>AdBin</em></a><em>)</em>) – input bins.</li>
-<li><strong>smp</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><em>numpy.ndarray</em></a>) – input sample. It must have shape (n, 2).</li>
-<li><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>(</em><em>np.ndarray</em><em>, </em><em>np.ndarray</em><em>)</em>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</li>
-<li><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>(</em><em>value-type</em><em>)</em>) – input weights.</li>
-<li><strong>cmap</strong> (<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Colormap.html#matplotlib.colors.Colormap" title="(in Matplotlib v3.1.1)"><em>matplotlib.colors.Colormap</em></a>) – optional color map. If “None”, the default from     matplotlib.pyplot is used.</li>
-<li><strong>fill</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – method to use for filling (‘sw’ or ‘dens’).</li>
-<li><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether the output rectangles are filled with a color or not.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – any other argument to the constructor of     <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Rectangle.html#matplotlib.patches.Rectangle" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.patches.Rectangle</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>(</em><a class="reference internal" href="hep_spt.AdBin.html#hep_spt.AdBin" title="hep_spt.AdBin"><em>AdBin</em></a><em>)</em>) – input bins.</p></li>
+<li><p><strong>smp</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><em>numpy.ndarray</em></a>) – input sample. It must have shape (n, 2).</p></li>
+<li><p><strong>range</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>(</em><em>np.ndarray</em><em>, </em><em>np.ndarray</em><em>)</em>) – range of the histogram in each dimension. As     [(xmin, ymin), (xmax, ymax)].</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>(</em><em>value-type</em><em>)</em>) – input weights.</p></li>
+<li><p><strong>cmap</strong> (<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Colormap.html#matplotlib.colors.Colormap" title="(in Matplotlib v3.1.1)"><em>matplotlib.colors.Colormap</em></a>) – optional color map. If “None”, the default from     matplotlib.pyplot is used.</p></li>
+<li><p><strong>fill</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – method to use for filling (‘sw’ or ‘dens’).</p></li>
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether the output rectangles are filled with a color or not.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – any other argument to the constructor of     <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Rectangle.html#matplotlib.patches.Rectangle" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.patches.Rectangle</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Rectangles and contents.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)">numpy.ndarray</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)">numpy.ndarray</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Rectangles and contents.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)">numpy.ndarray</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)">numpy.ndarray</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -103,20 +100,18 @@ which is specified in “fill”.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../main.html">Functions and classes</a><ul>
-      <li>Previous: <a href="../main.html" title="previous chapter">Functions and classes</a></li>
-      <li>Next: <a href="hep_spt.adbin_hist1d.html" title="next chapter">adbin_hist1d</a></li>
+      <li>Previous: <a href="hep_spt.adbin_hist1d_edges.html" title="previous chapter">adbin_hist1d_edges</a></li>
+      <li>Next: <a href="hep_spt.available_styles.html" title="next chapter">available_styles</a></li>
   </ul></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -137,7 +132,7 @@ which is specified in “fill”.</p>
       &copy;2017, Miguel Ramos Pernas.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

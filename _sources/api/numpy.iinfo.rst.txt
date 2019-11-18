@@ -1,0 +1,19 @@
+iinfo
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: iinfo
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~iinfo.max
+      ~iinfo.min
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: max
+   .. autoattribute:: min

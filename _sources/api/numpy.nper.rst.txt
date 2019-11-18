@@ -1,0 +1,6 @@
+nper
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: nper

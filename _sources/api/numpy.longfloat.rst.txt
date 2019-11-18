@@ -1,0 +1,17 @@
+longfloat
+=========
+
+.. currentmodule:: numpy
+
+.. autoclass:: longfloat
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~longfloat.as_integer_ratio
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: as_integer_ratio

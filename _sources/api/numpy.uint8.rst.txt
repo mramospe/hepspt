@@ -1,0 +1,7 @@
+uint8
+=====
+
+.. currentmodule:: numpy
+
+.. autoclass:: uint8
+   :show-inheritance:

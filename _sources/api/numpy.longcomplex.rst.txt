@@ -1,0 +1,7 @@
+longcomplex
+===========
+
+.. currentmodule:: numpy
+
+.. autoclass:: longcomplex
+   :show-inheritance:

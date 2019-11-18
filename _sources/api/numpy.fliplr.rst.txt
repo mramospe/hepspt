@@ -1,0 +1,6 @@
+fliplr
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: fliplr

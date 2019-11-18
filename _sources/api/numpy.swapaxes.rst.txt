@@ -1,0 +1,6 @@
+swapaxes
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: swapaxes

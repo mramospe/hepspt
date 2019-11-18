@@ -1,0 +1,6 @@
+get_include
+===========
+
+.. currentmodule:: numpy
+
+.. autofunction:: get_include

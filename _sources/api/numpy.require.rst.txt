@@ -1,0 +1,6 @@
+require
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: require

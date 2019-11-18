@@ -1,0 +1,6 @@
+argpartition
+============
+
+.. currentmodule:: numpy
+
+.. autofunction:: argpartition

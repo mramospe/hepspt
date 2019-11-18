@@ -1,0 +1,6 @@
+issubsctype
+===========
+
+.. currentmodule:: numpy
+
+.. autofunction:: issubsctype

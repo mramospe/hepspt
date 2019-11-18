@@ -1,0 +1,6 @@
+asfarray
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: asfarray

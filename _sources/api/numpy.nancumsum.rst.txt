@@ -1,0 +1,6 @@
+nancumsum
+=========
+
+.. currentmodule:: numpy
+
+.. autofunction:: nancumsum

@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>recarray &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="format_parser" href="numpy.format_parser.html" />
+    <link rel="prev" title="record" href="numpy.record.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="recarray">
+<h1>recarray<a class="headerlink" href="#recarray" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.recarray">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">recarray</code><a class="headerlink" href="#numpy.recarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+<p>Construct an ndarray that allows field access using attributes.</p>
+<p>Arrays may have a data-types containing fields, analogous
+to columns in a spread sheet.  An example is <code class="docutils literal notranslate"><span class="pre">[(x,</span> <span class="pre">int),</span> <span class="pre">(y,</span> <span class="pre">float)]</span></code>,
+where each entry in the array is a pair of <code class="docutils literal notranslate"><span class="pre">(int,</span> <span class="pre">float)</span></code>.  Normally,
+these attributes are accessed using dictionary lookups such as <code class="docutils literal notranslate"><span class="pre">arr['x']</span></code>
+and <code class="docutils literal notranslate"><span class="pre">arr['y']</span></code>.  Record arrays allow the fields to be accessed as members
+of the array, using <code class="docutils literal notranslate"><span class="pre">arr.x</span></code> and <code class="docutils literal notranslate"><span class="pre">arr.y</span></code>.</p>
+<dl class="simple">
+<dt>shape<span class="classifier">tuple</span></dt><dd><p>Shape of output array.</p>
+</dd>
+<dt>dtype<span class="classifier">data-type, optional</span></dt><dd><p>The desired data-type.  By default, the data-type is determined
+from <cite>formats</cite>, <cite>names</cite>, <cite>titles</cite>, <cite>aligned</cite> and <cite>byteorder</cite>.</p>
+</dd>
+<dt>formats<span class="classifier">list of data-types, optional</span></dt><dd><p>A list containing the data-types for the different columns, e.g.
+<code class="docutils literal notranslate"><span class="pre">['i4',</span> <span class="pre">'f8',</span> <span class="pre">'i4']</span></code>.  <cite>formats</cite> does <em>not</em> support the new
+convention of using types directly, i.e. <code class="docutils literal notranslate"><span class="pre">(int,</span> <span class="pre">float,</span> <span class="pre">int)</span></code>.
+Note that <cite>formats</cite> must be a list, not a tuple.
+Given that <cite>formats</cite> is somewhat limited, we recommend specifying
+<cite>dtype</cite> instead.</p>
+</dd>
+<dt>names<span class="classifier">tuple of str, optional</span></dt><dd><p>The name of each column, e.g. <code class="docutils literal notranslate"><span class="pre">('x',</span> <span class="pre">'y',</span> <span class="pre">'z')</span></code>.</p>
+</dd>
+<dt>buf<span class="classifier">buffer, optional</span></dt><dd><p>By default, a new array is created of the given shape and data-type.
+If <cite>buf</cite> is specified and is an object exposing the buffer interface,
+the array will use the memory from the existing buffer.  In this case,
+the <cite>offset</cite> and <cite>strides</cite> keywords are available.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>titles<span class="classifier">tuple of str, optional</span></dt><dd><p>Aliases for column names.  For example, if <cite>names</cite> were
+<code class="docutils literal notranslate"><span class="pre">('x',</span> <span class="pre">'y',</span> <span class="pre">'z')</span></code> and <cite>titles</cite> is
+<code class="docutils literal notranslate"><span class="pre">('x_coordinate',</span> <span class="pre">'y_coordinate',</span> <span class="pre">'z_coordinate')</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">arr['x']</span></code> is equivalent to both <code class="docutils literal notranslate"><span class="pre">arr.x</span></code> and <code class="docutils literal notranslate"><span class="pre">arr.x_coordinate</span></code>.</p>
+</dd>
+<dt>byteorder<span class="classifier">{‘&lt;’, ‘&gt;’, ‘=’}, optional</span></dt><dd><p>Byte-order for all fields.</p>
+</dd>
+<dt>aligned<span class="classifier">bool, optional</span></dt><dd><p>Align the fields in memory as the C-compiler would.</p>
+</dd>
+<dt>strides<span class="classifier">tuple of ints, optional</span></dt><dd><p>Buffer (<cite>buf</cite>) is interpreted according to these strides (strides
+define how many bytes each array element, row, column, etc.
+occupy in memory).</p>
+</dd>
+<dt>offset<span class="classifier">int, optional</span></dt><dd><p>Start reading buffer (<cite>buf</cite>) from this offset onwards.</p>
+</dd>
+<dt>order<span class="classifier">{‘C’, ‘F’}, optional</span></dt><dd><p>Row-major (C-style) or column-major (Fortran-style) order.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>rec<span class="classifier">recarray</span></dt><dd><p>Empty array of the given shape and type.</p>
+</dd>
+</dl>
+<p>rec.fromrecords : Construct a record array from data.
+record : fundamental data-type for <cite>recarray</cite>.
+format_parser : determine a data-type from formats, names, titles.</p>
+<p>This constructor can be compared to <code class="docutils literal notranslate"><span class="pre">empty</span></code>: it creates a new record
+array but does not fill it with data.  To create a record array from data,
+use one of the following methods:</p>
+<ol class="arabic simple">
+<li><p>Create a standard ndarray and convert it to a record array,
+using <code class="docutils literal notranslate"><span class="pre">arr.view(np.recarray)</span></code></p></li>
+<li><p>Use the <cite>buf</cite> keyword.</p></li>
+<li><p>Use <cite>np.rec.fromrecords</cite>.</p></li>
+</ol>
+<p>Create an array with two fields, <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f8&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;i8&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([(1., 2), (3., 4)], dtype=[(&#39;x&#39;, &#39;&lt;f8&#39;), (&#39;y&#39;, &#39;&lt;i8&#39;)])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="go">array([1., 3.])</span>
+</pre></div>
+</div>
+<p>View the array as a record array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">x</span>
+<span class="go">array([1., 3.])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">y</span>
+<span class="go">array([2, 4])</span>
+</pre></div>
+</div>
+<p>Create a new, empty record array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">((</span><span class="mi">2</span><span class="p">,),</span>
+<span class="gp">... </span><span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span> 
+<span class="go">rec.array([(-1073741821, 1.2249118382103472e-301, 24547520),</span>
+<span class="go">       (3471280, 1.2134086255804012e-316, 0)],</span>
+<span class="go">      dtype=[(&#39;x&#39;, &#39;&lt;i4&#39;), (&#39;y&#39;, &#39;&lt;f8&#39;), (&#39;z&#39;, &#39;&lt;i4&#39;)])</span>
+</pre></div>
+</div>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.recarray.field" title="numpy.recarray.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a>(attr[, val])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.recarray.field">
+<code class="sig-name descname">field</code><span class="sig-paren">(</span><em class="sig-param">attr</em>, <em class="sig-param">val=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/numpy/core/records.html#recarray.field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#numpy.recarray.field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.record.html" title="previous chapter">record</a></li>
+      <li>Next: <a href="numpy.format_parser.html" title="next chapter">format_parser</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.recarray.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

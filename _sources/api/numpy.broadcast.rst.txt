@@ -1,0 +1,39 @@
+broadcast
+=========
+
+.. currentmodule:: numpy
+
+.. autoclass:: broadcast
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~broadcast.index
+      ~broadcast.iters
+      ~broadcast.nd
+      ~broadcast.ndim
+      ~broadcast.numiter
+      ~broadcast.shape
+      ~broadcast.size
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~broadcast.reset
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: index
+   .. autoattribute:: iters
+   .. autoattribute:: nd
+   .. autoattribute:: ndim
+   .. autoattribute:: numiter
+   .. autoattribute:: shape
+   .. autoattribute:: size
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: reset

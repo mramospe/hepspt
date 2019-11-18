@@ -1,0 +1,6 @@
+VERSION
+=======
+
+.. currentmodule:: hep_spt
+
+.. autodata:: VERSION

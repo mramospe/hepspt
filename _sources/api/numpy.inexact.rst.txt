@@ -1,0 +1,7 @@
+inexact
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: inexact
+   :show-inheritance:

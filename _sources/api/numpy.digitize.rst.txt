@@ -1,0 +1,6 @@
+digitize
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: digitize

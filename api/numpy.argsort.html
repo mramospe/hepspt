@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>argsort &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="around" href="numpy.around.html" />
+    <link rel="prev" title="argpartition" href="numpy.argpartition.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="argsort">
+<h1>argsort<a class="headerlink" href="#argsort" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.argsort">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">argsort</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">axis=-1</em>, <em class="sig-param">kind=None</em>, <em class="sig-param">order=None</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.argsort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices that would sort an array.</p>
+<p>Perform an indirect sort along the given axis using the algorithm specified
+by the <cite>kind</cite> keyword. It returns an array of indices of the same shape as
+<cite>a</cite> that index data along the given axis in sorted order.</p>
+<dl>
+<dt>a<span class="classifier">array_like</span></dt><dd><p>Array to sort.</p>
+</dd>
+<dt>axis<span class="classifier">int or None, optional</span></dt><dd><p>Axis along which to sort.  The default is -1 (the last axis). If None,
+the flattened array is used.</p>
+</dd>
+<dt>kind<span class="classifier">{‘quicksort’, ‘mergesort’, ‘heapsort’, ‘stable’}, optional</span></dt><dd><p>Sorting algorithm. The default is ‘quicksort’. Note that both ‘stable’
+and ‘mergesort’ use timsort under the covers and, in general, the
+actual implementation will vary with data type. The ‘mergesort’ option
+is retained for backwards compatibility.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.15.0.: </span>The ‘stable’ option was added.</p>
+</div>
+</dd>
+<dt>order<span class="classifier">str or list of str, optional</span></dt><dd><p>When <cite>a</cite> is an array with fields defined, this argument specifies
+which fields to compare first, second, etc.  A single field can
+be specified as a string, and not all fields need be specified,
+but unspecified fields will still be used, in the order in which
+they come up in the dtype, to break ties.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>index_array<span class="classifier">ndarray, int</span></dt><dd><p>Array of indices that sort <cite>a</cite> along the specified <cite>axis</cite>.
+If <cite>a</cite> is one-dimensional, <code class="docutils literal notranslate"><span class="pre">a[index_array]</span></code> yields a sorted <cite>a</cite>.
+More generally, <code class="docutils literal notranslate"><span class="pre">np.take_along_axis(a,</span> <span class="pre">index_array,</span> <span class="pre">axis=axis)</span></code>
+always yields the sorted <cite>a</cite>, irrespective of dimensionality.</p>
+</dd>
+</dl>
+<p>sort : Describes sorting algorithms used.
+lexsort : Indirect stable sort with multiple keys.
+ndarray.sort : Inplace sort.
+argpartition : Indirect partial sort.</p>
+<p>See <cite>sort</cite> for notes on the different sorting algorithms.</p>
+<p>As of NumPy 1.4.0 <cite>argsort</cite> works with real/complex arrays containing
+nan values. The enhanced sort order is documented in <cite>sort</cite>.</p>
+<p>One dimensional array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([1, 2, 0])</span>
+</pre></div>
+</div>
+<p>Two-dimensional array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([[0, 3],</span>
+<span class="go">       [2, 2]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># sorts along first axis (down)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span>
+<span class="go">array([[0, 1],</span>
+<span class="go">       [1, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">take_along_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># same as np.sort(x, axis=0)</span>
+<span class="go">array([[0, 2],</span>
+<span class="go">       [2, 3]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># sorts along last axis (across)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span>
+<span class="go">array([[0, 1],</span>
+<span class="go">       [0, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">take_along_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># same as np.sort(x, axis=1)</span>
+<span class="go">array([[0, 3],</span>
+<span class="go">       [2, 2]])</span>
+</pre></div>
+</div>
+<p>Indices of the sorted elements of a N-dimensional array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span>
+<span class="go">(array([0, 1, 1, 0]), array([0, 0, 1, 1]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>  <span class="c1"># same as np.sort(x, axis=None)</span>
+<span class="go">array([0, 2, 2, 3])</span>
+</pre></div>
+</div>
+<p>Sorting with keys:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;i4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;i4&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([(1, 0), (0, 1)],</span>
+<span class="go">      dtype=[(&#39;x&#39;, &#39;&lt;i4&#39;), (&#39;y&#39;, &#39;&lt;i4&#39;)])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
+<span class="go">array([1, 0])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">))</span>
+<span class="go">array([0, 1])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.argpartition.html" title="previous chapter">argpartition</a></li>
+      <li>Next: <a href="numpy.around.html" title="next chapter">around</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.argsort.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

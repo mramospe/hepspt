@@ -1,0 +1,6 @@
+nanvar
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: nanvar

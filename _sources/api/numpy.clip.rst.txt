@@ -1,0 +1,6 @@
+clip
+====
+
+.. currentmodule:: numpy
+
+.. autofunction:: clip

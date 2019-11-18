@@ -1,0 +1,19 @@
+integer
+=======
+
+.. currentmodule:: numpy
+
+.. autoclass:: integer
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~integer.denominator
+      ~integer.numerator
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: denominator
+   .. autoattribute:: numerator

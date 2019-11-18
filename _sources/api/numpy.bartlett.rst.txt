@@ -1,0 +1,6 @@
+bartlett
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: bartlett

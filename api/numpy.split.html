@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>split &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hsplit" href="numpy.hsplit.html" />
+    <link rel="prev" title="array_split" href="numpy.array_split.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="split">
+<h1>split<a class="headerlink" href="#split" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="numpy.split">
+<code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">ary</em>, <em class="sig-param">indices_or_sections</em>, <em class="sig-param">axis=0</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split an array into multiple sub-arrays.</p>
+<dl>
+<dt>ary<span class="classifier">ndarray</span></dt><dd><p>Array to be divided into sub-arrays.</p>
+</dd>
+<dt>indices_or_sections<span class="classifier">int or 1-D array</span></dt><dd><p>If <cite>indices_or_sections</cite> is an integer, N, the array will be divided
+into N equal arrays along <cite>axis</cite>.  If such a split is not possible,
+an error is raised.</p>
+<p>If <cite>indices_or_sections</cite> is a 1-D array of sorted integers, the entries
+indicate where along <cite>axis</cite> the array is split.  For example,
+<code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3]</span></code> would, for <code class="docutils literal notranslate"><span class="pre">axis=0</span></code>, result in</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>ary[:2]</p></li>
+<li><p>ary[2:3]</p></li>
+<li><p>ary[3:]</p></li>
+</ul>
+</div></blockquote>
+<p>If an index exceeds the dimension of the array along <cite>axis</cite>,
+an empty sub-array is returned correspondingly.</p>
+</dd>
+<dt>axis<span class="classifier">int, optional</span></dt><dd><p>The axis along which to split, default is 0.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>sub-arrays<span class="classifier">list of ndarrays</span></dt><dd><p>A list of sub-arrays.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If <cite>indices_or_sections</cite> is given as an integer, but
+a split does not result in equal division.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>array_split<span class="classifier">Split an array into multiple sub-arrays of equal or</span></dt><dd><p>near-equal size.  Does not raise an exception if
+an equal division cannot be made.</p>
+</dd>
+</dl>
+<p>hsplit : Split array into multiple sub-arrays horizontally (column-wise).
+vsplit : Split array into multiple sub-arrays vertically (row wise).
+dsplit : Split array into multiple sub-arrays along the 3rd axis (depth).
+concatenate : Join a sequence of arrays along an existing axis.
+stack : Join a sequence of arrays along a new axis.
+hstack : Stack arrays in sequence horizontally (column wise).
+vstack : Stack arrays in sequence vertically (row wise).
+dstack : Stack arrays in sequence depth wise (along third dimension).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">9.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">[array([0.,  1.,  2.]), array([3.,  4.,  5.]), array([6.,  7.,  8.])]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">8.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="go">[array([0.,  1.,  2.]),</span>
+<span class="go"> array([3.,  4.]),</span>
+<span class="go"> array([5.]),</span>
+<span class="go"> array([6.,  7.]),</span>
+<span class="go"> array([], dtype=float64)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.array_split.html" title="previous chapter">array_split</a></li>
+      <li>Next: <a href="numpy.hsplit.html" title="next chapter">hsplit</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.split.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

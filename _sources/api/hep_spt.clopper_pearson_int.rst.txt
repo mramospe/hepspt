@@ -1,0 +1,6 @@
+clopper_pearson_int
+===================
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: clopper_pearson_int

@@ -1,0 +1,6 @@
+ascontiguousarray
+=================
+
+.. currentmodule:: numpy
+
+.. autofunction:: ascontiguousarray

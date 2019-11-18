@@ -1,0 +1,17 @@
+record
+======
+
+.. currentmodule:: numpy
+
+.. autoclass:: record
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~record.pprint
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: pprint

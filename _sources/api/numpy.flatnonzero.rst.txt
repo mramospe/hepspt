@@ -1,0 +1,6 @@
+flatnonzero
+===========
+
+.. currentmodule:: numpy
+
+.. autofunction:: flatnonzero

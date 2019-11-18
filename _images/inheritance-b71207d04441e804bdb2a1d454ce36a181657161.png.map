@@ -1,0 +1,9 @@
+<map id="inheritanceddca470bb4" name="inheritanceddca470bb4">
+<area shape="rect" id="node1" href="api/hep_spt.AdBin.html#hep_spt.AdBin" target="_top" title="AdBin" alt="" coords="9,177,81,203"/>
+<area shape="rect" id="node2" href="api/hep_spt.CLsHypo.html#hep_spt.CLsHypo" target="_top" title="CLsHypo" alt="" coords="5,128,84,153"/>
+<area shape="rect" id="node3" href="api/hep_spt.CLsHypo_continuous.html#hep_spt.CLsHypo_continuous" target="_top" title="CLsHypo_continuous" alt="" coords="132,104,289,129"/>
+<area shape="rect" id="node4" href="api/hep_spt.CLsHypo_discrete.html#hep_spt.CLsHypo_discrete" target="_top" title="CLsHypo_discrete" alt="" coords="141,153,280,179"/>
+<area shape="rect" id="node5" href="api/hep_spt.CLsTS.html#hep_spt.CLsTS" target="_top" title="CLsTS" alt="" coords="9,31,81,56"/>
+<area shape="rect" id="node6" href="api/hep_spt.CLsTS_continuous.html#hep_spt.CLsTS_continuous" target="_top" title="CLsTS_continuous" alt="" coords="141,5,280,31"/>
+<area shape="rect" id="node7" href="api/hep_spt.CLsTS_discrete.html#hep_spt.CLsTS_discrete" target="_top" title="CLsTS_discrete" alt="" coords="151,55,271,80"/>
+</map>

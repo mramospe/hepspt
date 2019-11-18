@@ -1,0 +1,17 @@
+float128
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: float128
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~float128.as_integer_ratio
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: as_integer_ratio

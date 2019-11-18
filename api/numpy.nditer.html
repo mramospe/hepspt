@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>nditer &#8212; hep_spt 0.0.0.dev4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ufunc" href="numpy.ufunc.html" />
+    <link rel="prev" title="flatiter" href="numpy.flatiter.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="nditer">
+<h1>nditer<a class="headerlink" href="#nditer" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="numpy.nditer">
+<em class="property">class </em><code class="sig-prename descclassname">numpy.</code><code class="sig-name descname">nditer</code><a class="headerlink" href="#numpy.nditer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Efficient multi-dimensional iterator object to iterate over arrays.
+To get started using this object, see the
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/arrays.nditer.html#arrays-nditer" title="(in NumPy v1.17)"><span class="xref std std-ref">introductory guide to array iteration</span></a>.</p>
+<dl class="simple">
+<dt>op<span class="classifier">ndarray or sequence of array_like</span></dt><dd><p>The array(s) to iterate over.</p>
+</dd>
+<dt>flags<span class="classifier">sequence of str, optional</span></dt><dd><p>Flags to control the behavior of the iterator.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buffered</span></code> enables buffering when required.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c_index</span></code> causes a C-order index to be tracked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">f_index</span></code> causes a Fortran-order index to be tracked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">multi_index</span></code> causes a multi-index, or a tuple of indices
+with one per iteration dimension, to be tracked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">common_dtype</span></code> causes all the operands to be converted to
+a common data type, with copying or buffering as necessary.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copy_if_overlap</span></code> causes the iterator to determine if read
+operands have overlap with write operands, and make temporary
+copies as necessary to avoid overlap. False positives (needless
+copying) are possible in some cases.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay_bufalloc</span></code> delays allocation of the buffers until
+a reset() call is made. Allows <code class="docutils literal notranslate"><span class="pre">allocate</span></code> operands to
+be initialized before their values are copied into the buffers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">external_loop</span></code> causes the <code class="docutils literal notranslate"><span class="pre">values</span></code> given to be
+one-dimensional arrays with multiple values instead of
+zero-dimensional arrays.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grow_inner</span></code> allows the <code class="docutils literal notranslate"><span class="pre">value</span></code> array sizes to be made
+larger than the buffer size when both <code class="docutils literal notranslate"><span class="pre">buffered</span></code> and
+<code class="docutils literal notranslate"><span class="pre">external_loop</span></code> is used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ranged</span></code> allows the iterator to be restricted to a sub-range
+of the iterindex values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refs_ok</span></code> enables iteration of reference types, such as
+object arrays.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduce_ok</span></code> enables iteration of <code class="docutils literal notranslate"><span class="pre">readwrite</span></code> operands
+which are broadcasted, also known as reduction operands.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zerosize_ok</span></code> allows <cite>itersize</cite> to be zero.</p></li>
+</ul>
+</dd>
+<dt>op_flags<span class="classifier">list of list of str, optional</span></dt><dd><p>This is a list of flags for each operand. At minimum, one of
+<code class="docutils literal notranslate"><span class="pre">readonly</span></code>, <code class="docutils literal notranslate"><span class="pre">readwrite</span></code>, or <code class="docutils literal notranslate"><span class="pre">writeonly</span></code> must be specified.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">readonly</span></code> indicates the operand will only be read from.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">readwrite</span></code> indicates the operand will be read from and written to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeonly</span></code> indicates the operand will only be written to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_broadcast</span></code> prevents the operand from being broadcasted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">contig</span></code> forces the operand data to be contiguous.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aligned</span></code> forces the operand data to be aligned.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nbo</span></code> forces the operand data to be in native byte order.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copy</span></code> allows a temporary read-only copy if required.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">updateifcopy</span></code> allows a temporary read-write copy if required.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">allocate</span></code> causes the array to be allocated if it is None
+in the <code class="docutils literal notranslate"><span class="pre">op</span></code> parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_subtype</span></code> prevents an <code class="docutils literal notranslate"><span class="pre">allocate</span></code> operand from using a subtype.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arraymask</span></code> indicates that this operand is the mask to use
+for selecting elements when writing to operands with the
+‘writemasked’ flag set. The iterator does not enforce this,
+but when writing from a buffer back to the array, it only
+copies those elements indicated by this mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writemasked</span></code> indicates that only elements where the chosen
+<code class="docutils literal notranslate"><span class="pre">arraymask</span></code> operand is True will be written to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">overlap_assume_elementwise</span></code> can be used to mark operands that are
+accessed only in the iterator order, to allow less conservative
+copying when <code class="docutils literal notranslate"><span class="pre">copy_if_overlap</span></code> is present.</p></li>
+</ul>
+</dd>
+<dt>op_dtypes<span class="classifier">dtype or tuple of dtype(s), optional</span></dt><dd><p>The required data type(s) of the operands. If copying or buffering
+is enabled, the data will be converted to/from their original types.</p>
+</dd>
+<dt>order<span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>Controls the iteration order. ‘C’ means C order, ‘F’ means
+Fortran order, ‘A’ means ‘F’ order if all the arrays are Fortran
+contiguous, ‘C’ order otherwise, and ‘K’ means as close to the
+order the array elements appear in memory as possible. This also
+affects the element memory order of <code class="docutils literal notranslate"><span class="pre">allocate</span></code> operands, as they
+are allocated to be compatible with iteration order.
+Default is ‘K’.</p>
+</dd>
+<dt>casting<span class="classifier">{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional</span></dt><dd><p>Controls what kind of data casting may occur when making a copy
+or buffering.  Setting this to ‘unsafe’ is not recommended,
+as it can adversely affect accumulations.</p>
+<ul class="simple">
+<li><p>‘no’ means the data types should not be cast at all.</p></li>
+<li><p>‘equiv’ means only byte-order changes are allowed.</p></li>
+<li><p>‘safe’ means only casts which can preserve values are allowed.</p></li>
+<li><p>‘same_kind’ means only safe casts or casts within a kind,
+like float64 to float32, are allowed.</p></li>
+<li><p>‘unsafe’ means any data conversions may be done.</p></li>
+</ul>
+</dd>
+<dt>op_axes<span class="classifier">list of list of ints, optional</span></dt><dd><p>If provided, is a list of ints or None for each operands.
+The list of axes for an operand is a mapping from the dimensions
+of the iterator to the dimensions of the operand. A value of
+-1 can be placed for entries, causing that dimension to be
+treated as <cite>newaxis</cite>.</p>
+</dd>
+<dt>itershape<span class="classifier">tuple of ints, optional</span></dt><dd><p>The desired shape of the iterator. This allows <code class="docutils literal notranslate"><span class="pre">allocate</span></code> operands
+with a dimension mapped by op_axes not corresponding to a dimension
+of a different operand to get a value not equal to 1 for that
+dimension.</p>
+</dd>
+<dt>buffersize<span class="classifier">int, optional</span></dt><dd><p>When buffering is enabled, controls the size of the temporary
+buffers. Set to 0 for the default value.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>dtypes<span class="classifier">tuple of dtype(s)</span></dt><dd><p>The data types of the values provided in <cite>value</cite>. This may be
+different from the operand data types if buffering is enabled.
+Valid only before the iterator is closed.</p>
+</dd>
+<dt>finished<span class="classifier">bool</span></dt><dd><p>Whether the iteration over the operands is finished or not.</p>
+</dd>
+<dt>has_delayed_bufalloc<span class="classifier">bool</span></dt><dd><p>If True, the iterator was created with the <code class="docutils literal notranslate"><span class="pre">delay_bufalloc</span></code> flag,
+and no reset() function was called on it yet.</p>
+</dd>
+<dt>has_index<span class="classifier">bool</span></dt><dd><p>If True, the iterator was created with either the <code class="docutils literal notranslate"><span class="pre">c_index</span></code> or
+the <code class="docutils literal notranslate"><span class="pre">f_index</span></code> flag, and the property <cite>index</cite> can be used to
+retrieve it.</p>
+</dd>
+<dt>has_multi_index<span class="classifier">bool</span></dt><dd><p>If True, the iterator was created with the <code class="docutils literal notranslate"><span class="pre">multi_index</span></code> flag,
+and the property <cite>multi_index</cite> can be used to retrieve it.</p>
+</dd>
+<dt>index</dt><dd><p>When the <code class="docutils literal notranslate"><span class="pre">c_index</span></code> or <code class="docutils literal notranslate"><span class="pre">f_index</span></code> flag was used, this property
+provides access to the index. Raises a ValueError if accessed
+and <code class="docutils literal notranslate"><span class="pre">has_index</span></code> is False.</p>
+</dd>
+<dt>iterationneedsapi<span class="classifier">bool</span></dt><dd><p>Whether iteration requires access to the Python API, for example
+if one of the operands is an object array.</p>
+</dd>
+<dt>iterindex<span class="classifier">int</span></dt><dd><p>An index which matches the order of iteration.</p>
+</dd>
+<dt>itersize<span class="classifier">int</span></dt><dd><p>Size of the iterator.</p>
+</dd>
+<dt>itviews</dt><dd><p>Structured view(s) of <cite>operands</cite> in memory, matching the reordered
+and optimized iterator access pattern. Valid only before the iterator
+is closed.</p>
+</dd>
+<dt>multi_index</dt><dd><p>When the <code class="docutils literal notranslate"><span class="pre">multi_index</span></code> flag was used, this property
+provides access to the index. Raises a ValueError if accessed
+accessed and <code class="docutils literal notranslate"><span class="pre">has_multi_index</span></code> is False.</p>
+</dd>
+<dt>ndim<span class="classifier">int</span></dt><dd><p>The dimensions of the iterator.</p>
+</dd>
+<dt>nop<span class="classifier">int</span></dt><dd><p>The number of iterator operands.</p>
+</dd>
+<dt>operands<span class="classifier">tuple of operand(s)</span></dt><dd><p>The array(s) to be iterated over. Valid only before the iterator is
+closed.</p>
+</dd>
+<dt>shape<span class="classifier">tuple of ints</span></dt><dd><p>Shape tuple, the shape of the iterator.</p>
+</dd>
+<dt>value</dt><dd><p>Value of <code class="docutils literal notranslate"><span class="pre">operands</span></code> at current iteration. Normally, this is a
+tuple of array scalars, but if the flag <code class="docutils literal notranslate"><span class="pre">external_loop</span></code> is used,
+it is a tuple of one dimensional arrays.</p>
+</dd>
+</dl>
+<p><cite>nditer</cite> supersedes <cite>flatiter</cite>.  The iterator implementation behind
+<cite>nditer</cite> is also exposed by the NumPy C API.</p>
+<p>The Python exposure supplies two iteration interfaces, one which follows
+the Python iterator protocol, and another which mirrors the C-style
+do-while pattern.  The native Python approach is better in most cases, but
+if you need the coordinates or index of an iterator, use the C-style pattern.</p>
+<p>Here is how we might write an <code class="docutils literal notranslate"><span class="pre">iter_add</span></code> function, using the
+Python iterator protocol:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">iter_add_py</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">addop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span>
+<span class="gp">... </span>    <span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span><span class="p">],</span> <span class="p">[],</span>
+<span class="gp">... </span>                <span class="p">[[</span><span class="s1">&#39;readonly&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;readonly&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;writeonly&#39;</span><span class="p">,</span><span class="s1">&#39;allocate&#39;</span><span class="p">]])</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="n">it</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">addop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Here is the same function, but following the C-style pattern:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">iter_add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="n">addop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span>
+<span class="gp">... </span>   <span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span><span class="p">],</span> <span class="p">[],</span>
+<span class="gp">... </span>               <span class="p">[[</span><span class="s1">&#39;readonly&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;readonly&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;writeonly&#39;</span><span class="p">,</span><span class="s1">&#39;allocate&#39;</span><span class="p">]])</span>
+<span class="gp">... </span>   <span class="k">with</span> <span class="n">it</span><span class="p">:</span>
+<span class="gp">... </span>       <span class="k">while</span> <span class="ow">not</span> <span class="n">it</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+<span class="gp">... </span>           <span class="n">addop</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">it</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out</span><span class="o">=</span><span class="n">it</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="gp">... </span>           <span class="n">it</span><span class="o">.</span><span class="n">iternext</span><span class="p">()</span>
+<span class="gp">... </span>       <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Here is an example outer product function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">outer_it</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">mulop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span>
+<span class="gp">... </span>    <span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;external_loop&#39;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="p">[[</span><span class="s1">&#39;readonly&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;readonly&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;writeonly&#39;</span><span class="p">,</span> <span class="s1">&#39;allocate&#39;</span><span class="p">]],</span>
+<span class="gp">... </span>            <span class="n">op_axes</span><span class="o">=</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">ndim</span><span class="p">)),</span>
+<span class="gp">... </span>                     <span class="kc">None</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="n">it</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">mulop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outer_it</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span class="go">array([[1, 2, 3],</span>
+<span class="go">       [2, 4, 6]])</span>
+</pre></div>
+</div>
+<p>Here is an example function which operates like a “lambda” ufunc:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">luf</span><span class="p">(</span><span class="n">lamdaexpr</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="sd">&#39;&#39;&#39;luf(lambdaexpr, op1, ..., opn, out=None, order=&#39;K&#39;, casting=&#39;safe&#39;, buffersize=0)&#39;&#39;&#39;</span>
+<span class="gp">... </span>   <span class="n">nargs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="n">op</span> <span class="o">=</span> <span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;out&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">),)</span> <span class="o">+</span> <span class="n">args</span>
+<span class="gp">... </span>   <span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;buffered&#39;</span><span class="p">,</span><span class="s1">&#39;external_loop&#39;</span><span class="p">],</span>
+<span class="gp">... </span>           <span class="p">[[</span><span class="s1">&#39;writeonly&#39;</span><span class="p">,</span><span class="s1">&#39;allocate&#39;</span><span class="p">,</span><span class="s1">&#39;no_broadcast&#39;</span><span class="p">]]</span> <span class="o">+</span>
+<span class="gp">... </span>                           <span class="p">[[</span><span class="s1">&#39;readonly&#39;</span><span class="p">,</span><span class="s1">&#39;nbo&#39;</span><span class="p">,</span><span class="s1">&#39;aligned&#39;</span><span class="p">]]</span><span class="o">*</span><span class="n">nargs</span><span class="p">,</span>
+<span class="gp">... </span>           <span class="n">order</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">),</span>
+<span class="gp">... </span>           <span class="n">casting</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;casting&#39;</span><span class="p">,</span><span class="s1">&#39;safe&#39;</span><span class="p">),</span>
+<span class="gp">... </span>           <span class="n">buffersize</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buffersize&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="gp">... </span>   <span class="k">while</span> <span class="ow">not</span> <span class="n">it</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+<span class="gp">... </span>       <span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">lamdaexpr</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="gp">... </span>       <span class="n">it</span><span class="o">.</span><span class="n">iternext</span><span class="p">()</span>
+<span class="gp">... </span>       <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">luf</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="go">array([  0.5,   1.5,   4.5,   9.5,  16.5])</span>
+</pre></div>
+</div>
+<p>If operand flags <cite>“writeonly”</cite> or <cite>“readwrite”</cite> are used the operands may
+be views into the original data with the <cite>WRITEBACKIFCOPY</cite> flag. In this case
+nditer must be used as a context manager or the nditer.close
+method must be called before using the result. The temporary
+data will be written back to the original data when the <cite>__exit__</cite>
+function is called but not before:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i4&#39;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[],</span>
+<span class="gp">... </span>       <span class="p">[[</span><span class="s1">&#39;writeonly&#39;</span><span class="p">,</span> <span class="s1">&#39;updateifcopy&#39;</span><span class="p">]],</span>
+<span class="gp">... </span>       <span class="n">casting</span><span class="o">=</span><span class="s1">&#39;unsafe&#39;</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">op_dtypes</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;f4&#39;</span><span class="p">)])</span> <span class="k">as</span> <span class="n">i</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">... </span>   <span class="n">x</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">... </span>   <span class="c1"># a still unchanged here</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">x</span>
+<span class="go">(array([-1, -2, -3], dtype=int32), array([-1., -2., -3.], dtype=float32))</span>
+</pre></div>
+</div>
+<p>It is important to note that once the iterator is exited, dangling
+references (like <cite>x</cite> in the example) may or may not share data with
+the original data <cite>a</cite>. If writeback semantics were active, i.e. if
+<cite>x.base.flags.writebackifcopy</cite> is <cite>True</cite>, then exiting the iterator
+will sever the connection between <cite>x</cite> and <cite>a</cite>, writing to <cite>x</cite> will
+no longer write to <cite>a</cite>. If writeback semantics are not active, then
+<cite>x.data</cite> will still point at some part of <cite>a.data</cite>, and writing to
+one will affect the other.</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.dtypes" title="numpy.nditer.dtypes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtypes</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.finished" title="numpy.nditer.finished"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finished</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.has_delayed_bufalloc" title="numpy.nditer.has_delayed_bufalloc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_delayed_bufalloc</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.has_index" title="numpy.nditer.has_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_index</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.has_multi_index" title="numpy.nditer.has_multi_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_multi_index</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.index" title="numpy.nditer.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.iterationneedsapi" title="numpy.nditer.iterationneedsapi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterationneedsapi</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.iterindex" title="numpy.nditer.iterindex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterindex</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.iterrange" title="numpy.nditer.iterrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterrange</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.itersize" title="numpy.nditer.itersize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itersize</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.itviews" title="numpy.nditer.itviews"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itviews</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.multi_index" title="numpy.nditer.multi_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_index</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.ndim" title="numpy.nditer.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.nop" title="numpy.nditer.nop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nop</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.operands" title="numpy.nditer.operands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands</span></code></a></p></td>
+<td><p>operands[<cite>Slice</cite>]</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.shape" title="numpy.nditer.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.value" title="numpy.nditer.value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">value</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.close" title="numpy.nditer.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Resolve all writeback semantics in writeable operands.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.copy" title="numpy.nditer.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>Get a copy of the iterator in its current state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.debug_print" title="numpy.nditer.debug_print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">debug_print</span></code></a>()</p></td>
+<td><p>Print the current state of the <cite>nditer</cite> instance and debug info to stdout.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.enable_external_loop" title="numpy.nditer.enable_external_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_external_loop</span></code></a>()</p></td>
+<td><p>When the “external_loop” was not used during construction, but is desired, this modifies the iterator to behave as if the flag was specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.iternext" title="numpy.nditer.iternext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iternext</span></code></a>()</p></td>
+<td><p>Check whether iterations are left, and perform a single internal iteration without returning the result.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.remove_axis" title="numpy.nditer.remove_axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_axis</span></code></a>(i)</p></td>
+<td><p>Removes axis <cite>i</cite> from the iterator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#numpy.nditer.remove_multi_index" title="numpy.nditer.remove_multi_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_multi_index</span></code></a>()</p></td>
+<td><p>When the “multi_index” flag was specified, this removes it, allowing the internal iteration structure to be optimized further.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#numpy.nditer.reset" title="numpy.nditer.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
+<td><p>Reset the iterator to its initial state.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="attribute">
+<dt id="numpy.nditer.dtypes">
+<code class="sig-name descname">dtypes</code><a class="headerlink" href="#numpy.nditer.dtypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.finished">
+<code class="sig-name descname">finished</code><a class="headerlink" href="#numpy.nditer.finished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.has_delayed_bufalloc">
+<code class="sig-name descname">has_delayed_bufalloc</code><a class="headerlink" href="#numpy.nditer.has_delayed_bufalloc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.has_index">
+<code class="sig-name descname">has_index</code><a class="headerlink" href="#numpy.nditer.has_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.has_multi_index">
+<code class="sig-name descname">has_multi_index</code><a class="headerlink" href="#numpy.nditer.has_multi_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.index">
+<code class="sig-name descname">index</code><a class="headerlink" href="#numpy.nditer.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.iterationneedsapi">
+<code class="sig-name descname">iterationneedsapi</code><a class="headerlink" href="#numpy.nditer.iterationneedsapi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.iterindex">
+<code class="sig-name descname">iterindex</code><a class="headerlink" href="#numpy.nditer.iterindex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.iterrange">
+<code class="sig-name descname">iterrange</code><a class="headerlink" href="#numpy.nditer.iterrange" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.itersize">
+<code class="sig-name descname">itersize</code><a class="headerlink" href="#numpy.nditer.itersize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.itviews">
+<code class="sig-name descname">itviews</code><a class="headerlink" href="#numpy.nditer.itviews" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.multi_index">
+<code class="sig-name descname">multi_index</code><a class="headerlink" href="#numpy.nditer.multi_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.ndim">
+<code class="sig-name descname">ndim</code><a class="headerlink" href="#numpy.nditer.ndim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.nop">
+<code class="sig-name descname">nop</code><a class="headerlink" href="#numpy.nditer.nop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.operands">
+<code class="sig-name descname">operands</code><a class="headerlink" href="#numpy.nditer.operands" title="Permalink to this definition">¶</a></dt>
+<dd><p>operands[<cite>Slice</cite>]</p>
+<p>The array(s) to be iterated over. Valid only before the iterator is closed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.shape">
+<code class="sig-name descname">shape</code><a class="headerlink" href="#numpy.nditer.shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="numpy.nditer.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#numpy.nditer.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="numpy.nditer.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve all writeback semantics in writeable operands.</p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/arrays.nditer.html#nditer-context-manager" title="(in NumPy v1.17)"><span>Modifying Array Values</span></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.nditer.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a copy of the iterator in its current state.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="go">(array(0), array(1))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">it2</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">it2</span><span class="p">)</span>
+<span class="go">(array(1), array(2))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.nditer.debug_print">
+<code class="sig-name descname">debug_print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.debug_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the current state of the <cite>nditer</cite> instance and debug info to stdout.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.nditer.enable_external_loop">
+<code class="sig-name descname">enable_external_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.enable_external_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the “external_loop” was not used during construction, but
+is desired, this modifies the iterator to behave as if the flag
+was specified.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.nditer.iternext">
+<code class="sig-name descname">iternext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.iternext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether iterations are left, and perform a single internal iteration
+without returning the result.  Used in the C-style pattern do-while
+pattern.  For an example, see <cite>nditer</cite>.</p>
+<dl class="simple">
+<dt>iternext<span class="classifier">bool</span></dt><dd><p>Whether or not there are iterations left.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.nditer.remove_axis">
+<code class="sig-name descname">remove_axis</code><span class="sig-paren">(</span><em class="sig-param">i</em><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.remove_axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes axis <cite>i</cite> from the iterator. Requires that the flag “multi_index”
+be enabled.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.nditer.remove_multi_index">
+<code class="sig-name descname">remove_multi_index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.remove_multi_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the “multi_index” flag was specified, this removes it, allowing
+the internal iteration structure to be optimized further.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="numpy.nditer.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#numpy.nditer.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the iterator to its initial state.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hep_spt</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../main.html">Functions and classes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../main.html#numpy">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../main.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../main.html">Functions and classes</a><ul>
+      <li>Previous: <a href="numpy.flatiter.html" title="previous chapter">flatiter</a></li>
+      <li>Next: <a href="numpy.ufunc.html" title="next chapter">ufunc</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Miguel Ramos Pernas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/numpy.nditer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

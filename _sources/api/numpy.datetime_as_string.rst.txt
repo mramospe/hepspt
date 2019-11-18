@@ -1,0 +1,6 @@
+datetime_as_string
+==================
+
+.. currentmodule:: numpy
+
+.. autofunction:: datetime_as_string

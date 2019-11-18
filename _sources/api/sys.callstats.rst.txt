@@ -1,0 +1,6 @@
+callstats
+=========
+
+.. currentmodule:: sys
+
+.. autofunction:: callstats

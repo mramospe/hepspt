@@ -1,0 +1,6 @@
+cumsum
+======
+
+.. currentmodule:: numpy
+
+.. autofunction:: cumsum

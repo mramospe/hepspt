@@ -1,0 +1,6 @@
+polymul
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: polymul

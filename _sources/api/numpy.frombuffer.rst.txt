@@ -1,0 +1,6 @@
+frombuffer
+==========
+
+.. currentmodule:: numpy
+
+.. autofunction:: frombuffer

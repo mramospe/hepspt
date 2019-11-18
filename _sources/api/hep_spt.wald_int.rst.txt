@@ -1,0 +1,6 @@
+wald_int
+========
+
+.. currentmodule:: hep_spt
+
+.. autofunction:: wald_int

@@ -1,0 +1,6 @@
+cross
+=====
+
+.. currentmodule:: numpy
+
+.. autofunction:: cross

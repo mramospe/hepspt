@@ -1,0 +1,6 @@
+typename
+========
+
+.. currentmodule:: numpy
+
+.. autofunction:: typename

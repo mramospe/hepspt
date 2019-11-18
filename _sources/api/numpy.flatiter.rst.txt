@@ -1,0 +1,31 @@
+flatiter
+========
+
+.. currentmodule:: numpy
+
+.. autoclass:: flatiter
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~flatiter.base
+      ~flatiter.coords
+      ~flatiter.index
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~flatiter.copy
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: base
+   .. autoattribute:: coords
+   .. autoattribute:: index
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: copy

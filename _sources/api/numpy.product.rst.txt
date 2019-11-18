@@ -1,0 +1,6 @@
+product
+=======
+
+.. currentmodule:: numpy
+
+.. autofunction:: product
