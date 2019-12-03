@@ -8,6 +8,7 @@ __email__ = ['miguel.ramos.pernas@cern.ch']
 import contextlib
 from cycler import cycler
 from hep_spt import PACKAGE_PATH
+from hep_spt.core import format_docstring
 from hep_spt.histograms import cfe
 import math
 import matplotlib
@@ -20,6 +21,7 @@ import warnings
 __all__ = [
     'available_styles',
     'corr_hist2d',
+    'line_style',
     'modified_format',
     'opt_fig_div',
     'path_to_styles',
@@ -108,6 +110,55 @@ def corr_hist2d(matrix, titles, frmt='{:.2f}', vmin=None, vmax=None, cax=None):
 
     # Draw the grid
     cax.grid()
+
+
+# Additional line styles to be used with matplotlib
+LINE_STYLES = {
+    # From matplotlib
+    '-': '-',
+    '--': '--',
+    '-.': '-.',
+    ':': ':',
+    '': 'None',
+    ' ': 'None',
+    'solid': '-',
+    'dashed': '--',
+    'dashdot': '-.',
+    'dotted': ':',
+    'None': 'None',
+    # Extra
+    'loosely dotted': (0, (1, 10)),
+    'dotted': (0, (1, 1)),
+    'densely dotted': (0, (1, 1)),
+    'loosely dashed': (0, (5, 10)),
+    'dashed': (0, (5, 5)),
+    'densely dashed': (0, (5, 1)),
+    'loosely dashdotted': (0, (3, 10, 1, 10)),
+    'dashdotted': (0, (3, 5, 1, 5)),
+    'densely dashdotted': (0, (3, 1, 1, 1)),
+    'dashdotdotted': (0, (3, 5, 1, 5, 1, 5)),
+    'loosely dashdotdotted': (0, (3, 10, 1, 10, 1, 10)),
+    'densely dashdotdotted': (0, (3, 1, 1, 1, 1, 1))
+}
+
+ALLOWED_STYLES = list(sorted(LINE_STYLES.keys()))
+
+
+@format_docstring(styles=ALLOWED_STYLES)
+def line_style(name):
+    '''
+    Return the line style associated to the given name. Allowed names are: {styles}.
+
+    :param name: Name of the style to use.
+    :type name: str
+    :returns: Matplotlib style associated to the given name.
+    :rtype: str
+    '''
+    try:
+        return LINE_STYLES[name]
+    except KeyError:
+        raise KeyError('Unknown line style "{}", allowed styles are {}'.format(
+            name, ALLOWED_STYLES))
 
 
 @contextlib.contextmanager

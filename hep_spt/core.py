@@ -73,6 +73,20 @@ def decorate_method(deco):
     return _deco_wrapper
 
 
+def format_docstring(*args, **kwargs):
+    '''
+    Decorator to format the docstring of a function with certain parameters.
+    Beware that this will consume one level of brackets "{}".
+    '''
+    def _wrapper(func):
+        '''
+        Actual decorator.
+        '''
+        func.__doc__ = func.__doc__.format(*args, **kwargs)
+        return func
+    return _wrapper
+
+
 def taking_ndarray(func):
     '''
     Decorator for functions which take :class:`numpy.ndarray` instances

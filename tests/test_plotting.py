@@ -31,6 +31,17 @@ def test_corr_hist2d():
     hep_spt.corr_hist2d(matrix, ['a', 'b', 'c'])
 
 
+def test_line_style():
+    '''
+    Test for the "line_style" function.
+    '''
+    for name in hep_spt.plotting.LINE_STYLES:
+        matplotlib.lines.Line2D([], [], ls=hep_spt.line_style(name))
+
+    with pytest.raises(KeyError):
+        hep_spt.line_style('unknown style')
+
+
 def test_modified_format():
     '''
     Test for the "modified_format" function.
