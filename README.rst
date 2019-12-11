@@ -8,8 +8,8 @@ hep_spt
 .. image:: https://img.shields.io/badge/documentation-link-blue.svg
    :target: https://mramospe.github.io/hep_spt/
 
-.. image:: https://codecov.io/gh/mramospe/hep_spt/branch/devel/graph/badge.svg
-   :target: https://codecov.io/gh/mramospe/hep_spt/branch/devel
+.. image:: https://codecov.io/gh/mramospe/hep_spt/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/mramospe/hep_spt
 
 .. inclusion-marker-do-not-remove
 
