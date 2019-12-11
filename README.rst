@@ -8,6 +8,9 @@ hep_spt
 .. image:: https://img.shields.io/badge/documentation-link-blue.svg
    :target: https://mramospe.github.io/hep_spt/
 
+.. image:: https://codecov.io/gh/mramospe/hep_spt/branch/devel/graph/badge.svg
+   :target: https://codecov.io/gh/mramospe/hep_spt/branch/devel
+
 .. inclusion-marker-do-not-remove
 
 The **High Energy Physics Statistics and Plotting Tools** package provides tools to work in **High Energy Physics** using general python packages.

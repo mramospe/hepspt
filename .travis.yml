@@ -2,11 +2,17 @@ language: python
 os: linux
 env:
   - MPLBACKEND=Agg
+before_install:
+  - python --version
+  - pip install pytest
+  - pip install pytest-cov
+  - pip install codecov
 install:
   - pip install -r requirements.txt
   - pip install .
-before_script: cd tests
-script: pytest -v
+script: pytest
+after_success:
+  - codecov
 jobs:
   include:
     - name: "Python 2.7"
